@@ -1,3 +1,12 @@
+/**
+ *
+ * Tiramisu - A JavaScript μFramework
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * Copyright: (c) 2011 Owl Studios
+ * License: BSD (See LICENSE for details)
+ *
+ **/
 (function(window) {
 
     // Constructor
@@ -10,8 +19,9 @@
 
     // Framework CSS Selector module
     Tiramisu.prototype.get = window.$t = function(selector) {
+        var USE_QSA = false;
         // querySelectorAll detection
-        if (typeof document.querySelectorAll !== 'undefined') return document.querySelectorAll(selector);
+        if (USE_QSA) && (typeof document.querySelectorAll !== 'undefined') return document.querySelectorAll(selector);
 
         var macros = {
             'nl': '\n|\r\n|\r|\f',
