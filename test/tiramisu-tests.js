@@ -29,3 +29,20 @@ test('Selecting “#headline”', function() {
     equal(rs[0].id, "headline", "Should have an element node with id “headline”");
     equal(rs[0].innerHTML, "Tiramisu Tests", "Should contain “Tiramisu Tests”");
 });
+
+test('Selecting “h3 .red”', function() {
+    var rs = tiramisu.get('h3 .red');
+    ok(rs, 'Should not be empty');
+    equal(rs[0].className, "red", "Should have an element node with class “red”");
+    equal(rs[0].innerHTML, "tiramisu", "Should contain “tiramisu”");
+});
+
+module('Browser detection tests');
+
+test('Detect check', function() {
+    var browser = tiramisu.detect('browser');
+    ok(browser, 'Ok result : '+browser);
+	//equal(tiramisu.detect('isChrome'), true, "We are into Chrome");
+	//equal(tiramisu.detect('isFirefox'), true, "We are into Firefox");
+	//equal(tiramisu.detect('isIE'), true, "We are into IE 'BOOOO'");
+});
