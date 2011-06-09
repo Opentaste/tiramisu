@@ -17,11 +17,55 @@
     // Exposing the framework
     window.tiramisu = new Tiramisu();
 
-    // Framework CSS Selector module
-    Tiramisu.prototype.get = window.$t = function(selector) {
+    // Framework Detection Module 
+    Tiramisu.prototype.detect = function(key) {
+        var nav_agent = navigator.userAgent, 
+            nav_name  = navigator.appName, 
+            firefox = nav_agent.substring(nav_agent.indexOf('Firefox')), 
+            firefox_version = firefox.split('/')[1].split('.')[0], 
+            opera = nav_agent.substring(nav_agent.indexOf('Version')).split("/")[1];
+        
+        // Turns off querySelectorAll detection
         var USE_QSA = false;
-        // querySelectorAll detection
-        if (USE_QSA) && (typeof document.querySelectorAll !== 'undefined') return document.querySelectorAll(selector);
+        
+        // Netscape includes Firefox, Safari or Chrome
+        var tests = {
+            'browser': function() {
+                if (nav_name === 'Netscape'){ 
+                    if (firefox.split("/")[0] !== 'Firefox') { // Case 1 - Safari or Chrome
+                        return "safarichrome"
+                    } 
+                    else { 
+                        if (firefox_version ==="4") { // Case 2 - Firefox 4
+                            return "firefox4"
+                        } 
+                        else { // Case 3 - Firefox 3
+                            return "firefox3"
+                        }
+                    }
+                } 
+                else if (nav_name == 'Opera') {
+                    if (opera.split(".")[1] > 49) { // Case 4 - Opera 10.5+
+                        return "Opera10.5+"
+                    } 
+                    else { // Case 5 - Opera 10.4-
+                        return "Opera10.4"
+                    }
+                } 
+                else { // Case 6 - IE or other
+                    return "IE"
+                }
+            }
+            , 'isIE': function() { return this.browser() === "IE"; }
+            , 'isFirefox': function() { return this.browser() === "firefox3" || this.browser() === "firefox4" }
+            , 'isChrome': function() { return this.browser() === 'safarichrome'}
+            , 'querySelectorAll': function() { return (USE_QSA && typeof document.querySelectorAll !== 'undefined') }
+        };
+        return tests[key]();
+    };
+
+    Tiramisu.prototype.get = window.$t = function(selector) {
+        if (tiramisu.detect('querySelectorAll')) return document.querySelectorAll(selector);
 
         var macros = {
             'nl': '\n|\r\n|\r|\f',
