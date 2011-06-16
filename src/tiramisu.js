@@ -390,6 +390,27 @@
         // Exposing lexer for testing purposes
         Tiramisu.prototype.tokenize = new Tokenizer(selector);
         var parser = new Searcher(document, lexer.tokens);
-        return parser.parse();
+        var results = parser.parse();
+
+        // Public methods
+        var methods = {
+            // Each iterator extension
+            'each': function(cb) {
+                var i;
+                for (i = 0; i < results.length; i++) {
+                    cb.apply(results[i]);
+                }
+                return this;
+            }
+        };
+
+        // Append methods to the result object
+        (function append_methods() {
+            var key;
+            for (key in methods) {
+                results[key] = methods[key];
+            }
+        })();
+        return results; 
     };
 })(window);
