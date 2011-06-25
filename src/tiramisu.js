@@ -11,11 +11,19 @@
 
     // Constructor
     function Tiramisu() {
-        this.version = '0.0.1a';
+        this.version = '0.0.1b';
+        this.d = document;
     }
 
     // Exposing the framework
     window.tiramisu = new Tiramisu();
+    
+    // Extending object1 with object2's methods
+    function extend (first, second){
+        for (var prop in second){
+            first[prop] = second[prop];
+        }
+    }
 
     // Framework Detection Module 
     Tiramisu.prototype.detect = function(key) {
@@ -30,42 +38,86 @@
         
         // Netscape includes Firefox, Safari or Chrome
         var tests = {
+            /* Method list:
+             *     browser,
+             *     isIE, isFirefox, isChrome,
+             *     querySelectorAll,
+             *     opacity, color;
+             *
+             * Compatibility for not support CSS
+             *     position:fixed - iOS Safari / Opera Mini
+             *     CSS3 Opacity - I8 older using the "filter" property
+             *     CSS3 Colors - I8 older using rgb rather than rgba
+             */
             'browser': function() {
                 if (nav_name === 'Netscape'){ 
                     if (firefox.split('/')[0] !== 'Firefox') { // Case 1 - Safari or Chrome
                         return "safarichrome"
                     } 
                     else { 
-                        if (firefox_version ==='4') { // Case 2 - Firefox 4
+                        if (firefox_version === '4') { // Case 2 - Firefox 4
                             return 'firefox4'
                         } 
-                        else { // Case 3 - Firefox 3
-                            return 'firefox3'
-                        }
+                        return 'firefox3'
                     }
                 } 
                 else if (nav_name == 'Opera') {
-                    if (opera.split(".")[1] > 49) { // Case 4 - Opera 10.5+
+                    if (opera.split('.')[1] > 49) { // Case 4 - Opera 10.5+
                         return 'Opera10.5+'
                     } 
-                    else { // Case 5 - Opera 10.4-
-                        return 'Opera10.4'
-                    }
+                    return 'Opera10.4'
                 } 
+                else if (/MSIE (\d+\.\d+);/.test(nav_agent)){ //test for MSIE x.x;
+                    var ie = new Number(RegExp.$1) // capture x.x portion and store as a number
+                    if (ie > 8) {
+                        return 'IE9+'
+                    } else if (ie === 8) {
+                        return 'IE8'
+                    }
+                    return 'IE_older'
+                }
                 else { // Case 6 - IE or other
                     return 'IE'
                 }
             }
-            , 'isIE': function() { return this.browser() === 'IE'; }
-            , 'isFirefox': function() { return this.browser() === 'firefox3' || this.browser() === "firefox4" }
-            , 'isChrome': function() { return this.browser() === 'safarichrome'}
-            , 'querySelectorAll': function() { return (USE_QSA && typeof document.querySelectorAll !== 'undefined')}
+            , 'isIE': function() { 
+                   return this.browser() === 'IE9+' 
+                       || this.browser() === 'IE8'
+                       || this.browser() === 'IE_older'; 
+               }
+            , 'isIEolder': function() { 
+                   return this.browser() === 'IE8' 
+                       || this.browser() === 'IE_older';
+               }
+            , 'isFirefox': function() { 
+                   return this.browser() === "firefox3" 
+                       || this.browser() === "firefox4" 
+               }
+            , 'isChrome': function() { 
+                   return this.browser() === 'safarichrome'
+               }
+            , 'querySelectorAll': function() { 
+                   return (USE_QSA 
+                           && typeof this.d.querySelectorAll !== 'undefined') 
+               }
+            , 'opacity': function() { 
+                    if (this.isIEolder()){
+                        return false;
+                    }
+                    return true;
+               }
+             , 'color': function() { 
+                    if (this.isIEolder()){
+                        return false;
+                    }
+                    return true;
+              }
         };
         return tests[key]();
     };
 
     Tiramisu.prototype.get = window.$t = function(selector) {
-        if (tiramisu.detect('querySelectorAll')) return document.querySelectorAll(selector);
+        if (tiramisu.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
 
         var macros = {
             'nl': '\n|\r\n|\r|\f',
