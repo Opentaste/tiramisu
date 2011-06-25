@@ -32,34 +32,34 @@
         var tests = {
             'browser': function() {
                 if (nav_name === 'Netscape'){ 
-                    if (firefox.split("/")[0] !== 'Firefox') { // Case 1 - Safari or Chrome
+                    if (firefox.split('/')[0] !== 'Firefox') { // Case 1 - Safari or Chrome
                         return "safarichrome"
                     } 
                     else { 
-                        if (firefox_version ==="4") { // Case 2 - Firefox 4
-                            return "firefox4"
+                        if (firefox_version ==='4') { // Case 2 - Firefox 4
+                            return 'firefox4'
                         } 
                         else { // Case 3 - Firefox 3
-                            return "firefox3"
+                            return 'firefox3'
                         }
                     }
                 } 
                 else if (nav_name == 'Opera') {
                     if (opera.split(".")[1] > 49) { // Case 4 - Opera 10.5+
-                        return "Opera10.5+"
+                        return 'Opera10.5+'
                     } 
                     else { // Case 5 - Opera 10.4-
-                        return "Opera10.4"
+                        return 'Opera10.4'
                     }
                 } 
                 else { // Case 6 - IE or other
-                    return "IE"
+                    return 'IE'
                 }
             }
-            , 'isIE': function() { return this.browser() === "IE"; }
-            , 'isFirefox': function() { return this.browser() === "firefox3" || this.browser() === "firefox4" }
+            , 'isIE': function() { return this.browser() === 'IE'; }
+            , 'isFirefox': function() { return this.browser() === 'firefox3' || this.browser() === "firefox4" }
             , 'isChrome': function() { return this.browser() === 'safarichrome'}
-            , 'querySelectorAll': function() { return (USE_QSA && typeof document.querySelectorAll !== 'undefined') }
+            , 'querySelectorAll': function() { return (USE_QSA && typeof document.querySelectorAll !== 'undefined')}
         };
         return tests[key]();
     };
@@ -399,6 +399,20 @@
                 var i;
                 for (i = 0; i < results.length; i++) {
                     cb.apply(results[i]);
+                }
+                return this;
+            },
+            'on': function(evt, cb) {
+                var i;
+                if (results[0].addEventListener) {
+                    for (i = 0; i < results.length; i++) {
+                        results[i].addEventListener(evt, cb, false);
+                    }
+                } 
+                else if (results[0].attachEvent) {
+                    for(i = 0; i < results.length; i++) {
+                        results[i].attachEvent(evt, cb);
+                    }
                 }
                 return this;
             }
