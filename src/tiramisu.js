@@ -11,7 +11,7 @@
 
     // Constructor
     function Tiramisu() {
-        this.version = '0.0.1b';
+        this.version = '0.0.2';
         this.d = document;
     }
 
@@ -114,6 +114,63 @@
               }
         };
         return tests[key]();
+    };
+    
+    // Framework Ajax Module 
+    Tiramisu.prototype.ajax = function(setting_input) {
+        setting_input = setting_input || {};
+        var setting = {
+            method : 'GET',
+            url : '',
+            async : true,
+            content_type : '',
+            connection : '',
+            parameter : null,
+            loader : '',
+            success : function(){},
+            successHTML : '',
+            error : ''
+        },
+        xhr = null;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else if (window.ActiveXObject) { 
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if (!xhr) {
+            console.log('Object Ajax Error!');
+        }
+        extend(setting, setting_input);
+        if(tiramisu.detect('isIEolder')) {
+            setting.method = 'POST';
+        }
+        var parameter = '';
+        var parameter_count = 0;
+        for (attrname in setting.parameter) { 
+            parameter += attrname+'='+setting.parameter[attrname];
+            parameter_count += 1;
+        }
+        xhr.open(setting.method, setting.url, setting.async);
+        if (setting.content_type){
+            xhr.setRequestHeader('Content-type', setting.content_type);
+        }
+        if (parameter_count){
+    	    xhr.setRequestHeader('Content-length', parameter_count);
+    	}
+    	if (setting.connection){
+    	    xhr.setRequestHeader('Connection', setting.connection);
+    	}
+    	xhr.onreadystatechange = function () {
+    		if (xhr.readyState == 4 && xhr.status == 200) {
+    		    if (setting.successHTML) {
+                    tiramisu.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
+    		    } else {
+    		        setting.success(xhr.responseText);
+    		    }  
+    		}
+    	}
+    	xhr.send(parameter);
+        return this;
     };
 
     Tiramisu.prototype.get = window.$t = function(selector) {
