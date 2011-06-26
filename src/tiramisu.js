@@ -511,6 +511,7 @@
                 }
                 return this;
             },
+            // Event handler extension 
             'on': function(evt, cb) {
                 var i;
                 if (results[0].addEventListener) {
@@ -521,6 +522,18 @@
                 else if (results[0].attachEvent) {
                     for(i = 0; i < results.length; i++) {
                         results[i].attachEvent(evt, cb);
+                    }
+                }
+                return this;
+            },
+            // CSS handler extension
+            'css': function(obj) {
+                var i, key;
+                for (i = 0; i < results.length; i++) {
+                    for (key in obj) {
+                        if (obj.hasOwnProperty(key)) {
+                            results[i].style.setProperty(key, obj[key]);
+                        }
                     }
                 }
                 return this;
