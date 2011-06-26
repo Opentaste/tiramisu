@@ -11,7 +11,7 @@
 
     // Constructor
     function Tiramisu() {
-        this.version = '0.0.2';
+        this.version = '0.0.3';
         this.d = document;
     }
 
@@ -106,7 +106,7 @@
                     }
                     return true;
                }
-             , 'color': function() { 
+            , 'color': function() { 
                     if (this.isIEolder()){
                         return false;
                     }
@@ -118,34 +118,35 @@
     
     // Framework Ajax Module 
     Tiramisu.prototype.ajax = function(setting_input) {
-        setting_input = setting_input || {};
-        var setting = {
-            method : 'GET',
-            url : '',
-            async : true,
-            content_type : '',
-            connection : '',
-            parameter : null,
-            loader : '',
-            success : function(){},
-            successHTML : '',
-            error : ''
-        },
-        xhr = null;
+        var setting_input = setting_input || {},
+            setting = {
+                method : 'GET',
+                url : '',
+                async : true,
+                content_type : '',
+                connection : '',
+                parameter : null,
+                loader : '',
+                success : function(){},
+                successHTML : '',
+                error : ''
+            },
+            xhr = null,
+            parameter = '',
+            parameter_count = 0;     
         if (window.XMLHttpRequest) {
             xhr = new XMLHttpRequest();
         } else if (window.ActiveXObject) { 
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        if (!xhr) {
+        } else {
             console.log('Object Ajax Error!');
         }
         extend(setting, setting_input);
         if(tiramisu.detect('isIEolder')) {
             setting.method = 'POST';
         }
-        var parameter = '';
-        var parameter_count = 0;
+        // object "setting.parameter" I create a string with the parameters 
+        // to be passed in request
         for (attrname in setting.parameter) { 
             parameter += attrname+'='+setting.parameter[attrname];
             parameter_count += 1;
@@ -223,8 +224,8 @@
             }
 
             function convertPatterns() {
-                var key, pattern, results = {};
-                var patterns, source;
+                var key, pattern, results = {},
+                    patterns, source;
 
                 if (arguments.length === 2) {
                     source = arguments[0];
@@ -243,8 +244,8 @@
             }
 
             function joinPatterns(regexps) {
-                var results = [];
-                var key;
+                var results = [],
+                    key;
 
                 for (key in regexps) {
                     results.push(regexps[key]);
@@ -258,8 +259,8 @@
 
         var filter = {
             'byAttr': function(elements, attribute, value) {
-                var key;
-                var results = [];
+                var key,
+                    results = [];
                 for (key in elements) {
                     if (elements[key] && elements[key][attribute] === value) {
                         results.push(elements[key]);
@@ -276,9 +277,9 @@
 
             'byNodeName': function(root, tagName) {
                 if (root === null) return [];
-                var i;
-                var results = [];
-                var nodes = root.getElementsByTagName(tagName);
+                var i,
+                    results = [],
+                    nodes = root.getElementsByTagName(tagName);
 
                 for (i = 0; i < nodes.length; i++) {
                     results.push(nodes[i]);
@@ -288,9 +289,9 @@
 
             'byClassName': function(root, className) {
                 if (root === null) return [];
-                var i;
-                var results = [];
-                var nodes = root.getElementsByTagName('*');
+                var i,
+                    results = [],
+                    nodes = root.getElementsByTagName('*');
 
                 for (i = 0; i < nodes.length; i++) {
                     if (nodes[i].className.match('\\b' + className + '\\b')) {
@@ -315,9 +316,9 @@
             },
 
             'name and id': function(root, selector) {
-                var matches = selector.split('#');
-                var name = matches[0];
-                var id = matches[1];
+                var matches = selector.split('#'),
+                    name = matches[0],
+                    id = matches[1];
                 return filter.byAttr(find.byId(root, id), 'nodeName', name.toUpperCase());
             },
 
@@ -331,9 +332,9 @@
             },
 
             'name and class': function(root, selector) {
-                var matches = selector.split('\.');
-                var name = matches[0];
-                var className = matches[1];
+                var matches = selector.split('\.'),
+                    name = matches[0],
+                    className = matches[1];
                 return filter.byAttr(find.byClassName(root, className), 'nodeName', name.toUpperCase());
             }
         };
@@ -471,9 +472,9 @@
         };
 
         Searcher.prototype.parse = function() {
-            var i, element;
-            var elements = this.find(this.key_selector);
-            var results = [];
+            var i, element,
+                elements = this.find(this.key_selector),
+                results = [];
 
             // Each element that matches the key selector is used as a 
             // starting point. Its ancestors are analysed to see 
@@ -498,8 +499,8 @@
 
         // Exposing lexer for testing purposes
         Tiramisu.prototype.tokenize = new Tokenizer(selector);
-        var parser = new Searcher(document, lexer.tokens);
-        var results = parser.parse();
+        var parser = new Searcher(document, lexer.tokens),
+            results = parser.parse();
 
         // Public methods
         var methods = {
