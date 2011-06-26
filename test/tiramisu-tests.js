@@ -90,3 +90,13 @@ test('Calling “$t("ul li").each(function() { return this.innerHTML; });”', f
 
     equal($t("#append-here")[0].innerHTML, '<p class=\"underlined\">This text is underlined</p>Another lineOki-Doki.');
 });
+
+module('CSS Manipulation tests');
+
+test('Setting the color of a node to #f6f6f6', function() {
+    $t('#headline').css({
+        'color': '#f6f6f6'
+    });
+
+    equal($t('#headline')[0].style['color'], 'rgb(246, 246, 246)');
+});
