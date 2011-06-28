@@ -1,3 +1,13 @@
+/** 
+ * 
+ * Tiramisu Unit Tests 
+ * ~~~~~~~~~~~~~~~~~~~
+ *
+ * Use the online version for working AJAX tests:
+ * http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html
+ *
+ **/
+
 module('Generic tests');
 
 test('Should pass', function() {
@@ -99,4 +109,52 @@ test('Setting the color of a node to #f6f6f6', function() {
     });
 
     equal($t('#headline')[0].style['color'], 'rgb(246, 246, 246)');
+});
+
+module('AJAX module tests');
+
+asyncTest('Calling a basic AJAX GET', function() {
+    var success = function(result) {
+        ok(true);
+        ok(result, "the result is not undefined/null");
+        equal(result, '<p>Hello GET</p>\n');
+        start();
+    };
+
+    var error = function(errorType, message) {
+        ok(false, "error called");
+        start();
+    }
+
+    expect(3);
+
+    tiramisu.ajax({
+        'method': 'GET',
+        'url': 'data/async.html',
+        'success': success,
+        'error': error
+    });
+});
+
+asyncTest('Calling a basic AJAX POST', function() {
+    var success = function(result) {
+        ok(true);
+        ok(result, "the result is not undefined/null");
+        equal(result, '<p>Hello GET</p>\n');
+        start();
+    };
+
+    var error = function(errorType, message) {
+        ok(false, "error called");
+        start();
+    }
+
+    expect(3);
+
+    tiramisu.ajax({
+        'method': 'POST',
+        'url': 'data/async.html',
+        'success': success,
+        'error': error
+    });
 });
