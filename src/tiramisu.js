@@ -11,12 +11,23 @@
 
     // Constructor
     function Tiramisu() {
-        this.version = '0.0.4';
+        this.version = '0.0.5';
         this.d = document;
     }
 
     // Exposing the framework
     window.tiramisu = new Tiramisu();
+    
+    window.requestAnimFrame = (function(){
+          return  window.requestAnimationFrame       || 
+                  window.webkitRequestAnimationFrame || 
+                  window.mozRequestAnimationFrame    || 
+                  window.oRequestAnimationFrame      || 
+                  window.msRequestAnimationFrame     || 
+                  function(callback, element){
+                    window.setTimeout(callback, 16);
+                  };
+    })();
     
     // Extending object1 with object2's methods
     function extend (first, second){
@@ -529,13 +540,16 @@
             parameter += attrname+'='+setting.parameter[attrname];
             parameter_count += 1;
         }
+        if (parameter_count) {
+            if (!setting.content_type) {
+                setting.content_type = 'application/x-www-form-urlencoded';
+            }
+            setting.method = 'POST';
+        }
         xhr.open(setting.method, setting.url, setting.async);
         if (setting.content_type){
             xhr.setRequestHeader('Content-type', setting.content_type);
         }
-        if (parameter_count){
-    	    xhr.setRequestHeader('Content-length', parameter_count);
-    	}
     	if (setting.connection){
     	    xhr.setRequestHeader('Connection', setting.connection);
     	}
@@ -562,7 +576,29 @@
             interval = arguments[1];
             cb = arguments[arguments.length -1];
         }
-        console.log(arguments);
-        console.log("delay: " + delay + " interval: " + interval + " cb: " + cb);
+        
+        var start = +new Date(),
+            pass = interval;
+            
+        function animate() {
+            var progress = +new Date() - start;
+            
+            if (interval !== undefined) {
+                if (progress > pass) {
+                    pass += interval;
+                    cb();
+                }
+            }
+            
+            if (progress < delay) {
+                requestAnimFrame( animate );
+            } else {
+                if (interval === undefined) {
+                    cb();
+                }
+            }    
+        }  
+
+        animate();
     };
 })(window);
