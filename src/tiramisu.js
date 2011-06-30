@@ -476,7 +476,7 @@
                 for (i = 0; i < results.length; i++) {
                     for (key in obj) {
                         if (obj.hasOwnProperty(key)) {
-                            results[i].style.setProperty(key, obj[key]);
+                            results[i].style.setProperty(key, obj[key], ''); // The third param is for firefox
                         }
                     }
                 }
