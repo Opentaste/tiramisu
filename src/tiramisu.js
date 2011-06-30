@@ -495,7 +495,7 @@
     };
 
     // Framework Ajax Module 
-    Tiramisu.prototype.ajax = function(setting_input) {
+    Tiramisu.prototype.ajax = window.$t.ajax = function(setting_input) {
         var setting_input = setting_input || {},
             setting = {
                 method : 'GET',
@@ -550,5 +550,13 @@
     	}
     	xhr.send(parameter);
         return this;
+    };
+    
+    // Task Engine module
+    Tiramisu.prototype.do = function(delay, cb) {
+        // tiramisu.do(delay, [interval], callback) where “interval”
+        // is an optional argument
+        var interval = (arguments.length === 3) ? arguments[1] : undefined;
+        console.log("delay: " + delay + " interval: " + interval + " cb: " + cb);
     };
 })(window);
