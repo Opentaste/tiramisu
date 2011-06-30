@@ -553,10 +553,11 @@
     };
     
     // Task Engine module
-    Tiramisu.prototype.do = function(delay, cb) {
+    Tiramisu.prototype.do = function(delay) {
         // tiramisu.do(delay, [interval], callback) where “interval”
         // is an optional argument
-        var interval = (arguments.length === 3) ? arguments[1] : undefined;
-        console.log("delay: " + delay + " interval: " + interval + " cb: " + cb);
+        var interval = (arguments.length > 2) ? arguments[1] : undefined;
+        console.log(arguments);
+        console.log("delay: " + delay + " interval: " + interval + " cb: " + arguments[arguments.length - 1]);
     };
 })(window);
