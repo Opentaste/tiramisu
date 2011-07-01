@@ -13,21 +13,20 @@
     function Tiramisu() {
         this.version = '0.0.5';
         this.d = document;
+        this.requestAnimFrame =  (function(){
+              return  window.requestAnimationFrame       || 
+                      window.webkitRequestAnimationFrame || 
+                      window.mozRequestAnimationFrame    || 
+                      window.oRequestAnimationFrame      || 
+                      window.msRequestAnimationFrame     || 
+                      function(callback, element){
+                          window.setTimeout(callback, 1000 / 60);
+                      };
+        })();
     }
 
     // Exposing the framework
     window.tiramisu = new Tiramisu();
-    
-    window.requestAnimFrame = (function(){
-          return  window.requestAnimationFrame       || 
-                  window.webkitRequestAnimationFrame || 
-                  window.mozRequestAnimationFrame    || 
-                  window.oRequestAnimationFrame      || 
-                  window.msRequestAnimationFrame     || 
-                  function(callback, element){
-                    window.setTimeout(callback, 16);
-                  };
-    })();
     
     // Extending object1 with object2's methods
     function extend (first, second){
@@ -570,7 +569,11 @@
     Tiramisu.prototype['do'] = function(delay, cb) {
         // tiramisu.do(delay, [interval], callback) where “interval”
         // is an optional argument
+
         var interval;
+
+        // Saving reference for nested function calling
+        var requestAnimFrame = requestAnimFrame || this.requestAnimFrame;
 
         if (arguments.length > 2) { 
             interval = arguments[1];
@@ -589,9 +592,9 @@
                     cb();
                 }
             }
-            
+
             if (progress < delay) {
-                requestAnimFrame( animate );
+                requestAnimFrame(animate);
             } else {
                 if (interval === undefined) {
                     cb();
