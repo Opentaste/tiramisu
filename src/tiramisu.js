@@ -536,7 +536,7 @@
         // object "setting.parameter" I create a string with the parameters 
         // to be passed in request
         for (attrname in setting.parameter) { 
-            parameter += attrname+'='+setting.parameter[attrname];
+            parameter += attrname+'='+setting.parameter[attrname]+'&';
             parameter_count += 1;
         }
         if (parameter_count) {
