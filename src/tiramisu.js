@@ -6,10 +6,17 @@
  * Copyright: (c) 2011 Owl Studios
  * License: BSD (See LICENSE for details)
  *
+ * @private
  **/
 (function(window) {
 
-	// Constructor
+	/**
+     * The Framework's costructor exposes externally: 
+     *
+     * - A version number;
+     * - A document object reference;
+     * - *requestAnimFrame* (used for handling tasks).
+     */
 	function Tiramisu() {
 		this.version = '0.0.5';
 		this.d = document;
@@ -35,7 +42,58 @@
 		}
 	}
 
-	// Framework Detection Module 
+	/** 
+     * Framework Detection Module
+     * ==========================
+     *
+     * This module is mainly used to perform several *browser-detection tests*:
+     *
+     * - browser
+     * - isIE, isFirefox, isChrome
+     * - querySelectorAll
+     * - opacity, color
+     *
+     * Compatibility for not support CSS:
+     *
+     * - position:fixed - iOS Safari / Opera Mini
+     * - CSS3 Opacity - I8 older using the "filter" property
+     * - CSS3 Colors - I8 older using rgb rather than rgba
+     *
+     * Example (Detect browser)
+     * ------------------------
+     *
+     * Here's an example on how to *detect* the current browser:
+     *
+     *     if (tiramisu.detect('browser') === 'IE9')) {
+     *         console.log('IE');
+     *     }
+     * 
+     * A shortcut to perform this check is:
+     *
+     *     if (tiramisu.detect('isIE')) {
+     *         console.log('IE');
+     *     }
+     * 
+     * The main difference between the first and the second example is that
+     * *isIE* and, in general, *is(X)* methods doesn't check the browser for
+     * a specific version.
+     *
+     * If you need to perform a check for a specific version you'll need to rely on *detect('browser')*;
+     * the possible return values are:
+     *
+     * - *safarichrome*;
+     * - *firefox3*;
+     * - *firefox4*;
+     * - *Opera10.4*;
+     * - *Opera10.5+*;
+     * - *IE_older* (For IE <= 6).
+     * - *IE8*;
+     * - *IE9+*;
+     *
+     * @param {String} key The test to perform (see the var tests below)
+     * @returns {Boolean} The test result
+     * @api public
+     */
 	Tiramisu.prototype.detect = function(key) {
 		var nav_agent = navigator.userAgent,
 		nav_name = navigator.appName,
@@ -48,17 +106,7 @@
 
 		// Netscape includes Firefox, Safari or Chrome
 		var tests = {
-			/* Method list:
-             *     browser,
-             *     isIE, isFirefox, isChrome,
-             *     querySelectorAll,
-             *     opacity, color;
-             *
-             * Compatibility for not support CSS
-             *     position:fixed - iOS Safari / Opera Mini
-             *     CSS3 Opacity - I8 older using the "filter" property
-             *     CSS3 Colors - I8 older using rgb rather than rgba
-             */
+
 			'browser': function() {
 				if (nav_name === 'Netscape') {
 					if (firefox.split('/')[0] !== 'Firefox') { // Case 1 - Safari or Chrome
@@ -124,7 +172,19 @@
 		return tests[key]();
 	};
 
-	// Selector module
+    /**
+     * Framework Selector Module
+     * ===============
+     *
+     * **TODO:**
+     *
+     * - Write docs
+     *
+     * @param {String} selector A CSS Selector
+     * @returns {Object} The node list
+     * @api public
+     * 
+     */
 	Tiramisu.prototype.get = window.$t = function(selector) {
 		if (tiramisu.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
 
@@ -308,9 +368,10 @@
 		/**
          * Models a Token class.
          *
-         * @identity {String} The original selector rule;
-         * @finder {String} The category of the selector;
-         **/
+         * @param {String} identity The original selector rule;
+         * @param {String} finder The category of the selector;
+         * @api private
+         */
 		function Token(identity, finder) {
 			this.identity = identity;
 			this.finder = finder;
@@ -323,8 +384,9 @@
 		/**
          * Classify sections of the scanner output.
          *
-         * @selector {String} A CSS selector;
-         **/
+         * @param {String} selector A CSS selector;
+         * @api private
+         */
 		function Tokenizer(selector) {
 			this.selector = normalize(selector);
 			this.tokens = [];
@@ -360,10 +422,10 @@
 		/**
          * Uses an array of tokens to perform DOM operations.
          *
-         * @root {HTMLNode} The starting DOM node;
-         * @tokens {Array} An array containing tokens;
-         *
-         **/
+         * @param {HTMLNode} root The starting DOM node;
+         * @param {Array} tokens An array containing tokens;
+         * @api private
+         */
 		function Searcher(root, tokens) {
 			this.root = root;
 			this.key_selector = tokens.pop();
@@ -434,9 +496,17 @@
 		var parser = new Searcher(document, lexer.tokens),
 		results = parser.parse();
 
-		// Public methods
 		var methods = {
-			// Each iterator extension
+			/**
+             * Each iterator extension
+             * -----------------------
+             * 
+             * **TODO:**
+             *
+             * - Write docs
+             *
+             * @param {function} cb The callback function to apply
+             */
 			'each': function(cb) {
 				var i;
 				for (i = 0; i < results.length; i++) {
@@ -444,7 +514,17 @@
 				}
 				return this;
 			},
-			// Event handler extension 
+			/**
+             * Event handler extension 
+             * -----------------------
+             *
+             * **TODO:**
+             *
+             * - Write docs
+             *
+             * @param {event} evt An event listener
+             * @param {function} cb The callback function to attach
+             */
 			'on': function(evt, cb) {
 				var i;
 				if (results[0].addEventListener) {
@@ -459,7 +539,16 @@
 				}
 				return this;
 			},
-			// CSS handler extension
+			/**
+             * CSS handler extension
+             * ---------------------
+             *
+             * **TODO:**
+             *
+             * - Write docs
+             *
+             *  @param {Object} obj An object containing CSS properties
+             */
 			'css': function(obj) {
 				var i, key;
 				for (i = 0; i < results.length; i++) {
@@ -483,7 +572,18 @@
 		return results;
 	};
 
-	// Framework Ajax Module 
+	/** 
+     * Framework Ajax Module
+     * =====================
+     * 
+     * **TODO:**
+     *
+     * - Write docs
+     * - Fix Ajax inner method
+     *
+     * @param {Object} setting_input An object containing several AJAX settings
+     * @api public
+     */
 	Tiramisu.prototype.ajax = window.$t.ajax = function(setting_input) {
 		var setting_input = setting_input || {},
             setting = {
@@ -552,7 +652,18 @@
 		return this;
 	};
 
-	// Task Engine module
+	/** 
+     * Task Engine Module
+     * ==================
+     *
+     * **TODO:**
+     *
+     * - Write docs
+     *
+     * @param {integer} delay The total task delay(ms)
+     * @param {integer} [interval] The interval of the repetitions(ms)
+     * @param {Function} cb The callback function
+     */
 	Tiramisu.prototype['do'] = function(delay, cb) {
 		// tiramisu.do(delay, [interval], callback) where “interval”
 		// is an optional argument
