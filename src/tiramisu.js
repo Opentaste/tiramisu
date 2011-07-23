@@ -575,31 +575,81 @@
 	/** 
      * Framework Ajax Module
      * =====================
+     *
+     * This module is mainly used to perform an Ajax request.
+     *
+	 *     tiramisu.ajax(settings);
+     *
+     *
+     * Parameter settings
+     * ------------------------
+     *
+	 * - async : Default true
+	 * - content_type : In Post request default application/x-www-form-urlencoded
+	 * - connection : 
+	 * - error :
+	 * - loader : 
+	 * - method : Default GET
+	 * - parameter : Default null
+	 * - success : 
+	 * - successHTML : 
+	 * - url : 
+	 *
+     *
+     * Example (Ajax request)
+     * ------------------------
+     *
+     * - Example 1
+     *
+     *     tiramisu.ajax({ url : url });
      * 
-     * **TODO:**
+     * - Example 2
      *
-     * - Write docs
-     * - Fix Ajax inner method
+     *     tiramisu.ajax({ url : url,
+	 *					   success : function (){ ... } });
+     *         
+     * - Example 3
      *
-     * @param {Object} setting_input An object containing several AJAX settings
+     *     tiramisu.ajax({ url : url,
+	 *					   successHTML : 'list_ul' });
+     *   
+     * - Example 4
+     *
+     *     tiramisu.ajax({ method : 'POST',
+     *					   loader : 'div_loader',
+	 *					   successHTML : 'div_ul' });
+     *
+     * - Example 5
+     *
+     *     tiramisu.ajax({ method : 'POST',
+     *					   loader : 'div_loader',
+	 *					   parameter: {
+	 *					   		param_1 : 'variable 1',
+	 *							param_2 : 'variable 2'
+	 *					   },
+	 *					   url : url });
+     *
+     *
+     * @param 
+     * @returns 
      * @api public
      */
 	Tiramisu.prototype.ajax = window.$t.ajax = function(setting_input) {
 		var setting_input = setting_input || {},
             setting = {
+				async: true,
+				content_type: '',
+				connection: '',
+				error: '',
+				loader: '',
                 method: 'GET',
-                url: '',
-                async: true,
-                content_type: '',
-                connection: '',
-                parameter: null,
-                loader: '',
+				parameter: null,
                 success: function() {},
                 successHTML: '',
-                error: ''
+				url: ''
             },
             xhr = null,
-            parameter = '',
+            parameter = null,
             parameter_count = 0;
 
 		if (window.XMLHttpRequest) {
@@ -647,7 +697,6 @@
 				}
 			}
 		};
-
 		xhr.send(parameter);
 		return this;
 	};

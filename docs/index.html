@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><p>Tiramisu is a tiny, modular and fast JavaScript microframework 
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
 
 <pre><code>tiramisu.get('h1 #unique').each(function() {
@@ -556,31 +556,55 @@ the possible return values are:</p>
 <td class="docs">
 <h1>Framework Ajax Module</h1>
 
-<p><strong>TODO:</strong></p>
+<p>This module is mainly used to perform an Ajax request.</p>
 
-<ul><li>Write docs</li><li>Fix Ajax inner method</li></ul>
+<pre><code> *     tiramisu.ajax(settings);</code></pre>
 
-<h2></h2>
+<h2>Parameter settings</h2>
 
-<ul><li><p><strong>param</strong>: <em>Object</em>  setting_input An object containing several AJAX settings</p></li><li><p><strong>api</strong>: <em>public</em></p><p> </p></li></ul>
+<pre><code> * - async : Default true
+ * - content_type : In Post request default application/x-www-form-urlencoded
+ * - connection : 
+ * - error :
+ * - loader : 
+ * - method : Default GET
+ * - parameter : Default null
+ * - success : 
+ * - successHTML : 
+ * - url : 
+ *</code></pre>
+
+<h2>Example (Ajax request)</h2>
+
+<ul><li><p>Example 1</p><p>tiramisu.ajax({ url : url });</p></li><li><p>Example 2</p><p>tiramisu.ajax({ url : url,
+ *					   success : function (){ ... } });</p></li><li><p>Example 3</p><p>tiramisu.ajax({ url : url,
+ *					   successHTML : 'list_ul' });</p></li><li><p>Example 4</p><p>tiramisu.ajax({ method : 'POST',
+				   loader : 'div<em>loader',
+ *					   successHTML : 'div</em>ul' });</p></li><li><p>Example 5</p><p>tiramisu.ajax({ method : 'POST',
+				   loader : 'div_loader',
+ <em>					   parameter: {
+ </em>					   		param_1 : 'variable 1',
+ <em>							param_2 : 'variable 2'
+ </em>					   },
+ *					   url : url });</p><ul><li><p><strong>para</strong>: <em>m</em></p></li><li><p><strong>return</strong>: <em>s</em></p></li><li><p><strong>api</strong>: <em>public</em></p></li></ul></li></ul>
 </td>
 <td class="code">
 <pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">ajax</span> = <span class="variable">window</span>.$<span class="variable">t</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
 		<span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
             <span class="variable">setting</span> = {
+				<span class="variable">async</span>: <span class="variable">true</span>,
+				<span class="variable">content_type</span>: <span class="string">''</span>,
+				<span class="variable">connection</span>: <span class="string">''</span>,
+				<span class="variable">error</span>: <span class="string">''</span>,
+				<span class="variable">loader</span>: <span class="string">''</span>,
                 <span class="variable">method</span>: <span class="string">'GET'</span>,
-                <span class="variable">url</span>: <span class="string">''</span>,
-                <span class="variable">async</span>: <span class="variable">true</span>,
-                <span class="variable">content_type</span>: <span class="string">''</span>,
-                <span class="variable">connection</span>: <span class="string">''</span>,
-                <span class="variable">parameter</span>: <span class="keyword">null</span>,
-                <span class="variable">loader</span>: <span class="string">''</span>,
+				<span class="variable">parameter</span>: <span class="keyword">null</span>,
                 <span class="variable">success</span>: <span class="keyword">function</span>() {},
                 <span class="variable">successHTML</span>: <span class="string">''</span>,
-                <span class="variable">error</span>: <span class="string">''</span>
+				<span class="variable">url</span>: <span class="string">''</span>
             },
             <span class="variable">xhr</span> = <span class="keyword">null</span>,
-            <span class="variable">parameter</span> = <span class="string">''</span>,
+            <span class="variable">parameter</span> = <span class="keyword">null</span>,
             <span class="variable">parameter_count</span> = <span class="number integer">0</span>;
 
 		<span class="keyword">if</span> (<span class="variable">window</span>.<span class="class">XMLHttpRequest</span>) {
@@ -628,7 +652,6 @@ the possible return values are:</p>
 				}
 			}
 		};
-
 		<span class="variable">xhr</span>.<span class="variable">send</span>(<span class="variable">parameter</span>);
 		<span class="keyword">return</span> <span class="this">this</span>;
 	};</code></pre>
