@@ -871,7 +871,15 @@ or perform the same function several times in that time frame.</p>
 
 <pre><code>tiramisu.task(delay, [interval], callback);</code></pre>
 
-<p>where “interval”is an optional argument</p>
+<p>where “interval” is an optional argument</p>
+
+<h2>Example #1 (The callback is executed after 2000 ms)</h2>
+
+<pre><code>tiramisu.task(2000, callback)</code></pre>
+
+<h2>Example #2 (The callback is executed every 100 ms in a period of 2000ms)</h2>
+
+<pre><code>tiramisu.task(2000, 100, callback)</code></pre>
 
 <h2></h2>
 

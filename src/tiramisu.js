@@ -920,7 +920,20 @@
      *
      *     tiramisu.task(delay, [interval], callback);
      *
-     * where “interval”is an optional argument
+     * where “interval” is an optional argument
+     *
+     *
+     * Example #1 (The callback is executed after 2000 ms)
+     * -----------------------------
+     *
+     *     tiramisu.task(2000, callback)
+     *
+     *    
+     * Example #2 (The callback is executed every 100 ms in a period of 2000ms)
+     * -----------------------------------------------------
+     *
+     *     tiramisu.task(2000, 100, callback)
+     *
      *
      * @param {integer} delay The total task delay(ms)
      * @param {integer} [interval] The interval of the repetitions(ms)
