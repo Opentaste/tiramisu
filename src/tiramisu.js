@@ -926,7 +926,7 @@
      * @param {integer} [interval] The interval of the repetitions(ms)
      * @param {Function} cb The callback function
      */
-	Tiramisu.prototype['do'] = window.t.do = function(delay, cb) {
+	Tiramisu.prototype['do'] = window.t['do'] = function(delay, cb) {
 		var interval,
 			requestAnimFrame = tiramisu.requestAnimFrame;
 
