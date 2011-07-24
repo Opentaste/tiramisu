@@ -185,7 +185,7 @@
      *
      * or
      *
-     *     $t(*SELECTOR*)
+     *     t(*SELECTOR*)
      *
      * where *SELECTOR* is a *valid* CSS selector (see examples below).
      *
@@ -235,7 +235,7 @@
      * @api public
      * 
      */
-	Tiramisu.prototype.get = window.$t = function(selector) {
+	Tiramisu.prototype.get = window.t = function(selector) {
 		if (tiramisu.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
 
 		var macros = {
@@ -702,77 +702,91 @@
      * Framework Ajax Module
      * =====================
      *
-     * This module is mainly used to perform an Ajax request.
+     * This module is mainly used to perform Ajax requests.
      *
-	 *     tiramisu.ajax(settings);
+     * Usage
+     * -----
      *
+     *     tiramisu.ajax(SETTINGS);
      *
-     * Parameter settings
-     * ------------------------
+     * where The *SETTINGS* object can contain the following:
      *
-	 * - async : Default true
-	 * - content_type : In Post request default application/x-www-form-urlencoded
-	 * - connection : 
-	 * - error : Default Function Error Log
-	 * - loader : 
-	 * - method : Default GET
-	 * - parameter : Default null
-	 * - success : Default Function Empty
-	 * - successHTML : 
-	 * - url : 
+     * - *async* (default is “true”);
+     * - *content_type* (in POST requests default is “application/x-www-form-urlencoded”);
+     * - *connection*;
+     * - *error* (a callback function);
+     * - *loader*  (a div id);
+     * - *method*  (default is “GET”)
+     * - *parameter*;
+     * - *success* (a callback function);
+     * - *successHTML* (a div id);
+     * - *url* (this is the only **mandatory** field);
 	 *
+     * Example #1 (Ajax GET request)
+     * -----------------------------
      *
-     * Example (Ajax request)
-     * ------------------------
+     *    tiramisu.ajax({
+     *        url : 'http://www.example.com'
+     *    });
      *
-     * - Example 1
+     * Example #2 (Ajax GET request with a success callback)
+     * -----------------------------------------------------
      *
-     *     tiramisu.ajax({ url : url });
-     * 
-     * - Example 2
-     *
-     *     tiramisu.ajax({ url : url,
-	 *					   success : function (){ ... } });
+     *     tiramisu.ajax({ 
+     *         url : 'http://www.example.com',
+	 *		   success : function(data){ 
+     *		       alert(data);
+     *		   } 
+     *	   });
      *         
-     * - Example 3
+     * Example #3 (Ajax GET request loaded into a div with an id)
+     * ----------------------------------------------------------
      *
-     *     tiramisu.ajax({ url : url,
-	 *					   successHTML : 'list_ul' });
+     *     tiramisu.ajax({ 
+     *          url : 'http://www.example.com',
+	 *	        successHTML : 'responseWrapper' 
+     *	   });
      *   
-     * - Example 4
+     * Example #4 (Ajax POST request displaying a loader)
+     * --------------------------------------------------
      *
-     *     tiramisu.ajax({ method : 'POST',
-     *					   loader : 'div_loader',
-	 *					   successHTML : 'div_ul' });
+     *     tiramisu.ajax({ 
+     *          url: 'www.example.com',
+     *          method : 'POST',
+     *			loader : 'div_loader',
+	 *			successHTML : 'responseWrapper'
+     *	   });
      *
-     * - Example 5
+     * Example #5 (Ajax POST request with parameters)
+     * ----------------------------------------------
      *
-     *     tiramisu.ajax({ method : 'POST',
-     *					   loader : 'div_loader',
-	 *					   parameter: {
-	 *					   		param_1 : 'variable 1',
-	 *							param_2 : 'variable 2'
-	 *					   },
-	 *					   url : url });
-	 * - Example 6 
+     *     tiramisu.ajax({ 
+     *         method : 'POST',
+     *		   loader : 'div_loader',
+	 *		   parameter: {
+	 *		                  param_1 : 'variable 1',
+	 *						  param_2 : 'variable 2'
+	 *					  },
+	 *		   url : 'http://www.example.com'); 
+     *	   });
      *
-     *     function ciao (res) {
-     *	   		console.log(res)
-	 *	   }
-	 *	   function error () {
-	 *	   		console.log('error')
-	 *	   }
-	 *	   tiramisu.ajax({ url : url,
-     *					success: ciao,
-     *					  error: nada
-	 *					 })
-	 *
+	 * Example #6 (Ajax GET request with success and error callbacks)
+     * --------------------------------------------------------------
      *
-     * @param 
-     * @returns 
+	 *	   tiramisu.ajax({ 
+     *	       url: 'http://www.example.com',
+     *		   success: function() {
+     *		                console.log('Ok');
+     *		            },
+     *		   error: function() {
+     *		              console.log('Error');
+     *	              }
+	 *	   });
+     *
+     * @param {Object} settings An object containing the Ajax call parameters
      * @api public
      */
-	Tiramisu.prototype.ajax = window.$t.ajax = function(setting_input) {
+	Tiramisu.prototype.ajax = window.t.ajax = function(setting_input) {
 		var setting_input = setting_input || {},
             setting = {
 				async: true,
