@@ -282,7 +282,7 @@ the possible return values are:</p>
 
 <p>or</p>
 
-<pre><code>$t(*SELECTOR*)</code></pre>
+<pre><code>t(*SELECTOR*)</code></pre>
 
 <p>where <em>SELECTOR</em> is a <em>valid</em> CSS selector (see examples below).</p>
 
@@ -325,7 +325,7 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 <ul><li><p><strong>param</strong>: <em>String</em>  selector A CSS Selector</p></li><li><p><strong>returns</strong>: <em>Object</em>  The node list</p></li><li><p><strong>api</strong>: <em>public</em></p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">get</span> = <span class="variable">window</span>.$<span class="variable">t</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
+<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">get</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
 		<span class="keyword">if</span> (<span class="variable">tiramisu</span>.<span class="variable">detect</span>(<span class="string">'querySelectorAll'</span>)) <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span>(<span class="variable">selector</span>);
 
 		<span class="keyword">var</span> <span class="variable">macros</span> = {
@@ -673,75 +673,71 @@ tiramisu.get('h1').css({
 
 <pre><code>tiramisu.ajax(SETTINGS);</code></pre>
 
-<p>where The <em>SETTINGS</em> object can contain the following:</p>
+<p>where the <em>SETTINGS</em> object can contain the following:</p>
 
-<ul><li><em>async</em> (default is “true”);</li><li><em>content_type</em> (in POST requests default is “application/x-www-form-urlencoded”);</li><li><em>connection</em>;</li><li><em>error</em> (a callback function);</li><li><em>loader</em>  (a div id);</li><li><em>method</em>  (default is “GET”)</li><li><em>parameter</em>;</li><li><em>success</em> (a callback function);</li><li><em>successHTML</em> (a div id);</li><li><em>url</em> (this is the only <strong>mandatory</strong> field);
-	 *
-Example #1 (Ajax GET request)</li></ul>
+<ul><li><em>async</em> (default is “true”);</li><li><em>content_type</em> (in POST requests default is “application/x-www-form-urlencoded”);</li><li><em>connection</em>;</li><li><em>error</em> (a callback function);</li><li><em>loader</em>  (a div id);</li><li><em>method</em>  (default is “GET”)</li><li><em>parameter</em>;</li><li><em>success</em> (a callback function);</li><li><em>successHTML</em> (a div id);</li><li><em>url</em> (this is the only <strong>mandatory</strong> field);</li></ul>
 
-<hr></hr>
+<h2>Example #1 (Ajax GET request)</h2>
 
-<p>   tiramisu.ajax({
-       url : 'http://www.example.com'
-   });</p>
+<pre><code>tiramisu.ajax({
+    url : 'http://www.example.com'
+});</code></pre>
 
 <h2>Example #2 (Ajax GET request with a success callback)</h2>
 
 <pre><code>tiramisu.ajax({ 
     url : 'http://www.example.com',
- *		   success : function(data){ 
-	       alert(data);
-	   } 
-   });</code></pre>
+    success : function(data) { 
+        alert(data);
+    }
+});</code></pre>
 
 <h2>Example #3 (Ajax GET request loaded into a div with an id)</h2>
 
-<pre><code>tiramisu.ajax({ 
-     url : 'http://www.example.com',
- *	        successHTML : 'responseWrapper' 
-   });</code></pre>
+<pre><code>tiramisu.ajax({
+    url : 'http://www.example.com',
+    successHTML : 'responseWrapper'
+});</code></pre>
 
 <h2>Example #4 (Ajax POST request displaying a loader)</h2>
 
 <pre><code>tiramisu.ajax({ 
      url: 'www.example.com',
      method : 'POST',
-		loader : 'div_loader',
- *			successHTML : 'responseWrapper'
-   });</code></pre>
+     loader : 'div_loader',
+     successHTML : 'responseWrapper'
+});</code></pre>
 
 <h2>Example #5 (Ajax POST request with parameters)</h2>
 
-<pre><code>tiramisu.ajax({ 
+<pre><code>tiramisu.ajax({
     method : 'POST',
-	   loader : 'div_loader',
- *		   parameter: {
- *		                  param_1 : 'variable 1',
- *						  param_2 : 'variable 2'
- *					  },
- *		   url : 'http://www.example.com'); 
-   });
+    loader : 'div_loader',
+    parameter: {
+        param_1 : 'variable 1',
+        param_2 : 'variable 2'
+    },
+    url : 'http://www.example.com');
+});</code></pre>
 
- * Example #6 (Ajax GET request with success and error callbacks)</code></pre>
+<h2>Example #6 (Ajax GET request with success and error callbacks)</h2>
 
-<hr></hr>
-
-<pre><code> *	   tiramisu.ajax({ 
-       url: 'http://www.example.com',
-	   success: function() {
-	                console.log('Ok');
-	            },
-	   error: function() {
-	              console.log('Error');
-              }
- *	   });</code></pre>
+<pre><code>tiramisu.ajax({
+    url: 'http://www.example.com',
+    success: function() {
+        console.log('Ok');
+    },
+    error: function() {
+        console.log('Error');
+    }
+});</code></pre>
 
 <h2></h2>
 
 <ul><li><p><strong>param</strong>: <em>Object</em>  settings An object containing the Ajax call parameters</p></li><li><p><strong>api</strong>: <em>public</em></p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">ajax</span> = <span class="variable">window</span>.$<span class="variable">t</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
+<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">ajax</span> = <span class="variable">window</span>.<span class="variable">t</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
 		<span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
             <span class="variable">setting</span> = {
 				<span class="variable">async</span>: <span class="variable">true</span>,

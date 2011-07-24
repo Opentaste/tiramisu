@@ -709,7 +709,7 @@
      *
      *     tiramisu.ajax(SETTINGS);
      *
-     * where The *SETTINGS* object can contain the following:
+     * where the *SETTINGS* object can contain the following:
      *
      * - *async* (default is “true”);
      * - *content_type* (in POST requests default is “application/x-www-form-urlencoded”);
@@ -721,31 +721,31 @@
      * - *success* (a callback function);
      * - *successHTML* (a div id);
      * - *url* (this is the only **mandatory** field);
-	 *
+     *
      * Example #1 (Ajax GET request)
      * -----------------------------
      *
-     *    tiramisu.ajax({
-     *        url : 'http://www.example.com'
-     *    });
-     *
+     *     tiramisu.ajax({
+     *         url : 'http://www.example.com'
+     *     });
+     *    
      * Example #2 (Ajax GET request with a success callback)
      * -----------------------------------------------------
      *
      *     tiramisu.ajax({ 
      *         url : 'http://www.example.com',
-	 *		   success : function(data){ 
-     *		       alert(data);
-     *		   } 
-     *	   });
+     *         success : function(data) { 
+     *             alert(data);
+     *         }
+     *     });
      *         
      * Example #3 (Ajax GET request loaded into a div with an id)
      * ----------------------------------------------------------
      *
-     *     tiramisu.ajax({ 
-     *          url : 'http://www.example.com',
-	 *	        successHTML : 'responseWrapper' 
-     *	   });
+     *     tiramisu.ajax({
+     *         url : 'http://www.example.com',
+     *         successHTML : 'responseWrapper'
+     *     });
      *   
      * Example #4 (Ajax POST request displaying a loader)
      * --------------------------------------------------
@@ -753,35 +753,35 @@
      *     tiramisu.ajax({ 
      *          url: 'www.example.com',
      *          method : 'POST',
-     *			loader : 'div_loader',
-	 *			successHTML : 'responseWrapper'
-     *	   });
+     *          loader : 'div_loader',
+     *          successHTML : 'responseWrapper'
+     *     });
      *
      * Example #5 (Ajax POST request with parameters)
      * ----------------------------------------------
      *
-     *     tiramisu.ajax({ 
+     *     tiramisu.ajax({
      *         method : 'POST',
-     *		   loader : 'div_loader',
-	 *		   parameter: {
-	 *		                  param_1 : 'variable 1',
-	 *						  param_2 : 'variable 2'
-	 *					  },
-	 *		   url : 'http://www.example.com'); 
-     *	   });
-     *
-	 * Example #6 (Ajax GET request with success and error callbacks)
+     *         loader : 'div_loader',
+     *         parameter: {
+     *             param_1 : 'variable 1',
+     *             param_2 : 'variable 2'
+     *         },
+     *         url : 'http://www.example.com');
+     *     });
+     *	   
+     * Example #6 (Ajax GET request with success and error callbacks)
      * --------------------------------------------------------------
      *
-	 *	   tiramisu.ajax({ 
-     *	       url: 'http://www.example.com',
-     *		   success: function() {
-     *		                console.log('Ok');
-     *		            },
-     *		   error: function() {
-     *		              console.log('Error');
-     *	              }
-	 *	   });
+     *     tiramisu.ajax({
+     *         url: 'http://www.example.com',
+     *         success: function() {
+     *             console.log('Ok');
+     *         },
+     *         error: function() {
+     *             console.log('Error');
+     *         }
+     *     });
      *
      * @param {Object} settings An object containing the Ajax call parameters
      * @api public
