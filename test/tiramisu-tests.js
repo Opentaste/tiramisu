@@ -75,14 +75,14 @@ test('Detect check', function() {
 
 module('Each tests');
 
-test('Calling “$t("h2").each(function() { this.innerHTML = "Test"; });”', function() {
+test('Calling “t.get("h2").each(function() { this.innerHTML = "Test"; });”', function() {
     var i;
 
-    $t('#qunit-fixture h2').each(function() {
+    t.get('#qunit-fixture h2').each(function() {
         this.innerHTML = "Test";
     });
 
-    var rs = $t('#qunit-fixture h2');
+    var rs = t.get('#qunit-fixture h2');
 
     var all = true;
     for (i = 0; i < rs.length; i++) {
@@ -93,22 +93,22 @@ test('Calling “$t("h2").each(function() { this.innerHTML = "Test"; });”', fu
 
 });
 
-test('Calling “$t("ul li").each(function() { return this.innerHTML; });”', function() {
+test('Calling “t.get("ul li").each(function() { return this.innerHTML; });”', function() {
     $t('ul li').each(function() {
-        $t('#append-here')[0].innerHTML += this.innerHTML;
+        t.get('#append-here')[0].innerHTML += this.innerHTML;
     });
 
-    equal($t("#append-here")[0].innerHTML, '<p class=\"underlined\">This text is underlined</p>Another lineOki-Doki.');
+    equal(t.get("#append-here")[0].innerHTML, '<p class=\"underlined\">This text is underlined</p>Another lineOki-Doki.');
 });
 
 module('CSS Manipulation tests');
 
 test('Setting the color of a node to #f6f6f6', function() {
-    $t('#headline').css({
+    t.get('#headline').css({
         'color': '#f6f6f6'
     });
 
-    equal($t('#headline')[0].style['color'], 'rgb(246, 246, 246)');
+    equal(t.get('#headline')[0].style['color'], 'rgb(246, 246, 246)');
 });
 
 module('AJAX module tests');
