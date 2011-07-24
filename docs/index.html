@@ -126,7 +126,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.6'</span>;
+		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.7'</span>;
 		<span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
 		<span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
 			<span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> 
@@ -141,7 +141,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 	}
 
 	<span class="comment">// Exposing the framework</span>
-	<span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
+	<span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
 
 	<span class="comment">// Extending object1 with object2's methods</span>
 	<span class="keyword">function</span> <span class="variable">extend</span>(<span class="variable">first</span>, <span class="variable">second</span>) {
@@ -282,7 +282,7 @@ the possible return values are:</p>
 
 <p>or</p>
 
-<pre><code>t(*SELECTOR*)</code></pre>
+<pre><code>t.get(*SELECTOR*)</code></pre>
 
 <p>where <em>SELECTOR</em> is a <em>valid</em> CSS selector (see examples below).</p>
 
@@ -325,7 +325,7 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 <ul><li><p><strong>param</strong>: <em>String</em>  selector A CSS Selector</p></li><li><p><strong>returns</strong>: <em>Object</em>  The node list</p></li><li><p><strong>api</strong>: <em>public</em></p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">get</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
+<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">get</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
 		<span class="keyword">if</span> (<span class="variable">tiramisu</span>.<span class="variable">detect</span>(<span class="string">'querySelectorAll'</span>)) <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span>(<span class="variable">selector</span>);
 
 		<span class="keyword">var</span> <span class="variable">macros</span> = {
@@ -737,7 +737,7 @@ tiramisu.get('h1').css({
 <ul><li><p><strong>param</strong>: <em>Object</em>  settings An object containing the Ajax call parameters</p></li><li><p><strong>api</strong>: <em>public</em></p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">ajax</span> = <span class="variable">window</span>.<span class="variable">t</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
+<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
 		<span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
             <span class="variable">setting</span> = {
 				<span class="variable">async</span>: <span class="variable">true</span>,
@@ -878,7 +878,7 @@ or perform the same function several times in that time frame.</p>
 <ul><li><p><strong>param</strong>: <em>integer</em>  delay The total task delay(ms)</p></li><li><p><strong>param</strong>: <em>integer</em>  [interval] The interval of the repetitions(ms)</p></li><li><p><strong>param</strong>: <em>Function</em>  cb The callback function</p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>[<span class="string">'do'</span>] = <span class="variable">window</span>.<span class="variable">t</span>[<span class="string">'do'</span>] = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
+<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>[<span class="string">'do'</span>] = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
 		<span class="keyword">var</span> <span class="variable">interval</span>,
 			<span class="variable">requestAnimFrame</span> = <span class="variable">tiramisu</span>.<span class="variable">requestAnimFrame</span>;
 

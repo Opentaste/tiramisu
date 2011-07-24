@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.6';
+		this.version = '0.0.7';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -33,7 +33,7 @@
 	}
 
 	// Exposing the framework
-	window.tiramisu = new Tiramisu();
+	window.tiramisu = window.t = new Tiramisu();
 
 	// Extending object1 with object2's methods
 	function extend(first, second) {
@@ -185,7 +185,7 @@
      *
      * or
      *
-     *     t(*SELECTOR*)
+     *     t.get(*SELECTOR*)
      *
      * where *SELECTOR* is a *valid* CSS selector (see examples below).
      *
@@ -235,7 +235,7 @@
      * @api public
      * 
      */
-	Tiramisu.prototype.get = window.t = function(selector) {
+	Tiramisu.prototype.get = function(selector) {
 		if (tiramisu.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
 
 		var macros = {
@@ -786,7 +786,7 @@
      * @param {Object} settings An object containing the Ajax call parameters
      * @api public
      */
-	Tiramisu.prototype.ajax = window.t.ajax = function(setting_input) {
+	Tiramisu.prototype.ajax = function(setting_input) {
 		var setting_input = setting_input || {},
             setting = {
 				async: true,
@@ -926,7 +926,7 @@
      * @param {integer} [interval] The interval of the repetitions(ms)
      * @param {Function} cb The callback function
      */
-	Tiramisu.prototype['do'] = window.t['do'] = function(delay, cb) {
+	Tiramisu.prototype['do'] = function(delay, cb) {
 		var interval,
 			requestAnimFrame = tiramisu.requestAnimFrame;
 
