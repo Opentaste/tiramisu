@@ -565,7 +565,7 @@
              * *same* function to all of it's element:
              *
              * Example #1 (alert the innerHTML of every element in a list)
-             * --------------------------------------------------------
+             * -----------------------------------------------------------
              *
              *     <ul>
              *       <li> One. </li>
@@ -593,9 +593,43 @@
              * Event handler extension 
              * -----------------------
              *
-             * **TODO:**
+             * Attach a callback function to an event.
              *
-             * - Write docs
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
+             *
+             * Where *SELECTOR* is a valid CSS selector, *EVENT* is
+             * the event listener and *CALLBACK* the function to attach.
+             *
+             * Example #1 (Clicking on a p element displays “Hello!”)
+             * ------------------------------------------------------
+             *
+             *     <p> Click me! </p>
+             *     <p> Click me too! </p>
+             *     <p> And me? </p>
+             *     ...
+             *     tiramisu.get('p').on('click', function() {
+             *         alert('Hello!');
+             *     });
+             * 
+             * Example #2 (Hovering on a li element displays his innerHTML)
+             * ------------------------------------------------------------
+             *
+             *      <ol>
+             *        <li> Banana </li>
+             *        <li> Apple </li>
+             *        <li> Pineapple </li>
+             *        <li> Strawberry </li>
+             *      </ol>
+             *      ...
+             *      tiramisu.get('ul li').on('mouseover', function() {
+             *          alert(this.innerHTML);
+             *      });
+             *
+             *  As in the “each” example, it is possible to use **this** to
+             *  reference the current list item.
              *
              * @param {event} evt An event listener
              * @param {function} cb The callback function to attach

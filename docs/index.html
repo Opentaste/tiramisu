@@ -117,7 +117,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <p>Here are some highlights:</p>
 
-<ul><li>Modular <em>philosophy</em>;</li><li><em>Very small</em> size (6,8Kb minified);</li><li><em>Chainable</em> methods;</li><li>Task management (a.k.a. Callbacks scheduling);</li><li>Supports <em>each</em>, <em>map</em> and other <em>functional programming</em> utilities.</li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li>Modular <em>philosophy</em>;</li><li><em>Very small</em> size (7,1Kb minified);</li><li><em>Chainable</em> methods;</li><li>Task management (a.k.a. Callbacks scheduling);</li><li>Supports <em>each</em>, <em>map</em> and other <em>functional programming</em> utilities.</li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally: </p>
 
@@ -555,9 +555,40 @@ iteration item.</p>
 <td class="docs">
 <h2>Event handler extension </h2>
 
-<p><strong>TODO:</strong></p>
+<p>Attach a callback function to an event.</p>
 
-<ul><li>Write docs</li></ul>
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)</code></pre>
+
+<p>Where <em>SELECTOR</em> is a valid CSS selector, <em>EVENT</em> is
+the event listener and <em>CALLBACK</em> the function to attach.</p>
+
+<h2>Example #1 (Clicking on a p element displays “Hello!”)</h2>
+
+<pre><code>&lt;p&gt; Click me! &lt;/p&gt;
+&lt;p&gt; Click me too! &lt;/p&gt;
+&lt;p&gt; And me? &lt;/p&gt;
+...
+tiramisu.get('p').on('click', function() {
+    alert('Hello!');
+});</code></pre>
+
+<h2>Example #2 (Hovering on a li element displays his innerHTML)</h2>
+
+<pre><code> &lt;ol&gt;
+   &lt;li&gt; Banana &lt;/li&gt;
+   &lt;li&gt; Apple &lt;/li&gt;
+   &lt;li&gt; Pineapple &lt;/li&gt;
+   &lt;li&gt; Strawberry &lt;/li&gt;
+ &lt;/ol&gt;
+ ...
+ tiramisu.get('ul li').on('mouseover', function() {
+     alert(this.innerHTML);
+ });</code></pre>
+
+<p> As in the “each” example, it is possible to use <strong>this</strong> to
+ reference the current list item.</p>
 
 <h2></h2>
 
