@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.5';
+		this.version = '0.0.6';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -662,11 +662,11 @@
 	 * - async : Default true
 	 * - content_type : In Post request default application/x-www-form-urlencoded
 	 * - connection : 
-	 * - error :
+	 * - error : Default Function Error Log
 	 * - loader : 
 	 * - method : Default GET
 	 * - parameter : Default null
-	 * - success : 
+	 * - success : Default Function Empty
 	 * - successHTML : 
 	 * - url : 
 	 *
@@ -703,7 +703,19 @@
 	 *							param_2 : 'variable 2'
 	 *					   },
 	 *					   url : url });
+	 * - Example 6 
      *
+     *     function ciao (res) {
+     *	   		console.log(res)
+	 *	   }
+	 *	   function error () {
+	 *	   		console.log('error')
+	 *	   }
+	 *	   tiramisu.ajax({ url : url,
+     *					success: ciao,
+     *					  error: nada
+	 *					 })
+	 *
      *
      * @param 
      * @returns 
@@ -715,7 +727,7 @@
 				async: true,
 				content_type: '',
 				connection: '',
-				error: '',
+				error: function() { console.log('Fetched the wrong page or network error') },
 				loader: '',
                 method: 'GET',
 				parameter: null,
@@ -752,9 +764,41 @@
 			}
 			setting.method = 'POST';
 		}
-
+		
+		// The open() method!
+		// When the open(method, url, async, user, password) method is invoked, the 
+		// user agent must run these steps (unless otherwise indicated):
+		// 1) If the XMLHttpRequest object has an associated XMLHttpRequest Document;
+		// 2) If method is a case-insensitive match for CONNECT, DELETE, GET, HEAD, 
+		//    OPTIONS, POST, PUT, TRACE;
+		// 3) Let url be a URL;
+		// 4) Let async be the value of the async argument or true if it was omitted;
+		// 5) Abort the send() algorithm;
+		// 6) If there are any tasks from the object's XMLHttpRequest task source in 
+		//    one of the task queues, then remove those tasks.
+		// 7) Set variables associated with the object as follows:
+		//		- Set the send() flag to false;
+		//		- Set response entity body to null;
+		//		- Empty the list of author request headers;
+		//		- Set method, url, temp user, temp password, value of async.
+		// 8) Switch the the state to OPENED;
+		// 9) Dispatch a readystatechange event.
+		//
 		xhr.open(setting.method, setting.url, setting.async);
-
+		
+		// The setRequestHeader() method!
+		// When the setRequestHeader(header, value) method is invoked, 
+		// the user agent must run these steps:
+		// 1) If the state is not OPENED raise an INVALID_STATE_ERR exception 
+		//    and terminate these steps;
+		// 2) If the send() flag is true raise an INVALID_STATE_ERR exception 
+		//    and terminate these steps;
+		// 3) Terminate these steps if header is a case-insensitive match for 
+		//    one of the following headers: 
+		//    Accept-Charset, Accept-Encoding, Connection, Content-Length, Cookie,
+		//	  Cookie2, Content-Transfer-Encoding, Date, Expect, Host, Keep-Alive,
+		//    Referer, TE, Trailer, Transfer-Encoding, Upgrade, User-Agent, Via.
+		//
 		if (setting.content_type) {
 			xhr.setRequestHeader('Content-type', setting.content_type);
 		}
@@ -765,13 +809,36 @@
 
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
+				// success!
 				if (setting.successHTML) {
 					tiramisu.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
 				} else {
 					setting.success(xhr.responseText);
 				}
+			} else if (xhr.readyState == 4 && xhr.status != 200) {
+				// fetched the wrong page or network error...
+				setting.error();
 			}
 		};
+		// The send() method!
+		// When the send(data) method is invoked, the user agent must run the following steps 
+		// (unless otherwise noted). This algorithm gets aborted when the open() or abort() method 
+		// is invoked. When the send() algorithm is aborted the user agent must terminate the 
+		// algorithm after finishing the step it is on.
+		// 1) If the state is not OPENED raise an INVALID_STATE_ERR exception and terminate 
+		//    these steps.
+		// 2) If the send() flag is true raise an INVALID_STATE_ERR exception and terminate these steps.
+		// 3) If the request method is a case-sensitive match for GET or HEAD act as if data is null.
+		//    If the data argument has been omitted or is null, do not include a request entity body 
+		//    and go to the next step.
+		//    If a Content-Type header is set using setRequestHeader() whose value is a valid MIME type 
+		//    and has a charset parameter whose value is not a case-insensitive match for encoding, 
+		//    and encoding is not null, set all the charset parameters of the Content-Type header to encoding.
+		//    If no Content-Type header has been set using setRequestHeader() and mime type is not null set a 
+		//    Content-Type request header with as value mime type.
+		// 4) If the asynchronous flag is false release the storage mutex.
+		// 5) Set the error flag to false.
+		//
 		xhr.send(parameter);
 		return this;
 	};
@@ -791,10 +858,10 @@
 	Tiramisu.prototype['do'] = function(delay, cb) {
 		// tiramisu.do(delay, [interval], callback) where “interval”
 		// is an optional argument
-		var interval;
+		var interval,
 
-		// Saving reference for nested function calling
-		var requestAnimFrame = requestAnimFrame || this.requestAnimFrame;
+			// Saving reference for nested function calling
+			requestAnimFrame = requestAnimFrame || this.requestAnimFrame;
 
 		if (arguments.length > 2) {
 			interval = arguments[1];
@@ -802,7 +869,7 @@
 		}
 
 		var start = + new Date(),
-		pass = interval;
+			pass = interval;
 
 		function animate() {
 			var progress = + new Date() - start;
