@@ -174,11 +174,61 @@
 
     /**
      * Framework Selector Module
-     * ===============
+     * =========================
      *
-     * **TODO:**
+     * A CSS Parser for handling DOM elements.
      *
-     * - Write docs
+     * Usage
+     * -----
+     * 
+     *     tiramisu.get(*<SELECTOR>*)
+     *
+     * or
+     *
+     *     $t(*<SELECTOR>*)
+     *
+     * where *<SELECTOR>* is a *valid* CSS selector (see examples below).
+     *
+     *
+     * Tiramisu will use *querySelectorAll* if the current browser implements it;
+     * if not present **Tiramisu** fallback to a custom, simple CSS selector.
+     *
+     * This simple selector implementation is *cross-browser* and actually implements
+     * the following CSS rules:
+     *
+     * -  *id and name*;
+     * -  *id*;
+     * -  *class*;
+     * -  *name and class*;
+     * -  *element*;
+     * 
+     * Note that this implementation is not fast as *querySelectorAll* since it relies
+     * on pure (*not optimized*) JavaScript.
+     *
+     * Example (Select all li elements)
+     * --------------------------------
+     *
+     *     <ul id="myList">
+     *       <li> First. </li>
+     *       <li> Second. </li>
+     *       <li> Third. </li>
+     *     </ul>
+     *     ...
+     *     var li = tiramisu.get('#myList li');
+     *
+     * Example (Select all li with class “special”)
+     * --------------------------------------------
+     *
+     *     <ul id="myList">
+     *       <li> First. </li>
+     *       <li class="special"> Second. </li>
+     *       <li> Third. </li>
+     *     </ul>
+     *     ...
+     *     var li_special1 = tiramisu.get('#myList .special');
+     *     
+     *     // Better way to do it :) 
+     *     var li_special2 = tiramisu.get('#myList li.special');
      *
      * @param {String} selector A CSS Selector
      * @returns {Object} The node list

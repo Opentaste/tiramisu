@@ -274,9 +274,51 @@ the possible return values are:</p>
 <td class="docs">
 <h1>Framework Selector Module</h1>
 
-<p><strong>TODO:</strong></p>
+<p>A CSS Parser for handling DOM elements.</p>
 
-<ul><li>Write docs</li></ul>
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*&lt;SELECTOR&gt;*)</code></pre>
+
+<p>or</p>
+
+<pre><code>$t(*&lt;SELECTOR&gt;*)</code></pre>
+
+<p>where <em>&lt;SELECTOR&gt;</em> is a <em>valid</em> CSS selector (see examples below).</p>
+
+<p>Tiramisu will use <em>querySelectorAll</em> if the current browser implements it;
+if not present <strong>Tiramisu</strong> fallback to a custom, simple CSS selector.</p>
+
+<p>This simple selector implementation is <em>cross-browser</em> and actually implements
+the following CSS rules:</p>
+
+<ul><li><em>id and name</em>;</li><li><em>id</em>;</li><li><em>class</em>;</li><li><em>name and class</em>;</li><li><em>element</em>;</li></ul>
+
+<p>Note that this implementation is not fast as <em>querySelectorAll</em> since it relies
+on pure (<em>not optimized</em>) JavaScript.</p>
+
+<h2>Example (Select all li elements)</h2>
+
+<pre><code>&lt;ul id="myList"&gt;
+  &lt;li&gt; First. &lt;/li&gt;
+  &lt;li&gt; Second. &lt;/li&gt;
+  &lt;li&gt; Third. &lt;/li&gt;
+&lt;/ul&gt;
+...
+var li = tiramisu.get('#myList li');</code></pre>
+
+<h2>Example (Select all li with class “special”)</h2>
+
+<pre><code>&lt;ul id="myList"&gt;
+  &lt;li&gt; First. &lt;/li&gt;
+  &lt;li class="special"&gt; Second. &lt;/li&gt;
+  &lt;li&gt; Third. &lt;/li&gt;
+&lt;/ul&gt;
+...
+var li_special1 = tiramisu.get('#myList .special');
+
+// Better way to do it :) 
+var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 
 <h2></h2>
 
