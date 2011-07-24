@@ -126,7 +126,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.7'</span>;
+		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.8'</span>;
 		<span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
 		<span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
 			<span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> 
@@ -869,7 +869,7 @@ or perform the same function several times in that time frame.</p>
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.do(delay, [interval], callback);</code></pre>
+<pre><code>tiramisu.task(delay, [interval], callback);</code></pre>
 
 <p>where “interval”is an optional argument</p>
 
@@ -878,7 +878,7 @@ or perform the same function several times in that time frame.</p>
 <ul><li><p><strong>param</strong>: <em>integer</em>  delay The total task delay(ms)</p></li><li><p><strong>param</strong>: <em>integer</em>  [interval] The interval of the repetitions(ms)</p></li><li><p><strong>param</strong>: <em>Function</em>  cb The callback function</p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>[<span class="string">'do'</span>] = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
+<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>[<span class="string">'task'</span>] = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
 		<span class="keyword">var</span> <span class="variable">interval</span>,
 			<span class="variable">requestAnimFrame</span> = <span class="variable">tiramisu</span>.<span class="variable">requestAnimFrame</span>;
 

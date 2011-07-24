@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.7';
+		this.version = '0.0.8';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -918,7 +918,7 @@
      * Usage
      * -----
      *
-     *     tiramisu.do(delay, [interval], callback);
+     *     tiramisu.task(delay, [interval], callback);
      *
      * where “interval”is an optional argument
      *
@@ -926,7 +926,7 @@
      * @param {integer} [interval] The interval of the repetitions(ms)
      * @param {Function} cb The callback function
      */
-	Tiramisu.prototype['do'] = function(delay, cb) {
+	Tiramisu.prototype['task'] = function(delay, cb) {
 		var interval,
 			requestAnimFrame = tiramisu.requestAnimFrame;
 
