@@ -94,7 +94,7 @@ test('Calling “t.get("h2").each(function() { this.innerHTML = "Test"; });”',
 });
 
 test('Calling “t.get("ul li").each(function() { return this.innerHTML; });”', function() {
-    $t('ul li').each(function() {
+    t.get('ul li').each(function() {
         t.get('#append-here')[0].innerHTML += this.innerHTML;
     });
 
