@@ -16,7 +16,7 @@ Here are some highlights:
 Resources
 ---------
 
-*  [Documentation (0.0.6)][2]
+*  [Documentation (0.0.8)][2]
 *  [Unit Tests][3]
 
 [1]: http://jquery.com/
