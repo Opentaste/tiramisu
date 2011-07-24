@@ -8,7 +8,7 @@ which takes inspiration from the famous [jQuery][1] syntax:
 Here are some highlights:
 
 *  Modular *philosophy*;
-*  *Very small* size (6,8Kb minified);
+*  *Very small* size (7,1Kb minified);
 *  *Chainable* methods;
 *  Task management (a.k.a. Callbacks scheduling);
 *  Supports *each*, *map* and other *functional programming* utilities.
