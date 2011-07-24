@@ -59,7 +59,7 @@
      * - CSS3 Opacity - I8 older using the "filter" property
      * - CSS3 Colors - I8 older using rgb rather than rgba
      *
-     * Example (Detect browser)
+     * Example #1 (Detect browser)
      * ------------------------
      *
      * Here's an example on how to *detect* the current browser:
@@ -181,13 +181,13 @@
      * Usage
      * -----
      * 
-     *     tiramisu.get(*<SELECTOR>*)
+     *     tiramisu.get(*SELECTOR*)
      *
      * or
      *
-     *     $t(*<SELECTOR>*)
+     *     $t(*SELECTOR*)
      *
-     * where *<SELECTOR>* is a *valid* CSS selector (see examples below).
+     * where *SELECTOR* is a *valid* CSS selector (see examples below).
      *
      *
      * Tiramisu will use *querySelectorAll* if the current browser implements it;
@@ -205,7 +205,7 @@
      * Note that this implementation is not fast as *querySelectorAll* since it relies
      * on pure (*not optimized*) JavaScript.
      *
-     * Example (Select all li elements)
+     * Example #1 (Select all li elements)
      * --------------------------------
      *
      *     <ul id="myList">
@@ -216,7 +216,7 @@
      *     ...
      *     var li = tiramisu.get('#myList li');
      *
-     * Example (Select all li with class “special”)
+     * Example #2 (Select all li with class “special”)
      * --------------------------------------------
      *
      *     <ul id="myList">
@@ -551,9 +551,34 @@
              * Each iterator extension
              * -----------------------
              * 
-             * **TODO:**
+             * Applies a callback function to a list of DOM nodes.
              *
-             * - Write docs
+             * Usage
+             * -----
+             *     
+             *     tiramisu.get(*SELECTOR*).each(*CALLBACK*)
+             *
+             * Where *SELECTOR* is a valid CSS selector and *CALLBACK* a 
+             * function object.
+             *
+             * It is common to retrieve a list of DOM nodes and then apply the
+             * *same* function to all of it's element:
+             *
+             * Example #1 (alert the innerHTML of every element in a list)
+             * --------------------------------------------------------
+             *
+             *     <ul>
+             *       <li> One. </li>
+             *       <li> Two. </li>
+             *       <li> Three. </li>
+             *     </ul>
+             *     ...
+             *     tiramisu.get('ul li').each(function() {
+             *         alert(this.innerHTML);
+             *     });
+             *
+             * As you can see, **this** is used for referencing the current
+             * iteration item.
              *
              * @param {function} cb The callback function to apply
              */

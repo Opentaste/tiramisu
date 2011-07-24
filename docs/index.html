@@ -163,7 +163,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <ul><li>position:fixed - iOS Safari / Opera Mini</li><li>CSS3 Opacity - I8 older using the "filter" property</li><li>CSS3 Colors - I8 older using rgb rather than rgba</li></ul>
 
-<h2>Example (Detect browser)</h2>
+<h2>Example #1 (Detect browser)</h2>
 
 <p>Here's an example on how to <em>detect</em> the current browser:</p>
 
@@ -278,13 +278,13 @@ the possible return values are:</p>
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.get(*&lt;SELECTOR&gt;*)</code></pre>
+<pre><code>tiramisu.get(*SELECTOR*)</code></pre>
 
 <p>or</p>
 
-<pre><code>$t(*&lt;SELECTOR&gt;*)</code></pre>
+<pre><code>$t(*SELECTOR*)</code></pre>
 
-<p>where <em>&lt;SELECTOR&gt;</em> is a <em>valid</em> CSS selector (see examples below).</p>
+<p>where <em>SELECTOR</em> is a <em>valid</em> CSS selector (see examples below).</p>
 
 <p>Tiramisu will use <em>querySelectorAll</em> if the current browser implements it;
 if not present <strong>Tiramisu</strong> fallback to a custom, simple CSS selector.</p>
@@ -297,7 +297,7 @@ the following CSS rules:</p>
 <p>Note that this implementation is not fast as <em>querySelectorAll</em> since it relies
 on pure (<em>not optimized</em>) JavaScript.</p>
 
-<h2>Example (Select all li elements)</h2>
+<h2>Example #1 (Select all li elements)</h2>
 
 <pre><code>&lt;ul id="myList"&gt;
   &lt;li&gt; First. &lt;/li&gt;
@@ -307,7 +307,7 @@ on pure (<em>not optimized</em>) JavaScript.</p>
 ...
 var li = tiramisu.get('#myList li');</code></pre>
 
-<h2>Example (Select all li with class “special”)</h2>
+<h2>Example #2 (Select all li with class “special”)</h2>
 
 <pre><code>&lt;ul id="myList"&gt;
   &lt;li&gt; First. &lt;/li&gt;
@@ -510,9 +510,32 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 <td class="docs">
 <h2>Each iterator extension</h2>
 
-<p><strong>TODO:</strong></p>
+<p>Applies a callback function to a list of DOM nodes.</p>
 
-<ul><li>Write docs</li></ul>
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).each(*CALLBACK*)</code></pre>
+
+<p>Where <em>SELECTOR</em> is a valid CSS selector and <em>CALLBACK</em> a 
+function object.</p>
+
+<p>It is common to retrieve a list of DOM nodes and then apply the
+<em>same</em> function to all of it's element:</p>
+
+<h2>Example #1 (alert the innerHTML of every element in a list)</h2>
+
+<pre><code>&lt;ul&gt;
+  &lt;li&gt; One. &lt;/li&gt;
+  &lt;li&gt; Two. &lt;/li&gt;
+  &lt;li&gt; Three. &lt;/li&gt;
+&lt;/ul&gt;
+...
+tiramisu.get('ul li').each(function() {
+    alert(this.innerHTML);
+});</code></pre>
+
+<p>As you can see, <strong>this</strong> is used for referencing the current
+iteration item.</p>
 
 <h2></h2>
 
