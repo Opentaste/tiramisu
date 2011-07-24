@@ -912,21 +912,23 @@
      * Task Engine Module
      * ==================
      *
-     * **TODO:**
+     * This module is used to perform a function at a particular amount of time 
+     * or perform the same function several times in that time frame.
      *
-     * - Write docs
+     * Usage
+     * -----
+     *
+     *     tiramisu.do(delay, [interval], callback);
+     *
+     * where “interval”is an optional argument
      *
      * @param {integer} delay The total task delay(ms)
      * @param {integer} [interval] The interval of the repetitions(ms)
      * @param {Function} cb The callback function
      */
-	Tiramisu.prototype['do'] = function(delay, cb) {
-		// tiramisu.do(delay, [interval], callback) where “interval”
-		// is an optional argument
+	Tiramisu.prototype['do'] = window.t.do = function(delay, cb) {
 		var interval,
-
-			// Saving reference for nested function calling
-			requestAnimFrame = requestAnimFrame || this.requestAnimFrame;
+			requestAnimFrame = tiramisu.requestAnimFrame;
 
 		if (arguments.length > 2) {
 			interval = arguments[1];
