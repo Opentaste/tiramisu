@@ -600,7 +600,7 @@
              *
              *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
              *
-             * Where *SELECTOR* is a valid CSS selector, *EVENT* is
+             * where *SELECTOR* is a valid CSS selector, *EVENT* is
              * the event listener and *CALLBACK* the function to attach.
              *
              * Example #1 (Clicking on a p element displays “Hello!”)
@@ -652,9 +652,26 @@
              * CSS handler extension
              * ---------------------
              *
-             * **TODO:**
+             * Alter the CSS properties of a list of DOM nodes.
              *
-             * - Write docs
+             * Usage
+             * -----
+             * 
+             *     tiramisu.get(*SELECTOR*).css(CSS_PROPERTIES)
+             *
+             * where *SELECTOR* is a valid CSS selector and CSS_PROPERTIES
+             * is an object containing the CSS properties to set.
+             *
+             * Example #1 (Set all h1 tags to 34px with color red)
+             * ---------------------------------------------------
+             *
+             *     <h1> This is one headline. </h1>
+             *     <h1> This is another headline. </h1>
+             *     ...
+             *     tiramisu.get('h1').css({
+             *         'font-size': '12px',
+             *         'color': 'red'
+             *     });
              *
              *  @param {Object} obj An object containing CSS properties
              */
