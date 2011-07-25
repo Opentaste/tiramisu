@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.8';
+		this.version = '0.0.85';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -782,6 +782,19 @@
      *             console.log('Error');
      *         }
      *     });
+     *	   
+     * Example #7 (Ajax POST request with successHTML and success callbacks)
+     * --------------------------------------------------------------
+     *
+     *     tiramisu.ajax({
+     *        parameter: {
+     *             param_1 : 'variable 1',
+     *             param_2 : 'variable 2'
+     *         },
+     *        success: function(){ ... },
+     *        successHTML: 'responseWrapper', 
+     *        url : 'http://www.example.com');
+     *    });
      *
      * @param {Object} settings An object containing the Ajax call parameters
      * @api public
@@ -879,9 +892,8 @@
 				// success!
 				if (setting.successHTML) {
 					tiramisu.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
-				} else {
-					setting.success(xhr.responseText);
 				}
+				setting.success(xhr.responseText);
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
 				// 400 Bad Request
 				setting.error('400 Bad Request');
@@ -890,6 +902,7 @@
 			    setting.error('Fetched the wrong page or network error');
 			}
 		};
+		
 		// The send() method!
 		// When the send(data) method is invoked, the user agent must run the following steps 
 		// (unless otherwise noted). This algorithm gets aborted when the open() or abort() method 
