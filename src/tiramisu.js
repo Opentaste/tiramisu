@@ -792,16 +792,16 @@
 				async: true,
 				content_type: '',
 				connection: '',
-				error: function() { console.log('Fetched the wrong page or network error') },
+				error: function(res) { console.log(res) },
 				loader: '',
                 method: 'GET',
-				parameter: null,
+				parameter: '',
                 success: function() {},
                 successHTML: '',
 				url: ''
             },
             xhr = null,
-            parameter = null,
+            parameter = '', // Is very important that parameter dafualt value is ''
             parameter_count = 0;
 
 		if (window.XMLHttpRequest) {
@@ -819,16 +819,18 @@
 		}
 		// object "setting.parameter" I create a string with the parameters 
 		// to be passed in request
-		for (attrname in setting.parameter) {
-			parameter += attrname + '=' + setting.parameter[attrname] + '&';
-			parameter_count += 1;
-		}
-		if (parameter_count) {
-			if (!setting.content_type) {
+		if (setting.parameter != '') {
+            for (attrname in setting.parameter) { 
+                parameter += attrname+'='+setting.parameter[attrname]+'&';
+            }
+            parameter = parameter.substring(0, parameter.length - 1);
+            if (!setting.content_type) {
 				setting.content_type = 'application/x-www-form-urlencoded';
 			}
 			setting.method = 'POST';
-		}
+        } else{
+            parameter = null;
+        }
 		
 		// The open() method!
 		// When the open(method, url, async, user, password) method is invoked, the 
@@ -880,9 +882,12 @@
 				} else {
 					setting.success(xhr.responseText);
 				}
+			} else if (xhr.readyState == 4 && xhr.status == 400) {
+				// 400 Bad Request
+				setting.error('400 Bad Request');
 			} else if (xhr.readyState == 4 && xhr.status != 200) {
 				// fetched the wrong page or network error...
-				setting.error();
+			    setting.error('Fetched the wrong page or network error');
 			}
 		};
 		// The send() method!
