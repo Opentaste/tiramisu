@@ -20,6 +20,5 @@ Resources
 *  [Unit Tests][3]
 
 [1]: http://jquery.com/
-[2]: http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html
-[3]: http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html
-
+[2]: http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html
+[3]: http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html
