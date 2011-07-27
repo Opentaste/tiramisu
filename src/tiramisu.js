@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.85';
+		this.version = '0.0.9';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -657,9 +657,9 @@
              * Usage
              * -----
              * 
-             *     tiramisu.get(*SELECTOR*).css(CSS_PROPERTIES)
+             *     tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)
              *
-             * where *SELECTOR* is a valid CSS selector and CSS_PROPERTIES
+             * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES*
              * is an object containing the CSS properties to set.
              *
              * Example #1 (Set all h1 tags to 34px with color red)
@@ -685,7 +685,50 @@
 					}
 				}
 				return this;
-			}
+			},
+            /**
+             * HTML extension method
+             * ---------------------
+             *
+             * Gets or sets the HTML value of the first element of a CSS
+             * selector.
+             *
+             * Usage
+             * -----
+             * 
+             *     tiramisu.get(*SELECTOR*).html([*HTML*])
+             * 
+             * where *SELECTOR* is a valid CSS selector and *[HTML]* is an
+             * optional value to set the element's innerHTML value.
+             *
+             * Example #1 (Getting the HTML value of a div)
+             * --------------------------------------------
+             * 
+             *     <div id="header">
+             *       <p> I love pizza! </p>
+             *     </div>
+             *     ...
+             *     var pizza = tiramisu.get('#header').html()
+             * 
+             * Example #2 (Setting the HTML value of a div)
+             *
+             *     <div id="header">
+             *       <p> I love pizza! </p>
+             *     </div>
+             *     ...
+             *     tiramisu.get('#header').html('<p> i hate cakes! </p>');
+             *
+             * @param {String} [set] An optional string containing the HTML to replace
+             * @return {[String]} An optional string containing the selector's first element HTML value
+             */
+            'html': function(set) { 
+
+                if (set !== 'undefined') {
+                    return result[0].innerHTML;    
+                } else {
+                    result[0].innerHTML = set;
+                }
+            }
 		};
 
 		// Append methods to the result object

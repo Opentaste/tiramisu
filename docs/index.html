@@ -126,7 +126,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.85'</span>;
+		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.9'</span>;
 		<span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
 		<span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
 			<span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> 
@@ -619,9 +619,9 @@ tiramisu.get('p').on('click', function() {
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.get(*SELECTOR*).css(CSS_PROPERTIES)</code></pre>
+<pre><code>tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)</code></pre>
 
-<p>where <em>SELECTOR</em> is a valid CSS selector and CSS_PROPERTIES
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>CSS_PROPERTIES</em>
 is an object containing the CSS properties to set.</p>
 
 <h2>Example #1 (Set all h1 tags to 34px with color red)</h2>
@@ -649,7 +649,52 @@ tiramisu.get('h1').css({
 					}
 				}
 				<span class="keyword">return</span> <span class="this">this</span>;
-			}
+			},</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>HTML extension method</h2>
+
+<p>Gets or sets the HTML value of the first element of a CSS
+selector.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).html([*HTML*])</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>[HTML]</em> is an
+optional value to set the element's innerHTML value.</p>
+
+<h2>Example #1 (Getting the HTML value of a div)</h2>
+
+<pre><code>&lt;div id="header"&gt;
+  &lt;p&gt; I love pizza! &lt;/p&gt;
+&lt;/div&gt;
+...
+var pizza = tiramisu.get('#header').html()</code></pre>
+
+<p>Example #2 (Setting the HTML value of a div)</p>
+
+<pre><code>&lt;div id="header"&gt;
+  &lt;p&gt; I love pizza! &lt;/p&gt;
+&lt;/div&gt;
+...
+tiramisu.get('#header').html('&lt;p&gt; i hate cakes! &lt;/p&gt;');</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  [set] An optional string containing the HTML to replace</p></li><li><p><strong>return</strong>: <em>[String]</em>  An optional string containing the selector's first element HTML value</p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'html'</span>: <span class="keyword">function</span>(<span class="variable">set</span>) { 
+
+                <span class="keyword">if</span> (<span class="variable">set</span> !== <span class="string">'undefined'</span>) {
+                    <span class="keyword">return</span> <span class="variable">result</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span>;    
+                } <span class="keyword">else</span> {
+                    <span class="variable">result</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span> = <span class="variable">set</span>;
+                }
+            }
 		};
 
 		<span class="comment">// Append methods to the result object</span>
