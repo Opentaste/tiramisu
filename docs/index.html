@@ -689,10 +689,10 @@ tiramisu.get('#header').html('&lt;p&gt; i hate cakes! &lt;/p&gt;');</code></pre>
 <td class="code">
 <pre><code><span class="string">'html'</span>: <span class="keyword">function</span>(<span class="variable">set</span>) { 
 
-                <span class="keyword">if</span> (<span class="variable">set</span> !== <span class="string">'undefined'</span>) {
-                    <span class="keyword">return</span> <span class="variable">result</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span>;    
+                <span class="keyword">if</span> (<span class="variable">set</span> !== <span class="variable">undefined</span>) {
+                    <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span> = <span class="variable">set</span>;
                 } <span class="keyword">else</span> {
-                    <span class="variable">result</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span> = <span class="variable">set</span>;
+                    <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span>;    
                 }
             }
 		};

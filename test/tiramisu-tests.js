@@ -73,7 +73,7 @@ test('Detect check', function() {
 	//equal(tiramisu.detect('isIE'), true, "We are into IE 'BOOOO'");
 });
 
-module('Each tests');
+module('Selector list methods tests');
 
 test('Calling “t.get("h2").each(function() { this.innerHTML = "Test"; });”', function() {
     var i;
@@ -99,6 +99,18 @@ test('Calling “t.get("ul li").each(function() { return this.innerHTML; });”'
     });
 
     equal(t.get("#append-here")[0].innerHTML, '<p class=\"underlined\">This text is underlined</p>Another lineOki-Doki.');
+});
+
+
+test('Calling “t.get("#qunit-fixture h2 .red").html()', function() {
+    var rs = t.get('#qunit-fixture h2 .red').html();
+    equal(rs, 'good', 'should return “good”');
+});
+
+test('Calling “t.get("#qunit-fixture h2 .red").html("bad")”', function() {
+    t.get('#qunit-fixture h2 .red').html('bad');
+    var rs = t.get('#qunit-fixture h2 .red').html();
+    equal(rs, 'bad', 'should set element\'s HTML value to “bad”');
 });
 
 module('CSS Manipulation tests');

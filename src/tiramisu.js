@@ -723,10 +723,10 @@
              */
             'html': function(set) { 
 
-                if (set !== 'undefined') {
-                    return result[0].innerHTML;    
+                if (set !== undefined) {
+                    results[0].innerHTML = set;
                 } else {
-                    result[0].innerHTML = set;
+                    return results[0].innerHTML;    
                 }
             }
 		};
