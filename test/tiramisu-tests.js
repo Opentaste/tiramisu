@@ -113,6 +113,11 @@ test('Calling “t.get("#qunit-fixture h2 .red").html("bad")”', function() {
     equal(rs, 'bad', 'should set element\'s HTML value to “bad”');
 });
 
+test('Calling “t.get("#qunit-fixture select").value()', function() {
+    var rs = t.get('#qunit-fixture select').value();
+    equal(rs, 'first.', 'should return “first”');
+});
+
 module('CSS Manipulation tests');
 
 test('Setting the color of a node to #f6f6f6', function() {
