@@ -115,7 +115,7 @@ test('Calling “t.get("#qunit-fixture h2 .red").html("bad")”', function() {
 
 test('Calling “t.get("#qunit-fixture select").value()', function() {
     var rs = t.get('#qunit-fixture select').value();
-    equal(rs, 'first.', 'should return “first”');
+    equal(rs, 'First.', 'should return “First.”');
 });
 
 module('CSS Manipulation tests');
