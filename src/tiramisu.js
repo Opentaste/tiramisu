@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.9';
+		this.version = '0.0.9.5';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -690,8 +690,8 @@
              * HTML extension method
              * ---------------------
              *
-             * Gets or sets the HTML value of the first element of a CSS
-             * selector.
+             * Gets or sets the HTML Markup of the first CSS
+             * selector element.
              *
              * Usage
              * -----
@@ -729,6 +729,55 @@
                     return results[0].innerHTML;    
                 }
             },
+            /**
+             * Form field value extension method
+             * ---------------------------------
+             *
+             * Gets or sets the value of a form field of the first CSS Selector
+             * element.
+             *
+             * Usage
+             * -----
+             * 
+             *     tiramisu.get(*SELECTOR*).value([*VALUE*])
+             * 
+             * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an
+             * optional value to set the element's innerHTML value.
+             *
+             * Example #1 (Get the current value of a select list)
+             * ---------------------------------------------------
+             * 
+             *     <form id="myForm" action='#' method="GET">
+             *       <select>
+             *         <option> Apple </option>
+             *         <option> Strawberry </option>
+             *         <option> Banana </option>
+             *       </select>
+             *     </form>
+             *     ...
+             *     // The default selected value is “Apple”
+             *     var current = t.get('myForm select').value();
+             *   
+             * Example #2 (Set the current value of a select list)
+             * ---------------------------------------------------
+             * 
+             *     <form id="myForm" action='#' method="GET">
+             *       <select>
+             *         <option> Apple </option>
+             *         <option> Strawberry </option>
+             *         <option> Banana </option>
+             *       </select>
+             *     </form>
+             *     ...
+             *     t.get('myForm select').value('Strawberry');
+             *
+             *     // Now the selected value is “Strawberry”  
+             *     var current = t.get('myForm select').value();
+             *
+             * @param {String} [set] An optional string containing the field value to set
+             * @return {[String]} An optional string containing the selector's first element field value
+             *
+             */
             'value': function(set) {
                 if (set !== undefined) {
                     results[0].value = set; 
