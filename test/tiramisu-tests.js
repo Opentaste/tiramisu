@@ -118,6 +118,12 @@ test('Calling “t.get("#qunit-fixture select").value()', function() {
     equal(rs, 'First.', 'should return “First.”');
 });
 
+test('Calling “t.get("#qunit-fixture select").value("Second.")', function() {
+    t.get('#qunit-fixture select').value("Second.");
+    var rs = t.get('#qunit-fixture select').value();
+    equal(rs, 'Second.', 'should set element\'s HTML value to “Second”');
+});
+
 module('CSS Manipulation tests');
 
 test('Setting the color of a node to #f6f6f6', function() {
