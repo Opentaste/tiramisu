@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.9.5';
+		this.version = '0.0.9.6';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -1052,6 +1052,12 @@
      *     tiramisu.task(2000, 100, callback)
      *
      *
+     * Example #3 (The callback is executed every 500 ms in loop.)
+     * -----------------------------------------------------
+     *
+     *     tiramisu.task('loop', 500, callback)
+     *
+     *
      * @param {integer} delay The total task delay(ms)
      * @param {integer} [interval] The interval of the repetitions(ms)
      * @param {Function} cb The callback function
@@ -1078,7 +1084,11 @@
 				}
 			}
 
-			if (progress < delay) {
+            // The recursion continues only in two cases:
+            // - The elapsed time is less than the total time;
+            // - The total time is infinite (so a loop) but there 
+            //   is an interval of time between repetitions of the callback.
+            if (progress < delay || (delay == 'loop' && interval !== undefined)) {
 				requestAnimFrame(animate);
 			} else {
 				if (interval === undefined) {
