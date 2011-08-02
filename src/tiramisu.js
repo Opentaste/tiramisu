@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.9.7';
+		this.version = '0.0.9.8';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -673,10 +673,20 @@
              *         'color': 'red'
              *     });
              *
+             * Example #2 (Get attribute out of style)
+             * ---------------------------------------------------
+             *
+             *     <h1 id="my_id" style="color:red"> This is one headline. </h1>
+             *     ...
+             *     tiramisu.get('#my_id').css("color")
+             *
              *  @param {Object} obj An object containing CSS properties
              */
 			'css': function(obj) {
 				var i, key;
+				if (typeof(obj) === 'string') {
+				    return results[0].style[obj];
+				}
 				for (i = 0; i < results.length; i++) {
 					for (key in obj) {
 						if (obj.hasOwnProperty(key)) {
@@ -722,7 +732,6 @@
              * @return {[String]} An optional string containing the selector's first element HTML value
              */
             'html': function(set) { 
-
                 if (set !== undefined) {
                     results[0].innerHTML = set;
                 } else {
