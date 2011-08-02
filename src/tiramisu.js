@@ -18,7 +18,8 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.9.8';
+		this.version = '0.0.9.82';
+		this.c = console;
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -236,7 +237,7 @@
      * 
      */
 	Tiramisu.prototype.get = function(selector) {
-		if (tiramisu.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
+		if (t.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
 
 		var macros = {
 			'nl': '\n|\r\n|\r|\f',
@@ -631,17 +632,24 @@
              *  As in the “each” example, it is possible to use **this** to
              *  reference the current list item.
              *
+             * Error
+             * -----
+             * - #1 : *SELECTOR* is not a valid CSS selector or not exist;
+             *
              * @param {event} evt An event listener
              * @param {function} cb The callback function to attach
              */
 			'on': function(evt, cb) {
 				var i;
+				if (results[0] === undefined) {
+				   t.c.log('e_on#1');
+				   return false;
+				}
 				if (results[0].addEventListener) {
 					for (i = 0; i < results.length; i++) {
 						results[i].addEventListener(evt, cb, false);
 					}
-				}
-				else if (results[0].attachEvent) {
+				} else if (results[0].attachEvent) {
 					for (i = 0; i < results.length; i++) {
 						results[i].attachEvent(evt, cb);
 					}
@@ -943,6 +951,10 @@
      *        url : 'http://www.example.com');
      *    });
      *
+     * Error
+     * -----
+     * - #1 : Object Ajax Error!;
+     *
      * @param {Object} settings An object containing the Ajax call parameters
      * @api public
      */
@@ -952,7 +964,7 @@
 				async: true,
 				content_type: '',
 				connection: '',
-				error: function(res) { console.log(res) },
+				error: function(res) { t.c.log(res) },
 				loader: '',
                 method: 'GET',
 				parameter: '',
@@ -969,12 +981,12 @@
 		} else if (window.ActiveXObject) {
 			xhr = new ActiveXObject("Microsoft.XMLHTTP");
 		} else {
-			console.log('Object Ajax Error!');
+			t.c.log('e_ajax#1');
 		}
 
 		extend(setting, setting_input);
 
-		if (tiramisu.detect('isIEolder')) {
+		if (t.detect('isIEolder')) {
 			setting.method = 'POST';
 		}
 		// object "setting.parameter" I create a string with the parameters 
@@ -1038,7 +1050,7 @@
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				// success!
 				if (setting.successHTML) {
-					tiramisu.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
+					t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
 				}
 				setting.success(xhr.responseText);
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
@@ -1112,7 +1124,7 @@
      */
 	Tiramisu.prototype['task'] = function(delay, cb) {
 		var interval,
-			requestAnimFrame = tiramisu.requestAnimFrame;
+			requestAnimFrame = t.requestAnimFrame;
 
 		if (arguments.length > 2) {
 			interval = arguments[1];
