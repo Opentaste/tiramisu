@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.9.83';
+		this.version = '0.0.9.85';
 		this.c = console;
 		this.d = document;
 		this.requestAnimFrame = (function() {
@@ -838,6 +838,17 @@
              *     // Now the selected value is “Strawberry”  
              *     var current = t.get('myForm select').value();
              *
+             * Example #3 (Get the current values ​​of a series of elements.)
+             * ---------------------------------------------------
+             * 
+             *     input type="hidden" name="name_one" value="one" class="i_am_class">
+             *     input type="hidden" name="name_two" value="two" class="i_am_class">
+             *     input type="hidden" name="name_three" value="three" class="i_am_class">
+             *     input type="hidden" name="name_four" value="four" class="i_am_class">
+             *     ...
+             *     t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']
+             *
+             *
              * @param {String} [set] An optional string containing the field value to set
              * @return {[String]} An optional string containing the selector's first element field value
              *
@@ -846,6 +857,13 @@
                 if (set !== undefined) {
                     results[0].value = set; 
                 } else {
+                    if (results.length > 1) {
+                        var list = [];
+                        for (i = 0; i < results.length; i++) {
+                            list.push(results[i].value);
+                        }
+                        return list;
+                    }
                     return results[0].value;
                 }
             },
