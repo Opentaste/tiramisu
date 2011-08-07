@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.0.9.82</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.0.9.83</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.0.9.82)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.0.9.83)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally: </p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.9.82'</span>;
+		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.9.83'</span>;
 		<span class="this">this</span>.<span class="variable">c</span> = <span class="variable">console</span>;
 		<span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
 		<span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -670,6 +670,54 @@ tiramisu.get('#my_id').css("color")</code></pre>
 							<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">setProperty</span>(<span class="variable">key</span>, <span class="variable">obj</span>[<span class="variable">key</span>], <span class="string">''</span>); <span class="comment">// The third param is for firefox</span>
 						}
 					}
+				}
+				<span class="keyword">return</span> <span class="this">this</span>;
+			},</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>CSS Cross Browser Opacity extension</h2>
+
+<p>Set Cross Browser Opacity</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).op(*CSS_OPACITY*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>CSS_PROPERTIES</em>
+is opacity value as 0.8, 0.35, 1, etc.</p>
+
+<h2>Example #1 (Set all the h1 tag with an opacity of 0.5)</h2>
+
+<pre><code>&lt;h1&gt; This is one headline. &lt;/h1&gt;
+&lt;h1&gt; This is another headline. &lt;/h1&gt;
+...
+tiramisu.get('h1').op('0.5');</code></pre>
+
+<h2>Example #2 (Set all the h1 tag with an opacity of 0.5 and color red)</h2>
+
+<pre><code>&lt;h1&gt; This is one headline. &lt;/h1&gt;
+&lt;h1&gt; This is another headline. &lt;/h1&gt;
+...
+tiramisu.get('h1').css({'color' : 'red'}).op('0.5');</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>Opacity</em>  string</p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'op'</span>: <span class="keyword">function</span>(<span class="variable">opacity</span>) {
+				<span class="keyword">var</span> <span class="variable">cssOpacity</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'opacity'</span>);
+				<span class="keyword">if</span> (<span class="variable">cssOpacity</span>) {
+				    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+    					<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">opacity</span>;
+    				}
+				} <span class="keyword">else</span> {
+				    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+				        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">filters</span>.<span class="variable">alpha</span>.<span class="variable">opacity</span> = <span class="variable">opacity</span>*<span class="number integer">100</span>;
+    					<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">filter</span> = <span class="string">'alpha(opacity='</span>+(<span class="variable">opacity</span>*<span class="number integer">100</span>)+<span class="string">')'</span>;
+    				}
 				}
 				<span class="keyword">return</span> <span class="this">this</span>;
 			},</code></pre>
