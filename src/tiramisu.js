@@ -838,13 +838,13 @@
              *     // Now the selected value is “Strawberry”  
              *     var current = t.get('myForm select').value();
              *
-             * Example #3 (Get the current values ​​of a series of elements.)
+             * Example #3 (Get the current values of a series of elements)
              * ---------------------------------------------------
              * 
-             *     input type="hidden" name="name_one" value="one" class="i_am_class">
-             *     input type="hidden" name="name_two" value="two" class="i_am_class">
-             *     input type="hidden" name="name_three" value="three" class="i_am_class">
-             *     input type="hidden" name="name_four" value="four" class="i_am_class">
+             *     <input type="hidden" name="name_one" value="one" class="i_am_class">
+             *     <input type="hidden" name="name_two" value="two" class="i_am_class">
+             *     <input type="hidden" name="name_three" value="three" class="i_am_class">
+             *     <input type="hidden" name="name_four" value="four" class="i_am_class">
              *     ...
              *     t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']
              *
