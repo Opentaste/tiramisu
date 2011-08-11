@@ -1,5 +1,5 @@
 
-### version 0.0.9.88 ###
+### version 0.0.9.89 ###
 
 Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous [jQuery][1] syntax:
@@ -18,7 +18,7 @@ Here are some highlights:
 Resources
 ---------
 
-*  [Documentation (0.0.9.88)][2]
+*  [Documentation (0.0.9.89)][2]
 *  [Unit Tests][3]
 
 [1]: http://jquery.com/
