@@ -181,3 +181,18 @@ asyncTest('Calling a basic AJAX POST', function() {
         'error': error
     });
 });
+
+module('Event tests');
+
+test('Pressing any key on the keyboard', function() {
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent('keydown', true, true);
+
+    t.get(document).on('keydown', function() {
+        t.get('#headline').html('A key was pressed.');
+    });
+
+    document.dispatchEvent(event);
+
+    equal(t.get('#headline').html(), 'A key was pressed.');
+});
