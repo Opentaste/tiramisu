@@ -18,8 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.9.85';
-		this.c = console;
+		this.version = '0.0.9.86';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -632,19 +631,12 @@
              *  As in the “each” example, it is possible to use **this** to
              *  reference the current list item.
              *
-             * Error
-             * -----
-             * - #1 : *SELECTOR* is not a valid CSS selector or not exist;
-             *
              * @param {event} evt An event listener
              * @param {function} cb The callback function to attach
              */
 			'on': function(evt, cb) {
 				var i;
-				if (results[0] === undefined) {
-				   t.c.log('e_on#1');
-				   return false;
-				}
+				// if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;
 				if (results[0].addEventListener) {
 					for (i = 0; i < results.length; i++) {
 						results[i].addEventListener(evt, cb, false);
