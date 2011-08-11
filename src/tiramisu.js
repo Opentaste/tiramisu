@@ -187,8 +187,8 @@
      *
      *     t.get(*SELECTOR*)
      *
-     * where *SELECTOR* is a *valid* CSS selector (see examples below).
-     *
+     * where *SELECTOR* is a *valid* CSS selector or, alternatively, an object
+     * (see examples below).
      *
      * Tiramisu will use *querySelectorAll* if the current browser implements it;
      * if not present **Tiramisu** fallback to a custom, simple CSS selector.
@@ -635,6 +635,22 @@
              *
              *  As in the “each” example, it is possible to use **this** to
              *  reference the current list item.
+             *
+             *  Example #3 (Defining a window.onload callback)
+             *  ---------------------------------------------------
+             *
+             *      tiramisu.get(window).on('load', function() {
+             *          alert('This will be executed after the DOM loading");
+             *      });
+             *
+             *  Example #4 (Alert message when pressing the “m” key)
+             *  ----------------------------------------------------
+             *
+             *      tiramisu.get(document).on('keydown', function(evt) {
+             *          if (evt.keyCode == 77) {
+             *              alert("M as Marvelous!");
+             *          }
+             *      });
              *
              * @param {event} evt An event listener
              * @param {function} cb The callback function to attach
