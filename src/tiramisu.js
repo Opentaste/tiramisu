@@ -539,12 +539,17 @@
 			return results;
 		};
 
-		var lexer = new Tokenizer(selector);
+        if (typeof selector === 'string') {
+            var lexer = new Tokenizer(selector);
 
-		// Exposing lexer for testing purposes
-		Tiramisu.prototype.tokenize = new Tokenizer(selector);
-		var parser = new Searcher(document, lexer.tokens),
-		results = parser.parse();
+            // Exposing lexer for testing purposes
+            Tiramisu.prototype.tokenize = new Tokenizer(selector);
+            var parser = new Searcher(document, lexer.tokens),
+            results = parser.parse();
+        } else {
+            // Selector is not a string so return it as 1-item list
+            results = [selector];
+        }
 
 		var methods = {
 			/**
