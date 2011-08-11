@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.9.87';
+		this.version = '0.0.9.88';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -683,14 +683,19 @@
              *  @param {Object} obj An object containing CSS properties
              */
 			'css': function(obj) {
-				var i, key;
+				var i, key, ie = t.detect('isIE');
 				if (typeof(obj) === 'string') {
 				    return results[0].style[obj];
 				}
 				for (i = 0; i < results.length; i++) {
 					for (key in obj) {
 						if (obj.hasOwnProperty(key)) {
-							results[i].style.setProperty(key, obj[key], ''); // The third param is for firefox
+						    if (ie){
+						        results[i].style[key] = obj[key];
+						    } else {
+						        // The third param is for firefox
+						        results[i].style.setProperty(key, obj[key], ''); 
+						    }	
 						}
 					}
 				}
@@ -1021,7 +1026,7 @@
 				async: true,
 				content_type: '',
 				connection: '',
-				error: function(res) { t.c.log(res) },
+				error: function(res) { try { console.log(res) } catch (e) {  } },
 				loader: '',
                 method: 'GET',
 				parameter: '',
@@ -1038,7 +1043,7 @@
 		} else if (window.ActiveXObject) {
 			xhr = new ActiveXObject("Microsoft.XMLHTTP");
 		} else {
-			t.c.log('e_ajax#1');
+			setting.error('e_ajax#1');
 		}
 
 		extend(setting, setting_input);
