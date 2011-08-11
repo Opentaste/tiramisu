@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 	function Tiramisu() {
-		this.version = '0.0.9.86';
+		this.version = '0.0.9.87';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -636,14 +636,14 @@
              */
 			'on': function(evt, cb) {
 				var i;
-				// if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;
+				// if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
 				if (results[0].addEventListener) {
 					for (i = 0; i < results.length; i++) {
 						results[i].addEventListener(evt, cb, false);
 					}
 				} else if (results[0].attachEvent) {
 					for (i = 0; i < results.length; i++) {
-						results[i].attachEvent(evt, cb);
+						results[i].attachEvent('on' + evt, cb);
 					}
 				}
 				return this;
