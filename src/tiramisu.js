@@ -10,14 +10,14 @@
  **/
 (function(window) {
 
-	/**
+    /**
      * The Framework's costructor exposes externally: 
      *
      * - A version number;
      * - A document object reference;
      * - *requestAnimFrame* (used for handling tasks).
      */
-	function Tiramisu() {
+function Tiramisu() {
 		this.version = '0.0.9.89';
 		this.d = document;
 		this.requestAnimFrame = (function() {
@@ -28,9 +28,9 @@
             || window.msRequestAnimationFrame 
             || function(callback, element) {
                    window.setTimeout(callback, 1000 / 60);
-			};
-		})();
-	}
+            };
+    })();
+}
 
 	// Exposing the framework
 	window.tiramisu = window.t = new Tiramisu();
@@ -636,21 +636,21 @@
              *  As in the “each” example, it is possible to use **this** to
              *  reference the current list item.
              *
-             *  Example #3 (Defining a window.onload callback)
-             *  ---------------------------------------------------
+             * Example #3 (Defining a window.onload callback)
+             * ----------------------------------------------
              *
-             *      tiramisu.get(window).on('load', function() {
-             *          alert('This will be executed after the DOM loading");
-             *      });
+             *     tiramisu.get(window).on('load', function() {
+             *         alert('This will be executed after the DOM loading");
+             *     });
              *
-             *  Example #4 (Alert message when pressing the “m” key)
-             *  ----------------------------------------------------
+             * Example #4 (Alert message when pressing the “m” key)
+             * ----------------------------------------------------
              *
-             *      tiramisu.get(document).on('keydown', function(evt) {
-             *          if (evt.keyCode == 77) {
-             *              alert("M as Marvelous!");
-             *          }
-             *      });
+             *     tiramisu.get(document).on('keydown', function(evt) {
+             *         if (evt.keyCode == 77) {
+             *             alert("M as Marvelous!");
+             *         }
+             *     });
              *
              * @param {event} evt An event listener
              * @param {function} cb The callback function to attach
