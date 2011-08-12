@@ -108,13 +108,13 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.0.9.89</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.0.9.90</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
 
-<pre><code>tiramisu.get('h1 #unique').each(function() {
-    alert(h1.innerHTML);
+<pre><code>tiramisu.get('h1').each(function() {
+    alert(h1.html());
 });</code></pre>
 
 <p>Here are some highlights:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.0.9.89)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.0.9.90)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally: </p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.9.89'</span>;
+		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.9.90'</span>;
 		<span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
 		<span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
 			<span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> 
@@ -142,9 +142,9 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
             || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> 
             || <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
                    <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
-			};
-		})();
-	}
+            };
+    })();
+}
 
 	<span class="comment">// Exposing the framework</span>
 	<span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
@@ -597,23 +597,19 @@ tiramisu.get('p').on('click', function() {
 <p> As in the “each” example, it is possible to use <strong>this</strong> to
  reference the current list item.</p>
 
-<p> Example #3 (Defining a window.onload callback)</p>
+<h2>Example #3 (Defining a window.onload callback)</h2>
 
-<hr></hr>
+<pre><code>tiramisu.get(window).on('load', function() {
+    alert('This will be executed after the DOM loading");
+});</code></pre>
 
-<pre><code> tiramisu.get(window).on('load', function() {
-     alert('This will be executed after the DOM loading");
- });</code></pre>
+<h2>Example #4 (Alert message when pressing the “m” key)</h2>
 
-<p> Example #4 (Alert message when pressing the “m” key)</p>
-
-<hr></hr>
-
-<pre><code> tiramisu.get(document).on('keydown', function(evt) {
-     if (evt.keyCode == 77) {
-         alert("M as Marvelous!");
-     }
- });</code></pre>
+<pre><code>tiramisu.get(document).on('keydown', function(evt) {
+    if (evt.keyCode == 77) {
+        alert("M as Marvelous!");
+    }
+});</code></pre>
 
 <h2></h2>
 
@@ -731,8 +727,11 @@ tiramisu.get('h1').css({'color' : 'red'}).op('0.5');</code></pre>
     				}
 				} <span class="keyword">else</span> {
 				    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
-				        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">filters</span>.<span class="variable">alpha</span>.<span class="variable">opacity</span> = <span class="variable">opacity</span>*<span class="number integer">100</span>;
-    					<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">filter</span> = <span class="string">'alpha(opacity='</span>+(<span class="variable">opacity</span>*<span class="number integer">100</span>)+<span class="string">')'</span>;
+				        <span class="keyword">try</span> { 
+				            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">filters</span>.<span class="variable">alpha</span>.<span class="variable">opacity</span> = <span class="variable">opacity</span>*<span class="number integer">100</span>;
+				        } <span class="keyword">catch</span> (<span class="variable">e</span>) { 
+				            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">filter</span> = <span class="string">'alpha(opacity='</span>+(<span class="variable">opacity</span>*<span class="number integer">100</span>)+<span class="string">')'</span>; 
+				        }
     				}
 				}
 				<span class="keyword">return</span> <span class="this">this</span>;

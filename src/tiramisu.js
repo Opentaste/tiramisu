@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 function Tiramisu() {
-		this.version = '0.0.9.89';
+		this.version = '0.0.9.90';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
@@ -763,8 +763,11 @@ function Tiramisu() {
     				}
 				} else {
 				    for (i = 0; i < results.length; i++) {
-				        results[i].style.filters.alpha.opacity = opacity*100;
-    					results[i].style.filter = 'alpha(opacity='+(opacity*100)+')';
+				        try { 
+				            results[i].style.filters.alpha.opacity = opacity*100;
+				        } catch (e) { 
+				            results[i].style.filter = 'alpha(opacity='+(opacity*100)+')'; 
+				        }
     				}
 				}
 				return this;
