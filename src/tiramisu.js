@@ -11,38 +11,36 @@
 (function(window) {
 
     /**
-     * The Framework's costructor exposes externally: 
+     * The Framework's costructor exposes externally:
      *
      * - A version number;
      * - A document object reference;
      * - *requestAnimFrame* (used for handling tasks).
      */
-function Tiramisu() {
-		this.version = '0.0.9.91';
-		this.d = document;
-		this.requestAnimFrame = (function() {
-			return window.requestAnimationFrame 
-            || window.webkitRequestAnimationFrame 
-            || window.mozRequestAnimationFrame 
-            || window.oRequestAnimationFrame 
-            || window.msRequestAnimationFrame 
-            || function(callback, element) {
-                   window.setTimeout(callback, 1000 / 60);
+
+    function Tiramisu() {
+        this.version = '0.0.9.91';
+        this.d = document;
+        this.requestAnimFrame = (function() {
+            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+            function(callback, element) {
+                window.setTimeout(callback, 1000 / 60);
             };
-    })();
-}
+        })();
+    }
 
-	// Exposing the framework
-	window.tiramisu = window.t = new Tiramisu();
+    // Exposing the framework
+    window.tiramisu = window.t = new Tiramisu();
 
-	// Extending object1 with object2's methods
-	function extend(first, second) {
-		for (var prop in second) {
-			first[prop] = second[prop];
-		}
-	}
+    // Extending object1 with object2's methods
 
-	/** 
+    function extend(first, second) {
+        for (var prop in second) {
+            first[prop] = second[prop];
+        }
+    }
+
+    /** 
      * Framework Detection Module
      * ==========================
      *
@@ -67,13 +65,13 @@ function Tiramisu() {
      *     if (tiramisu.detect('browser') === 'IE9')) {
      *         console.log('IE');
      *     }
-     * 
+     *
      * A shortcut to perform this check is:
      *
      *     if (tiramisu.detect('isIE')) {
      *         console.log('IE');
      *     }
-     * 
+     *
      * The main difference between the first and the second example is that
      * *isIE* and, in general, *is(X)* methods doesn't check the browser for
      * a specific version.
@@ -94,83 +92,83 @@ function Tiramisu() {
      * @returns {Boolean} The test result
      * @api public
      */
-	Tiramisu.prototype.detect = function(key) {
-		var nav_agent = navigator.userAgent,
-		nav_name = navigator.appName,
-		firefox = nav_agent.substring(nav_agent.indexOf('Firefox')),
-		firefox_version = firefox.split('/')[1].split('.')[0],
-		opera = nav_agent.substring(nav_agent.indexOf('Version')).split("/")[1];
+    Tiramisu.prototype.detect = function(key) {
+        var nav_agent = navigator.userAgent,
+            nav_name = navigator.appName,
+            firefox = nav_agent.substring(nav_agent.indexOf('Firefox')),
+            firefox_version = firefox.split('/')[1].split('.')[0],
+            opera = nav_agent.substring(nav_agent.indexOf('Version')).split("/")[1];
 
-		// Turns off querySelectorAll detection
-		var USE_QSA = false;
+        // Turns off querySelectorAll detection
+        var USE_QSA = false;
 
-		// Netscape includes Firefox, Safari or Chrome
-		var tests = {
+        // Netscape includes Firefox, Safari or Chrome
+        var tests = {
 
-			'browser': function() {
-				if (nav_name === 'Netscape') {
-					if (firefox.split('/')[0] !== 'Firefox') { // Case 1 - Safari or Chrome
-						return "safarichrome"
-					} else {
-						if (firefox_version === '4') { // Case 2 - Firefox 4
-							return 'firefox4'
-						}
-						return 'firefox3'
-					}
-				} else if (nav_name == 'Opera') {
-					if (opera.split('.')[1] > 49) { // Case 4 - Opera 10.5+
-						return 'Opera10.5+'
-					}
-					return 'Opera10.4';
-				} else if (/MSIE (\d+\.\d+);/.test(nav_agent)) { //test for MSIE x.x;
-					var ie = new Number(RegExp.$1) // capture x.x portion and store as a number
-					if (ie > 8) {
-						return 'IE9+';
-					} else if (ie === 8) {
-						return 'IE8';
-					}
-					return 'IE_older';
-				} else { // Case 6 - IE or other
-					return 'IE';
-				}
-			},
+            'browser': function() {
+                if (nav_name === 'Netscape') {
+                    if (firefox.split('/')[0] !== 'Firefox') { // Case 1 - Safari or Chrome
+                        return "safarichrome"
+                    } else {
+                        if (firefox_version === '4') { // Case 2 - Firefox 4
+                            return 'firefox4'
+                        }
+                        return 'firefox3'
+                    }
+                } else if (nav_name == 'Opera') {
+                    if (opera.split('.')[1] > 49) { // Case 4 - Opera 10.5+
+                        return 'Opera10.5+'
+                    }
+                    return 'Opera10.4';
+                } else if (/MSIE (\d+\.\d+);/.test(nav_agent)) { //test for MSIE x.x;
+                    var ie = new Number(RegExp.$1) // capture x.x portion and store as a number
+                    if (ie > 8) {
+                        return 'IE9+';
+                    } else if (ie === 8) {
+                        return 'IE8';
+                    }
+                    return 'IE_older';
+                } else { // Case 6 - IE or other
+                    return 'IE';
+                }
+            },
 
-			'isIE': function() {
-				return this.browser() === 'IE9+' || this.browser() === 'IE8' || this.browser() === 'IE_older';
-			},
+            'isIE': function() {
+                return this.browser() === 'IE9+' || this.browser() === 'IE8' || this.browser() === 'IE_older';
+            },
 
-			'isIEolder': function() {
-				return this.browser() === 'IE8' || this.browser() === 'IE_older';
-			},
+            'isIEolder': function() {
+                return this.browser() === 'IE8' || this.browser() === 'IE_older';
+            },
 
-			'isFirefox': function() {
-				return this.browser() === "firefox3" || this.browser() === "firefox4"
-			},
+            'isFirefox': function() {
+                return this.browser() === "firefox3" || this.browser() === "firefox4"
+            },
 
-			'isChrome': function() {
-				return this.browser() === 'safarichrome'
-			},
+            'isChrome': function() {
+                return this.browser() === 'safarichrome'
+            },
 
-			'querySelectorAll': function() {
-				return (USE_QSA && typeof this.d.querySelectorAll !== 'undefined')
-			},
+            'querySelectorAll': function() {
+                return (USE_QSA && typeof this.d.querySelectorAll !== 'undefined')
+            },
 
-			'opacity': function() {
-				if (this.isIEolder()) {
-					return false;
-				}
-				return true;
-			},
+            'opacity': function() {
+                if (this.isIEolder()) {
+                    return false;
+                }
+                return true;
+            },
 
-			'color': function() {
-				if (this.isIEolder()) {
-					return false;
-				}
-				return true;
-			}
-		};
-		return tests[key]();
-	};
+            'color': function() {
+                if (this.isIEolder()) {
+                    return false;
+                }
+                return true;
+            }
+        };
+        return tests[key]();
+    };
 
     /**
      * Framework Selector Module
@@ -180,7 +178,7 @@ function Tiramisu() {
      *
      * Usage
      * -----
-     * 
+     *
      *     tiramisu.get(*SELECTOR*)
      *
      * or
@@ -201,7 +199,7 @@ function Tiramisu() {
      * -  *class*;
      * -  *name and class*;
      * -  *element*;
-     * 
+     *
      * Note that this implementation is not fast as *querySelectorAll* since it relies
      * on pure (*not optimized*) JavaScript.
      *
@@ -226,318 +224,321 @@ function Tiramisu() {
      *     </ul>
      *     ...
      *     var li_special1 = tiramisu.get('#myList .special');
-     *     
-     *     // Better way to do it :) 
+     *
+     *     // Better way to do it :)
      *     var li_special2 = tiramisu.get('#myList li.special');
      *
      * @param {String} selector A CSS Selector
      * @returns {Object} The node list
      * @api public
-     * 
+     *
      */
-	Tiramisu.prototype.get = function(selector) {
-		if (t.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
+    Tiramisu.prototype.get = function(selector) {
+        if (t.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
 
-		var macros = {
-			'nl': '\n|\r\n|\r|\f',
-			'nonascii': '[^\0-\177]',
-			'unicode': '\\[0-9A-Fa-f]{1,6}(\r\n|[\s\n\r\t\f])?',
-			'escape': '#{unicode}|\\[^\n\r\f0-9A-Fa-f]',
-			'nmchar': '[_A-Za-z0-9-]|#{nonascii}|#{escape}',
-			'nmstart': '[_A-Za-z]|#{nonascii}|#{escape}',
-			'ident': '[-@]?(#{nmstart})(#{nmchar})*',
-			'name': '(#{nmchar})+'
-		};
+        var macros = {
+            'nl': '\n|\r\n|\r|\f',
+            'nonascii': '[^\0-\177]',
+            'unicode': '\\[0-9A-Fa-f]{1,6}(\r\n|[\s\n\r\t\f])?',
+            'escape': '#{unicode}|\\[^\n\r\f0-9A-Fa-f]',
+            'nmchar': '[_A-Za-z0-9-]|#{nonascii}|#{escape}',
+            'nmstart': '[_A-Za-z]|#{nonascii}|#{escape}',
+            'ident': '[-@]?(#{nmstart})(#{nmchar})*',
+            'name': '(#{nmchar})+'
+        };
 
-		var rules = {
-			'id and name': '(#{ident}##{ident})',
-			'id': '(##{ident})',
-			'class': '(\\.#{ident})',
-			'name and class': '(#{ident}\\.#{ident})',
-			'element': '(#{ident})',
-			'pseudo class': '(:#{ident})'
-		};
+        var rules = {
+            'id and name': '(#{ident}##{ident})',
+            'id': '(##{ident})',
+            'class': '(\\.#{ident})',
+            'name and class': '(#{ident}\\.#{ident})',
+            'element': '(#{ident})',
+            'pseudo class': '(:#{ident})'
+        };
 
-		// Normalize the selector
-		function normalize(text) {
-			return text.replace(/^\s+|\s+$/g, '').replace(/[ \t\r\n\f]+/g, ' ');
-		}
+        // Normalize the selector
 
-		// Scan macros and rules to build a big regex
-		var scanner = function() {
-			function replacePattern(pattern, patterns) {
-				var matched = true,
-				match;
-				while (matched) {
-					match = pattern.match(/#\{([^}]+)\}/);
-					if (match && match[1]) {
-						pattern = pattern.replace(new RegExp('#\{' + match[1] + '\}', 'g'), patterns[match[1]]);
-						matched = true;
-					} else {
-						matched = false;
-					}
-				}
-				return pattern;
-			}
+        function normalize(text) {
+            return text.replace(/^\s+|\s+$/g, '').replace(/[ \t\r\n\f]+/g, ' ');
+        }
 
-			function escapePattern(text) {
-				return text.replace(/\//g, '//');
-			}
+        // Scan macros and rules to build a big regex
+        var scanner = function() {
+                function replacePattern(pattern, patterns) {
+                    var matched = true,
+                        match;
+                    while (matched) {
+                        match = pattern.match(/#\{([^}]+)\}/);
+                        if (match && match[1]) {
+                            pattern = pattern.replace(new RegExp('#\{' + match[1] + '\}', 'g'), patterns[match[1]]);
+                            matched = true;
+                        } else {
+                            matched = false;
+                        }
+                    }
+                    return pattern;
+                }
 
-			function convertPatterns() {
-				var key, pattern, results = {},
-				patterns, source;
+                function escapePattern(text) {
+                    return text.replace(/\//g, '//');
+                }
 
-				if (arguments.length === 2) {
-					source = arguments[0];
-					patterns = arguments[1]
-				} else {
-					source = arguments[0];
-					patterns = arguments[0];
-				}
+                function convertPatterns() {
+                    var key, pattern, results = {},
+                        patterns, source;
 
-				for (key in patterns) {
-					pattern = escapePattern(replacePattern(patterns[key], source));
-					results[key] = pattern;
-				}
-				return results;
-			}
+                    if (arguments.length === 2) {
+                        source = arguments[0];
+                        patterns = arguments[1]
+                    } else {
+                        source = arguments[0];
+                        patterns = arguments[0];
+                    }
 
-			function joinPatterns(regexps) {
-				var results = [],
-				key;
+                    for (key in patterns) {
+                        pattern = escapePattern(replacePattern(patterns[key], source));
+                        results[key] = pattern;
+                    }
+                    return results;
+                }
 
-				for (key in regexps) {
-					results.push(regexps[key]);
-				}
+                function joinPatterns(regexps) {
+                    var results = [],
+                        key;
 
-				return new RegExp(results.join('|'), 'g');
-			}
+                    for (key in regexps) {
+                        results.push(regexps[key]);
+                    }
 
-			return joinPatterns(convertPatterns(convertPatterns(macros), rules));
-		};
+                    return new RegExp(results.join('|'), 'g');
+                }
 
-		var filter = {
-			'byAttr': function(elements, attribute, value) {
-				var key, results = [];
-				for (key in elements) {
-					if (elements[key] && elements[key][attribute] === value) {
-						results.push(elements[key]);
-					}
-				}
-				return results;
-			}
-		};
+                return joinPatterns(convertPatterns(convertPatterns(macros), rules));
+            };
 
-		var find = {
-			'byId': function(root, id) {
-				return (root) ? [root.getElementById(id)] : [];
-			},
+        var filter = {
+            'byAttr': function(elements, attribute, value) {
+                var key, results = [];
+                for (key in elements) {
+                    if (elements[key] && elements[key][attribute] === value) {
+                        results.push(elements[key]);
+                    }
+                }
+                return results;
+            }
+        };
 
-			'byNodeName': function(root, tagName) {
-				if (root === null) return [];
-				var i, results = [],
-				nodes = root.getElementsByTagName(tagName);
+        var find = {
+            'byId': function(root, id) {
+                return (root) ? [root.getElementById(id)] : [];
+            },
 
-				for (i = 0; i < nodes.length; i++) {
-					results.push(nodes[i]);
-				}
-				return results;
-			},
+            'byNodeName': function(root, tagName) {
+                if (root === null) return [];
+                var i, results = [],
+                    nodes = root.getElementsByTagName(tagName);
 
-			'byClassName': function(root, className) {
-				if (root === null) return [];
-				var i, results = [],
-				nodes = root.getElementsByTagName('*');
+                for (i = 0; i < nodes.length; i++) {
+                    results.push(nodes[i]);
+                }
+                return results;
+            },
 
-				for (i = 0; i < nodes.length; i++) {
-					if (nodes[i].className.match('\\b' + className + '\\b')) {
-						results.push(nodes[i]);
-					}
-				}
-				return results;
-			}
-		};
+            'byClassName': function(root, className) {
+                if (root === null) return [];
+                var i, results = [],
+                    nodes = root.getElementsByTagName('*');
 
-		var findMap = {
-			'id': function(root, selector) {
-				selector = selector.split('#')[1];
-				return find.byId(root, selector);
-			},
+                for (i = 0; i < nodes.length; i++) {
+                    if (nodes[i].className.match('\\b' + className + '\\b')) {
+                        results.push(nodes[i]);
+                    }
+                }
+                return results;
+            }
+        };
 
-			'name and id': function(root, selector) {
-				var matches = selector.split('#'),
-				name = matches[0],
-				id = matches[1];
-				return filter.byAttr(find.byId(root, id), 'nodeName', name.toUpperCase());
-			},
+        var findMap = {
+            'id': function(root, selector) {
+                selector = selector.split('#')[1];
+                return find.byId(root, selector);
+            },
 
-			'name': function(root, selector) {
-				return find.byNodeName(root, selector);
-			},
+            'name and id': function(root, selector) {
+                var matches = selector.split('#'),
+                    name = matches[0],
+                    id = matches[1];
+                return filter.byAttr(find.byId(root, id), 'nodeName', name.toUpperCase());
+            },
 
-			'class': function(root, selector) {
-				selector = selector.split('\.')[1];
-				return find.byClassName(root, selector);
-			},
+            'name': function(root, selector) {
+                return find.byNodeName(root, selector);
+            },
 
-			'name and class': function(root, selector) {
-				var matches = selector.split('\.'),
-				name = matches[0],
-				className = matches[1];
-				return filter.byAttr(find.byClassName(root, className), 'nodeName', name.toUpperCase());
-			}
-		};
+            'class': function(root, selector) {
+                selector = selector.split('\.')[1];
+                return find.byClassName(root, selector);
+            },
 
-		var matchMap = {
-			'id': function(element, selector) {
-				selector = selector.split('#')[1];
-				return element && element.id === selector;
-			},
+            'name and class': function(root, selector) {
+                var matches = selector.split('\.'),
+                    name = matches[0],
+                    className = matches[1];
+                return filter.byAttr(find.byClassName(root, className), 'nodeName', name.toUpperCase());
+            }
+        };
 
-			'name': function(element, nodeName) {
-				return element.nodeName === nodeName.toUpperCase();
-			},
+        var matchMap = {
+            'id': function(element, selector) {
+                selector = selector.split('#')[1];
+                return element && element.id === selector;
+            },
 
-			'name and id': function(element, selector) {
-				return matchMap.id(element, selector) && matchMap.name(element, selector.split('#')[0]);
-			},
+            'name': function(element, nodeName) {
+                return element.nodeName === nodeName.toUpperCase();
+            },
 
-			'class': function(element, selector) {
-				if (element && element.className) {
-					selector = selector.split('\.')[1];
-					return element.className.match('\\b' + selector + '\\b');
-				}
-			},
+            'name and id': function(element, selector) {
+                return matchMap.id(element, selector) && matchMap.name(element, selector.split('#')[0]);
+            },
 
-			'name and class': function(element, selector) {
-				return matchMap['class'](element, selector) && matchMap.name(element, selector.split('\.')[0]);
-			}
-		};
+            'class': function(element, selector) {
+                if (element && element.className) {
+                    selector = selector.split('\.')[1];
+                    return element.className.match('\\b' + selector + '\\b');
+                }
+            },
 
-		/**
+            'name and class': function(element, selector) {
+                return matchMap['class'](element, selector) && matchMap.name(element, selector.split('\.')[0]);
+            }
+        };
+
+        /**
          * Models a Token class.
          *
          * @param {String} identity The original selector rule;
          * @param {String} finder The category of the selector;
          * @api private
          */
-		function Token(identity, finder) {
-			this.identity = identity;
-			this.finder = finder;
-		}
 
-		Token.prototype.toString = function() {
-			return 'identity: ' + this.identity + ', finder: ' + this.finder;
-		};
+        function Token(identity, finder) {
+            this.identity = identity;
+            this.finder = finder;
+        }
 
-		/**
+        Token.prototype.toString = function() {
+            return 'identity: ' + this.identity + ', finder: ' + this.finder;
+        };
+
+        /**
          * Classify sections of the scanner output.
          *
          * @param {String} selector A CSS selector;
          * @api private
          */
-		function Tokenizer(selector) {
-			this.selector = normalize(selector);
-			this.tokens = [];
-			this.tokenize();
-		}
 
-		Tokenizer.prototype.tokenize = function() {
-			var match, r, finder;
+        function Tokenizer(selector) {
+            this.selector = normalize(selector);
+            this.tokens = [];
+            this.tokenize();
+        }
 
-			r = scanner();
-			r.lastIndex = 0;
+        Tokenizer.prototype.tokenize = function() {
+            var match, r, finder;
 
-			while (match = r.exec(this.selector)) {
-				finder = null;
+            r = scanner();
+            r.lastIndex = 0;
 
-				if (match[10]) {
-					finder = 'id';
-				} else if (match[1]) {
-					finder = 'name and id';
-				} else if (match[15]) {
-					finder = 'class';
-				} else if (match[20]) {
-					finder = 'name and class';
-				} else if (match[29]) {
-					finder = 'name';
-				}
+            while (match = r.exec(this.selector)) {
+                finder = null;
 
-				this.tokens.push(new Token(match[0], finder));
-			}
-			return this.tokens;
-		};
+                if (match[10]) {
+                    finder = 'id';
+                } else if (match[1]) {
+                    finder = 'name and id';
+                } else if (match[15]) {
+                    finder = 'class';
+                } else if (match[20]) {
+                    finder = 'name and class';
+                } else if (match[29]) {
+                    finder = 'name';
+                }
 
-		/**
+                this.tokens.push(new Token(match[0], finder));
+            }
+            return this.tokens;
+        };
+
+        /**
          * Uses an array of tokens to perform DOM operations.
          *
          * @param {HTMLNode} root The starting DOM node;
          * @param {Array} tokens An array containing tokens;
          * @api private
          */
-		function Searcher(root, tokens) {
-			this.root = root;
-			this.key_selector = tokens.pop();
-			this.tokens = tokens;
-			this.results = [];
-		}
 
-		Searcher.prototype.find = function(token) {
-			if (!findMap[token.finder]) {
-				throw new Error('Invalid Finder: ' + token.finder);
-			}
-			return findMap[token.finder](this.root, token.identity);
-		};
+        function Searcher(root, tokens) {
+            this.root = root;
+            this.key_selector = tokens.pop();
+            this.tokens = tokens;
+            this.results = [];
+        }
 
-		Searcher.prototype.matchesToken = function(element, token) {
-			if (!matchMap[token.finder]) {
-				throw new Error('Invalid Matcher: ' + token.finder);
-			}
-			return matchMap[token.finder](element, token.identity);
-		};
+        Searcher.prototype.find = function(token) {
+            if (!findMap[token.finder]) {
+                throw new Error('Invalid Finder: ' + token.finder);
+            }
+            return findMap[token.finder](this.root, token.identity);
+        };
 
-		Searcher.prototype.matchesAllRules = function(element) {
-			if (this.tokens.length === 0) return;
+        Searcher.prototype.matchesToken = function(element, token) {
+            if (!matchMap[token.finder]) {
+                throw new Error('Invalid Matcher: ' + token.finder);
+            }
+            return matchMap[token.finder](element, token.identity);
+        };
 
-			var i = this.tokens.length - 1,
-			token = this.tokens[i],
-			matchFound = false;
+        Searcher.prototype.matchesAllRules = function(element) {
+            if (this.tokens.length === 0) return;
 
-			while (i >= 0 && element) {
-				if (this.matchesToken(element, token)) {
-					matchFound = true;
-					i--;
-					token = this.tokens[i];
-				}
-				element = element.parentNode;
-			}
+            var i = this.tokens.length - 1,
+                token = this.tokens[i],
+                matchFound = false;
 
-			return matchFound && i < 0;
-		};
+            while (i >= 0 && element) {
+                if (this.matchesToken(element, token)) {
+                    matchFound = true;
+                    i--;
+                    token = this.tokens[i];
+                }
+                element = element.parentNode;
+            }
 
-		Searcher.prototype.parse = function() {
-			var i, element, elements = this.find(this.key_selector),
-			results = [];
+            return matchFound && i < 0;
+        };
 
-			// Each element that matches the key selector is used as a 
-			// starting point. Its ancestors are analysed to see 
-			// if they match all of the selector’s rules.
-			for (i = 0; i < elements.length; i++) {
-				element = elements[i];
-				if (this.tokens.length > 0) {
-					if (this.matchesAllRules(element.parentNode)) {
-						results.push(element);
-					}
-				}
-				else {
-					if (this.matchesToken(element, this.key_selector)) {
-						results.push(element);
-					}
-				}
-			}
-			return results;
-		};
+        Searcher.prototype.parse = function() {
+            var i, element, elements = this.find(this.key_selector),
+                results = [];
+
+            // Each element that matches the key selector is used as a 
+            // starting point. Its ancestors are analysed to see 
+            // if they match all of the selector’s rules.
+            for (i = 0; i < elements.length; i++) {
+                element = elements[i];
+                if (this.tokens.length > 0) {
+                    if (this.matchesAllRules(element.parentNode)) {
+                        results.push(element);
+                    }
+                } else {
+                    if (this.matchesToken(element, this.key_selector)) {
+                        results.push(element);
+                    }
+                }
+            }
+            return results;
+        };
 
         if (typeof selector === 'string') {
             var lexer = new Tokenizer(selector);
@@ -545,25 +546,25 @@ function Tiramisu() {
             // Exposing lexer for testing purposes
             Tiramisu.prototype.tokenize = new Tokenizer(selector);
             var parser = new Searcher(document, lexer.tokens),
-            results = parser.parse();
+                results = parser.parse();
         } else {
             // Selector is not a string so return it as 1-item list
             results = [selector];
         }
 
-		var methods = {
-			/**
+        var methods = {
+            /**
              * Each iterator extension
              * -----------------------
-             * 
+             *
              * Applies a callback function to a list of DOM nodes.
              *
              * Usage
              * -----
-             *     
+             *
              *     tiramisu.get(*SELECTOR*).each(*CALLBACK*)
              *
-             * Where *SELECTOR* is a valid CSS selector and *CALLBACK* a 
+             * Where *SELECTOR* is a valid CSS selector and *CALLBACK* a
              * function object.
              *
              * It is common to retrieve a list of DOM nodes and then apply the
@@ -587,15 +588,15 @@ function Tiramisu() {
              *
              * @param {function} cb The callback function to apply
              */
-			'each': function(cb) {
-				var i;
-				for (i = 0; i < results.length; i++) {
-					cb.apply(results[i]);
-				}
-				return this;
-			},
-			/**
-             * Event handler extension 
+            'each': function(cb) {
+                var i;
+                for (i = 0; i < results.length; i++) {
+                    cb.apply(results[i]);
+                }
+                return this;
+            },
+            /**
+             * Event handler extension
              * -----------------------
              *
              * Attach a callback function to an event.
@@ -618,7 +619,7 @@ function Tiramisu() {
              *     tiramisu.get('p').on('click', function() {
              *         alert('Hello!');
              *     });
-             * 
+             *
              * Example #2 (Hovering on a li element displays his innerHTML)
              * ------------------------------------------------------------
              *
@@ -655,21 +656,21 @@ function Tiramisu() {
              * @param {event} evt An event listener
              * @param {function} cb The callback function to attach
              */
-			'on': function(evt, cb) {
-				var i;
-				// if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
-				if (results[0].addEventListener) {
-					for (i = 0; i < results.length; i++) {
-						results[i].addEventListener(evt, cb, false);
-					}
-				} else if (results[0].attachEvent) {
-					for (i = 0; i < results.length; i++) {
-						results[i].attachEvent('on' + evt, cb);
-					}
-				}
-				return this;
-			},
-			/**
+            'on': function(evt, cb) {
+                var i;
+                // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
+                if (results[0].addEventListener) {
+                    for (i = 0; i < results.length; i++) {
+                        results[i].addEventListener(evt, cb, false);
+                    }
+                } else if (results[0].attachEvent) {
+                    for (i = 0; i < results.length; i++) {
+                        results[i].attachEvent('on' + evt, cb);
+                    }
+                }
+                return this;
+            },
+            /**
              * CSS handler extension
              * ---------------------
              *
@@ -677,7 +678,7 @@ function Tiramisu() {
              *
              * Usage
              * -----
-             * 
+             *
              *     tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)
              *
              * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES*
@@ -703,26 +704,26 @@ function Tiramisu() {
              *
              *  @param {Object} obj An object containing CSS properties
              */
-			'css': function(obj) {
-				var i, key, ie = t.detect('isIE');
-				if (typeof(obj) === 'string') {
-				    return results[0].style[obj];
-				}
-				for (i = 0; i < results.length; i++) {
-					for (key in obj) {
-						if (obj.hasOwnProperty(key)) {
-						    if (ie){
-						        results[i].style[key] = obj[key];
-						    } else {
-						        // The third param is for firefox
-						        results[i].style.setProperty(key, obj[key], ''); 
-						    }	
-						}
-					}
-				}
-				return this;
-			},
-			/**
+            'css': function(obj) {
+                var i, key, ie = t.detect('isIE');
+                if (typeof(obj) === 'string') {
+                    return results[0].style[obj];
+                }
+                for (i = 0; i < results.length; i++) {
+                    for (key in obj) {
+                        if (obj.hasOwnProperty(key)) {
+                            if (ie) {
+                                results[i].style[key] = obj[key];
+                            } else {
+                                // The third param is for firefox
+                                results[i].style.setProperty(key, obj[key], '');
+                            }
+                        }
+                    }
+                }
+                return this;
+            },
+            /**
              * CSS Cross Browser Opacity extension
              * ---------------------
              *
@@ -730,7 +731,7 @@ function Tiramisu() {
              *
              * Usage
              * -----
-             * 
+             *
              *     tiramisu.get(*SELECTOR*).op(*CSS_OPACITY*)
              *
              * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES*
@@ -755,23 +756,23 @@ function Tiramisu() {
              *
              *  @param {Opacity} string
              */
-			'op': function(opacity) {
-				var cssOpacity = t.detect('opacity');
-				if (cssOpacity) {
-				    for (i = 0; i < results.length; i++) {
-    					results[i].style.opacity = opacity;
-    				}
-				} else {
-				    for (i = 0; i < results.length; i++) {
-				        try { 
-				            results[i].style.filters.alpha.opacity = opacity*100;
-				        } catch (e) { 
-				            results[i].style.filter = 'alpha(opacity='+(opacity*100)+')'; 
-				        }
-    				}
-				}
-				return this;
-			},
+            'op': function(opacity) {
+                var cssOpacity = t.detect('opacity');
+                if (cssOpacity) {
+                    for (i = 0; i < results.length; i++) {
+                        results[i].style.opacity = opacity;
+                    }
+                } else {
+                    for (i = 0; i < results.length; i++) {
+                        try {
+                            results[i].style.filters.alpha.opacity = opacity * 100;
+                        } catch (e) {
+                            results[i].style.filter = 'alpha(opacity=' + (opacity * 100) + ')';
+                        }
+                    }
+                }
+                return this;
+            },
             /**
              * HTML extension method
              * ---------------------
@@ -781,21 +782,21 @@ function Tiramisu() {
              *
              * Usage
              * -----
-             * 
+             *
              *     tiramisu.get(*SELECTOR*).html([*HTML*])
-             * 
+             *
              * where *SELECTOR* is a valid CSS selector and *[HTML]* is an
              * optional value to set the element's innerHTML value.
              *
              * Example #1 (Getting the HTML value of a div)
              * --------------------------------------------
-             * 
+             *
              *     <div id="header">
              *       <p> I love pizza! </p>
              *     </div>
              *     ...
              *     var pizza = tiramisu.get('#header').html()
-             * 
+             *
              * Example #2 (Setting the HTML value of a div)
              *
              *     <div id="header">
@@ -807,11 +808,11 @@ function Tiramisu() {
              * @param {String} [set] An optional string containing the HTML to replace
              * @return {[String]} An optional string containing the selector's first element HTML value
              */
-            'html': function(set) { 
+            'html': function(set) {
                 if (set !== undefined) {
                     results[0].innerHTML = set;
                 } else {
-                    return results[0].innerHTML;    
+                    return results[0].innerHTML;
                 }
             },
             /**
@@ -823,15 +824,15 @@ function Tiramisu() {
              *
              * Usage
              * -----
-             * 
+             *
              *     tiramisu.get(*SELECTOR*).value([*VALUE*])
-             * 
+             *
              * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an
              * optional value to set the element's innerHTML value.
              *
              * Example #1 (Get the current value of a select list)
              * ---------------------------------------------------
-             * 
+             *
              *     <form id="myForm" action='#' method="GET">
              *       <select>
              *         <option> Apple </option>
@@ -842,10 +843,10 @@ function Tiramisu() {
              *     ...
              *     // The default selected value is “Apple”
              *     var current = t.get('myForm select').value();
-             *   
+             *
              * Example #2 (Set the current value of a select list)
              * ---------------------------------------------------
-             * 
+             *
              *     <form id="myForm" action='#' method="GET">
              *       <select>
              *         <option> Apple </option>
@@ -856,12 +857,12 @@ function Tiramisu() {
              *     ...
              *     t.get('myForm select').value('Strawberry');
              *
-             *     // Now the selected value is “Strawberry”  
+             *     // Now the selected value is “Strawberry”
              *     var current = t.get('myForm select').value();
              *
              * Example #3 (Get the current values of a series of elements)
              * ---------------------------------------------------
-             * 
+             *
              *     <input type="hidden" name="name_one" value="one" class="i_am_class">
              *     <input type="hidden" name="name_two" value="two" class="i_am_class">
              *     <input type="hidden" name="name_three" value="three" class="i_am_class">
@@ -876,7 +877,7 @@ function Tiramisu() {
              */
             'value': function(set) {
                 if (set !== undefined) {
-                    results[0].value = set; 
+                    results[0].value = set;
                 } else {
                     if (results.length > 1) {
                         var list = [];
@@ -896,22 +897,22 @@ function Tiramisu() {
              *
              * Usage
              * -----
-             * 
+             *
              *     tiramisu.get(*SELECTOR*).attr(*ATTRIBUTE*, [*VALUE*])
-             * 
-             * where *SELECTOR* is a valid CSS selector,*ATTRIBUTE* is the name of 
+             *
+             * where *SELECTOR* is a valid CSS selector,*ATTRIBUTE* is the name of
              * the attribute and *[VALUE]* is an optional value for setting the attribute.
              *
              * Example #1 (Get the current src of an image)
              * ---------------------------------------------------
-             * 
+             *
              *     <img src="www.example.com/image_num_one.png" id="id_image" />
              *     ...
              *     var current = t.get('#id_image').attr('src');
-             *   
+             *
              * Example #2 (Set the current src of an image)
              * ---------------------------------------------------
-             * 
+             *
              *     <img src="www.example.com/image_num_one.png" id="id_image" />
              *     ...
              *     t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');
@@ -926,20 +927,20 @@ function Tiramisu() {
                 } else {
                     return results[0][attr];
                 }
-            } 
-		};
+            }
+        };
 
-		// Append methods to the result object
-		(function append_methods() {
-			var key;
-			for (key in methods) {
-				results[key] = methods[key];
-			}
-		})();
-		return results;
-	};
+        // Append methods to the result object
+        (function append_methods() {
+            var key;
+            for (key in methods) {
+                results[key] = methods[key];
+            }
+        })();
+        return results;
+    };
 
-	/** 
+    /** 
      * Framework Ajax Module
      * =====================
      *
@@ -969,17 +970,17 @@ function Tiramisu() {
      *     tiramisu.ajax({
      *         url : 'http://www.example.com'
      *     });
-     *    
+     *
      * Example #2 (Ajax GET request with a success callback)
      * -----------------------------------------------------
      *
-     *     tiramisu.ajax({ 
+     *     tiramisu.ajax({
      *         url : 'http://www.example.com',
-     *         success : function(data) { 
+     *         success : function(data) {
      *             alert(data);
      *         }
      *     });
-     *         
+     *
      * Example #3 (Ajax GET request loaded into a div with an id)
      * ----------------------------------------------------------
      *
@@ -987,11 +988,11 @@ function Tiramisu() {
      *         url : 'http://www.example.com',
      *         successHTML : 'responseWrapper'
      *     });
-     *   
+     *
      * Example #4 (Ajax POST request displaying a loader)
      * --------------------------------------------------
      *
-     *     tiramisu.ajax({ 
+     *     tiramisu.ajax({
      *          url: 'www.example.com',
      *          method : 'POST',
      *          loader : 'div_loader',
@@ -1010,7 +1011,7 @@ function Tiramisu() {
      *         },
      *         url : 'http://www.example.com');
      *     });
-     *	   
+     *
      * Example #6 (Ajax GET request with success and error callbacks)
      * --------------------------------------------------------------
      *
@@ -1023,7 +1024,7 @@ function Tiramisu() {
      *             console.log('Error');
      *         }
      *     });
-     *	   
+     *
      * Example #7 (Ajax POST request with successHTML and success callbacks)
      * --------------------------------------------------------------
      *
@@ -1033,7 +1034,7 @@ function Tiramisu() {
      *             param_2 : 'variable 2'
      *         },
      *        success: function(){ ... },
-     *        successHTML: 'responseWrapper', 
+     *        successHTML: 'responseWrapper',
      *        url : 'http://www.example.com');
      *    });
      *
@@ -1044,138 +1045,143 @@ function Tiramisu() {
      * @param {Object} settings An object containing the Ajax call parameters
      * @api public
      */
-	Tiramisu.prototype.ajax = function(setting_input) {
-		var setting_input = setting_input || {},
+    Tiramisu.prototype.ajax = function(setting_input) {
+        var setting_input = setting_input || {},
             setting = {
-				async: true,
-				content_type: '',
-				connection: '',
-				error: function(res) { try { console.log(res) } catch (e) {  } },
-				loader: '',
+                async: true,
+                content_type: '',
+                connection: '',
+                error: function(res) {
+                    try {
+                        console.log(res)
+                    } catch (e) {}
+                },
+                loader: '',
                 method: 'GET',
-				parameter: '',
+                parameter: '',
                 success: function() {},
                 successHTML: '',
-				url: ''
+                url: ''
             },
             xhr = null,
-            parameter = '', // Is very important that parameter dafualt value is ''
+            parameter = '',
+            // Is very important that parameter dafualt value is ''
             parameter_count = 0;
 
-		if (window.XMLHttpRequest) {
-			xhr = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			xhr = new ActiveXObject("Microsoft.XMLHTTP");
-		} else {
-			setting.error('e_ajax#1');
-		}
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        } else {
+            setting.error('e_ajax#1');
+        }
 
-		extend(setting, setting_input);
+        extend(setting, setting_input);
 
-		if (t.detect('isIEolder')) {
-			setting.method = 'POST';
-		}
-		// object "setting.parameter" I create a string with the parameters 
-		// to be passed in request
-		if (setting.parameter != '') {
-            for (attrname in setting.parameter) { 
-                parameter += attrname+'='+setting.parameter[attrname]+'&';
+        if (t.detect('isIEolder')) {
+            setting.method = 'POST';
+        }
+        // object "setting.parameter" I create a string with the parameters 
+        // to be passed in request
+        if (setting.parameter != '') {
+            for (attrname in setting.parameter) {
+                parameter += attrname + '=' + setting.parameter[attrname] + '&';
             }
             parameter = parameter.substring(0, parameter.length - 1);
             if (!setting.content_type) {
-				setting.content_type = 'application/x-www-form-urlencoded';
-			}
-			setting.method = 'POST';
-        } else{
+                setting.content_type = 'application/x-www-form-urlencoded';
+            }
+            setting.method = 'POST';
+        } else {
             parameter = null;
         }
-		
-		// The open() method!
-		// When the open(method, url, async, user, password) method is invoked, the 
-		// user agent must run these steps (unless otherwise indicated):
-		// 1) If the XMLHttpRequest object has an associated XMLHttpRequest Document;
-		// 2) If method is a case-insensitive match for CONNECT, DELETE, GET, HEAD, 
-		//    OPTIONS, POST, PUT, TRACE;
-		// 3) Let url be a URL;
-		// 4) Let async be the value of the async argument or true if it was omitted;
-		// 5) Abort the send() algorithm;
-		// 6) If there are any tasks from the object's XMLHttpRequest task source in 
-		//    one of the task queues, then remove those tasks.
-		// 7) Set variables associated with the object as follows:
-		//		- Set the send() flag to false;
-		//		- Set response entity body to null;
-		//		- Empty the list of author request headers;
-		//		- Set method, url, temp user, temp password, value of async.
-		// 8) Switch the the state to OPENED;
-		// 9) Dispatch a readystatechange event.
-		//
-		xhr.open(setting.method, setting.url, setting.async);
-		
-		// The setRequestHeader() method!
-		// When the setRequestHeader(header, value) method is invoked, 
-		// the user agent must run these steps:
-		// 1) If the state is not OPENED raise an INVALID_STATE_ERR exception 
-		//    and terminate these steps;
-		// 2) If the send() flag is true raise an INVALID_STATE_ERR exception 
-		//    and terminate these steps;
-		// 3) Terminate these steps if header is a case-insensitive match for 
-		//    one of the following headers: 
-		//    Accept-Charset, Accept-Encoding, Connection, Content-Length, Cookie,
-		//	  Cookie2, Content-Transfer-Encoding, Date, Expect, Host, Keep-Alive,
-		//    Referer, TE, Trailer, Transfer-Encoding, Upgrade, User-Agent, Via.
-		//
-		if (setting.content_type) {
-			xhr.setRequestHeader('Content-type', setting.content_type);
-		}
 
-		if (setting.connection) {
-			xhr.setRequestHeader('Connection', setting.connection);
-		}
+        // The open() method!
+        // When the open(method, url, async, user, password) method is invoked, the 
+        // user agent must run these steps (unless otherwise indicated):
+        // 1) If the XMLHttpRequest object has an associated XMLHttpRequest Document;
+        // 2) If method is a case-insensitive match for CONNECT, DELETE, GET, HEAD, 
+        //    OPTIONS, POST, PUT, TRACE;
+        // 3) Let url be a URL;
+        // 4) Let async be the value of the async argument or true if it was omitted;
+        // 5) Abort the send() algorithm;
+        // 6) If there are any tasks from the object's XMLHttpRequest task source in 
+        //    one of the task queues, then remove those tasks.
+        // 7) Set variables associated with the object as follows:
+        //		- Set the send() flag to false;
+        //		- Set response entity body to null;
+        //		- Empty the list of author request headers;
+        //		- Set method, url, temp user, temp password, value of async.
+        // 8) Switch the the state to OPENED;
+        // 9) Dispatch a readystatechange event.
+        //
+        xhr.open(setting.method, setting.url, setting.async);
 
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				// success!
-				if (setting.successHTML) {
-					t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
-				}
-				setting.success(xhr.responseText);
-			} else if (xhr.readyState == 4 && xhr.status == 400) {
-				// 400 Bad Request
-				setting.error('400 Bad Request');
-			} else if (xhr.readyState == 4 && xhr.status != 200) {
-				// fetched the wrong page or network error...
-			    setting.error('Fetched the wrong page or network error');
-			}
-		};
-		
-		// The send() method!
-		// When the send(data) method is invoked, the user agent must run the following steps 
-		// (unless otherwise noted). This algorithm gets aborted when the open() or abort() method 
-		// is invoked. When the send() algorithm is aborted the user agent must terminate the 
-		// algorithm after finishing the step it is on.
-		// 1) If the state is not OPENED raise an INVALID_STATE_ERR exception and terminate 
-		//    these steps.
-		// 2) If the send() flag is true raise an INVALID_STATE_ERR exception and terminate these steps.
-		// 3) If the request method is a case-sensitive match for GET or HEAD act as if data is null.
-		//    If the data argument has been omitted or is null, do not include a request entity body 
-		//    and go to the next step.
-		//    If a Content-Type header is set using setRequestHeader() whose value is a valid MIME type 
-		//    and has a charset parameter whose value is not a case-insensitive match for encoding, 
-		//    and encoding is not null, set all the charset parameters of the Content-Type header to encoding.
-		//    If no Content-Type header has been set using setRequestHeader() and mime type is not null set a 
-		//    Content-Type request header with as value mime type.
-		// 4) If the asynchronous flag is false release the storage mutex.
-		// 5) Set the error flag to false.
-		//
-		xhr.send(parameter);
-		return this;
-	};
+        // The setRequestHeader() method!
+        // When the setRequestHeader(header, value) method is invoked, 
+        // the user agent must run these steps:
+        // 1) If the state is not OPENED raise an INVALID_STATE_ERR exception 
+        //    and terminate these steps;
+        // 2) If the send() flag is true raise an INVALID_STATE_ERR exception 
+        //    and terminate these steps;
+        // 3) Terminate these steps if header is a case-insensitive match for 
+        //    one of the following headers: 
+        //    Accept-Charset, Accept-Encoding, Connection, Content-Length, Cookie,
+        //	  Cookie2, Content-Transfer-Encoding, Date, Expect, Host, Keep-Alive,
+        //    Referer, TE, Trailer, Transfer-Encoding, Upgrade, User-Agent, Via.
+        //
+        if (setting.content_type) {
+            xhr.setRequestHeader('Content-type', setting.content_type);
+        }
 
-	/** 
+        if (setting.connection) {
+            xhr.setRequestHeader('Connection', setting.connection);
+        }
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // success!
+                if (setting.successHTML) {
+                    t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
+                }
+                setting.success(xhr.responseText);
+            } else if (xhr.readyState == 4 && xhr.status == 400) {
+                // 400 Bad Request
+                setting.error('400 Bad Request');
+            } else if (xhr.readyState == 4 && xhr.status != 200) {
+                // fetched the wrong page or network error...
+                setting.error('Fetched the wrong page or network error');
+            }
+        };
+
+        // The send() method!
+        // When the send(data) method is invoked, the user agent must run the following steps 
+        // (unless otherwise noted). This algorithm gets aborted when the open() or abort() method 
+        // is invoked. When the send() algorithm is aborted the user agent must terminate the 
+        // algorithm after finishing the step it is on.
+        // 1) If the state is not OPENED raise an INVALID_STATE_ERR exception and terminate 
+        //    these steps.
+        // 2) If the send() flag is true raise an INVALID_STATE_ERR exception and terminate these steps.
+        // 3) If the request method is a case-sensitive match for GET or HEAD act as if data is null.
+        //    If the data argument has been omitted or is null, do not include a request entity body 
+        //    and go to the next step.
+        //    If a Content-Type header is set using setRequestHeader() whose value is a valid MIME type 
+        //    and has a charset parameter whose value is not a case-insensitive match for encoding, 
+        //    and encoding is not null, set all the charset parameters of the Content-Type header to encoding.
+        //    If no Content-Type header has been set using setRequestHeader() and mime type is not null set a 
+        //    Content-Type request header with as value mime type.
+        // 4) If the asynchronous flag is false release the storage mutex.
+        // 5) Set the error flag to false.
+        //
+        xhr.send(parameter);
+        return this;
+    };
+
+    /** 
      * Task Engine Module
      * ==================
      *
-     * This module is used to perform a function at a particular amount of time 
+     * This module is used to perform a function at a particular amount of time
      * or perform the same function several times in that time frame.
      *
      * Usage
@@ -1191,7 +1197,7 @@ function Tiramisu() {
      *
      *     tiramisu.task(2000, callback)
      *
-     *    
+     *
      * Example #2 (The callback is executed every 100 ms in a period of 2000ms)
      * -----------------------------------------------------
      *
@@ -1208,40 +1214,39 @@ function Tiramisu() {
      * @param {integer} [interval] The interval of the repetitions(ms)
      * @param {Function} cb The callback function
      */
-	Tiramisu.prototype['task'] = function(delay, cb) {
-		var interval,
-			requestAnimFrame = t.requestAnimFrame;
+    Tiramisu.prototype['task'] = function(delay, cb) {
+        var interval, requestAnimFrame = t.requestAnimFrame;
 
-		if (arguments.length > 2) {
-			interval = arguments[1];
-			cb = arguments[arguments.length - 1];
-		}
+        if (arguments.length > 2) {
+            interval = arguments[1];
+            cb = arguments[arguments.length - 1];
+        }
 
-		var start = + new Date(),
-			pass = interval;
+        var start = +new Date(),
+            pass = interval;
 
-		function animate() {
-			var progress = + new Date() - start;
+        function animate() {
+            var progress = +new Date() - start;
 
-			if (interval !== undefined) {
-				if (progress > pass) {
-					pass += interval;
-					cb();
-				}
-			}
+            if (interval !== undefined) {
+                if (progress > pass) {
+                    pass += interval;
+                    cb();
+                }
+            }
 
             // The recursion continues only in two cases:
             // - The elapsed time is less than the total time;
             // - The total time is infinite (so a loop) but there 
             //   is an interval of time between repetitions of the callback.
             if (progress < delay || (delay == 'loop' && interval !== undefined)) {
-				requestAnimFrame(animate);
-			} else {
-				if (interval === undefined) {
-					cb();
-				}
-			}
-		}
-		animate();
-	};
+                requestAnimFrame(animate);
+            } else {
+                if (interval === undefined) {
+                    cb();
+                }
+            }
+        }
+        animate();
+    };
 })(window);
