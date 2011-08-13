@@ -18,7 +18,7 @@
      * - *requestAnimFrame* (used for handling tasks).
      */
 function Tiramisu() {
-		this.version = '0.0.9.90';
+		this.version = '0.0.9.91';
 		this.d = document;
 		this.requestAnimFrame = (function() {
 			return window.requestAnimationFrame 
