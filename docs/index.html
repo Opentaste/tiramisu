@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.0.9.90</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.0.9.91</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.0.9.90)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.0.9.91)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally: </p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.9.90'</span>;
+		<span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.0.9.91'</span>;
 		<span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
 		<span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
 			<span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> 
@@ -856,41 +856,41 @@ t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']</code></pre>
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>Form field src extension method</h2>
+<h2>Attribute extension method</h2>
 
-<p>Gets or sets the src of an image.</p>
+<p>Gets or sets the attribute of an element.</p>
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.get(*SELECTOR*).src([*VALUE*])</code></pre>
+<pre><code>tiramisu.get(*SELECTOR*).attr(*ATTRIBUTE*, [*VALUE*])</code></pre>
 
-<p>where <em>SELECTOR</em> is a valid CSS selector and <em>[VALUE]</em> is an
-optional value to set the element's src value.</p>
+<p>where <em>SELECTOR</em> is a valid CSS selector,<em>ATTRIBUTE</em> is the name of 
+the attribute and <em>[VALUE]</em> is an optional value for setting the attribute.</p>
 
 <h2>Example #1 (Get the current src of an image)</h2>
 
 <pre><code>&lt;img src="www.example.com/image_num_one.png" id="id_image" /&gt;
 ...
-var current = t.get('#id_image').src();</code></pre>
+var current = t.get('#id_image').attr('src');</code></pre>
 
 <h2>Example #2 (Set the current src of an image)</h2>
 
 <pre><code>&lt;img src="www.example.com/image_num_one.png" id="id_image" /&gt;
 ...
-t.get('#id_image').src('www.example.com/image_num_two.png');</code></pre>
+t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre>
 
 <h2></h2>
 
 <ul><li><p><strong>param</strong>: <em>String</em>  [set] An optional string containing the field src to set</p></li><li><p><strong>return</strong>: <em>[String]</em>  An optional string containing the selector's first element field src</p><pre><code>     </code></pre></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="string">'src'</span>: <span class="keyword">function</span>(<span class="variable">set</span>) {
-                <span class="keyword">if</span> (<span class="variable">set</span> !== <span class="variable">undefined</span>) {
-                    <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">src</span> = <span class="variable">set</span>; 
+<pre><code><span class="string">'attr'</span>: <span class="keyword">function</span>(<span class="variable">attr</span>, <span class="variable">value</span>) {
+                <span class="keyword">if</span> (<span class="variable">value</span> !== <span class="variable">undefined</span>) {
+                    <span class="variable">results</span>[<span class="number integer">0</span>][<span class="variable">attr</span>] = <span class="variable">value</span>;
                 } <span class="keyword">else</span> {
-                    <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">src</span>;
+                    <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>][<span class="variable">attr</span>];
                 }
-            }
+            } 
 		};
 
 		<span class="comment">// Append methods to the result object</span>
