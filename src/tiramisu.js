@@ -889,44 +889,44 @@ function Tiramisu() {
                 }
             },
             /**
-             * Form field src extension method
+             * Attribute extension method
              * ---------------------------------
              *
-             * Gets or sets the src of an image.
+             * Gets or sets the attribute of an element.
              *
              * Usage
              * -----
              * 
-             *     tiramisu.get(*SELECTOR*).src([*VALUE*])
+             *     tiramisu.get(*SELECTOR*).attr(*ATTRIBUTE*, [*VALUE*])
              * 
-             * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an
-             * optional value to set the element's src value.
+             * where *SELECTOR* is a valid CSS selector,*ATTRIBUTE* is the name of 
+             * the attribute and *[VALUE]* is an optional value for setting the attribute.
              *
              * Example #1 (Get the current src of an image)
              * ---------------------------------------------------
              * 
              *     <img src="www.example.com/image_num_one.png" id="id_image" />
              *     ...
-             *     var current = t.get('#id_image').src();
+             *     var current = t.get('#id_image').attr('src');
              *   
              * Example #2 (Set the current src of an image)
              * ---------------------------------------------------
              * 
              *     <img src="www.example.com/image_num_one.png" id="id_image" />
              *     ...
-             *     t.get('#id_image').src('www.example.com/image_num_two.png');
+             *     t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');
              *
              * @param {String} [set] An optional string containing the field src to set
              * @return {[String]} An optional string containing the selector's first element field src
              *
              */
-            'src': function(set) {
-                if (set !== undefined) {
-                    results[0].src = set; 
+            'attr': function(attr, value) {
+                if (value !== undefined) {
+                    results[0].attr(attr, value);
                 } else {
-                    return results[0].src;
+                    return results[0].attr(attr);
                 }
-            }
+            } 
 		};
 
 		// Append methods to the result object
