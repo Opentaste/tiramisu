@@ -196,3 +196,10 @@ test('Pressing any key on the keyboard', function() {
 
     equal(t.get('#headline').html(), 'A key was pressed.');
 });
+
+module('Attribute tests');
+
+test('Getting the attribute "id" of "#headline"', function() {
+    var rs = t.get('#headline').attr('id');
+    equals(rs, 'headline', 'should equal to "headline"');
+});

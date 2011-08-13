@@ -922,9 +922,9 @@ function Tiramisu() {
              */
             'attr': function(attr, value) {
                 if (value !== undefined) {
-                    results[0].attr(attr, value);
+                    results[0][attr] = value;
                 } else {
-                    return results[0].attr(attr);
+                    return results[0][attr];
                 }
             } 
 		};
