@@ -43,6 +43,11 @@ body {
 }
 
 /* Classes Section */
+
+.black_shadow {
+    text-shadow: 0 1px 1px rgba(67, 66, 72, 0.75);
+}
+
 .dancing { 
     font-family: 'DancingScript', 'Helvetica Neue', Arial, sans-serif;
     letter-spacing: 0;
@@ -84,4 +89,16 @@ body {
 
 #header p {
     font-size: 26px;
+    margin-top: 100px;
+}
+
+#header pre {
+    color: #fff;
+    background-color: #434248;
+    border: 2px solid #5c8249;
+    font-size: 18px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px 30px;
 }
