@@ -44,6 +44,16 @@ body {
 
 /* Classes Section */
 
+div.sep_1 {
+    height: 2px;
+    background: transparent url(../img/navbar-sep1.png) repeat-x;
+}
+
+div.sep_2 {
+    height: 2px;
+    background: transparent url(../img/navbar-sep2.png) repeat-x;
+}
+
 .black_shadow {
     text-shadow: 0 1px 0px #000;
 }
@@ -105,4 +115,27 @@ body {
     -moz-border-radius: 5px;
     border-radius: 5px;
     padding: 10px 30px;
+}
+
+/* Sezione NavBar */
+ul#navbar {
+    background-color: #e5ab63;
+    margin: 0;
+    list-style: none;
+    padding: 12px 0;
+}
+
+ul#navbar li {
+    float: right;
+}
+
+ul#navbar a {
+    color: inherit;
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+ul#navbar a:hover {
+    border-bottom: 2px solid #434248;
 }
