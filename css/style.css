@@ -15,11 +15,11 @@
 
 @font-face {
     font-family: 'SortsMillGoudyRegular';
-    src: url('fonts/GoudyStM-webfont.eot');
-    src: url('fonts/GoudyStM-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/GoudyStM-webfont.woff') format('woff'),
-         url('fonts/GoudyStM-webfont.ttf') format('truetype'),
-         url('fonts/GoudyStM-webfont.svg#SortsMillGoudyRegular') format('svg');
+    src: url('fonts/goudystm-webfont.eot');
+    src: url('fonts/goudystm-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/goudystm-webfont.woff') format('woff'),
+         url('fonts/goudystm-webfont.ttf') format('truetype'),
+         url('fonts/goudystm-webfont.svg#SortsMillGoudyRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -43,13 +43,18 @@ body {
 }
 
 /* Classes Section */
-h1.dancing { 
+.dancing { 
     font-family: 'DancingScript', 'Helvetica Neue', Arial, sans-serif;
     letter-spacing: 0;
 }
 
-h2.smg {
+.smg {
     font-family: 'SortsMillGoudyRegular', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: normal;
+}
+
+.smgi {
+    font-family: 'SortsMillGoudyItalic', 'Helvetica Neue', Arial, sans-serif;
     font-weight: normal;
 }
 
@@ -75,4 +80,8 @@ h2.smg {
 
 #header img {
     margin-bottom: 35px;
+}
+
+#header p {
+    font-size: 26px;
 }
