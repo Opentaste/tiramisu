@@ -1,0 +1,38 @@
+/* Tiramisu - A JavaScript μFramework CSS */
+
+///////////////////////////
+// Font FaceType Section //
+///////////////////////////
+
+@font-face {
+    font-family: 'DancingScriptOTRegular';
+    src: url('fonts/DancingScript-Regular-webfont.eot');
+    src: url('fonts/DancingScript-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/DancingScript-Regular-webfont.woff') format('woff'),
+         url('fonts/DancingScript-Regular-webfont.ttf') format('truetype'),
+         url('fonts/DancingScript-Regular-webfont.svg#DancingScriptOTRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+////////////////////
+// Header Section //
+////////////////////
+
+body {
+	
+}
+#header {
+	height: 470px;
+	background-color: #b6c66e;
+	padding: 30px 0;
+}
+
+#header h1 {
+	font: 100px "DancingScriptOTRegular", Arial, sans-serif;
+}
+
+#logo {
+	
+}
