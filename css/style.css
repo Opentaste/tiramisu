@@ -45,7 +45,11 @@ body {
 /* Classes Section */
 
 .black_shadow {
-    text-shadow: 0 1px 1px rgba(67, 66, 72, 0.75);
+    text-shadow: 0 1px 0px #000;
+}
+
+.white_shadow {
+    text-shadow: 0 1px 0px #e4eaca;
 }
 
 .dancing { 
