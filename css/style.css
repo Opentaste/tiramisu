@@ -62,6 +62,10 @@ div.sep_2 {
     text-shadow: 0 1px 0px #d2dca5;
 }
 
+.main_shadow {
+    text-shadow: 0 1px 1px #fff;
+}
+
 .dancing { 
     font-family: 'DancingScript', 'Helvetica Neue', Arial, sans-serif;
     letter-spacing: 0;
@@ -138,4 +142,20 @@ ul#navbar a {
 
 ul#navbar a:hover {
     border-bottom: 2px solid #434248;
+}
+
+/* Sezione Main */
+#main {
+    background-color: #f0eec7;
+    font: 20px/24px 'Helvetica Neue', Arial, sans-serif;
+    padding: 25px 0;
+}
+
+#main img {
+    display: block;
+    margin: 0 auto;
+}
+
+#main p {
+    margin: 15px 0;
 }
