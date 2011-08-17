@@ -54,8 +54,13 @@ div.sep_2 {
     background: transparent url(../img/navbar-sep2.png) repeat-x;
 }
 
+div.sep_3 {
+    height: 9px;
+    background: transparent url(../img/deco-sep.png) repeat-x;
+}
+
 .black_shadow {
-    text-shadow: 0 1px 0px #000;
+    text-shadow: 0 1px 0 #000;
 }
 
 .white_shadow {
@@ -91,6 +96,16 @@ div.sep_2 {
 
 .left {
     margin-left: 0;
+}
+
+.button {
+    background-color: #b6c66e;
+    border: 2px solid #5c8249;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 120%;
 }
 
 /* Header Section */
@@ -185,4 +200,15 @@ ul#navbar a:hover {
 
 #crossbrowser {
     padding: 11px 0;
+}
+
+/* Footer Section */
+#footer {
+    background-color: #434248;
+    color: #fff;
+    padding: 50px;
+}
+
+#footer p, #footer h1 {
+    margin: 0;
 }
