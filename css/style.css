@@ -13,10 +13,44 @@
 
 }
 
+@font-face {
+    font-family: 'SortsMillGoudyRegular';
+    src: url('fonts/GoudyStM-webfont.eot');
+    src: url('fonts/GoudyStM-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/GoudyStM-webfont.woff') format('woff'),
+         url('fonts/GoudyStM-webfont.ttf') format('truetype'),
+         url('fonts/GoudyStM-webfont.svg#SortsMillGoudyRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'SortsMillGoudyItalic';
+    src: url('fonts/GoudyStM-Italic-webfont.eot');
+    src: url('fonts/GoudyStM-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/GoudyStM-Italic-webfont.woff') format('woff'),
+         url('fonts/GoudyStM-Italic-webfont.ttf') format('truetype'),
+         url('fonts/GoudyStM-Italic-webfont.svg#SortsMillGoudyItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+/* Body Section */
+body {
+    color: #434248;
+}
+
 /* Classes Section */
 h1.dancing { 
-    font: 100px 'DancingScript', Arial, sans-serif;
+    font-family: 'DancingScript', 'Helvetica Neue', Arial, sans-serif;
     letter-spacing: 0;
+}
+
+h2.smg {
+    font-family: 'SortsMillGoudyRegular', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: normal;
 }
 
 .logo {
@@ -28,4 +62,17 @@ h1.dancing {
 	height: 470px;
 	background-color: #b6c66e;
 	padding: 30px 0;
+}
+
+#header h1 {
+    font-size: 100px;
+    margin: 0;
+}
+
+#header h2 {
+    font-size: 24px;
+}
+
+#header img {
+    margin-bottom: 35px;
 }
