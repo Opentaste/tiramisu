@@ -85,6 +85,14 @@ div.sep_2 {
     text-align: center;
 }
 
+.center {
+    margin: 0 auto;
+}
+
+.left {
+    margin-left: 0;
+}
+
 /* Header Section */
 #header {
 	height: 470px;
@@ -148,14 +156,33 @@ ul#navbar a:hover {
 #main {
     background-color: #f0eec7;
     font: 20px/24px 'Helvetica Neue', Arial, sans-serif;
-    padding: 25px 0;
+    padding: 50px 0;
 }
 
 #main img {
     display: block;
-    margin: 0 auto;
+}
+
+#main .container_12 {
+    margin-bottom: 30px;
 }
 
 #main p {
-    margin: 15px 0;
+    margin: 0;
+}
+
+#modular {
+    padding: 20px 0;
+}
+
+#small {
+    padding: 36px 0;
+}
+
+#callback-scheduling {
+    padding: 56px 0;
+}
+
+#crossbrowser {
+    padding: 11px 0;
 }

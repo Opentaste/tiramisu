@@ -12,7 +12,7 @@
 	<!-- Inizio Header -->
 	<div id="header">
 		<div class="container_12 clearfix">
-			<div class="logo grid_5">
+			<div class="logo grid_5 alpha">
 				<h1 class="dancing">Tiramisu</h1>
 				<img src="img/logo.png" class="alpha grid_5" />
 				<h2 class="smg">A tasty JavaScript &#181;Framework</h2>
@@ -43,14 +43,43 @@ tiramisu.get('h1').each(function() {
 	<div class="sep_2"></div>
 	<!-- Inizio Main -->
 	<div id="main" class="main_shadow">
+
 		<div class="container_12 clearfix">
-			<div class="grid_8 alpha">
+			<div id="modular" class="grid_8 alpha">
 				<p><strong>Modular philosophy</strong>. Sometimes you <em>simply</em> don’t need to use <em>all the features</em> of an <em>entire</em> JavaScript Framework. Tiramisu lets you choose <em>exactly what you need</em> leaving out all the unused stuff: you can decide <em>how much coffee</em> to put into your Tiramisu!</p>
 			</div>
 			<div class="grid_4 omega">
-				<img src="img/coffee-icon.png" />
+				<img src="img/coffee-icon.png" class="center" />
 			</div>
 		</div>
+
+		<div class="container_12 clearfix">
+			<div class="grid_4 alpha">
+				<img src="img/small-icon.png" class="left"/>
+			</div>
+			<div id="small" class="grid_8 clearfix omega">
+				<p><strong>Small size.</strong>  Even in the age of the modern browsers, script size <em>does</em> still matter. Tiramisu tries to keep it’s core size as <em>smallest</em> as possible (about 8 kb for the <em>minified version</em>).</p>
+			</div>
+		</div>
+
+		<div class="container_12 clearfix">
+			<div id="callback-scheduling" class="grid_8 alpha">
+				<p><strong>Callback scheduling.</strong> JavaScript’s asynchronous programming can get <em>quite messy</em>, especially when a project grows <em>bigger</em>. Tiramisu let you decide the <em>exact</em> schedule order of your callbacks with <em>ease</em>.</p>
+			</div>
+			<div class="grid_4 omega">
+				<img src="img/clock-icon.png" class="center" />
+			</div>
+		</div>
+
+		<div class="container_12 clearfix">
+			<div class="grid_4 alpha">
+				<img src="img/crossbrowser-icon.png" class="left"/>
+			</div>
+			<div id="crossbrowser" class="grid_8 clearfix omega">
+				<p><strong>Cross-browser.</strong>  Every JavaScript developer knows how much <em>painful</em> is to write <em>multiple versions</em> of the same piece of code for different browsers. Tiramisu handles <em>cross-browser</em> issues and <em>normalizes</em> your code behavior.</p>
+			</div>
+		</div>
+
 	</div>
 	<!-- Fine Main -->
 </body>
