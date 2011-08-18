@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.0.9.91';
+        this.version = '0.1';
         this.d = document;
         this.requestAnimFrame = (function() {
             return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
