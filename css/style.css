@@ -60,7 +60,7 @@ div.sep_3 {
 }
 
 .black_shadow {
-    text-shadow: 0 1px 0 #000;
+    text-shadow: 0 1px 1px rgba(67, 66, 72, 0.75);
 }
 
 .white_shadow {
@@ -99,13 +99,52 @@ div.sep_3 {
 }
 
 .button {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     background-color: #b6c66e;
     border: 2px solid #5c8249;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     text-align: center;
-    font-size: 120%;
+    line-height: 40px;
+    cursor: pointer;
+    height: 124px;
+}
+
+.button:hover {
+    background-color: #a4b849;
+    border-color: #456137;
+}
+
+.button h1 {
+    font-size: 48px;
+}
+
+.button h2 {
+    padding: 0 !important;
+}
+
+.button p {
+    font-size: 20px !important;
+    margin: 0 !important;
+}
+
+.button span {
+    display: block;
+    font-size: 14px !important;
+    font-weight: bold !important;
+}
+
+.button.disabled {
+    background-color: #c5c5c7;
+    border-color: #777;
+    cursor: default;
+}
+
+.button.disabled h2 {
+    padding: 38px 0 !important;
 }
 
 /* Header Section */
@@ -209,6 +248,23 @@ ul#navbar a:hover {
     padding: 50px;
 }
 
-#footer p, #footer h1 {
+#footer p, #footer h1, #footer h2 {
     margin: 0;
+}
+
+#footer p {
+    font-size: 24px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+#footer span {
+    font-size: 30px;
+    margin-left: 5px;
+}
+
+#footer h2 {
+    font-size: 36px;
+    text-align: center;
+    padding: 100px 0;
 }
