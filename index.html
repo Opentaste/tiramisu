@@ -1,12 +1,14 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" type="text/css" href="css/960_12_col.css">
 	<link rel="stylesheet" type="text/css" href="css/text.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<title>Tiramisu | A tasty JavaScript μFramework</title>
+	<script src="js/modernizr.js"></script>
 </head>
 <body class="white_shadow">
 	<!-- Inizio Header -->
@@ -138,4 +140,11 @@ tiramisu.get('h1').each(function() {
 	</div>
 	<!-- Fine Copyright -->
 </body>
+<!-- Change UA-XXXXX-X to be your site's ID -->
+  <script>
+    window._gaq = [['_setAccount','UA-5286378-4'],['_trackPageview'],['_trackPageLoadTime']];
+    Modernizr.load({
+      load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
+    });
+  </script>
 </html>
