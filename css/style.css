@@ -59,6 +59,11 @@ div.sep_3 {
     background: transparent url(../img/deco-sep.png) repeat-x;
 }
 
+div.sep_4 {
+    height: 6px;
+    background: transparent url(../img/line-sep.png) repeat-x;
+}
+
 .black_shadow {
     text-shadow: 0 1px 1px rgba(67, 66, 72, 0.75);
 }
@@ -145,6 +150,34 @@ div.sep_3 {
 
 .button.disabled h2 {
     padding: 38px 0 !important;
+}
+
+.developer {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    float: left;
+    width: 380px;
+}
+
+.developer p {
+    position: absolute;
+    margin: 0;
+    left: 100px;
+}
+
+.developer p.top {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    top: 0;
+    margin-top: 10px;
+}
+
+.developer p.bottom {
+    font-size: 14px !important;
+    bottom: 0;
+    margin-bottom: 10px;
 }
 
 /* Header Section */
@@ -266,5 +299,33 @@ ul#navbar a:hover {
 #footer h2 {
     font-size: 36px;
     text-align: center;
-    padding: 100px 0;
+    padding-top: 100px;
+}
+
+/* About Section */
+
+#about {
+    background-color: #434248;
+    color: #fff;
+    padding: 50px;
+}
+
+#about h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+#about p {
+    font-size: 18px;
+}
+
+#about span {
+    font-size: 24px;
+    margin-right: 2px;
+}
+
+#about img {
+    display: block;
+    width: 80px;
+    height: 80px;
 }
