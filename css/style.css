@@ -344,3 +344,8 @@ ul#navbar a:hover {
     padding: 25px;
     font-size: 14px;
 }
+
+#copyright a {
+    text-decoration: none;
+    color: #e5ab63;
+}
