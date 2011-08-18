@@ -180,6 +180,13 @@ div.sep_4 {
     margin-bottom: 10px;
 }
 
+.owl-logo {
+    display: inline-block;
+    width: 15px;
+    height: 19px;
+    background: transparent url(../img/owl-logo.png) no-repeat;
+}
+
 /* Header Section */
 #header {
 	height: 470px;
@@ -328,4 +335,12 @@ ul#navbar a:hover {
     display: block;
     width: 80px;
     height: 80px;
+}
+
+/* Copyright Section */
+#copyright {
+    background-color: #434248;
+    color: #fff;
+    padding: 25px;
+    font-size: 14px;
 }
