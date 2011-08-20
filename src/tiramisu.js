@@ -100,7 +100,7 @@
             opera = nav_agent.substring(nav_agent.indexOf('Version')).split("/")[1];
 
         // Turns off querySelectorAll detection
-        var USE_QSA = false;
+        var USE_QSA = true;
 
         // Netscape includes Firefox, Safari or Chrome
         var tests = {
