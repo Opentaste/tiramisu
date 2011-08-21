@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1';
+        this.version = '0.1.02';
         this.d = document;
         this.requestAnimFrame = (function() {
             return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -589,8 +589,8 @@
              * @param {function} cb The callback function to apply
              */
             'each': function(cb) {
-                var i;
-                for (i = 0; i < results.length; i++) {
+                var i, len = results.length;
+                for (i = 0; i < len; i++) {
                     cb.apply(results[i]);
                 }
                 return this;
@@ -657,14 +657,14 @@
              * @param {function} cb The callback function to attach
              */
             'on': function(evt, cb) {
-                var i;
+                var i, len = results.length;
                 // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
                 if (results[0].addEventListener) {
-                    for (i = 0; i < results.length; i++) {
+                    for (i = 0; i < len; i++) {
                         results[i].addEventListener(evt, cb, false);
                     }
                 } else if (results[0].attachEvent) {
-                    for (i = 0; i < results.length; i++) {
+                    for (i = 0; i < len; i++) {
                         results[i].attachEvent('on' + evt, cb);
                     }
                 }
@@ -876,6 +876,9 @@
              *
              */
             'value': function(set) {
+                if (results[0] == undefined) {
+                    return '';
+                }
                 if (set !== undefined) {
                     results[0].value = set;
                 } else {
@@ -1051,6 +1054,7 @@
                 async: true,
                 content_type: '',
                 connection: '',
+                data_type: '',
                 error: function(res) {
                     try {
                         console.log(res)
@@ -1136,6 +1140,10 @@
 
         if (setting.connection) {
             xhr.setRequestHeader('Connection', setting.connection);
+        }
+
+        if (setting.data_type) {
+            xhr.setRequestHeader('dataType', setting.data_type);
         }
 
         xhr.onreadystatechange = function() {
