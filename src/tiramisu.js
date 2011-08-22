@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.02';
+        this.version = '0.1.04';
         this.d = document;
         this.requestAnimFrame = (function() {
             return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -657,6 +657,9 @@
              * @param {function} cb The callback function to attach
              */
             'on': function(evt, cb) {
+                if (results[0] == undefined) {
+					return '';
+				}
                 var i, len = results.length;
                 // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
                 if (results[0].addEventListener) {
