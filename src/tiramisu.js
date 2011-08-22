@@ -658,8 +658,8 @@
              */
             'on': function(evt, cb) {
                 if (results[0] == undefined) {
-					return '';
-				}
+                    return '';
+                }
                 var i, len = results.length;
                 // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
                 if (results[0].addEventListener) {
