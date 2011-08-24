@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.0-b5';
+        this.version = '0.1.1';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
