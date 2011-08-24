@@ -36,6 +36,9 @@ with open("src/tiramisu.js", "r") as f:
         if (version is not None):
             print(version.group(1))
 
+            with open("VERSION", "w") as version_file:
+                version_file.write(version.group(1))
+
             with open("utils/docs-intro.md", "w") as intro:
                 for line in markdown_intro.format(version=version.group(1)):
                     intro.write(line)
