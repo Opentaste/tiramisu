@@ -7,7 +7,7 @@ update: ${DOCS}
 ${DOCS}:
 	@echo "Fetching the latest docs from GitHub..."
 	@echo "#######################################"
-	curl https://raw.github.com/OwlStudios/tiramisu/master/docs/index.html > ${DOCS}
+	curl https://raw.github.com/OwlStudios/tiramisu/stable/docs/index.html > ${DOCS}
 
 clean:
 	@echo "Cleaning..."

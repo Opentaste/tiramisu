@@ -90,9 +90,9 @@ tiramisu.get('h1').each(function() {
 		<div class="container_12 clearfix">
 			<div class="alpha grid_4 prefix_1 black_shadow">
 				<p class="smg"> Get a tasty slice of <span class="dancing">Tiramisu</span> </p>
-				<a href="https://github.com/OwlStudios/tiramisu/zipball/0.1" class="button">
+				<a id="download" href="https://github.com/OwlStudios/tiramisu/zipball/" class="button">
 					<p> Current Version: </p>
-					<h1> 0.1 </h1>
+					<h1 id="version">  </h1>
 					<span> Released August 17, 2011 </span>
 				</a>
 		  </div>
@@ -146,5 +146,10 @@ tiramisu.get('h1').each(function() {
     Modernizr.load({
       load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
     });
+  </script>
+  <script src="https://raw.github.com/OwlStudios/tiramisu/stable/VERSION"></script>
+  <script>
+    document.getElementById('version').innerHTML = getVersion();
+    document.getElementById('download').attr('href') += getVersion();
   </script>
 </html>
