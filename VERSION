@@ -1,1 +1,1 @@
-0.1.0-b5
+function getVersion() { return '0.1.1'; }
