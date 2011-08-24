@@ -151,13 +151,6 @@
                 return (tiramisu.selector === 'QSA' && typeof tiramisu.d.querySelectorAll !== 'undefined')
             },
 
-            'opacity': function() {
-                if (this.isIEolder()) {
-                    return false;
-                }
-                return true;
-            },
-
             'color': function() {
                 if (this.isIEolder()) {
                     return false;
@@ -713,14 +706,35 @@
              */
             'css': function(obj) {
                 var i, key, ie = t.detect('isIE');
+
+                // For handling IE CSS Attributes
+                var IE_attr = {
+                    'opacity': function(obj, value) {
+                        if (t.detect('isIEOlder')) {
+                            try {
+                                obj.style.filters.alpha.opacity = value * 100;
+                            } catch (e) {
+                                obj.style.filter = 'alpha(opacity=' + (value * 100) + ')';
+                            }
+                        }
+                    }
+                };
+
                 if (typeof(obj) === 'string') {
                     return results[0].style[obj];
                 }
+
+                // Apply to all elements
                 for (i = 0; i < results.length; i++) {
                     for (key in obj) {
                         if (obj.hasOwnProperty(key)) {
                             if (ie) {
-                                results[i].style[key] = obj[key];
+                                if (IE_attr[key]) {
+                                    IE_attr[key](results[i], obj[key]);
+                                } else {
+                                    // No match in IE_attr
+                                    results[i].style[key] = obj[key];
+                                }
                             } else {
                                 // The third param is for firefox
                                 results[i].style.setProperty(key, obj[key], '');
