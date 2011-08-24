@@ -32,7 +32,7 @@ Resources
 
 with open("src/tiramisu.js", "r") as f:
     for line in f:
-        version = re.search(r"this.version = '([0-9\.]+)';", line)
+        version = re.search(r"this.version = '([0-9]\.[0-9](?:\.[0-9](?:-b[0-9]{1,2})?)?)';", line)
         if (version is not None):
             print(version.group(1))
 
