@@ -745,56 +745,6 @@
                 return this;
             },
             /**
-             * CSS Cross Browser Opacity extension
-             * ---------------------
-             *
-             * Set Cross Browser Opacity
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).op(*CSS_OPACITY*)
-             *
-             * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES*
-             * is opacity value as 0.8, 0.35, 1, etc.
-             *
-             * Example #1 (Set all the h1 tag with an opacity of 0.5)
-             * ---------------------------------------------------
-             *
-             *     <h1> This is one headline. </h1>
-             *     <h1> This is another headline. </h1>
-             *     ...
-             *     tiramisu.get('h1').op('0.5');
-             *
-             * Example #2 (Set all the h1 tag with an opacity of 0.5 and color red)
-             * ---------------------------------------------------
-             *
-             *     <h1> This is one headline. </h1>
-             *     <h1> This is another headline. </h1>
-             *     ...
-             *     tiramisu.get('h1').css({'color' : 'red'}).op('0.5');
-             *
-             *
-             *  @param {Opacity} string
-             */
-            'op': function(opacity) {
-                var cssOpacity = t.detect('opacity');
-                if (cssOpacity) {
-                    for (i = 0; i < results.length; i++) {
-                        results[i].style.opacity = opacity;
-                    }
-                } else {
-                    for (i = 0; i < results.length; i++) {
-                        try {
-                            results[i].style.filters.alpha.opacity = opacity * 100;
-                        } catch (e) {
-                            results[i].style.filter = 'alpha(opacity=' + (opacity * 100) + ')';
-                        }
-                    }
-                }
-                return this;
-            },
-            /**
              * HTML extension method
              * ---------------------
              *
