@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.0-b4';
+        this.version = '0.1.1';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -556,6 +556,26 @@
             results = [selector];
         }
 
+        function insert_content(html, position) {
+            if (results[0] == undefined) {
+                return '';
+            }
+            var i, parent, div, ele, len = results.length;
+            for (i = 0; i < len; i++) {
+                div = t.d.createElement('div')
+                div.innerHTML = html;
+                parent = results[i].parentNode;
+                while (div.firstChild) {
+                    ele = div.firstChild;
+                    if (position) {
+                        parent.insertBefore(ele, results[i]);
+                    } else {
+                        results[i].appendChild(ele);
+                    }
+                }
+            }
+        }
+
         var methods = {
             /**
              * Each iterator extension
@@ -678,6 +698,82 @@
                 return this;
             },
             /**
+             * Insert Before
+             * -----------------------
+             *
+             * Insert text or html, before each element.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).before(*HTML*)
+             *
+             * where *SELECTOR* is a valid CSS selector, *HTML* is
+             * the string...
+             *
+             * Example #1 ()
+             * ------------------------------------------------------
+             *
+             *     <h1>Hello Tiramisu</h1>
+             *     <div class="inner">ciao</div>
+             *     <div class="inner">mondo</div>
+             *     ...
+             *     t.get('.inner').before('<p>ciccio</p>')
+             *
+             *     produce the following result:
+             *
+             *     <h1>Hello Tiramisu</h1>
+             *     <p>ciccio</p>
+             *     <div class="inner">ciao</div>
+             *     <p>ciccio</p>
+             *     <div class="inner">mondo</div>
+             *
+             *
+             * @param {html}
+             */
+            'before': function(html) {
+                insert_content(html, 1)
+                return this;
+            },
+            /**
+             * Insert After
+             * -----------------------
+             *
+             * Insert text or html, after each element.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).after(*HTML*)
+             *
+             * where *SELECTOR* is a valid CSS selector, *HTML* is
+             * the string...
+             *
+             * Example #1 ()
+             * ------------------------------------------------------
+             *
+             *     <h1>Hello Tiramisu</h1>
+             *     <div class="inner">ciao</div>
+             *     <div class="inner">mondo</div>
+             *     ...
+             *     t.get('.inner').after('<p>ciccio</p>')
+             *
+             *     produce the following result:
+             *
+             *     <h1>Hello Tiramisu</h1>
+             *     <div class="inner">ciao</div>
+             *     <p>ciccio</p>
+             *     <div class="inner">mondo</div>
+             *     <p>ciccio</p>
+             *
+             *
+             * @param {html}
+             */
+            'after': function(html) {
+                insert_content(html, 0)
+                return this;
+            },
+            /**
              * CSS handler extension
              * ---------------------
              *
@@ -712,11 +808,12 @@
              *  @param {Object} obj An object containing CSS properties
              */
             'css': function(obj) {
-                var i, key, ie = t.detect('isIE');
+                var i, key, len = results.length,
+                    ie = t.detect('isIE');
                 if (typeof(obj) === 'string') {
                     return results[0].style[obj];
                 }
-                for (i = 0; i < results.length; i++) {
+                for (i = 0; i < len; i++) {
                     for (key in obj) {
                         if (obj.hasOwnProperty(key)) {
                             if (ie) {
@@ -764,13 +861,14 @@
              *  @param {Opacity} string
              */
             'op': function(opacity) {
-                var cssOpacity = t.detect('opacity');
+                var cssOpacity = t.detect('opacity'),
+                    len = results.length;
                 if (cssOpacity) {
-                    for (i = 0; i < results.length; i++) {
+                    for (i = 0; i < len; i++) {
                         results[i].style.opacity = opacity;
                     }
                 } else {
-                    for (i = 0; i < results.length; i++) {
+                    for (i = 0; i < len; i++) {
                         try {
                             results[i].style.filters.alpha.opacity = opacity * 100;
                         } catch (e) {

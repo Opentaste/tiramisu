@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.0-b4</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.1</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.0-b4)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.1)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,8 +132,9 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.0-b4'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.1'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
+        <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
             <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
             <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
@@ -201,9 +202,6 @@ the possible return values are:</p>
             <span class="variable">firefox_version</span> = <span class="variable">firefox</span>.<span class="variable">split</span>(<span class="string">'/'</span>)[<span class="number integer">1</span>].<span class="variable">split</span>(<span class="string">'.'</span>)[<span class="number integer">0</span>],
             <span class="variable">opera</span> = <span class="variable">nav_agent</span>.<span class="variable">substring</span>(<span class="variable">nav_agent</span>.<span class="variable">indexOf</span>(<span class="string">'Version'</span>)).<span class="variable">split</span>(&<span class="variable">quot</span>;/&<span class="variable">quot</span>;)[<span class="number integer">1</span>];
 
-        <span class="comment">// Turns off querySelectorAll detection</span>
-        <span class="keyword">var</span> <span class="class">USE_QSA</span> = <span class="variable">false</span>;
-
         <span class="comment">// Netscape includes Firefox, Safari or Chrome</span>
         <span class="keyword">var</span> <span class="variable">tests</span> = {
 
@@ -252,7 +250,7 @@ the possible return values are:</p>
             },
 
             <span class="string">'querySelectorAll'</span>: <span class="keyword">function</span>() {
-                <span class="keyword">return</span> (<span class="class">USE_QSA</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span>)
+                <span class="keyword">return</span> (<span class="variable">tiramisu</span>.<span class="variable">selector</span> === <span class="string">'QSA'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">tiramisu</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span>)
             },
 
             <span class="string">'opacity'</span>: <span class="keyword">function</span>() {
@@ -330,7 +328,6 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 </td>
 <td class="code">
 <pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">get</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
-        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'querySelectorAll'</span>)) <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span>(<span class="variable">selector</span>);
 
         <span class="keyword">var</span> <span class="variable">macros</span> = {
             <span class="string">'nl'</span>: <span class="string">'\n|\r\n|\r|\f'</span>,
@@ -635,6 +632,86 @@ tiramisu.get('p').on('click', function() {
 </tr>
 <tr class="code">
 <td class="docs">
+<h2>Insert Before</h2>
+
+<p>Insert text or html, before each element.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).before(*HTML*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector, <em>HTML</em> is
+the string...</p>
+
+<h2>Example #1 ()</h2>
+
+<pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
+...
+t.get('.inner').before('&lt;p&gt;ciccio&lt;/p&gt;')
+
+produce the following result:
+
+&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>html</em> </p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'before'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="number integer">1</span>)
+                <span class="keyword">return</span> <span class="this">this</span>;
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Insert After</h2>
+
+<p>Insert text or html, after each element.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).after(*HTML*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector, <em>HTML</em> is
+the string...</p>
+
+<h2>Example #1 ()</h2>
+
+<pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
+...
+t.get('.inner').after('&lt;p&gt;ciccio&lt;/p&gt;')
+
+produce the following result:
+
+&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>html</em> </p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'after'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="number integer">0</span>)
+                <span class="keyword">return</span> <span class="this">this</span>;
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
 <h2>CSS handler extension</h2>
 
 <p>Alter the CSS properties of a list of DOM nodes.</p>
@@ -668,11 +745,12 @@ tiramisu.get('#my_id').css("color")</code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'css'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>) {
-                <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">key</span>, <span class="variable">ie</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>);
+                <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">key</span>, <span class="variable">len</span> = <span class="variable">results</span>.<span class="variable">length</span>,
+                    <span class="variable">ie</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>);
                 <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">obj</span>) === <span class="string">'string'</span>) {
                     <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">style</span>[<span class="variable">obj</span>];
                 }
-                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len</span>; <span class="variable">i</span>++) {
                     <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">obj</span>) {
                         <span class="keyword">if</span> (<span class="variable">obj</span>.<span class="variable">hasOwnProperty</span>(<span class="variable">key</span>)) {
                             <span class="keyword">if</span> (<span class="variable">ie</span>) {
@@ -721,13 +799,14 @@ tiramisu.get('h1').css({'color' : 'red'}).op('0.5');</code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'op'</span>: <span class="keyword">function</span>(<span class="variable">opacity</span>) {
-                <span class="keyword">var</span> <span class="variable">cssOpacity</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'opacity'</span>);
+                <span class="keyword">var</span> <span class="variable">cssOpacity</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'opacity'</span>),
+                    <span class="variable">len</span> = <span class="variable">results</span>.<span class="variable">length</span>;
                 <span class="keyword">if</span> (<span class="variable">cssOpacity</span>) {
-                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len</span>; <span class="variable">i</span>++) {
                         <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">opacity</span>;
                     }
                 } <span class="keyword">else</span> {
-                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len</span>; <span class="variable">i</span>++) {
                         <span class="keyword">try</span> {
                             <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">filters</span>.<span class="variable">alpha</span>.<span class="variable">opacity</span> = <span class="variable">opacity</span> * <span class="number integer">100</span>;
                         } <span class="keyword">catch</span> (<span class="variable">e</span>) {
