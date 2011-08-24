@@ -21,6 +21,7 @@
     function Tiramisu() {
         this.version = '0.1.0-b4';
         this.d = document;
+        this.selector = 'QSA'
         this.requestAnimFrame = (function() {
             return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
             function(callback, element) {
@@ -99,9 +100,6 @@
             firefox_version = firefox.split('/')[1].split('.')[0],
             opera = nav_agent.substring(nav_agent.indexOf('Version')).split("/")[1];
 
-        // Turns off querySelectorAll detection
-        var USE_QSA = false;
-
         // Netscape includes Firefox, Safari or Chrome
         var tests = {
 
@@ -150,7 +148,7 @@
             },
 
             'querySelectorAll': function() {
-                return (USE_QSA && typeof this.d.querySelectorAll !== 'undefined')
+                return (tiramisu.selector === 'QSA' && typeof tiramisu.d.querySelectorAll !== 'undefined')
             },
 
             'opacity': function() {
@@ -234,7 +232,6 @@
      *
      */
     Tiramisu.prototype.get = function(selector) {
-        if (t.detect('querySelectorAll')) return this.d.querySelectorAll(selector);
 
         var macros = {
             'nl': '\n|\r\n|\r|\f',
@@ -540,7 +537,11 @@
             return results;
         };
 
-        if (typeof selector === 'string') {
+        if (t.detect('querySelectorAll')) { 
+            results = tiramisu.d.querySelectorAll(selector);
+        } else if (typeof selector === 'string') {
+
+            // Use the built-in CSS Selector
             var lexer = new Tokenizer(selector);
 
             // Exposing lexer for testing purposes
