@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os, re
+from datetime import date
 
 markdown_intro = """
 ### version {version} ###
@@ -37,7 +38,8 @@ with open("src/tiramisu.js", "r") as f:
             print(version.group(1))
 
             with open("VERSION", "w") as version_file:
-                version_file.write("""{version}""".format(version=version.group(1)))
+                version_file.write("""{version}\n{date}""".format(version=version.group(1), date=date.today().strftime('Released %B %d, %Y')))
+
 
             with open("utils/docs-intro.md", "w") as intro:
                 for line in markdown_intro.format(version=version.group(1)):
