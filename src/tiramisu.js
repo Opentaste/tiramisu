@@ -710,17 +710,24 @@
                 // For handling IE CSS Attributes
                 var IE_attr = {
                     'opacity': function(obj, value) {
-                        if (t.detect('isIEOlder')) {
-                            try {
-                                obj.style.filters.alpha.opacity = value * 100;
-                            } catch (e) {
-                                obj.style.filter = 'alpha(opacity=' + (value * 100) + ')';
-                            }
+                        // See http://www.quirksmode.org/js/opacity.html
+                        var rs;
+                        if (value) {
+                            // Setter
+                            obj.style.opacity = value/10;
+                            obj.style.filters = 'alpha(opacity=' + value * 10 + ')';
+                        } else {
+                            // Getter
+                            return (obj.style.opacity * 10).toFixed(2);
                         }
                     }
                 };
 
                 if (typeof(obj) === 'string') {
+                    if (ie) {
+                        return IE_attr[obj](results[0])
+                    }
+
                     return results[0].style[obj];
                 }
 
@@ -729,7 +736,7 @@
                     for (key in obj) {
                         if (obj.hasOwnProperty(key)) {
                             if (ie) {
-                                if (IE_attr[key]) {
+                                if (IE_attr[key] !== undefined) {
                                     IE_attr[key](results[i], obj[key]);
                                 } else {
                                     // No match in IE_attr

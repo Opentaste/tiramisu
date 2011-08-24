@@ -134,6 +134,14 @@ test('Setting the color of a node to #f6f6f6', function() {
     equal(t.get('#headline')[0].style['color'], 'rgb(246, 246, 246)');
 });
 
+test('Setting the opacity of a node to 0.45', function() {
+    t.get('#headline').css({
+        'opacity': '0.45'
+    });
+
+    equal(t.get('#headline').css('opacity'), '0.45');
+});
+
 module('AJAX module tests');
 
 asyncTest('Calling a basic AJAX GET', function() {
