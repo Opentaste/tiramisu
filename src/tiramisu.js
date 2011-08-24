@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.0-b4';
+        this.version = '0.1.0-b5';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -714,7 +714,7 @@
                         var rs;
                         if (value) {
                             // Setter
-                            obj.style.opacity = value/10;
+                            obj.style.opacity = value / 10;
                             obj.style.filters = 'alpha(opacity=' + value * 10 + ')';
                         } else {
                             // Getter
