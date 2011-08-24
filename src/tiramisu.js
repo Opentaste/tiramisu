@@ -537,17 +537,20 @@
             return results;
         };
 
-        if (t.detect('querySelectorAll')) { 
-            results = tiramisu.d.querySelectorAll(selector);
-        } else if (typeof selector === 'string') {
+        if (typeof selector === 'string') {
 
-            // Use the built-in CSS Selector
-            var lexer = new Tokenizer(selector);
+            if (t.detect('querySelectorAll')) {
+                // Use querySelectorAll
+                results = tiramisu.d.querySelectorAll(selector);
+            } else {
+                // Use the built-in CSS Selector
+                var lexer = new Tokenizer(selector);
 
-            // Exposing lexer for testing purposes
-            Tiramisu.prototype.tokenize = new Tokenizer(selector);
-            var parser = new Searcher(document, lexer.tokens),
-                results = parser.parse();
+                // Exposing lexer for testing purposes
+                Tiramisu.prototype.tokenize = new Tokenizer(selector);
+                var parser = new Searcher(document, lexer.tokens),
+                    results = parser.parse();
+            }
         } else {
             // Selector is not a string so return it as 1-item list
             results = [selector];
