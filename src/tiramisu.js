@@ -549,6 +549,26 @@
             results = [selector];
         }
 
+        function insert_content(html, position) {
+            if (results[0] == undefined) {
+                return '';
+            }
+            var i, parent, div, ele, len = results.length;
+            for (i = 0; i < len; i++) {
+                div = t.d.createElement('div')
+                div.innerHTML = html;
+                parent = results[i].parentNode;
+                while (div.firstChild) {
+                    ele = div.firstChild;
+                    if (position) {
+                        parent.insertBefore(ele, results[i]);
+                    } else {
+                        results[i].appendChild(ele);
+                    }
+                }
+            }
+        }
+
         var methods = {
             /**
              * Each iterator extension
@@ -668,6 +688,82 @@
                         results[i].attachEvent('on' + evt, cb);
                     }
                 }
+                return this;
+            },
+            /**
+             * Insert Before
+             * -----------------------
+             *
+             * Insert text or html, before each element.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).before(*HTML*)
+             *
+             * where *SELECTOR* is a valid CSS selector, *HTML* is
+             * the string...
+             *
+             * Example #1 ()
+             * ------------------------------------------------------
+             *
+             *     <h1>Hello Tiramisu</h1>
+             *     <div class="inner">ciao</div>
+             *     <div class="inner">mondo</div>
+             *     ...
+             *     t.get('.inner').before('<p>ciccio</p>')
+             *
+             *     produce the following result:
+             *
+             *     <h1>Hello Tiramisu</h1>
+             *     <p>ciccio</p>
+             *     <div class="inner">ciao</div>
+             *     <p>ciccio</p>
+             *     <div class="inner">mondo</div>
+             *
+             *
+             * @param {html}
+             */
+            'before': function(html) {
+                insert_content(html, 1)
+                return this;
+            },
+            /**
+             * Insert After
+             * -----------------------
+             *
+             * Insert text or html, after each element.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).after(*HTML*)
+             *
+             * where *SELECTOR* is a valid CSS selector, *HTML* is
+             * the string...
+             *
+             * Example #1 ()
+             * ------------------------------------------------------
+             *
+             *     <h1>Hello Tiramisu</h1>
+             *     <div class="inner">ciao</div>
+             *     <div class="inner">mondo</div>
+             *     ...
+             *     t.get('.inner').after('<p>ciccio</p>')
+             *
+             *     produce the following result:
+             *
+             *     <h1>Hello Tiramisu</h1>
+             *     <div class="inner">ciao</div>
+             *     <p>ciccio</p>
+             *     <div class="inner">mondo</div>
+             *     <p>ciccio</p>
+             *
+             *
+             * @param {html}
+             */
+            'after': function(html) {
+                insert_content(html, 0)
                 return this;
             },
             /**

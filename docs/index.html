@@ -625,6 +625,86 @@ tiramisu.get('p').on('click', function() {
 </tr>
 <tr class="code">
 <td class="docs">
+<h2>Insert Before</h2>
+
+<p>Insert text or html, before each element.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).before(*HTML*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector, <em>HTML</em> is
+the string...</p>
+
+<h2>Example #1 ()</h2>
+
+<pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
+...
+t.get('.inner').before('&lt;p&gt;ciccio&lt;/p&gt;')
+
+produce the following result:
+
+&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>html</em> </p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'before'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="number integer">1</span>)
+                <span class="keyword">return</span> <span class="this">this</span>;
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Insert After</h2>
+
+<p>Insert text or html, after each element.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).after(*HTML*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector, <em>HTML</em> is
+the string...</p>
+
+<h2>Example #1 ()</h2>
+
+<pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
+...
+t.get('.inner').after('&lt;p&gt;ciccio&lt;/p&gt;')
+
+produce the following result:
+
+&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>html</em> </p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'after'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="number integer">0</span>)
+                <span class="keyword">return</span> <span class="this">this</span>;
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
 <h2>CSS handler extension</h2>
 
 <p>Alter the CSS properties of a list of DOM nodes.</p>
