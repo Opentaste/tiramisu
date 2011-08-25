@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.1-b4';
+        this.version = '0.1.1-b6';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -1067,8 +1067,9 @@
      * - *async* (default is “true”);
      * - *content_type* (in POST requests default is “application/x-www-form-urlencoded”);
      * - *connection*;
+     * - *def_load*;
      * - *error* (a callback function);
-     * - *loader*  (a div id);
+     * - *loader*  (a url loader image);
      * - *method*  (default is “GET”)
      * - *parameter*;
      * - *success* (a callback function);
@@ -1106,7 +1107,7 @@
      *     tiramisu.ajax({
      *          url: 'www.example.com',
      *          method : 'POST',
-     *          loader : 'div_loader',
+     *          loader : 'url_image_loader',
      *          successHTML : 'responseWrapper'
      *     });
      *
@@ -1115,7 +1116,7 @@
      *
      *     tiramisu.ajax({
      *         method : 'POST',
-     *         loader : 'div_loader',
+     *         loader : 'url_image_loader',
      *         parameter: {
      *             param_1 : 'variable 1',
      *             param_2 : 'variable 2'
@@ -1160,6 +1161,7 @@
         var setting_input = setting_input || {},
             setting = {
                 async: true,
+                def_load: function() {},
                 content_type: '',
                 connection: '',
                 data_type: '',
@@ -1253,6 +1255,13 @@
         if (setting.data_type) {
             xhr.setRequestHeader('dataType', setting.data_type);
         }
+
+        if (setting.loader) {
+            var img = '<img src="' + setting.loader + '" alt="" />';
+            t.d.getElementById(setting.successHTML).innerHTML = img;
+        }
+
+        setting.def_load();
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {

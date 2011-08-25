@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.1-b4</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.1-b6</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.1-b4)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.1-b6)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.1-b4'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.1-b6'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -996,7 +996,7 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
 
 <p>where the <em>SETTINGS</em> object can contain the following:</p>
 
-<ul><li><em>async</em> (default is “true”);</li><li><em>content_type</em> (in POST requests default is “application/x-www-form-urlencoded”);</li><li><em>connection</em>;</li><li><em>error</em> (a callback function);</li><li><em>loader</em>  (a div id);</li><li><em>method</em>  (default is “GET”)</li><li><em>parameter</em>;</li><li><em>success</em> (a callback function);</li><li><em>successHTML</em> (a div id);</li><li><em>url</em> (this is the only <strong>mandatory</strong> field);</li></ul>
+<ul><li><em>async</em> (default is “true”);</li><li><em>content_type</em> (in POST requests default is “application/x-www-form-urlencoded”);</li><li><em>connection</em>;</li><li><em>def_load</em>;</li><li><em>error</em> (a callback function);</li><li><em>loader</em>  (a url loader image);</li><li><em>method</em>  (default is “GET”)</li><li><em>parameter</em>;</li><li><em>success</em> (a callback function);</li><li><em>successHTML</em> (a div id);</li><li><em>url</em> (this is the only <strong>mandatory</strong> field);</li></ul>
 
 <h2>Example #1 (Ajax GET request)</h2>
 
@@ -1025,7 +1025,7 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
 <pre><code>tiramisu.ajax({
      url: 'www.example.com',
      method : 'POST',
-     loader : 'div_loader',
+     loader : 'url_image_loader',
      successHTML : 'responseWrapper'
 });</code></pre>
 
@@ -1033,7 +1033,7 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
 
 <pre><code>tiramisu.ajax({
     method : 'POST',
-    loader : 'div_loader',
+    loader : 'url_image_loader',
     parameter: {
         param_1 : 'variable 1',
         param_2 : 'variable 2'
@@ -1079,6 +1079,7 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
         <span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
             <span class="variable">setting</span> = {
                 <span class="variable">async</span>: <span class="variable">true</span>,
+                <span class="variable">def_load</span>: <span class="keyword">function</span>() {},
                 <span class="variable">content_type</span>: <span class="string">''</span>,
                 <span class="variable">connection</span>: <span class="string">''</span>,
                 <span class="variable">data_type</span>: <span class="string">''</span>,
@@ -1172,6 +1173,13 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
         <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">data_type</span>) {
             <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'dataType'</span>, <span class="variable">setting</span>.<span class="variable">data_type</span>);
         }
+
+        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">loader</span>) {
+            <span class="keyword">var</span> <span class="variable">img</span> = <span class="string">'&lt;img src=&quot;'</span> + <span class="variable">setting</span>.<span class="variable">loader</span> + <span class="string">'&quot; alt=&quot;&quot; /&gt;'</span>;
+            <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">getElementById</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>).<span class="variable">innerHTML</span> = <span class="variable">img</span>;
+        }
+
+        <span class="variable">setting</span>.<span class="variable">def_load</span>();
 
         <span class="variable">xhr</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
             <span class="keyword">if</span> (<span class="variable">xhr</span>.<span class="variable">readyState</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> == <span class="number integer">200</span>) {
