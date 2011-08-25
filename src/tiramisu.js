@@ -226,6 +226,27 @@
      */
     Tiramisu.prototype.get = function(selector) {
 
+        function insert_content(html, position) {
+            if (results[0] == undefined) {
+                return '';
+            }
+            var i, parent, div, ele;
+            div = t.d.createElement('div')
+            div.innerHTML = html;
+
+            for (i = 0; i < len_result; i++) {
+                parent = results[i].parentNode;
+                while (div.firstChild) {
+                    ele = div.firstChild;
+                    if (position) {
+                        parent.insertBefore(ele, results[i]);
+                    } else {
+                        results[i].appendChild(ele);
+                    }
+                }
+            }
+        }
+
         var macros = {
             'nl': '\n|\r\n|\r|\f',
             'nonascii': '[^\0-\177]',
@@ -551,26 +572,6 @@
 
         // Keeps the number of results obtained from the selector
         var len_result = results.length;
-
-        function insert_content(html, position) {
-            if (results[0] == undefined) {
-                return '';
-            }
-            var i, parent, div, ele;
-            for (i = 0; i < len_result; i++) {
-                div = t.d.createElement('div')
-                div.innerHTML = html;
-                parent = results[i].parentNode;
-                while (div.firstChild) {
-                    ele = div.firstChild;
-                    if (position) {
-                        parent.insertBefore(ele, results[i]);
-                    } else {
-                        results[i].appendChild(ele);
-                    }
-                }
-            }
-        }
 
         var methods = {
             /**

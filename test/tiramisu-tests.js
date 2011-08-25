@@ -124,6 +124,15 @@ test('Calling “t.get("#qunit-fixture select").value("Second.")', function() {
     equal(rs, 'Second.', 'should set element\'s HTML value to “Second”');
 });
 
+module('DOM Manipulation tests');
+
+test('Calling t.get(".inner").after()', function() {
+    t.get('#after_test .inner').after('<p>ciccio</p>')
+    var rs = t.get('#after_test')[0].innerHTML;
+    var attended = '\n      <h1>Hello Tiramisu</h1>\n      <div class=\"inner\">ciao</div>\n      <p>ciccio</p>\n      <div class=\"inner\">mondo</div>\n      <p>ciccio</p>\n    ';
+    equal(rs, attended);
+});
+
 module('CSS Manipulation tests');
 
 test('Setting the color of a node to #f6f6f6', function() {
