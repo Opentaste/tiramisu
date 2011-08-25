@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.1';
+        this.version = '0.1.1-b4';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -549,12 +549,15 @@
             results = [selector];
         }
 
+        // Keeps the number of results obtained from the selector
+        var len_result = results.length;
+
         function insert_content(html, position) {
             if (results[0] == undefined) {
                 return '';
             }
-            var i, parent, div, ele, len = results.length;
-            for (i = 0; i < len; i++) {
+            var i, parent, div, ele;
+            for (i = 0; i < len_result; i++) {
                 div = t.d.createElement('div')
                 div.innerHTML = html;
                 parent = results[i].parentNode;
@@ -606,8 +609,8 @@
              * @param {function} cb The callback function to apply
              */
             'each': function(cb) {
-                var i, len = results.length;
-                for (i = 0; i < len; i++) {
+                var i;
+                for (i = 0; i < len_result; i++) {
                     cb.apply(results[i]);
                 }
                 return this;
@@ -677,14 +680,14 @@
                 if (results[0] == undefined) {
                     return '';
                 }
-                var i, len = results.length;
+                var i;
                 // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
                 if (results[0].addEventListener) {
-                    for (i = 0; i < len; i++) {
+                    for (i = 0; i < len_result; i++) {
                         results[i].addEventListener(evt, cb, false);
                     }
                 } else if (results[0].attachEvent) {
-                    for (i = 0; i < len; i++) {
+                    for (i = 0; i < len_result; i++) {
                         results[i].attachEvent('on' + evt, cb);
                     }
                 }
@@ -828,7 +831,7 @@
                 }
 
                 // Apply to all elements
-                for (i = 0; i < results.length; i++) {
+                for (i = 0; i < len_result; i++) {
                     for (key in obj) {
                         if (obj.hasOwnProperty(key)) {
                             if (ie) {
@@ -956,14 +959,45 @@
                 if (set !== undefined) {
                     results[0].value = set;
                 } else {
-                    if (results.length > 1) {
+                    if (len_result > 1) {
                         var list = [];
-                        for (i = 0; i < results.length; i++) {
+                        for (i = 0; i < len_result; i++) {
                             list.push(results[i].value);
                         }
                         return list;
                     }
                     return results[0].value;
+                }
+            },
+            /**
+             * ?????
+             * ---------------------------------
+             *
+             * ????????????
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).focus()
+             *
+             * where *SELECTOR* is a valid CSS selector ?????
+             *
+             * Example #1 (????)
+             * ---------------------------------------------------
+             *
+             *
+             *
+             *
+             * @param {String} ????
+             * @return {[String]} ?????
+             *
+             */
+            'focus': function() {
+                if (results[0] == undefined) {
+                    return '';
+                }
+                for (var i = len_result; i--;) {
+                    results[i].focus();
                 }
             },
             /**
