@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.1-b6</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.1-b8</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.1-b6)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.1-b8)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.1-b6'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.1-b8'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -197,56 +197,56 @@ the possible return values are:</p>
 <td class="code">
 <pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">detect</span> = <span class="keyword">function</span>(<span class="variable">key</span>) {
         <span class="keyword">var</span> <span class="variable">nav_agent</span> = <span class="variable">navigator</span>.<span class="variable">userAgent</span>,
-            <span class="variable">nav_name</span> = <span class="variable">navigator</span>.<span class="variable">appName</span>,
-            <span class="variable">firefox</span> = <span class="variable">nav_agent</span>.<span class="variable">substring</span>(<span class="variable">nav_agent</span>.<span class="variable">indexOf</span>(<span class="string">'Firefox'</span>)),
-            <span class="variable">firefox_version</span> = <span class="variable">firefox</span>.<span class="variable">split</span>(<span class="string">'/'</span>)[<span class="number integer">1</span>].<span class="variable">split</span>(<span class="string">'.'</span>)[<span class="number integer">0</span>],
-            <span class="variable">opera</span> = <span class="variable">nav_agent</span>.<span class="variable">substring</span>(<span class="variable">nav_agent</span>.<span class="variable">indexOf</span>(<span class="string">'Version'</span>)).<span class="variable">split</span>(&<span class="variable">quot</span>;/&<span class="variable">quot</span>;)[<span class="number integer">1</span>];
+            <span class="variable">nav_name</span> = <span class="variable">navigator</span>.<span class="variable">appName</span>;
 
         <span class="comment">// Netscape includes Firefox, Safari or Chrome</span>
         <span class="keyword">var</span> <span class="variable">tests</span> = {
 
             <span class="string">'browser'</span>: <span class="keyword">function</span>() {
                 <span class="keyword">if</span> (<span class="variable">nav_name</span> === <span class="string">'Netscape'</span>) {
+                    <span class="keyword">var</span> <span class="variable">firefox</span> = <span class="variable">nav_agent</span>.<span class="variable">substring</span>(<span class="variable">nav_agent</span>.<span class="variable">indexOf</span>(<span class="string">'Firefox'</span>));
                     <span class="keyword">if</span> (<span class="variable">firefox</span>.<span class="variable">split</span>(<span class="string">'/'</span>)[<span class="number integer">0</span>] !== <span class="string">'Firefox'</span>) { <span class="comment">// Case 1 - Safari or Chrome</span>
-                        <span class="keyword">return</span> &<span class="variable">quot</span>;<span class="variable">safarichrome</span>&<span class="variable">quot</span>;
+                        <span class="keyword">return</span> &<span class="variable">quot</span>;<span class="variable">webkit</span>&<span class="variable">quot</span>;
                     } <span class="keyword">else</span> {
-                        <span class="keyword">if</span> (<span class="variable">firefox_version</span> === <span class="string">'4'</span>) { <span class="comment">// Case 2 - Firefox 4</span>
-                            <span class="keyword">return</span> <span class="string">'firefox4'</span>
+                        <span class="variable">firefox_version</span> = <span class="variable">parseInt</span>(<span class="variable">firefox</span>.<span class="variable">split</span>(<span class="string">'/'</span>)[<span class="number integer">1</span>].<span class="variable">split</span>(<span class="string">'.'</span>)[<span class="number integer">0</span>]);
+                        <span class="keyword">if</span> (<span class="variable">firefox_version</span> &<span class="variable">gt</span>; <span class="number float">3.8</span>) { <span class="comment">// Case 2 - Firefox 4</span>
+                            <span class="keyword">return</span> <span class="string">'f4+'</span>
                         }
-                        <span class="keyword">return</span> <span class="string">'firefox3'</span>
+                        <span class="keyword">return</span> <span class="string">'f3'</span>
                     }
                 } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">nav_name</span> == <span class="string">'Opera'</span>) {
+                    <span class="keyword">var</span> <span class="variable">opera</span> = <span class="variable">nav_agent</span>.<span class="variable">substring</span>(<span class="variable">nav_agent</span>.<span class="variable">indexOf</span>(<span class="string">'Version'</span>)).<span class="variable">split</span>(&<span class="variable">quot</span>;/&<span class="variable">quot</span>;)[<span class="number integer">1</span>]
                     <span class="keyword">if</span> (<span class="variable">opera</span>.<span class="variable">split</span>(<span class="string">'.'</span>)[<span class="number integer">1</span>] &<span class="variable">gt</span>; <span class="number integer">49</span>) { <span class="comment">// Case 4 - Opera 10.5+</span>
-                        <span class="keyword">return</span> <span class="string">'Opera10.5+'</span>
+                        <span class="keyword">return</span> <span class="string">'o10.5+'</span>
                     }
-                    <span class="keyword">return</span> <span class="string">'Opera10.4'</span>;
+                    <span class="keyword">return</span> <span class="string">'o10.4'</span>;
                 } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="regexp">/MSIE (\d+\.\d+);/</span>.<span class="variable">test</span>(<span class="variable">nav_agent</span>)) { <span class="comment">//test for MSIE x.x;</span>
                     <span class="keyword">var</span> <span class="variable">ie</span> = <span class="keyword">new</span> <span class="class">Number</span>(<span class="class">RegExp</span>.$<span class="number integer">1</span>) <span class="comment">// capture x.x portion and store as a number</span>
                     <span class="keyword">if</span> (<span class="variable">ie</span> &<span class="variable">gt</span>; <span class="number integer">8</span>) {
-                        <span class="keyword">return</span> <span class="string">'IE9+'</span>;
-                    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">ie</span> === <span class="number integer">8</span>) {
-                        <span class="keyword">return</span> <span class="string">'IE8'</span>;
+                        <span class="keyword">return</span> <span class="string">'ie9+'</span>;
+                    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">ie</span> == <span class="number integer">8</span>) {
+                        <span class="keyword">return</span> <span class="string">'ie8'</span>;
                     }
-                    <span class="keyword">return</span> <span class="string">'IE_older'</span>;
+                    <span class="keyword">return</span> <span class="string">'ie7'</span>;
                 } <span class="keyword">else</span> { <span class="comment">// Case 6 - IE or other</span>
-                    <span class="keyword">return</span> <span class="string">'IE'</span>;
+                    <span class="keyword">return</span> <span class="string">'other'</span>;
                 }
             },
 
             <span class="string">'isIE'</span>: <span class="keyword">function</span>() {
-                <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'IE9+'</span> || <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'IE8'</span> || <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'IE_older'</span>;
+                <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'ie9+'</span> || <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'ie8'</span> || <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'ie7'</span>;
             },
 
             <span class="string">'isIEolder'</span>: <span class="keyword">function</span>() {
-                <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'IE8'</span> || <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'IE_older'</span>;
+                <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'ie8'</span> || <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'ie7'</span>;
             },
 
             <span class="string">'isFirefox'</span>: <span class="keyword">function</span>() {
-                <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === &<span class="variable">quot</span>;<span class="variable">firefox3</span>&<span class="variable">quot</span>; || <span class="this">this</span>.<span class="variable">browser</span>() === &<span class="variable">quot</span>;<span class="variable">firefox4</span>&<span class="variable">quot</span>;
+                <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === &<span class="variable">quot</span>;<span class="variable">f3</span>&<span class="variable">quot</span>; || <span class="this">this</span>.<span class="variable">browser</span>() === &<span class="variable">quot</span>;<span class="variable">f4</span>+&<span class="variable">quot</span>;
             },
 
             <span class="string">'isChrome'</span>: <span class="keyword">function</span>() {
-                <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'safarichrome'</span>
+                <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'webkit'</span>
             },
 
             <span class="string">'querySelectorAll'</span>: <span class="keyword">function</span>() {
@@ -738,45 +738,60 @@ tiramisu.get('#my_id').css("color")</code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'css'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>) {
-                <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">key</span>, <span class="variable">ie</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>);
+                <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">key</span>, <span class="variable">browser</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'browser'</span>),
+                    <span class="variable">ie_older</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIEolder'</span>),
+                    <span class="variable">ie</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>);
 
                 <span class="comment">// For handling IE CSS Attributes</span>
-                <span class="keyword">var</span> <span class="class">IE_attr</span> = {
+                <span class="keyword">var</span> <span class="variable">attr</span> = {
                     <span class="string">'opacity'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>, <span class="variable">value</span>) {
-                        <span class="comment">// See http://www.quirksmode.org/js/opacity.html</span>
-                        <span class="keyword">var</span> <span class="variable">rs</span>;
-                        <span class="keyword">if</span> (<span class="variable">value</span>) {
+                        <span class="keyword">if</span> (<span class="variable">value</span> !== <span class="variable">undefined</span>) {
                             <span class="comment">// Setter</span>
-                            <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">value</span> / <span class="number integer">10</span>;
-                            <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">filters</span> = <span class="string">'alpha(opacity='</span> + <span class="variable">value</span> * <span class="number integer">10</span> + <span class="string">')'</span>;
+                            <span class="keyword">if</span> (<span class="variable">ie</span>) {
+                                <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">value</span>;
+                                <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">filter</span> = <span class="string">'alpha(opacity='</span> + <span class="variable">value</span> * <span class="number integer">100</span> + <span class="string">')'</span>;
+                            } <span class="keyword">else</span> {
+                                <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">value</span>;
+                            }
                         } <span class="keyword">else</span> {
                             <span class="comment">// Getter</span>
-                            <span class="keyword">return</span> (<span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span> * <span class="number integer">10</span>).<span class="variable">toFixed</span>(<span class="number integer">2</span>);
+                            <span class="keyword">return</span> <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span>
+                        }
+                    },
+                    <span class="string">'border-radius'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>, <span class="variable">value</span>) {
+                        <span class="keyword">if</span> (<span class="variable">value</span>) {
+                            <span class="keyword">if</span> (<span class="variable">browser</span> === <span class="string">'f3'</span>) {
+                                <span class="variable">obj</span>.<span class="variable">style</span>.<span class="class">MozBorderRadius</span> = <span class="variable">value</span>; <span class="comment">// Firefox 3.6 &lt;=</span>
+                            }
+                        } <span class="keyword">else</span> {
+                            <span class="keyword">if</span> (<span class="variable">browser</span> === <span class="string">'f3'</span>) {
+                                <span class="keyword">return</span> <span class="variable">obj</span>.<span class="variable">style</span>.<span class="class">MozBorderRadius</span>;
+                            }
                         }
                     }
                 };
 
                 <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">obj</span>) === <span class="string">'string'</span>) {
-                    <span class="keyword">if</span> (<span class="variable">ie</span>) {
-                        <span class="keyword">return</span> <span class="class">IE_attr</span>[<span class="variable">obj</span>](<span class="variable">results</span>[<span class="number integer">0</span>])
+                    <span class="keyword">if</span> (<span class="variable">ie</span> || <span class="variable">browser</span> === <span class="string">'f3'</span>) {
+                        <span class="keyword">return</span> <span class="variable">attr</span>[<span class="variable">obj</span>](<span class="variable">results</span>[<span class="number integer">0</span>])
                     }
-
                     <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">style</span>[<span class="variable">obj</span>];
                 }
 
                 <span class="comment">// Apply to all elements</span>
-                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
+                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
                     <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">obj</span>) {
                         <span class="keyword">if</span> (<span class="variable">obj</span>.<span class="variable">hasOwnProperty</span>(<span class="variable">key</span>)) {
-                            <span class="keyword">if</span> (<span class="variable">ie</span>) {
-                                <span class="keyword">if</span> (<span class="class">IE_attr</span>[<span class="variable">key</span>] !== <span class="variable">undefined</span>) {
-                                    <span class="class">IE_attr</span>[<span class="variable">key</span>](<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">obj</span>[<span class="variable">key</span>]);
+                            <span class="comment">// Need to handle different browsers</span>
+                            <span class="keyword">if</span> (<span class="variable">ie</span> || <span class="variable">browser</span> === <span class="string">'f3'</span>) {
+                                <span class="keyword">if</span> (<span class="variable">attr</span>[<span class="variable">key</span>] !== <span class="variable">undefined</span>) {
+                                    <span class="variable">attr</span>[<span class="variable">key</span>](<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">obj</span>[<span class="variable">key</span>]);
                                 } <span class="keyword">else</span> {
-                                    <span class="comment">// No match in IE_attr</span>
+                                    <span class="comment">// No match in attr</span>
                                     <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>[<span class="variable">key</span>] = <span class="variable">obj</span>[<span class="variable">key</span>];
                                 }
                             } <span class="keyword">else</span> {
-                                <span class="comment">// The third param is for firefox</span>
+                                <span class="comment">// The third param is for W3C Standard</span>
                                 <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">setProperty</span>(<span class="variable">key</span>, <span class="variable">obj</span>[<span class="variable">key</span>], <span class="string">''</span>);
                             }
                         }
@@ -996,7 +1011,7 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
 
 <p>where the <em>SETTINGS</em> object can contain the following:</p>
 
-<ul><li><em>async</em> (default is “true”);</li><li><em>content_type</em> (in POST requests default is “application/x-www-form-urlencoded”);</li><li><em>connection</em>;</li><li><em>def_load</em>;</li><li><em>error</em> (a callback function);</li><li><em>loader</em>  (a url loader image);</li><li><em>method</em>  (default is “GET”)</li><li><em>parameter</em>;</li><li><em>success</em> (a callback function);</li><li><em>successHTML</em> (a div id);</li><li><em>url</em> (this is the only <strong>mandatory</strong> field);</li></ul>
+<ul><li><em>async</em> (default is “true”);</li><li><em>content_type</em> (in POST requests default is “application/x-www-form-urlencoded”);</li><li><em>connection</em>;</li><li><em>error</em> (a callback function);</li><li><em>start_load</em> (a callback function);</li><li><em>end_load</em> (a callback function);</li><li><em>loader</em>  (a url loader image);</li><li><em>method</em>  (default is “GET”)</li><li><em>parameter</em>;</li><li><em>success</em> (a callback function);</li><li><em>successHTML</em> (a div id);</li><li><em>url</em> (this is the only <strong>mandatory</strong> field);</li></ul>
 
 <h2>Example #1 (Ajax GET request)</h2>
 
@@ -1079,7 +1094,6 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
         <span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
             <span class="variable">setting</span> = {
                 <span class="variable">async</span>: <span class="variable">true</span>,
-                <span class="variable">def_load</span>: <span class="keyword">function</span>() {},
                 <span class="variable">content_type</span>: <span class="string">''</span>,
                 <span class="variable">connection</span>: <span class="string">''</span>,
                 <span class="variable">data_type</span>: <span class="string">''</span>,
@@ -1088,6 +1102,8 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
                         <span class="variable">console</span>.<span class="variable">log</span>(<span class="variable">res</span>)
                     } <span class="keyword">catch</span> (<span class="variable">e</span>) {}
                 },
+                <span class="variable">start_load</span>: <span class="keyword">function</span>() {},
+                <span class="variable">end_load</span>: <span class="keyword">function</span>() {},
                 <span class="variable">loader</span>: <span class="string">''</span>,
                 <span class="variable">method</span>: <span class="string">'GET'</span>,
                 <span class="variable">parameter</span>: <span class="string">''</span>,
@@ -1179,7 +1195,7 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
             <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">getElementById</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>).<span class="variable">innerHTML</span> = <span class="variable">img</span>;
         }
 
-        <span class="variable">setting</span>.<span class="variable">def_load</span>();
+        <span class="variable">setting</span>.<span class="variable">start_load</span>();
 
         <span class="variable">xhr</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
             <span class="keyword">if</span> (<span class="variable">xhr</span>.<span class="variable">readyState</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> == <span class="number integer">200</span>) {
@@ -1187,11 +1203,14 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
                 <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">successHTML</span>) {
                     <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">getElementById</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>).<span class="variable">innerHTML</span> = <span class="variable">xhr</span>.<span class="variable">responseText</span>;
                 }
+                <span class="variable">setting</span>.<span class="variable">end_load</span>();
                 <span class="variable">setting</span>.<span class="variable">success</span>(<span class="variable">xhr</span>.<span class="variable">responseText</span>);
             } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">xhr</span>.<span class="variable">readyState</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> == <span class="number integer">400</span>) {
+                <span class="variable">setting</span>.<span class="variable">end_load</span>();
                 <span class="comment">// 400 Bad Request</span>
                 <span class="variable">setting</span>.<span class="variable">error</span>(<span class="string">'400 Bad Request'</span>);
             } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">xhr</span>.<span class="variable">readyState</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> != <span class="number integer">200</span>) {
+                <span class="variable">setting</span>.<span class="variable">end_load</span>();
                 <span class="comment">// fetched the wrong page or network error...</span>
                 <span class="variable">setting</span>.<span class="variable">error</span>(<span class="string">'Fetched the wrong page or network error'</span>);
             }

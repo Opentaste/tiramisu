@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.1-b6';
+        this.version = '0.1.1-b8';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -95,56 +95,56 @@
      */
     Tiramisu.prototype.detect = function(key) {
         var nav_agent = navigator.userAgent,
-            nav_name = navigator.appName,
-            firefox = nav_agent.substring(nav_agent.indexOf('Firefox')),
-            firefox_version = firefox.split('/')[1].split('.')[0],
-            opera = nav_agent.substring(nav_agent.indexOf('Version')).split("/")[1];
+            nav_name = navigator.appName;
 
         // Netscape includes Firefox, Safari or Chrome
         var tests = {
 
             'browser': function() {
                 if (nav_name === 'Netscape') {
+                    var firefox = nav_agent.substring(nav_agent.indexOf('Firefox'));
                     if (firefox.split('/')[0] !== 'Firefox') { // Case 1 - Safari or Chrome
-                        return "safarichrome"
+                        return "webkit"
                     } else {
-                        if (firefox_version === '4') { // Case 2 - Firefox 4
-                            return 'firefox4'
+                        firefox_version = parseInt(firefox.split('/')[1].split('.')[0]);
+                        if (firefox_version > 3.8) { // Case 2 - Firefox 4
+                            return 'f4+'
                         }
-                        return 'firefox3'
+                        return 'f3'
                     }
                 } else if (nav_name == 'Opera') {
+                    var opera = nav_agent.substring(nav_agent.indexOf('Version')).split("/")[1]
                     if (opera.split('.')[1] > 49) { // Case 4 - Opera 10.5+
-                        return 'Opera10.5+'
+                        return 'o10.5+'
                     }
-                    return 'Opera10.4';
+                    return 'o10.4';
                 } else if (/MSIE (\d+\.\d+);/.test(nav_agent)) { //test for MSIE x.x;
                     var ie = new Number(RegExp.$1) // capture x.x portion and store as a number
                     if (ie > 8) {
-                        return 'IE9+';
-                    } else if (ie === 8) {
-                        return 'IE8';
+                        return 'ie9+';
+                    } else if (ie == 8) {
+                        return 'ie8';
                     }
-                    return 'IE_older';
+                    return 'ie7';
                 } else { // Case 6 - IE or other
-                    return 'IE';
+                    return 'other';
                 }
             },
 
             'isIE': function() {
-                return this.browser() === 'IE9+' || this.browser() === 'IE8' || this.browser() === 'IE_older';
+                return this.browser() === 'ie9+' || this.browser() === 'ie8' || this.browser() === 'ie7';
             },
 
             'isIEolder': function() {
-                return this.browser() === 'IE8' || this.browser() === 'IE_older';
+                return this.browser() === 'ie8' || this.browser() === 'ie7';
             },
 
             'isFirefox': function() {
-                return this.browser() === "firefox3" || this.browser() === "firefox4"
+                return this.browser() === "f3" || this.browser() === "f4+"
             },
 
             'isChrome': function() {
-                return this.browser() === 'safarichrome'
+                return this.browser() === 'webkit'
             },
 
             'querySelectorAll': function() {
@@ -804,45 +804,60 @@
              *  @param {Object} obj An object containing CSS properties
              */
             'css': function(obj) {
-                var i, key, ie = t.detect('isIE');
+                var i, key, browser = t.detect('browser'),
+                    ie_older = t.detect('isIEolder'),
+                    ie = t.detect('isIE');
 
                 // For handling IE CSS Attributes
-                var IE_attr = {
+                var attr = {
                     'opacity': function(obj, value) {
-                        // See http://www.quirksmode.org/js/opacity.html
-                        var rs;
-                        if (value) {
+                        if (value !== undefined) {
                             // Setter
-                            obj.style.opacity = value / 10;
-                            obj.style.filters = 'alpha(opacity=' + value * 10 + ')';
+                            if (ie) {
+                                obj.style.opacity = value;
+                                obj.style.filter = 'alpha(opacity=' + value * 100 + ')';
+                            } else {
+                                obj.style.opacity = value;
+                            }
                         } else {
                             // Getter
-                            return (obj.style.opacity * 10).toFixed(2);
+                            return obj.style.opacity
+                        }
+                    },
+                    'border-radius': function(obj, value) {
+                        if (value) {
+                            if (browser === 'f3') {
+                                obj.style.MozBorderRadius = value; // Firefox 3.6 <=
+                            }
+                        } else {
+                            if (browser === 'f3') {
+                                return obj.style.MozBorderRadius;
+                            }
                         }
                     }
                 };
 
                 if (typeof(obj) === 'string') {
-                    if (ie) {
-                        return IE_attr[obj](results[0])
+                    if (ie || browser === 'f3') {
+                        return attr[obj](results[0])
                     }
-
                     return results[0].style[obj];
                 }
 
                 // Apply to all elements
-                for (i = 0; i < len_result; i++) {
+                for (i = len_result; i--;) {
                     for (key in obj) {
                         if (obj.hasOwnProperty(key)) {
-                            if (ie) {
-                                if (IE_attr[key] !== undefined) {
-                                    IE_attr[key](results[i], obj[key]);
+                            // Need to handle different browsers
+                            if (ie || browser === 'f3') {
+                                if (attr[key] !== undefined) {
+                                    attr[key](results[i], obj[key]);
                                 } else {
-                                    // No match in IE_attr
+                                    // No match in attr
                                     results[i].style[key] = obj[key];
                                 }
                             } else {
-                                // The third param is for firefox
+                                // The third param is for W3C Standard
                                 results[i].style.setProperty(key, obj[key], '');
                             }
                         }
@@ -1067,8 +1082,9 @@
      * - *async* (default is “true”);
      * - *content_type* (in POST requests default is “application/x-www-form-urlencoded”);
      * - *connection*;
-     * - *def_load*;
      * - *error* (a callback function);
+     * - *start_load* (a callback function);
+     * - *end_load* (a callback function);
      * - *loader*  (a url loader image);
      * - *method*  (default is “GET”)
      * - *parameter*;
@@ -1161,7 +1177,6 @@
         var setting_input = setting_input || {},
             setting = {
                 async: true,
-                def_load: function() {},
                 content_type: '',
                 connection: '',
                 data_type: '',
@@ -1170,6 +1185,8 @@
                         console.log(res)
                     } catch (e) {}
                 },
+                start_load: function() {},
+                end_load: function() {},
                 loader: '',
                 method: 'GET',
                 parameter: '',
@@ -1261,7 +1278,7 @@
             t.d.getElementById(setting.successHTML).innerHTML = img;
         }
 
-        setting.def_load();
+        setting.start_load();
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
@@ -1269,11 +1286,14 @@
                 if (setting.successHTML) {
                     t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
                 }
+                setting.end_load();
                 setting.success(xhr.responseText);
             } else if (xhr.readyState == 4 && xhr.status == 400) {
+                setting.end_load();
                 // 400 Bad Request
                 setting.error('400 Bad Request');
             } else if (xhr.readyState == 4 && xhr.status != 200) {
+                setting.end_load();
                 // fetched the wrong page or network error...
                 setting.error('Fetched the wrong page or network error');
             }
