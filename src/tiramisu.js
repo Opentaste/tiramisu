@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.1-b8';
+        this.version = '0.1.1-b9';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -225,27 +225,6 @@
      *
      */
     Tiramisu.prototype.get = function(selector) {
-
-        function insert_content(html, position) {
-            if (results[0] == undefined) {
-                return '';
-            }
-            var i, parent, div, ele;
-            div = t.d.createElement('div')
-            div.innerHTML = html;
-
-            for (i = 0; i < len_result; i++) {
-                parent = results[i].parentNode;
-                while (div.firstChild) {
-                    ele = div.firstChild;
-                    if (position) {
-                        parent.insertBefore(ele, results[i]);
-                    } else {
-                        results[i].appendChild(ele);
-                    }
-                }
-            }
-        }
 
         var macros = {
             'nl': '\n|\r\n|\r|\f',
