@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.1-b8</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.1-b9</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.1-b8)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.1-b9)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.1-b8'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.1-b9'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -321,6 +321,29 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 </td>
 <td class="code">
 <pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">get</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
+
+        <span class="comment">// DOM Node insertion generic utility</span>
+
+
+        <span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">position</span>) {
+            <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] == <span class="variable">undefined</span>) {
+                <span class="keyword">return</span> <span class="string">''</span>;
+            }
+            <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">parent</span>, <span class="variable">div</span>, <span class="variable">ele</span>;
+            <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
+                <span class="variable">div</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="string">'div'</span>)
+                <span class="variable">div</span>.<span class="variable">innerHTML</span> = <span class="variable">html</span>;
+                <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+                <span class="keyword">while</span> (<span class="variable">div</span>.<span class="variable">firstChild</span>) {
+                    <span class="variable">ele</span> = <span class="variable">div</span>.<span class="variable">firstChild</span>;
+                    <span class="keyword">if</span> (<span class="variable">position</span>) {
+                        <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>]);
+                    } <span class="keyword">else</span> {
+                        <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
+                    }
+                }
+            }
+        }
 
         <span class="keyword">var</span> <span class="variable">macros</span> = {
             <span class="string">'nl'</span>: <span class="string">'\n|\r\n|\r|\f'</span>,

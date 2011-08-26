@@ -227,6 +227,8 @@
     Tiramisu.prototype.get = function(selector) {
 
         // DOM Node insertion generic utility
+
+
         function insert_content(html, position) {
             if (results[0] == undefined) {
                 return '';
@@ -241,7 +243,7 @@
                     if (position) {
                         parent.insertBefore(ele, results[i]);
                     } else {
-                        parent.insertBefore(ele, results[i].nextSibling );
+                        parent.insertBefore(ele, results[i].nextSibling);
                     }
                 }
             }
@@ -1285,7 +1287,16 @@
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // success!
                 if (setting.successHTML) {
-                    t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
+                    if (typeof(setting.successHTML) === 'string') {
+                        t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
+                    } else if (typeof(setting.successHTML) === 'object'){
+                        if (typeof(setting.successHTML.html) === 'function') {
+                            setting.successHTML.html(xhr.responseText);
+                        } else {
+                            setting.successHTML.innerHTML = xhr.responseText;
+                        }
+                    }
+                    
                 }
                 setting.end_load();
                 setting.success(xhr.responseText);
