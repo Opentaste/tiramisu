@@ -226,6 +226,27 @@
      */
     Tiramisu.prototype.get = function(selector) {
 
+        // DOM Node insertion generic utility
+        function insert_content(html, position) {
+            if (results[0] == undefined) {
+                return '';
+            }
+            var i, parent, div, ele;
+            for (i = 0; i < len_result; i++) {
+                div = t.d.createElement('div')
+                div.innerHTML = html;
+                parent = results[i].parentNode;
+                while (div.firstChild) {
+                    ele = div.firstChild;
+                    if (position) {
+                        parent.insertBefore(ele, results[i]);
+                    } else {
+                        parent.insertBefore(ele, results[i].nextSibling );
+                    }
+                }
+            }
+        }
+
         var macros = {
             'nl': '\n|\r\n|\r|\f',
             'nonascii': '[^\0-\177]',
