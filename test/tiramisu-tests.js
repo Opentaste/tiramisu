@@ -129,7 +129,7 @@ module('DOM Manipulation tests');
 test('Calling t.get(".inner").after()', function() {
     t.get('#after_test .inner').after('<p>ciccio</p>')
     var rs = t.get('#after_test')[0].innerHTML;
-    var attended = '\n      <h1>Hello Tiramisu</h1>\n      <div class=\"inner\">ciao</div>\n      <p>ciccio</p>\n      <div class=\"inner\">mondo</div>\n      <p>ciccio</p>\n    ';
+    var attended = '\n      <h1>Hello Tiramisu</h1>\n      <div class=\"inner\">ciao</div><p>ciccio</p>\n      <div class=\"inner\">mondo</div><p>ciccio</p>\n    ';
     equal(rs, attended);
 });
 
