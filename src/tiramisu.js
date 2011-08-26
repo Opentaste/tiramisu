@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.1-b9';
+        this.version = '0.1.2';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -227,7 +227,6 @@
     Tiramisu.prototype.get = function(selector) {
 
         // DOM Node insertion generic utility
-
 
         function insert_content(html, position) {
             if (results[0] == undefined) {
@@ -1289,14 +1288,13 @@
                 if (setting.successHTML) {
                     if (typeof(setting.successHTML) === 'string') {
                         t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
-                    } else if (typeof(setting.successHTML) === 'object'){
+                    } else if (typeof(setting.successHTML) === 'object') {
                         if (typeof(setting.successHTML.html) === 'function') {
                             setting.successHTML.html(xhr.responseText);
                         } else {
                             setting.successHTML.innerHTML = xhr.responseText;
                         }
                     }
-                    
                 }
                 setting.end_load();
                 setting.success(xhr.responseText);
