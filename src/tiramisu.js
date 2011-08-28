@@ -227,6 +227,8 @@
     Tiramisu.prototype.get = function(selector) {
 
         // DOM Node insertion generic utility
+
+
         function insert_content(html, before, append) {
             if (results[0] == undefined) {
                 return '';

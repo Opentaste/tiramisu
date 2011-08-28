@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.2</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.2-b1</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.2)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.2-b1)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.2'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.2-b1'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -324,7 +324,8 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 
         <span class="comment">// DOM Node insertion generic utility</span>
 
-        <span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">position</span>) {
+
+        <span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">before</span>, <span class="variable">append</span>) {
             <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] == <span class="variable">undefined</span>) {
                 <span class="keyword">return</span> <span class="string">''</span>;
             }
@@ -333,12 +334,14 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
                 <span class="variable">div</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="string">'div'</span>)
                 <span class="variable">div</span>.<span class="variable">innerHTML</span> = <span class="variable">html</span>;
                 <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
-                <span class="keyword">while</span> (<span class="variable">div</span>.<span class="variable">firstChild</span>) {
-                    <span class="variable">ele</span> = <span class="variable">div</span>.<span class="variable">firstChild</span>;
-                    <span class="keyword">if</span> (<span class="variable">position</span>) {
-                        <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>]);
+
+                <span class="keyword">while</span> (<span class="variable">ele</span> = <span class="variable">div</span>.<span class="variable">firstChild</span>) {
+                    <span class="keyword">if</span> (<span class="variable">before</span>) {
+                        <span class="comment">// Insert before</span>
+                        (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">firstChild</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>]);
                     } <span class="keyword">else</span> {
-                        <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
+                        <span class="comment">// Insert after</span>
+                        (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">appendChild</span>(<span class="variable">ele</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
                     }
                 }
             }
@@ -647,7 +650,7 @@ tiramisu.get('p').on('click', function() {
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>Insert Before</h2>
+<h2>Insert Before method</h2>
 
 <p>Insert text or html, before each element.</p>
 
@@ -656,7 +659,7 @@ tiramisu.get('p').on('click', function() {
 <pre><code>tiramisu.get(*SELECTOR*).before(*HTML*)</code></pre>
 
 <p>where <em>SELECTOR</em> is a valid CSS selector, <em>HTML</em> is
-the string...</p>
+the element to insert.</p>
 
 <h2>Example #1 ()</h2>
 
@@ -676,18 +679,18 @@ produce the following result:
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>html</em> </p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>html</em>  The element to insert</p><pre><code>     </code></pre></li></ul>
 </td>
 <td class="code">
 <pre><code><span class="string">'before'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
-                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="number integer">1</span>)
+                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">true</span>, <span class="variable">false</span>)
                 <span class="keyword">return</span> <span class="this">this</span>;
             },</code></pre>
 </td>
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>Insert After</h2>
+<h2>Insert After method</h2>
 
 <p>Insert text or html, after each element.</p>
 
@@ -695,10 +698,10 @@ produce the following result:
 
 <pre><code>tiramisu.get(*SELECTOR*).after(*HTML*)</code></pre>
 
-<p>where <em>SELECTOR</em> is a valid CSS selector, <em>HTML</em> is
-the string...</p>
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
+the element to insert.</p>
 
-<h2>Example #1 ()</h2>
+<h2>Example #1 (Inserting an element multiple times)</h2>
 
 <pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
 &lt;div class="inner"&gt;ciao&lt;/div&gt;
@@ -706,7 +709,7 @@ the string...</p>
 ...
 t.get('.inner').after('&lt;p&gt;ciccio&lt;/p&gt;')
 
-produce the following result:
+produces the following result:
 
 &lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
 &lt;div class="inner"&gt;ciao&lt;/div&gt;
@@ -716,11 +719,147 @@ produce the following result:
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>html</em> </p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>html</em>  The element to insert</p><pre><code>     </code></pre></li></ul>
 </td>
 <td class="code">
 <pre><code><span class="string">'after'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
-                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="number integer">0</span>)
+                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">false</span>, <span class="variable">false</span>);
+                <span class="keyword">return</span> <span class="this">this</span>;
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Append method</h2>
+
+<p>Appends a DOM element into a list of selector results.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).append(*HTML*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
+a string containing some HTML (such as "&lt;p&gt;hi&lt;/p&gt;,
+&lt;h1&gt;headline&lt;/h1&gt; etc.)</p>
+
+<h2>Example #1 (Append a single element)</h2>
+
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;One&lt;/li&gt;
+  &lt;li&gt;Two&lt;/li&gt;
+&lt;/ul&gt;
+...
+t.get('ul').append('&lt;li&gt;Three&lt;/li&gt;');
+
+produces the following:
+
+&lt;ul&gt;
+  &lt;li&gt;One&lt;/li&gt;
+  &lt;li&gt;Two&lt;/li&gt;
+  &lt;li&gt;Three&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<h2>Example #2 (Append multiple elements)</h2>
+
+<pre><code> &lt;ul&gt;
+   &lt;li&gt;
+     &lt;p&gt;One&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;
+     &lt;p&gt;Two&lt;/p&gt;
+   &lt;/li&gt;
+ &lt;/ul&gt;
+ ...
+ t.get('ul li').append('&lt;p&gt;append&lt;/p&gt;');
+
+ produces the following:
+
+ &lt;ul&gt;
+   &lt;li&gt;
+     &lt;p&gt;One&lt;/p&gt;
+     &lt;p&gt;append&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;
+     &lt;p&gt;Two&lt;/p&gt;
+     &lt;p&gt;append&lt;/p&gt;
+   &lt;/li&gt;
+ &lt;/ul&gt;</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>html</em>  The element to append</p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'append'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">false</span>, <span class="variable">true</span>);
+                <span class="keyword">return</span> <span class="this">this</span>;
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Prepend method</h2>
+
+<p>Prepends a DOM element into a list of selector results.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).prepend(*HTML*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
+a string containing some HTML (such as "&lt;p&gt;hi&lt;/p&gt;,
+&lt;h1&gt;headline&lt;/h1&gt; etc.)</p>
+
+<h2>Example #1 (Prepend a single element)</h2>
+
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;One&lt;/li&gt;
+  &lt;li&gt;Two&lt;/li&gt;
+&lt;/ul&gt;
+...
+t.get('ul').prepend('&lt;li&gt;Three&lt;/li&gt;');
+
+produces the following:
+
+&lt;ul&gt;
+  &lt;li&gt;Zero&lt;/li&gt;
+  &lt;li&gt;One&lt;/li&gt;
+  &lt;li&gt;Two&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<h2>Example #2 (Prepend multiple elements)</h2>
+
+<pre><code> &lt;ul&gt;
+   &lt;li&gt;
+     &lt;p&gt;One&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;
+     &lt;p&gt;Two&lt;/p&gt;
+   &lt;/li&gt;
+ &lt;/ul&gt;
+ ...
+ t.get('ul li').prepend('&lt;p&gt;prepend&lt;/p&gt;');
+
+ produces the following:
+
+ &lt;ul&gt;
+   &lt;li&gt;
+     &lt;p&gt;prepend&lt;/p&gt;
+     &lt;p&gt;One&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;
+     &lt;p&gt;prepend&lt;/p&gt;
+     &lt;p&gt;Two&lt;/p&gt;
+   &lt;/li&gt;
+ &lt;/ul&gt;</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>html</em>  The element to prepend</p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'prepend'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">true</span>, <span class="variable">true</span>);
                 <span class="keyword">return</span> <span class="this">this</span>;
             },</code></pre>
 </td>
