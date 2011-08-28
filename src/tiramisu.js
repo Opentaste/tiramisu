@@ -240,7 +240,7 @@
                 while (ele = div.firstChild) {
                     if (before) {
                         // Insert before
-                        (append) ? results[0].appendChild(ele) : parent.insertBefore(ele, results[i]);
+                        (append) ? results[i].insertBefore(ele, results[i].firstChild) : parent.insertBefore(ele, results[i]);
                     } else {
                         // Insert after
                         (append) ? results[i].appendChild(ele) : parent.insertBefore(ele, results[i].nextSibling);
@@ -731,7 +731,7 @@
              * @param {html}
              */
             'before': function(html) {
-                insert_content(html, true, true)
+                insert_content(html, true, false)
                 return this;
             },
             /**
@@ -769,7 +769,11 @@
              * @param {html}
              */
             'after': function(html) {
-                insert_content(html, false, false)
+                insert_content(html, false, false);
+                return this;
+            },
+            'prepend': function(html) {
+                insert_content(html, true, true);
                 return this;
             },
             'append': function(html) {

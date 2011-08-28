@@ -126,21 +126,35 @@ test('Calling “t.get("#qunit-fixture select").value("Second.")', function() {
 
 module('DOM Manipulation tests');
 
-test('Single insert', function() {
+test('Single after', function() {
     t.get('#after_test h1').after('<p>new</p>');
     var rs = t.get('#after_test')[0].innerHTML;
     var attended = '\n      <h1>Hello Tiramisu</h1><p>new</p>\n      <div class=\"inner\">ciao</div>\n      <div class=\"inner\">mondo</div>\n    ';
     equal(rs, attended);
 });
 
-test('Multiple insert', function() {
+test('Multiple after', function() {
     t.get('#after_test .inner').after('<p>ciccio</p>')
     var rs = t.get('#after_test')[0].innerHTML;
     var attended = '\n      <h1>Hello Tiramisu</h1>\n      <div class=\"inner\">ciao</div><p>ciccio</p>\n      <div class=\"inner\">mondo</div><p>ciccio</p>\n    ';
     equal(rs, attended);
 });
 
-test('Single append', function(){
+test('Single before', function() {
+    t.get('#after_test h1').before('<p>new</p>');
+    var rs = t.get('#after_test')[0].innerHTML;
+    var attended = '\n      <p>new</p><h1>Hello Tiramisu</h1>\n      <div class=\"inner\">ciao</div>\n      <div class=\"inner\">mondo</div>\n    ';
+    equal(rs, attended);
+});
+
+test('Multiple before', function() {
+    t.get('#after_test .inner').before('<p>ciccio</p>')
+    var rs = t.get('#after_test')[0].innerHTML;
+    var attended = '\n      <h1>Hello Tiramisu</h1>\n      <p>ciccio</p><div class=\"inner\">ciao</div>\n      <p>ciccio</p><div class=\"inner\">mondo</div>\n    ';
+    equal(rs, attended);
+});
+
+test('Single append', function() {
     t.get('#append_test').append('<li>Three</li>')
     var rs = t.get('#append_test')[0].innerHTML;
     var attended = '\n      <li>One</li>\n      <li>Two</li>\n    <li>Three</li>'
@@ -150,7 +164,21 @@ test('Single append', function(){
 test('Multiple append', function() {
     t.get('#append_test2 li').append('<p>ciccio</p>')
     var rs = t.get('#append_test2')[0].innerHTML;
-    var attended ='\n      <li><p>ciccio</p></li>\n      <li><p>ciccio</p></li>\n    ';
+    var attended ='\n      <li><p>First</p><p>ciccio</p></li>\n      <li><p>First</p><p>ciccio</p></li>\n    ';
+    equal(rs, attended);
+});
+
+test('Single prepend', function() {
+    t.get('#append_test').prepend('<li>Zero</li>')
+    var rs = t.get('#append_test')[0].innerHTML;
+    var attended = '<li>Zero</li>\n      <li>One</li>\n      <li>Two</li>\n    '
+    equal(rs, attended);
+});
+
+test('Multiple prepend', function() {
+    t.get('#append_test2 li').prepend('<p>ciccio</p>')
+    var rs = t.get('#append_test2')[0].innerHTML;
+    var attended ='\n      <li><p>ciccio</p><p>First</p></li>\n      <li><p>ciccio</p><p>First</p></li>\n    ';
     equal(rs, attended);
 });
 
