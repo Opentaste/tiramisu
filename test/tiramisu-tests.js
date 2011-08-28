@@ -94,7 +94,7 @@ test('Calling “t.get("h2").each(function() { this.innerHTML = "Test"; });”',
 });
 
 test('Calling “t.get("ul li").each(function() { return this.innerHTML; });”', function() {
-    t.get('ul li').each(function() {
+    t.get('ul#selector_test li').each(function() {
         t.get('#append-here')[0].innerHTML += this.innerHTML;
     });
 
@@ -131,6 +131,12 @@ test('Calling t.get(".inner").after()', function() {
     var rs = t.get('#after_test')[0].innerHTML;
     var attended = '\n      <h1>Hello Tiramisu</h1>\n      <div class=\"inner\">ciao</div><p>ciccio</p>\n      <div class=\"inner\">mondo</div><p>ciccio</p>\n    ';
     equal(rs, attended);
+});
+
+test('Calling t.get("ul li").append()', function(){
+    t.get('#append_test ul li').append('<li>Three</li>')
+    var rs = t.get('#append_test ul li');
+    equal(rs, 2);
 });
 
 module('CSS Manipulation tests');
