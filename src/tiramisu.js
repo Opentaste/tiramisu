@@ -697,8 +697,8 @@
                 return this;
             },
             /**
-             * Insert Before
-             * -----------------------
+             * Insert Before method
+             * --------------------
              *
              * Insert text or html, before each element.
              *
@@ -708,7 +708,7 @@
              *     tiramisu.get(*SELECTOR*).before(*HTML*)
              *
              * where *SELECTOR* is a valid CSS selector, *HTML* is
-             * the string...
+             * the element to insert.
              *
              * Example #1 ()
              * ------------------------------------------------------
@@ -728,15 +728,15 @@
              *     <div class="inner">mondo</div>
              *
              *
-             * @param {html}
+             * @param {html} The element to insert
              */
             'before': function(html) {
                 insert_content(html, true, false)
                 return this;
             },
             /**
-             * Insert After
-             * -----------------------
+             * Insert After method
+             * -------------------
              *
              * Insert text or html, after each element.
              *
@@ -745,11 +745,11 @@
              *
              *     tiramisu.get(*SELECTOR*).after(*HTML*)
              *
-             * where *SELECTOR* is a valid CSS selector, *HTML* is
-             * the string...
+             * where *SELECTOR* is a valid CSS selector and *HTML* is
+             * the element to insert.
              *
-             * Example #1 ()
-             * ------------------------------------------------------
+             * Example #1 (Inserting an element multiple times)
+             * ------------------------------------------------
              *
              *     <h1>Hello Tiramisu</h1>
              *     <div class="inner">ciao</div>
@@ -757,7 +757,7 @@
              *     ...
              *     t.get('.inner').after('<p>ciccio</p>')
              *
-             *     produce the following result:
+             *     produces the following result:
              *
              *     <h1>Hello Tiramisu</h1>
              *     <div class="inner">ciao</div>
@@ -766,18 +766,142 @@
              *     <p>ciccio</p>
              *
              *
-             * @param {html}
+             * @param {html} The element to insert
              */
             'after': function(html) {
                 insert_content(html, false, false);
                 return this;
             },
-            'prepend': function(html) {
-                insert_content(html, true, true);
-                return this;
-            },
+            /**
+             * Append method
+             * -------------
+             *
+             * Appends a DOM element into a list of selector results.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).append(*HTML*)
+             *
+             * where *SELECTOR* is a valid CSS selector and *HTML* is
+             * a string containing some HTML (such as "<p>hi</p>,
+             * <h1>headline</h1> etc.)
+             *
+             * Example #1 (Append a single element)
+             * ------------------------------------
+             *
+             *     <ul>
+             *       <li>One</li>
+             *       <li>Two</li>
+             *     </ul>
+             *     ...
+             *     t.get('ul').append('<li>Three</li>');
+             *
+             *     produces the following:
+             *
+             *     <ul>
+             *       <li>One</li>
+             *       <li>Two</li>
+             *       <li>Three</li>
+             *     </ul>
+             *
+             * Example #2 (Append multiple elements)
+             * -------------------------------------
+             *
+             *      <ul>
+             *        <li>
+             *          <p>One</p>
+             *        </li>
+             *        <li>
+             *          <p>Two</p>
+             *        </li>
+             *      </ul>
+             *      ...
+             *      t.get('ul li').append('<p>append</p>');
+             *
+             *      produces the following:
+             *
+             *      <ul>
+             *        <li>
+             *          <p>One</p>
+             *          <p>append</p>
+             *        </li>
+             *        <li>
+             *          <p>Two</p>
+             *          <p>append</p>
+             *        </li>
+             *      </ul>
+             *
+             * @param {html} The element to append
+             */
             'append': function(html) {
                 insert_content(html, false, true);
+                return this;
+            },
+            /**
+             * Prepend method
+             * --------------
+             *
+             * Prepends a DOM element into a list of selector results.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).prepend(*HTML*)
+             *
+             * where *SELECTOR* is a valid CSS selector and *HTML* is
+             * a string containing some HTML (such as "<p>hi</p>,
+             * <h1>headline</h1> etc.)
+             *
+             * Example #1 (Prepend a single element)
+             * ------------------------------------
+             *
+             *     <ul>
+             *       <li>One</li>
+             *       <li>Two</li>
+             *     </ul>
+             *     ...
+             *     t.get('ul').prepend('<li>Three</li>');
+             *
+             *     produces the following:
+             *
+             *     <ul>
+             *       <li>Zero</li>
+             *       <li>One</li>
+             *       <li>Two</li>
+             *     </ul>
+             *
+             * Example #2 (Prepend multiple elements)
+             * -------------------------------------
+             *
+             *      <ul>
+             *        <li>
+             *          <p>One</p>
+             *        </li>
+             *        <li>
+             *          <p>Two</p>
+             *        </li>
+             *      </ul>
+             *      ...
+             *      t.get('ul li').prepend('<p>prepend</p>');
+             *
+             *      produces the following:
+             *
+             *      <ul>
+             *        <li>
+             *          <p>prepend</p>
+             *          <p>One</p>
+             *        </li>
+             *        <li>
+             *          <p>prepend</p>
+             *          <p>Two</p>
+             *        </li>
+             *      </ul>
+             *
+             * @param {html} The element to prepend
+             */
+            'prepend': function(html) {
+                insert_content(html, true, true);
                 return this;
             },
             /**
