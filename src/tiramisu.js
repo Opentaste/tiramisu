@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.2-b1';
+        this.version = '0.1.2-b2';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -227,7 +227,6 @@
     Tiramisu.prototype.get = function(selector) {
 
         // DOM Node insertion generic utility
-
 
         function insert_content(html, before, append) {
             if (results[0] == undefined) {
@@ -678,6 +677,13 @@
              *         }
              *     });
              *
+             * Example #5 ()
+             * ----------------------------------------------------
+             *
+             *     tiramisu.get('p').on('keydown', 'click', function(evt) {
+             *         alert('This will be executed after click or keydown on 'p' element");
+             *     });
+             *
              * @param {event} evt An event listener
              * @param {function} cb The callback function to attach
              */
@@ -685,15 +691,22 @@
                 if (results[0] == undefined) {
                     return '';
                 }
-                var i;
+                var arg_len = arguments.length;
+                if (arg_len > 2) {
+                    callback = arguments[arg_len - 1];
+                } else {
+                    callback = cb;
+                }
                 // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
-                if (results[0].addEventListener) {
-                    for (i = 0; i < len_result; i++) {
-                        results[i].addEventListener(evt, cb, false);
-                    }
-                } else if (results[0].attachEvent) {
-                    for (i = 0; i < len_result; i++) {
-                        results[i].attachEvent('on' + evt, cb);
+                for (var j = arg_len - 1; j--;) {
+                    if (results[0].addEventListener) {
+                        for (i = len_result; i--;) {
+                            results[i].addEventListener(arguments[j], callback, false);
+                        }
+                    } else if (results[0].attachEvent) {
+                        for (i = len_result; i--;) {
+                            results[i].attachEvent('on' + arguments[j], callback);
+                        }
                     }
                 }
                 return this;
@@ -1509,7 +1522,7 @@
 
         if (arguments.length > 2) {
             interval = arguments[1];
-            cb = arguments[arguments.length - 1];
+            cb = arguments[2];
         }
 
         var start = +new Date(),
