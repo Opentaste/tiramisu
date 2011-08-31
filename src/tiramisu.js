@@ -1118,20 +1118,36 @@
              *
              */
             'value': function(set) {
+                var value = function(i) {
+                    if (t.detect('isIE') || t.detect('isIEolder')) {
+                        return results[i].options[results[i].selectedIndex].text;
+                    }
+                    return results[i].value;
+                };
+
+                var setValue = function(i, s) {
+                    if (t.detect('isIE') || t.detect('isIEolder')) {
+                        results[i].options[results[i].selectedIndex].text = s;
+                    } else {
+                        results[i].value = s;
+                    }
+                };
+
                 if (results[0] == undefined) {
                     return '';
                 }
+
                 if (set !== undefined) {
-                    results[0].value = set;
+                    setValue(0, set);
                 } else {
                     if (len_result > 1) {
                         var list = [];
                         for (i = 0; i < len_result; i++) {
-                            list.push(results[i].value);
+                            list.push(value(i));
                         }
                         return list;
                     }
-                    return results[0].value;
+                    return value(0);
                 }
             },
             /**
