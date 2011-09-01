@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.2-b3';
+        this.version = '0.1.2-b4';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -688,24 +688,35 @@
              * @param {function} cb The callback function to attach
              */
             'on': function(evt, cb) {
-                if (results[0] == undefined) {
+                if (results[0] == undefined || arguments.length > 2) {
                     return '';
                 }
-                var arg_len = arguments.length;
-                if (arg_len > 2) {
-                    callback = arguments[arg_len - 1];
-                } else {
-                    callback = cb;
+                var evt_len = 1,
+                    ev = [],
+                    callback = [];
+                if (typeof(evt) === 'string') {
+                    ev[0] = evt;
+                    callback[0] = cb;
+                } else if (typeof(evt) === 'object') {
+                    if (typeof(evt[0]) === 'string') {
+                        ev = evt;
+                        callback[0] = cb;
+                    } else {
+                        for (key in evt) {
+                            evt_len = ev.push(key);
+                            callback.push(evt[key]);
+                        }
+                    }
                 }
                 // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
-                for (var j = arg_len - 1; j--;) {
+                for (var j = evt_len; j--;) {
                     if (results[0].addEventListener) {
                         for (i = len_result; i--;) {
-                            results[i].addEventListener(arguments[j], callback, false);
+                            results[i].addEventListener(ev[j], callback[j], false);
                         }
                     } else if (results[0].attachEvent) {
                         for (i = len_result; i--;) {
-                            results[i].attachEvent('on' + arguments[j], callback);
+                            results[i].attachEvent('on' + ev[j], callback[j]);
                         }
                     }
                 }
