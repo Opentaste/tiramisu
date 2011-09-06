@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.2-b6';
+        this.version = '0.1.2-b7';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -1132,7 +1132,7 @@
                 var value = function(i) {
                         if (t.detect('isIE') || t.detect('isIEolder')) {
                             if (results[i].type == 'select-one') {
-                                return results[i].options[results[i].selectedIndex].text;
+                                return results[i].options[results[i].selectedIndex].value;
                             }
                             return results[i].value;
                         }
@@ -1141,7 +1141,10 @@
 
                 var setValue = function(i, s) {
                         if (t.detect('isIE') || t.detect('isIEolder')) {
-                            results[i].options[results[i].selectedIndex].text = s;
+                            if (results[i].type == 'select-one') {
+                                results[i].options[results[i].selectedIndex].value = s;
+                            }
+                            results[i].value = s;
                         } else {
                             results[i].value = s;
                         }
