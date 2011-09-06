@@ -118,6 +118,11 @@ test('Calling “t.get("#qunit-fixture select").value()', function() {
     equal(rs, 'First.', 'should return “First.”');
 });
 
+test('Calling “t.get("#hola_id").value()', function() {
+    var rs = t.get('#hola_id').value();
+    equal(rs, 'hola', 'should return “hola”');
+});
+
 test('Calling “t.get("#qunit-fixture select").value("Second.")', function() {
     t.get('#qunit-fixture select').value("Second.");
     var rs = t.get('#qunit-fixture select').value();
