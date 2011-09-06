@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.2-b4';
+        this.version = '0.1.2-b6';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -1131,9 +1131,9 @@
             'value': function(set) {
                 var value = function(i) {
                         if (t.detect('isIE') || t.detect('isIEolder')) {
-                            if (results[i].type == 'select-one'){
+                            if (results[i].type == 'select-one') {
                                 return results[i].options[results[i].selectedIndex].text;
-                            } 
+                            }
                             return results[i].value;
                         }
                         return results[i].value;
@@ -1389,9 +1389,6 @@
 
         extend(setting, setting_input);
 
-        if (t.detect('isIEolder')) {
-            setting.method = 'POST';
-        }
         // object "setting.parameter" I create a string with the parameters 
         // to be passed in request
         if (setting.parameter != '') {
@@ -1451,6 +1448,10 @@
 
         if (setting.data_type) {
             xhr.setRequestHeader('dataType', setting.data_type);
+        }
+
+        if (t.detect('isIEolder')) {
+            xhr.setRequestHeader('Cache-Control', 'no-cache');
         }
 
         if (setting.loader) {
