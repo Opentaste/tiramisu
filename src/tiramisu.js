@@ -1131,7 +1131,10 @@
             'value': function(set) {
                 var value = function(i) {
                         if (t.detect('isIE') || t.detect('isIEolder')) {
-                            return results[i].options[results[i].selectedIndex].text;
+                            if (results[i].type == 'select-one'){
+                                return results[i].options[results[i].selectedIndex].text;
+                            } 
+                            return results[i].value;
                         }
                         return results[i].value;
                     };
