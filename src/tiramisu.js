@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.2-b7';
+        this.version = '0.1.2-b8';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -235,9 +235,12 @@
             var i, parent, div, ele;
             for (i = 0; i < len_result; i++) {
                 div = t.d.createElement('div')
-                div.innerHTML = html;
+                if (typeof html === 'string') {
+                    div.innerHTML = html;
+                } else {
+                    div.innerHTML = html.innerHTML;
+                }
                 parent = results[i].parentNode;
-
                 while (ele = div.firstChild) {
                     if (before) {
                         // Insert before
