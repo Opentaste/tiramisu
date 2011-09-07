@@ -238,7 +238,7 @@
                 if (typeof html === 'string') {
                     div.innerHTML = html;
                 } else {
-                    div.innerHTML = html.outerHTML;
+                    div.innerHTML = html.outerHTML || new XMLSerializer().serializeToString(html)
                 }
                 parent = results[i].parentNode;
                 while (ele = div.firstChild) {
