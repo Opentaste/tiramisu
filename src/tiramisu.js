@@ -238,7 +238,7 @@
                 if (typeof html === 'string') {
                     div.innerHTML = html;
                 } else {
-                    div.innerHTML = html.innerHTML;
+                    div.innerHTML = html.outerHTML;
                 }
                 parent = results[i].parentNode;
                 while (ele = div.firstChild) {
