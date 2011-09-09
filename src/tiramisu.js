@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.2-b8';
+        this.version = '0.1.2-b9';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -996,6 +996,8 @@
                         } else {
                             if (browser === 'f3') {
                                 return obj.style.MozBorderRadius;
+                            } else if (browser === 'ie9+') {
+                                return obj.style.borderRadius;
                             }
                         }
                     }
@@ -1003,7 +1005,10 @@
 
                 if (typeof(obj) === 'string') {
                     if (ie || browser === 'f3') {
-                        return attr[obj](results[0])
+                        if (obj == 'border-radius') {
+                            return attr[obj](results[0])
+                        }
+                        return results[0].style[obj];
                     }
                     return results[0].style[obj];
                 }
