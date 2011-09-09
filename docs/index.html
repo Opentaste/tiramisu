@@ -1328,7 +1328,8 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
             <span class="variable">xhr</span> = <span class="keyword">null</span>,
             <span class="variable">parameter</span> = <span class="string">''</span>,
             <span class="comment">// Is very important that parameter dafualt value is ''</span>
-            <span class="variable">parameter_count</span> = <span class="number integer">0</span>;
+            <span class="variable">parameter_count</span> = <span class="number integer">0</span>,
+            <span class="variable">url_cache</span> = <span class="string">''</span>;
 
         <span class="keyword">if</span> (<span class="variable">window</span>.<span class="class">XMLHttpRequest</span>) {
             <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">XMLHttpRequest</span>();
@@ -1355,6 +1356,11 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
             <span class="variable">parameter</span> = <span class="keyword">null</span>;
         }
 
+        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>)) {
+            <span class="comment">// Easy Solution for Internet Explorer</span>
+            <span class="variable">url_cache</span> = <span class="string">'?'</span> + ((<span class="string">''</span> + <span class="class">Math</span>.<span class="variable">random</span>()).<span class="variable">replace</span>(<span class="regexp">/\D/g</span>, <span class="string">''</span>));
+        }
+
         <span class="comment">// The open() method!</span>
         <span class="comment">// When the open(method, url, async, user, password) method is invoked, the </span>
         <span class="comment">// user agent must run these steps (unless otherwise indicated):</span>
@@ -1374,7 +1380,7 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
         <span class="comment">// 8) Switch the the state to OPENED;</span>
         <span class="comment">// 9) Dispatch a readystatechange event.</span>
         <span class="comment">//</span>
-        <span class="variable">xhr</span>.<span class="variable">open</span>(<span class="variable">setting</span>.<span class="variable">method</span>, <span class="variable">setting</span>.<span class="variable">url</span>, <span class="variable">setting</span>.<span class="variable">async</span>);
+        <span class="variable">xhr</span>.<span class="variable">open</span>(<span class="variable">setting</span>.<span class="variable">method</span>, <span class="variable">setting</span>.<span class="variable">url</span> + <span class="variable">url_cache</span>, <span class="variable">setting</span>.<span class="variable">async</span>);
 
         <span class="comment">// The setRequestHeader() method!</span>
         <span class="comment">// When the setRequestHeader(header, value) method is invoked, </span>
@@ -1399,10 +1405,6 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
 
         <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">data_type</span>) {
             <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'dataType'</span>, <span class="variable">setting</span>.<span class="variable">data_type</span>);
-        }
-
-        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIEolder'</span>)) {
-            <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'Cache-Control'</span>, <span class="string">'no-cache'</span>);
         }
 
         <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">loader</span>) {

@@ -1388,7 +1388,8 @@
             xhr = null,
             parameter = '',
             // Is very important that parameter dafualt value is ''
-            parameter_count = 0;
+            parameter_count = 0,
+            url_cache = '';
 
         if (window.XMLHttpRequest) {
             xhr = new XMLHttpRequest();
@@ -1415,6 +1416,11 @@
             parameter = null;
         }
 
+        if (t.detect('isIE')) {
+            // Easy Solution for Internet Explorer
+            url_cache = '?' + (('' + Math.random()).replace(/\D/g, ''));
+        }
+
         // The open() method!
         // When the open(method, url, async, user, password) method is invoked, the 
         // user agent must run these steps (unless otherwise indicated):
@@ -1434,7 +1440,7 @@
         // 8) Switch the the state to OPENED;
         // 9) Dispatch a readystatechange event.
         //
-        xhr.open(setting.method, setting.url, setting.async);
+        xhr.open(setting.method, setting.url + url_cache, setting.async);
 
         // The setRequestHeader() method!
         // When the setRequestHeader(header, value) method is invoked, 
@@ -1459,10 +1465,6 @@
 
         if (setting.data_type) {
             xhr.setRequestHeader('dataType', setting.data_type);
-        }
-
-        if (t.detect('isIEolder')) {
-            xhr.setRequestHeader('Cache-Control', 'no-cache');
         }
 
         if (setting.loader) {
