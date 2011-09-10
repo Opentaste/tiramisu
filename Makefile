@@ -31,7 +31,7 @@ docs/index.html:
 docs: docs/index.html
 
 publish:
-	git tag -a ${VERSION} -m "${DATE}"
+	git tag -f -a ${VERSION} -m "${DATE}"
 	git checkout stable
 	git merge master
 	git push origin stable
