@@ -31,6 +31,7 @@ docs/index.html:
 docs: docs/index.html
 
 publish:
+	make clean && make
 	git tag -f -a ${VERSION} -m "${DATE}"
 	git checkout stable
 	git merge master
