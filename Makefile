@@ -1,4 +1,5 @@
 VERSION := ${shell utils/version.py}
+DATE := ${shell utils/version.py True}
 SRC = src
  
 all: beautify minify docs
@@ -28,6 +29,16 @@ docs/index.html:
 	@echo "\n"
 
 docs: docs/index.html
+
+publish:
+	git tag -d ${VERSION} -m "${DATE}"
+	git checkout stable
+	git merge master
+	git push origin stable
+	make clean ../tiramisu-home/
+	make ../tiramisu-home/
+	git commit -am "Updated homepage to version ${VERSION}, ${DATE}" ../tiramisu-home/
+	git push origin gh-pages ../tiramisu-home/
 
 clean:
 	@echo "Cleaning..."

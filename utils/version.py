@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, re
+import sys, os, re
 from datetime import date
 
 markdown_intro = """
@@ -31,18 +31,24 @@ Resources
 [3]: http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html
 """
 
-with open("src/tiramisu.js", "r") as f:
-    for line in f:
-        version = re.search(r"this.version = '([0-9]\.[0-9](?:\.[0-9](?:-b[0-9]{1,2})?)?)';", line)
-        if (version is not None):
-            print(version.group(1))
+current_date = date.today().strftime('Released %B %d, %Y') 
 
-            with open("VERSION", "w") as version_file:
-                version_file.write("""{version}\n{date}""".format(version=version.group(1), date=date.today().strftime('Released %B %d, %Y')))
+def get_version(d=False):
+    with open("src/tiramisu.js", "r") as f:
+        for line in f:
+            version = re.search(r"this.version = '([0-9]\.[0-9](?:\.[0-9](?:-b[0-9]{1,2})?)?)';", line)
+            if (version is not None):
+                print(version.group(1)) if not d else current_date
+
+                with open("VERSION", "w") as version_file:
+                    version_file.write("""{version}\n{date}""".format(version=version.group(1), date=current_date))
 
 
-            with open("utils/docs-intro.md", "w") as intro:
-                for line in markdown_intro.format(version=version.group(1)):
-                    intro.write(line)
+                with open("utils/docs-intro.md", "w") as intro:
+                    for line in markdown_intro.format(version=version.group(1)):
+                        intro.write(line)
 
-            break
+                break
+
+if __name__=='__main__':
+    get_version(sys.argv[1]) if len(sys.argv) > 1 else get_version()
