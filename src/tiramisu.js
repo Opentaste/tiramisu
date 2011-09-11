@@ -1245,6 +1245,35 @@
                     return results[0][attr];
                 }
             },
+            /**
+             * Index extension method
+             * ---------------------------------
+             *
+             * Get the index position of an element.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).index(*ELEMENT*)
+             *
+             * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
+             * to search.
+             *
+             * The function returns -1 if no element is found.
+             *
+             * Example #1 (Get the index of a selector element)
+             * ------------------------------------------------
+             *
+             *     <p>This</p>      // element 0
+             *     <p>is</p>        // element 1
+             *     <p>Sparta!</p>   // element 2
+             *     ...
+             *     var el = t.get('p')[2];
+             *     var index = t.get('p').index(el); // Contains “2”;
+             *
+             * @param {Object} el the element to search (that is, a DOM element, not a *string*)
+             * @return {index} the index of the element if found, -1 otherwise
+             */
             'index': function(el) {
                 if (el !== undefined) {
                     for (var i = len_result; i >= 0; i--) {
