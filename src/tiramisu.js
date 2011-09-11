@@ -1244,6 +1244,14 @@
                 } else {
                     return results[0][attr];
                 }
+            },
+            'index': function(el) {
+                if (el !== undefined && typeof el === 'object') {
+                    for (var i = len_result; i >= 0; i--) {
+                        if (results[i] === el) break;
+                    }
+                    return i;
+                }
             }
         };
 
