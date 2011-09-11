@@ -1269,9 +1269,9 @@
              *     <p>Sparta!</p>   // element 2
              *     ...
              *     var el = t.get('p')[2];
-             *     var index = t.get('p').index(el); // Contains “2”;
+             *     var index = t.get('p').index(el); // Contains '2';
              *
-             * @param {Object} el the element to search (that is, a DOM element, not a *string*)
+             * @param {Object} the element to search (that is, a DOM element, not a *string*)
              * @return {index} the index of the element if found, -1 otherwise
              */
             'index': function(el) {
