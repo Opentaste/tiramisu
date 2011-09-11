@@ -129,6 +129,17 @@ test('Calling “t.get("#qunit-fixture select").value("Second.")', function() {
     equal(rs, 'Second.', 'should set element\'s HTML value to “Second”');
 });
 
+test('Element Index (Found)', function() {
+    var el = t.get('#selector_test li')[2];
+    var rs = t.get('#selector_test li').index(el);
+    equal(rs, 2);
+});
+
+test('Element Index (Not Found)', function() {
+    var rs = t.get('#selector_test li').index('<li>Does not exist</li>');
+    equal(rs, -1);
+});
+
 module('DOM Manipulation tests');
 
 test('Single after', function() {

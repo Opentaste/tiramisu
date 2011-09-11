@@ -1246,7 +1246,7 @@
                 }
             },
             'index': function(el) {
-                if (el !== undefined && typeof el === 'object') {
+                if (el !== undefined) {
                     for (var i = len_result; i >= 0; i--) {
                         if (results[i] === el) break;
                     }
