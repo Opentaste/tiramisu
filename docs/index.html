@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.3-b1</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.3-b2</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.3-b1)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.3-b2)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.3-b1'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.3-b2'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -1362,6 +1362,7 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
                 <span class="variable">parameter</span>: <span class="string">''</span>,
                 <span class="variable">success</span>: <span class="keyword">function</span>() {},
                 <span class="variable">successHTML</span>: <span class="string">''</span>,
+                <span class="variable">stop</span>: <span class="string">''</span>,
                 <span class="variable">url</span>: <span class="string">''</span>
             },
             <span class="variable">xhr</span> = <span class="keyword">null</span>,
@@ -1452,6 +1453,12 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
         }
 
         <span class="variable">setting</span>.<span class="variable">start_load</span>();
+
+        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">stop</span>) {
+            <span class="variable">t</span>.<span class="variable">task</span>(<span class="variable">setting</span>.<span class="variable">stop</span>, <span class="keyword">function</span>() {
+                <span class="variable">xhr</span>.<span class="variable">abort</span>();
+            })
+        }
 
         <span class="variable">xhr</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
             <span class="keyword">if</span> (<span class="variable">xhr</span>.<span class="variable">readyState</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> == <span class="number integer">200</span>) {

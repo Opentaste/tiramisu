@@ -1511,7 +1511,7 @@
         }
 
         setting.start_load();
-        
+
         if (setting.stop) {
             t.task(setting.stop, function() {
                 xhr.abort();
