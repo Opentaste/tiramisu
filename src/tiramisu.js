@@ -1243,7 +1243,7 @@
                     if (attr === 'class'){
                         return results[0].className = value;
                     } else {
-                        return results[0][attr];
+                        return results[0][attr] = value;
                     }
                 } else {
                     if (attr === 'class'){
