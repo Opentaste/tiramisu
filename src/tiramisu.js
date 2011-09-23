@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.3-b4';
+        this.version = '0.1.3-b5';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -229,7 +229,7 @@
         // DOM Node insertion generic utility
 
         function insert_content(html, before, append) {
-            if (results[0] == undefined) {
+            if (results[0] === undefined) {
                 return '';
             }
             var i, parent, div, ele;
@@ -691,7 +691,7 @@
              * @param {function} cb The callback function to attach
              */
             'on': function(evt, cb) {
-                if (results[0] == undefined || arguments.length > 2) {
+                if (results[0] === undefined || arguments.length > 2) {
                     return '';
                 }
                 var evt_len = 1,
@@ -1158,7 +1158,7 @@
                         }
                     };
 
-                if (results[0] == undefined) {
+                if (results[0] === undefined) {
                     return '';
                 }
 
@@ -1199,7 +1199,7 @@
              *
              */
             'focus': function() {
-                if (results[0] == undefined) {
+                if (results[0] === undefined) {
                     return '';
                 }
                 for (var i = len_result; i--;) {
@@ -1288,6 +1288,29 @@
                         if (results[i] === el) break;
                     }
                     return i;
+                }
+            },
+            /**
+             * Remove extension method
+             * ---------------------------------
+             *
+             */
+            'destroy': function(el) {
+                if (results[0] === undefined) {
+                    return '';
+                }
+                if (el !== undefined && typeof el === 'string') {
+                    var res = t.get(selector + ' ' + el),
+                        len = res.length;
+                    for (var i = len; i--;) {
+                        parent = res[i].parentNode;
+                        parent.removeChild(res[i]);
+                    }
+                } else {
+                    for (i = len_result; i--;) {
+                        parent = results[i].parentNode;
+                        parent.removeChild(results[i]);
+                    }
                 }
             }
         };
