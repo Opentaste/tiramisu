@@ -1408,7 +1408,7 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
             <span class="variable">parameter</span> = <span class="keyword">null</span>;
         }
 
-        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>)) {
+        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">setting</span>.<span class="variable">method</span> === <span class="string">'POST'</span>) {
             <span class="comment">// Easy Solution for Internet Explorer</span>
             <span class="variable">url_cache</span> = <span class="string">'?'</span> + ((<span class="string">''</span> + <span class="class">Math</span>.<span class="variable">random</span>()).<span class="variable">replace</span>(<span class="regexp">/\D/g</span>, <span class="string">''</span>));
         }

@@ -1466,7 +1466,7 @@
             parameter = null;
         }
 
-        if (t.detect('isIE')) {
+        if (t.detect('isIE') && setting.method === 'POST') {
             // Easy Solution for Internet Explorer
             url_cache = '?' + (('' + Math.random()).replace(/\D/g, ''));
         }
