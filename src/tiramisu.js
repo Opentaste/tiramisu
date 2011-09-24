@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.3-b5';
+        this.version = '0.1.3-b6';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -1293,7 +1293,7 @@
             /**
              * Empty extension method
              * ----------------------
-             * 
+             *
              * Removes all the child elements of a specific node from the DOM.
              *
              * Usage
@@ -1310,7 +1310,7 @@
              *        <li>This is my <span class="tasty">icecake</span></li>
              *        <li>I love <span class="tasty">chocolate</span> chips!</li>
              *     </ol>
-             *     
+             *
              * calling *t.get('#myList').empty()* will give the following results:
              *
              *     <ol id="myList"></ol>
@@ -1322,7 +1322,7 @@
              *        <li>This is my <span class="tasty">icecake</span></li>
              *        <li>I love <span class="tasty">chocolate chips!</span></li>
              *     </ol>
-             *     
+             *
              * calling *t.get('.tasty').empty()* will give the following results:
              *
              *     <ol id="myList">
@@ -1332,7 +1332,7 @@
              *
              * Todo
              * ----
-             *  
+             *
              * -    Remove events to avoid memory leaks;
              *
              */
@@ -1343,7 +1343,7 @@
 
                 for (var i = 0; i < len_result; i++) {
                     var child = results[i].childNodes[0];
-                    while(child) {
+                    while (child) {
                         var next = child.nextSibling;
                         results[i].removeChild(child);
                         child = next;

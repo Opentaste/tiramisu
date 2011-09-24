@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.3-b5</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.3-b6</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.3-b5)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.3-b6)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.3-b5'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.3-b6'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -1251,7 +1251,65 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>Remove extension method</h2>
+<h2>Empty extension method</h2>
+
+<p>Removes all the child elements of a specific node from the DOM.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).empty()</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector (containing <em>one</em> or <em>more</em> elements).</p>
+
+<h2>Example #1 (Remove all element of a list)</h2>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate&lt;/span&gt; chips!&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<p>calling <em>t.get('#myList').empty()</em> will give the following results:</p>
+
+<pre><code>&lt;ol id="myList"&gt;&lt;/ol&gt;</code></pre>
+
+<h2>Example #2 (Remove a specific element)</h2>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate chips!&lt;/span&gt;&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<p>calling <em>t.get('.tasty').empty()</em> will give the following results:</p>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;&lt;/span&gt; chips!&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<h2>Todo</h2>
+
+<ul><li><p>Remove events to avoid memory leaks;</p><pre><code>     </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'empty'</span>: <span class="keyword">function</span>() {
+                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
+                    <span class="keyword">return</span> <span class="string">''</span>;
+                }
+
+                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
+                    <span class="keyword">var</span> <span class="variable">child</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">childNodes</span>[<span class="number integer">0</span>];
+                    <span class="keyword">while</span> (<span class="variable">child</span>) {
+                        <span class="keyword">var</span> <span class="variable">next</span> = <span class="variable">child</span>.<span class="variable">nextSibling</span>;
+                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">removeChild</span>(<span class="variable">child</span>);
+                        <span class="variable">child</span> = <span class="variable">next</span>;
+                    }
+                }
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Destroy extension method</h2>
 
 <pre><code>         </code></pre>
 </td>
