@@ -198,6 +198,12 @@ test('Multiple prepend', function() {
     equal(rs, attended);
 });
 
+test('Empty childrens', function() {
+    t.get('#selector_test').empty();
+    var rs = t.get('#selector_test li');
+    deepEqual(rs, []);
+});
+
 module('CSS Manipulation tests');
 
 test('Setting the color of a node to #f6f6f6', function() {
