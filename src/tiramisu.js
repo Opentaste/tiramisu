@@ -1291,7 +1291,35 @@
                 }
             },
             /**
-             * Remove extension method
+             * Empty extension method
+             * ----------------------
+             * 
+             * Removes all the child elements of a specific node from the DOM.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).empty()
+             *
+             * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements).
+             *
+             */
+            'empty': function() {
+                if (results[0] === undefined) {
+                    return '';
+                }
+
+                for (var i = 0; i < len_result; i++) {
+                    var child = results[i].childNodes[0];
+                    while(child) {
+                        var next = child.nextSibling;
+                        results[i].removeChild(child);
+                        child = next;
+                    }
+                }
+            },
+            /**
+             * Destroy extension method
              * ---------------------------------
              *
              */

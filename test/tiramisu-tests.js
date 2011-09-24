@@ -200,8 +200,11 @@ test('Multiple prepend', function() {
 
 test('Empty childrens', function() {
     t.get('#selector_test').empty();
-    var rs = t.get('#selector_test li');
-    deepEqual(rs, []);
+    var rs1 = t.get('#selector_test')[0].innerHTML,
+        rs2 = t.get('#selector_test li').length;
+
+    equal(rs1, "");
+    equal(rs2, 0);
 });
 
 module('CSS Manipulation tests');
