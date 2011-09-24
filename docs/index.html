@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.3-b3</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.3-b5</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.3-b3)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.3-b5)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.3-b3'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.3-b5'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -325,7 +325,7 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
         <span class="comment">// DOM Node insertion generic utility</span>
 
         <span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">before</span>, <span class="variable">append</span>) {
-            <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] == <span class="variable">undefined</span>) {
+            <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
                 <span class="keyword">return</span> <span class="string">''</span>;
             }
             <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">parent</span>, <span class="variable">div</span>, <span class="variable">ele</span>;
@@ -638,7 +638,7 @@ tiramisu.get('p').on('click', function() {
 </td>
 <td class="code">
 <pre><code><span class="string">'on'</span>: <span class="keyword">function</span>(<span class="variable">evt</span>, <span class="variable">cb</span>) {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] == <span class="variable">undefined</span> || <span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
+                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span> || <span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
                     <span class="keyword">return</span> <span class="string">''</span>;
                 }
                 <span class="keyword">var</span> <span class="variable">evt_len</span> = <span class="number integer">1</span>,
@@ -1115,7 +1115,7 @@ t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']</code></pre>
                         }
                     };
 
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] == <span class="variable">undefined</span>) {
+                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
                     <span class="keyword">return</span> <span class="string">''</span>;
                 }
 
@@ -1154,7 +1154,7 @@ t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']</code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'focus'</span>: <span class="keyword">function</span>() {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] == <span class="variable">undefined</span>) {
+                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
                     <span class="keyword">return</span> <span class="string">''</span>;
                 }
                 <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
@@ -1198,7 +1198,7 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
                     <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
                         <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">className</span> = <span class="variable">value</span>;
                     } <span class="keyword">else</span> {
-                        <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>][<span class="variable">attr</span>];
+                        <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>][<span class="variable">attr</span>] = <span class="variable">value</span>;
                     }
                 } <span class="keyword">else</span> {
                     <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
@@ -1245,6 +1245,33 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
                         <span class="keyword">if</span> (<span class="variable">results</span>[<span class="variable">i</span>] === <span class="variable">el</span>) <span class="keyword">break</span>;
                     }
                     <span class="keyword">return</span> <span class="variable">i</span>;
+                }
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Remove extension method</h2>
+
+<pre><code>         </code></pre>
+</td>
+<td class="code">
+<pre><code><span class="string">'destroy'</span>: <span class="keyword">function</span>(<span class="variable">el</span>) {
+                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
+                    <span class="keyword">return</span> <span class="string">''</span>;
+                }
+                <span class="keyword">if</span> (<span class="variable">el</span> !== <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">el</span> === <span class="string">'string'</span>) {
+                    <span class="keyword">var</span> <span class="variable">res</span> = <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">selector</span> + <span class="string">' '</span> + <span class="variable">el</span>),
+                        <span class="variable">len</span> = <span class="variable">res</span>.<span class="variable">length</span>;
+                    <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len</span>; <span class="variable">i</span>--;) {
+                        <span class="variable">parent</span> = <span class="variable">res</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+                        <span class="variable">parent</span>.<span class="variable">removeChild</span>(<span class="variable">res</span>[<span class="variable">i</span>]);
+                    }
+                } <span class="keyword">else</span> {
+                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                        <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+                        <span class="variable">parent</span>.<span class="variable">removeChild</span>(<span class="variable">results</span>[<span class="variable">i</span>]);
+                    }
                 }
             }
         };
@@ -1377,7 +1404,8 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
             <span class="variable">parameter</span> = <span class="string">''</span>,
             <span class="comment">// Is very important that parameter dafualt value is ''</span>
             <span class="variable">parameter_count</span> = <span class="number integer">0</span>,
-            <span class="variable">url_cache</span> = <span class="string">''</span>;
+            <span class="variable">url_cache</span> = <span class="string">''</span>,
+            <span class="variable">get_params</span> = <span class="string">''</span>;
 
         <span class="keyword">if</span> (<span class="variable">window</span>.<span class="class">XMLHttpRequest</span>) {
             <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">XMLHttpRequest</span>();
@@ -1396,76 +1424,20 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
                 <span class="variable">parameter</span> += <span class="variable">attrname</span> + <span class="string">'='</span> + <span class="variable">setting</span>.<span class="variable">parameter</span>[<span class="variable">attrname</span>] + <span class="string">'&amp;'</span>;
             }
             <span class="variable">parameter</span> = <span class="variable">parameter</span>.<span class="variable">substring</span>(<span class="number integer">0</span>, <span class="variable">parameter</span>.<span class="variable">length</span> - <span class="number integer">1</span>);
-            <span class="keyword">if</span> (!<span class="variable">setting</span>.<span class="variable">content_type</span>) {
-                <span class="variable">setting</span>.<span class="variable">content_type</span> = <span class="string">'application/x-www-form-urlencoded'</span>;
+            <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">method</span> === <span class="string">'POST'</span>) {
+                <span class="keyword">if</span> (!<span class="variable">setting</span>.<span class="variable">content_type</span>) {
+                    <span class="variable">setting</span>.<span class="variable">content_type</span> = <span class="string">'application/x-www-form-urlencoded'</span>;
+                }
+            } <span class="keyword">else</span> {
+                <span class="variable">get_params</span> = <span class="string">'?'</span> + <span class="variable">parameter</span>;
             }
-            <span class="variable">setting</span>.<span class="variable">method</span> = <span class="string">'POST'</span>;
         } <span class="keyword">else</span> {
             <span class="variable">parameter</span> = <span class="keyword">null</span>;
         }
 
-        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>)) {
+        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">setting</span>.<span class="variable">method</span> === <span class="string">'POST'</span>) {
             <span class="comment">// Easy Solution for Internet Explorer</span>
             <span class="variable">url_cache</span> = <span class="string">'?'</span> + ((<span class="string">''</span> + <span class="class">Math</span>.<span class="variable">random</span>()).<span class="variable">replace</span>(<span class="regexp">/\D/g</span>, <span class="string">''</span>));
-        }
-
-        <span class="comment">// The open() method!</span>
-        <span class="comment">// When the open(method, url, async, user, password) method is invoked, the </span>
-        <span class="comment">// user agent must run these steps (unless otherwise indicated):</span>
-        <span class="comment">// 1) If the XMLHttpRequest object has an associated XMLHttpRequest Document;</span>
-        <span class="comment">// 2) If method is a case-insensitive match for CONNECT, DELETE, GET, HEAD, </span>
-        <span class="comment">//    OPTIONS, POST, PUT, TRACE;</span>
-        <span class="comment">// 3) Let url be a URL;</span>
-        <span class="comment">// 4) Let async be the value of the async argument or true if it was omitted;</span>
-        <span class="comment">// 5) Abort the send() algorithm;</span>
-        <span class="comment">// 6) If there are any tasks from the object's XMLHttpRequest task source in </span>
-        <span class="comment">//    one of the task queues, then remove those tasks.</span>
-        <span class="comment">// 7) Set variables associated with the object as follows:</span>
-        <span class="comment">//		- Set the send() flag to false;</span>
-        <span class="comment">//		- Set response entity body to null;</span>
-        <span class="comment">//		- Empty the list of author request headers;</span>
-        <span class="comment">//		- Set method, url, temp user, temp password, value of async.</span>
-        <span class="comment">// 8) Switch the the state to OPENED;</span>
-        <span class="comment">// 9) Dispatch a readystatechange event.</span>
-        <span class="comment">//</span>
-        <span class="variable">xhr</span>.<span class="variable">open</span>(<span class="variable">setting</span>.<span class="variable">method</span>, <span class="variable">setting</span>.<span class="variable">url</span> + <span class="variable">url_cache</span>, <span class="variable">setting</span>.<span class="variable">async</span>);
-
-        <span class="comment">// The setRequestHeader() method!</span>
-        <span class="comment">// When the setRequestHeader(header, value) method is invoked, </span>
-        <span class="comment">// the user agent must run these steps:</span>
-        <span class="comment">// 1) If the state is not OPENED raise an INVALID_STATE_ERR exception </span>
-        <span class="comment">//    and terminate these steps;</span>
-        <span class="comment">// 2) If the send() flag is true raise an INVALID_STATE_ERR exception </span>
-        <span class="comment">//    and terminate these steps;</span>
-        <span class="comment">// 3) Terminate these steps if header is a case-insensitive match for </span>
-        <span class="comment">//    one of the following headers: </span>
-        <span class="comment">//    Accept-Charset, Accept-Encoding, Connection, Content-Length, Cookie,</span>
-        <span class="comment">//	  Cookie2, Content-Transfer-Encoding, Date, Expect, Host, Keep-Alive,</span>
-        <span class="comment">//    Referer, TE, Trailer, Transfer-Encoding, Upgrade, User-Agent, Via.</span>
-        <span class="comment">//</span>
-        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">content_type</span>) {
-            <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'Content-type'</span>, <span class="variable">setting</span>.<span class="variable">content_type</span>);
-        }
-
-        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">connection</span>) {
-            <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'Connection'</span>, <span class="variable">setting</span>.<span class="variable">connection</span>);
-        }
-
-        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">data_type</span>) {
-            <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'dataType'</span>, <span class="variable">setting</span>.<span class="variable">data_type</span>);
-        }
-
-        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">loader</span>) {
-            <span class="keyword">var</span> <span class="variable">img</span> = <span class="string">'&lt;img src=&quot;'</span> + <span class="variable">setting</span>.<span class="variable">loader</span> + <span class="string">'&quot; alt=&quot;&quot; /&gt;'</span>;
-            <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">getElementById</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>).<span class="variable">innerHTML</span> = <span class="variable">img</span>;
-        }
-
-        <span class="variable">setting</span>.<span class="variable">start_load</span>();
-
-        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">stop</span>) {
-            <span class="variable">t</span>.<span class="variable">task</span>(<span class="variable">setting</span>.<span class="variable">stop</span>, <span class="keyword">function</span>() {
-                <span class="variable">xhr</span>.<span class="variable">abort</span>();
-            })
         }
 
         <span class="variable">xhr</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
@@ -1495,25 +1467,32 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
             }
         };
 
-        <span class="comment">// The send() method!</span>
-        <span class="comment">// When the send(data) method is invoked, the user agent must run the following steps </span>
-        <span class="comment">// (unless otherwise noted). This algorithm gets aborted when the open() or abort() method </span>
-        <span class="comment">// is invoked. When the send() algorithm is aborted the user agent must terminate the </span>
-        <span class="comment">// algorithm after finishing the step it is on.</span>
-        <span class="comment">// 1) If the state is not OPENED raise an INVALID_STATE_ERR exception and terminate </span>
-        <span class="comment">//    these steps.</span>
-        <span class="comment">// 2) If the send() flag is true raise an INVALID_STATE_ERR exception and terminate these steps.</span>
-        <span class="comment">// 3) If the request method is a case-sensitive match for GET or HEAD act as if data is null.</span>
-        <span class="comment">//    If the data argument has been omitted or is null, do not include a request entity body </span>
-        <span class="comment">//    and go to the next step.</span>
-        <span class="comment">//    If a Content-Type header is set using setRequestHeader() whose value is a valid MIME type </span>
-        <span class="comment">//    and has a charset parameter whose value is not a case-insensitive match for encoding, </span>
-        <span class="comment">//    and encoding is not null, set all the charset parameters of the Content-Type header to encoding.</span>
-        <span class="comment">//    If no Content-Type header has been set using setRequestHeader() and mime type is not null set a </span>
-        <span class="comment">//    Content-Type request header with as value mime type.</span>
-        <span class="comment">// 4) If the asynchronous flag is false release the storage mutex.</span>
-        <span class="comment">// 5) Set the error flag to false.</span>
-        <span class="comment">//</span>
+
+        <span class="variable">xhr</span>.<span class="variable">open</span>(<span class="variable">setting</span>.<span class="variable">method</span>, <span class="variable">setting</span>.<span class="variable">url</span> + <span class="variable">get_params</span> + <span class="variable">url_cache</span>, <span class="variable">setting</span>.<span class="variable">async</span>);
+
+        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">content_type</span>) {
+            <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'Content-type'</span>, <span class="variable">setting</span>.<span class="variable">content_type</span>);
+        }
+        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">connection</span>) {
+            <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'Connection'</span>, <span class="variable">setting</span>.<span class="variable">connection</span>);
+        }
+        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">data_type</span>) {
+            <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'dataType'</span>, <span class="variable">setting</span>.<span class="variable">data_type</span>);
+        }
+        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">loader</span>) {
+            <span class="keyword">var</span> <span class="variable">img</span> = <span class="string">'&lt;img src=&quot;'</span> + <span class="variable">setting</span>.<span class="variable">loader</span> + <span class="string">'&quot; alt=&quot;&quot; /&gt;'</span>;
+            <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">getElementById</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>).<span class="variable">innerHTML</span> = <span class="variable">img</span>;
+        }
+
+        <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'X-Requested-With'</span>, <span class="string">'XMLHttpRequest'</span>); <span class="comment">// Set a request</span>
+        <span class="variable">setting</span>.<span class="variable">start_load</span>();
+
+        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">stop</span>) {
+            <span class="variable">t</span>.<span class="variable">task</span>(<span class="variable">setting</span>.<span class="variable">stop</span>, <span class="keyword">function</span>() {
+                <span class="variable">xhr</span>.<span class="variable">abort</span>();
+            })
+        }
+
         <span class="variable">xhr</span>.<span class="variable">send</span>(<span class="variable">parameter</span>);
         <span class="keyword">return</span> <span class="this">this</span>;
     };</code></pre>

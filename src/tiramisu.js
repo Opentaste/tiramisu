@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.3-b3';
+        this.version = '0.1.3-b5';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -229,7 +229,7 @@
         // DOM Node insertion generic utility
 
         function insert_content(html, before, append) {
-            if (results[0] == undefined) {
+            if (results[0] === undefined) {
                 return '';
             }
             var i, parent, div, ele;
@@ -691,7 +691,7 @@
              * @param {function} cb The callback function to attach
              */
             'on': function(evt, cb) {
-                if (results[0] == undefined || arguments.length > 2) {
+                if (results[0] === undefined || arguments.length > 2) {
                     return '';
                 }
                 var evt_len = 1,
@@ -1158,7 +1158,7 @@
                         }
                     };
 
-                if (results[0] == undefined) {
+                if (results[0] === undefined) {
                     return '';
                 }
 
@@ -1199,7 +1199,7 @@
              *
              */
             'focus': function() {
-                if (results[0] == undefined) {
+                if (results[0] === undefined) {
                     return '';
                 }
                 for (var i = len_result; i--;) {
@@ -1240,13 +1240,13 @@
              */
             'attr': function(attr, value) {
                 if (value !== undefined) {
-                    if (attr === 'class'){
+                    if (attr === 'class') {
                         return results[0].className = value;
                     } else {
                         return results[0][attr] = value;
                     }
                 } else {
-                    if (attr === 'class'){
+                    if (attr === 'class') {
                         return results[0].className;
                     } else {
                         return results[0][attr];
@@ -1288,6 +1288,29 @@
                         if (results[i] === el) break;
                     }
                     return i;
+                }
+            },
+            /**
+             * Remove extension method
+             * ---------------------------------
+             *
+             */
+            'destroy': function(el) {
+                if (results[0] === undefined) {
+                    return '';
+                }
+                if (el !== undefined && typeof el === 'string') {
+                    var res = t.get(selector + ' ' + el),
+                        len = res.length;
+                    for (var i = len; i--;) {
+                        parent = res[i].parentNode;
+                        parent.removeChild(res[i]);
+                    }
+                } else {
+                    for (i = len_result; i--;) {
+                        parent = results[i].parentNode;
+                        parent.removeChild(results[i]);
+                    }
                 }
             }
         };
@@ -1435,7 +1458,8 @@
             parameter = '',
             // Is very important that parameter dafualt value is ''
             parameter_count = 0,
-            url_cache = '';
+            url_cache = '',
+            get_params = '';
 
         if (window.XMLHttpRequest) {
             xhr = new XMLHttpRequest();
@@ -1454,76 +1478,20 @@
                 parameter += attrname + '=' + setting.parameter[attrname] + '&';
             }
             parameter = parameter.substring(0, parameter.length - 1);
-            if (!setting.content_type) {
-                setting.content_type = 'application/x-www-form-urlencoded';
+            if (setting.method === 'POST') {
+                if (!setting.content_type) {
+                    setting.content_type = 'application/x-www-form-urlencoded';
+                }
+            } else {
+                get_params = '?' + parameter;
             }
-            setting.method = 'POST';
         } else {
             parameter = null;
         }
 
-        if (t.detect('isIE')) {
+        if (t.detect('isIE') && setting.method === 'POST') {
             // Easy Solution for Internet Explorer
             url_cache = '?' + (('' + Math.random()).replace(/\D/g, ''));
-        }
-
-        // The open() method!
-        // When the open(method, url, async, user, password) method is invoked, the 
-        // user agent must run these steps (unless otherwise indicated):
-        // 1) If the XMLHttpRequest object has an associated XMLHttpRequest Document;
-        // 2) If method is a case-insensitive match for CONNECT, DELETE, GET, HEAD, 
-        //    OPTIONS, POST, PUT, TRACE;
-        // 3) Let url be a URL;
-        // 4) Let async be the value of the async argument or true if it was omitted;
-        // 5) Abort the send() algorithm;
-        // 6) If there are any tasks from the object's XMLHttpRequest task source in 
-        //    one of the task queues, then remove those tasks.
-        // 7) Set variables associated with the object as follows:
-        //		- Set the send() flag to false;
-        //		- Set response entity body to null;
-        //		- Empty the list of author request headers;
-        //		- Set method, url, temp user, temp password, value of async.
-        // 8) Switch the the state to OPENED;
-        // 9) Dispatch a readystatechange event.
-        //
-        xhr.open(setting.method, setting.url + url_cache, setting.async);
-
-        // The setRequestHeader() method!
-        // When the setRequestHeader(header, value) method is invoked, 
-        // the user agent must run these steps:
-        // 1) If the state is not OPENED raise an INVALID_STATE_ERR exception 
-        //    and terminate these steps;
-        // 2) If the send() flag is true raise an INVALID_STATE_ERR exception 
-        //    and terminate these steps;
-        // 3) Terminate these steps if header is a case-insensitive match for 
-        //    one of the following headers: 
-        //    Accept-Charset, Accept-Encoding, Connection, Content-Length, Cookie,
-        //	  Cookie2, Content-Transfer-Encoding, Date, Expect, Host, Keep-Alive,
-        //    Referer, TE, Trailer, Transfer-Encoding, Upgrade, User-Agent, Via.
-        //
-        if (setting.content_type) {
-            xhr.setRequestHeader('Content-type', setting.content_type);
-        }
-
-        if (setting.connection) {
-            xhr.setRequestHeader('Connection', setting.connection);
-        }
-
-        if (setting.data_type) {
-            xhr.setRequestHeader('dataType', setting.data_type);
-        }
-
-        if (setting.loader) {
-            var img = '<img src="' + setting.loader + '" alt="" />';
-            t.d.getElementById(setting.successHTML).innerHTML = img;
-        }
-
-        setting.start_load();
-
-        if (setting.stop) {
-            t.task(setting.stop, function() {
-                xhr.abort();
-            })
         }
 
         xhr.onreadystatechange = function() {
@@ -1553,25 +1521,32 @@
             }
         };
 
-        // The send() method!
-        // When the send(data) method is invoked, the user agent must run the following steps 
-        // (unless otherwise noted). This algorithm gets aborted when the open() or abort() method 
-        // is invoked. When the send() algorithm is aborted the user agent must terminate the 
-        // algorithm after finishing the step it is on.
-        // 1) If the state is not OPENED raise an INVALID_STATE_ERR exception and terminate 
-        //    these steps.
-        // 2) If the send() flag is true raise an INVALID_STATE_ERR exception and terminate these steps.
-        // 3) If the request method is a case-sensitive match for GET or HEAD act as if data is null.
-        //    If the data argument has been omitted or is null, do not include a request entity body 
-        //    and go to the next step.
-        //    If a Content-Type header is set using setRequestHeader() whose value is a valid MIME type 
-        //    and has a charset parameter whose value is not a case-insensitive match for encoding, 
-        //    and encoding is not null, set all the charset parameters of the Content-Type header to encoding.
-        //    If no Content-Type header has been set using setRequestHeader() and mime type is not null set a 
-        //    Content-Type request header with as value mime type.
-        // 4) If the asynchronous flag is false release the storage mutex.
-        // 5) Set the error flag to false.
-        //
+
+        xhr.open(setting.method, setting.url + get_params + url_cache, setting.async);
+
+        if (setting.content_type) {
+            xhr.setRequestHeader('Content-type', setting.content_type);
+        }
+        if (setting.connection) {
+            xhr.setRequestHeader('Connection', setting.connection);
+        }
+        if (setting.data_type) {
+            xhr.setRequestHeader('dataType', setting.data_type);
+        }
+        if (setting.loader) {
+            var img = '<img src="' + setting.loader + '" alt="" />';
+            t.d.getElementById(setting.successHTML).innerHTML = img;
+        }
+
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Set a request
+        setting.start_load();
+
+        if (setting.stop) {
+            t.task(setting.stop, function() {
+                xhr.abort();
+            })
+        }
+
         xhr.send(parameter);
         return this;
     };
