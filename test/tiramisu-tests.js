@@ -33,34 +33,34 @@ test('[1, 2, 3] + [4, 5, 6]', function() {
 
 module('Selector Tests');
 
-test('Selecting “#headline”', function() {
+test('Selecting #headline', function() {
     var rs = tiramisu.get('#headline');
     ok(rs, 'Should not be empty');
-    equal(rs[0].id, "headline", "Should have an element node with id “headline”");
-    equal(rs[0].innerHTML, "Tiramisu Tests", "Should contain “Tiramisu Tests”");
+    equal(rs[0].id, "headline", "Should have an element node with id headline");
+    equal(rs[0].innerHTML, "Tiramisu Tests", "Should contain Tiramisu Tests");
 });
 
-test('Selecting “h3 .red”', function() {
+test('Selecting h3 .red', function() {
     var rs = tiramisu.get('h3 .red');
     ok(rs, 'Should not be empty');
-    equal(rs[0].className, "red", "Should have an element node with class “red”");
-    equal(rs[0].innerHTML, "tiramisu", "Should contain “tiramisu”");
+    equal(rs[0].className, "red", "Should have an element node with class red");
+    equal(rs[0].innerHTML, "tiramisu", "Should contain tiramisu");
 });
 
-test('Selecting “p.underlined”', function() {
+test('Selecting p.underlined', function() {
     var rs = tiramisu.get('p.underlined');
     ok(rs, 'Should not be empty');
-    equal(rs[0].className, "underlined", "Should have an element node with class “underlined”");
+    equal(rs[0].className, "underlined", "Should have an element node with class underlined");
     equal(rs[0].nodeName, "P", "Should be a P node");
-    equal(rs[0].innerHTML, "This text is underlined", "Should contain “This text is underlined”");
+    equal(rs[0].innerHTML, "This text is underlined", "Should contain This text is underlined");
 });
 
-test('Selecting “h1#headline”', function() {
+test('Selecting h1#headline', function() {
     var rs = tiramisu.get('h1#headline');
     ok(rs, 'Should not be empty');
-    equal(rs[0].id, "headline", "Should have an element node with id “headline”");
+    equal(rs[0].id, "headline", "Should have an element node with id headline");
     equal(rs[0].nodeName, "H1", "Should be an H1 node")
-    equal(rs[0].innerHTML, "Tiramisu Tests", "Should contain “Tiramisu Tests”");
+    equal(rs[0].innerHTML, "Tiramisu Tests", "Should contain Tiramisu Tests");
 });
 
 module('Browser detection tests');
@@ -75,7 +75,7 @@ test('Detect check', function() {
 
 module('Selector list methods tests');
 
-test('Calling “t.get("h2").each(function() { this.innerHTML = "Test"; });”', function() {
+test('Calling t.get("h2").each(function() { this.innerHTML = "Test"; })', function() {
     var i;
 
     t.get('#qunit-fixture h2').each(function() {
@@ -89,11 +89,11 @@ test('Calling “t.get("h2").each(function() { this.innerHTML = "Test"; });”',
         if (rs[i].innerHTML !== "Test") { all = false; break; }
     }
 
-    ok(all, "Should set all H2's content to “Test”");
+    ok(all, "Should set all H2's content to Test");
 
 });
 
-test('Calling “t.get("ul li").each(function() { return this.innerHTML; });”', function() {
+test('Calling t.get("ul li").each(function() { return this.innerHTML; })', function() {
     t.get('ul#selector_test li').each(function() {
         t.get('#append-here')[0].innerHTML += this.innerHTML;
     });
@@ -102,31 +102,31 @@ test('Calling “t.get("ul li").each(function() { return this.innerHTML; });”'
 });
 
 
-test('Calling “t.get("#qunit-fixture h2 .red").html()', function() {
+test('Calling t.get("#qunit-fixture h2 .red").html()', function() {
     var rs = t.get('#qunit-fixture h2 .red').html();
-    equal(rs, 'good', 'should return “good”');
+    equal(rs, 'good', 'should return good');
 });
 
-test('Calling “t.get("#qunit-fixture h2 .red").html("bad")”', function() {
+test('Calling t.get("#qunit-fixture h2 .red").html("bad")', function() {
     t.get('#qunit-fixture h2 .red').html('bad');
     var rs = t.get('#qunit-fixture h2 .red').html();
-    equal(rs, 'bad', 'should set element\'s HTML value to “bad”');
+    equal(rs, 'bad', 'should set element\'s HTML value to bad');
 });
 
-test('Calling “t.get("#qunit-fixture select").value()', function() {
+test('Calling t.get("#qunit-fixture select").value()', function() {
     var rs = t.get('#qunit-fixture select').value();
-    equal(rs, 'First.', 'should return “First.”');
+    equal(rs, 'First.', 'should return First.');
 });
 
-test('Calling “t.get("#hola_id").value()', function() {
+test('Calling t.get("#hola_id").value()', function() {
     var rs = t.get('#hola_id').value();
-    equal(rs, 'hola', 'should return “hola”');
+    equal(rs, 'hola', 'should return hola');
 });
 
-test('Calling “t.get("#qunit-fixture select").value("Second.")', function() {
+test('Calling t.get("#qunit-fixture select").value("Second.")', function() {
     t.get('#qunit-fixture select').value("Second.");
     var rs = t.get('#qunit-fixture select').value();
-    equal(rs, 'Second.', 'should set element\'s HTML value to “Second”');
+    equal(rs, 'Second.', 'should set element\'s HTML value to Second');
 });
 
 test('Element Index (Found)', function() {
@@ -198,13 +198,21 @@ test('Multiple prepend', function() {
     equal(rs, attended);
 });
 
-test('Empty childrens', function() {
+test('Empty childrens (single element)', function() {
     t.get('#selector_test').empty();
     var rs1 = t.get('#selector_test')[0].innerHTML,
         rs2 = t.get('#selector_test li').length;
 
     equal(rs1, "");
     equal(rs2, 0);
+});
+
+test('Empty childrens (multiple elements)', function() {
+    t.get('#selector_test li').empty();
+    var rs = t.get('#selector_test')[0].innerHTML;
+    var attended = '\n      <li></li>\n      <li></li>\n      <li></li>\n    ';
+
+    equal(rs, attended);
 });
 
 module('CSS Manipulation tests');
