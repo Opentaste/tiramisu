@@ -1303,6 +1303,38 @@
              *
              * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements).
              *
+             * Example #1 (Remove all element of a list)
+             * -----------------------------------------
+             *
+             *     <ol id="myList">
+             *        <li>This is my <span class="tasty">icecake</span></li>
+             *        <li>I love <span class="tasty">chocolate</span> chips!</li>
+             *     </ol>
+             *     
+             * calling *t.get('#myList').empty()* will give the following results:
+             *
+             *     <ol id="myList"></ol>
+             *
+             * Example #2 (Remove a specific element)
+             * --------------------------------------
+             *
+             *     <ol id="myList">
+             *        <li>This is my <span class="tasty">icecake</span></li>
+             *        <li>I love <span class="tasty">chocolate chips!</span></li>
+             *     </ol>
+             *     
+             * calling *t.get('.tasty').empty()* will give the following results:
+             *
+             *     <ol id="myList">
+             *        <li>This is my <span class="tasty"></span></li>
+             *        <li>I love <span class="tasty"></span> chips!</li>
+             *     </ol>
+             *
+             * Todo
+             * ----
+             *  
+             * -    Remove events to avoid memory leaks;
+             *
              */
             'empty': function() {
                 if (results[0] === undefined) {
