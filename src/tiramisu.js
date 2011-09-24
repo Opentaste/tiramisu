@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.3-b6';
+        this.version = '0.1.3-b7';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -1370,6 +1370,29 @@
                     for (i = len_result; i--;) {
                         parent = results[i].parentNode;
                         parent.removeChild(results[i]);
+                    }
+                }
+            },
+            /**
+             * Remove Class extension method
+             * ---------------------------------
+             *
+             */
+            'removeClass': function(el) {
+                if (results[0] === undefined) {
+                    return '';
+                }
+                if (el !== undefined && typeof el === 'string') {
+                    var res = t.get(selector + ' .' + el),
+                        len = res.length;
+                    for (var i = len; i--;) {
+                        var match = new RegExp('(\\s|^)' + el + '(\\s|$)');
+                        var text = res[i].className.replace(match, ' ');
+                        res[i].className = text;
+                    }
+                } else {
+                    for (i = len_result; i--;) {
+                        results[i].className = '';
                     }
                 }
             }
