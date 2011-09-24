@@ -207,6 +207,11 @@ test('Empty childrens (single element)', function() {
     equal(rs2, 0);
 });
 
+test('Map function with :even filter', function() {
+    var rs = t.get('#selector_test').map(':even');
+    equal(rs, '');
+});
+
 test('Empty childrens (multiple elements)', function() {
     t.get('#selector_test li').empty();
     var rs = t.get('#selector_test')[0].innerHTML;
