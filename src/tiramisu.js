@@ -34,12 +34,14 @@
     window.tiramisu = window.t = new Tiramisu();
 
     // Extending object1 with object2's methods
-
     function extend(first, second) {
         for (var prop in second) {
             first[prop] = second[prop];
         }
     }
+    
+    // Keep in memory the events created
+    var local_event = {};
 
     /** 
      * Framework Detection Module
@@ -712,17 +714,53 @@
                     }
                 }
                 // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
+                // ==============================
+                // TO DO : improve performance
+                // ==============================
                 for (var j = evt_len; j--;) {
-                    if (results[0].addEventListener) {
-                        for (i = len_result; i--;) {
-                            results[i].addEventListener(ev[j], callback[j], false);
+                    var call = callback[j];
+                    for (i = len_result; i--;) {
+                        if (results[i].addEventListener) {
+                            results[i].addEventListener(ev[j], call, false);
+                        } else if (results[i].attachEvent) {
+                            results[i].attachEvent('on' + ev[j], call);
                         }
-                    } else if (results[0].attachEvent) {
-                        for (i = len_result; i--;) {
-                            results[i].attachEvent('on' + ev[j], callback[j]);
-                        }
+                    }  
+                    if (typeof selector === 'string') {
+                        local_event[selector] =  {};
+                        local_event[selector] = {
+                            'cb' : call,
+                            'element' : results
+                        };
                     }
                 }
+                return this;
+            },
+            /**
+             * Remove Event handler extension
+             * -----------------------
+             *
+             */
+            'off': function(evt) {
+                if (results[0] === undefined || arguments.length > 1) {
+                    return '';
+                }
+                if (typeof selector === 'string') {
+                    if (local_event[selector] !== undefined) {
+                        var cb = local_event[selector]['cb'],
+                            element = local_event[selector]['element'],
+                            len = element.length;
+                        for (i = len; i--;) {
+                            if (results[0].removeEventListener) {
+                                element[i].removeEventListener(evt, cb, false);
+                            } else if (results[0].attachEvent) {
+                                element[i].attachEvent('on' + evt, call);
+                            }
+                        }
+                        delete local_event[selector];
+                    }
+                }
+                
                 return this;
             },
             /**
