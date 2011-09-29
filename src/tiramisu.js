@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.3-b7';
+        this.version = '0.1.3-b8';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -34,12 +34,14 @@
     window.tiramisu = window.t = new Tiramisu();
 
     // Extending object1 with object2's methods
+
+
     function extend(first, second) {
         for (var prop in second) {
             first[prop] = second[prop];
         }
     }
-    
+
     // Keep in memory the events created
     var local_event = {};
 
@@ -254,7 +256,7 @@
                 }
             }
         }
-        
+
         // The good way to eliminate a work repetition in functions is through lazy loading.
         // Lazy loading means that no work is done until the information is necessary.
         // Here I implement a lazy-loading pattern. The first time either method is
@@ -262,39 +264,39 @@
         // event handler. Then the original function is overwrittern with a new function that
         // contains just the appropriate course of action.
         // By High Performance JavaScript, Nicholas C. Zakas
-        var add_handler = function(target, event_type, handler){
-            
-            // overwrite te existing function
-            if (target.addEventListener) { // DOM 2 Events
-                add_handler = function(target, event_type, handler) {
-                    target.addEventListener(event_type, handler, false);
-                }
-            } else { // IE
-                add_handler = function(target, event_type, handler) {
-                    target.attachEvent('on' + event_type, handler);
-                }
-            }
-            
-            // call the new functions
-            add_handler(target, event_type, handler);
-        }
-        // And brother function, remove_handler
-        var remove_handler = function(target, event_type, handler){
-            
-            // overwrite te existing function
-            if (target.removeEventListener) { // DOM 2 Events
-                remove_handler = function(target, event_type, handler) {
-                    target.removeEventListener(event_type, handler, false);
-                }
-            } else { // IE
-                remove_handler = function(target, event_type, handler) {
-                    target.detachEvent('on' + event_type, handler);
-                }
-            }
+        var add_handler = function(target, event_type, handler) {
 
-            // call the new functions
-            remove_handler(target, event_type, handler);
-        }
+                // overwrite te existing function
+                if (target.addEventListener) { // DOM 2 Events
+                    add_handler = function(target, event_type, handler) {
+                        target.addEventListener(event_type, handler, false);
+                    }
+                } else { // IE
+                    add_handler = function(target, event_type, handler) {
+                        target.attachEvent('on' + event_type, handler);
+                    }
+                }
+
+                // call the new functions
+                add_handler(target, event_type, handler);
+            }
+            // And brother function, remove_handler
+        var remove_handler = function(target, event_type, handler) {
+
+                // overwrite te existing function
+                if (target.removeEventListener) { // DOM 2 Events
+                    remove_handler = function(target, event_type, handler) {
+                        target.removeEventListener(event_type, handler, false);
+                    }
+                } else { // IE
+                    remove_handler = function(target, event_type, handler) {
+                        target.detachEvent('on' + event_type, handler);
+                    }
+                }
+
+                // call the new functions
+                remove_handler(target, event_type, handler);
+            }
 
         var macros = {
             'nl': '\n|\r\n|\r|\f',
@@ -759,12 +761,12 @@
                     var cb = callback[j];
                     for (i = len_result; i--;) {
                         add_handler(results[i], evt, cb);
-                    }  
+                    }
                     if (typeof selector === 'string') {
-                        local_event[selector] =  {};
+                        local_event[selector] = {};
                         local_event[selector] = {
-                            'cb' : cb,
-                            'element' : results
+                            'cb': cb,
+                            'element': results
                         };
                     }
                 }
@@ -790,7 +792,7 @@
                         delete local_event[selector];
                     }
                 }
-                
+
                 return this;
             },
             /**
