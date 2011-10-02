@@ -35,7 +35,6 @@
 
     // Extending object1 with object2's methods
 
-
     function extend(first, second) {
         for (var prop in second) {
             first[prop] = second[prop];
@@ -760,7 +759,7 @@
                 for (var j = evt_len; j--;) {
                     var cb = callback[j];
                     for (i = len_result; i--;) {
-                        add_handler(results[i], evt, cb);
+                        add_handler(results[i], ev[j], cb);
                     }
                     if (typeof selector === 'string') {
                         local_event[selector] = {};
