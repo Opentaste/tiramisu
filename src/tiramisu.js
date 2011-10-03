@@ -256,6 +256,15 @@
             }
         }
 
+        function toArray(obj) {
+            var array = [];
+            // Zero-fill right shift to ensure that length is an UInt32
+            for (var i = obj.length; i--;) {
+                array[i] = obj[i];
+            }
+            return array;
+        }
+
         // The good way to eliminate a work repetition in functions is through lazy loading.
         // Lazy loading means that no work is done until the information is necessary.
         // Here I implement a lazy-loading pattern. The first time either method is
@@ -601,11 +610,14 @@
             return results;
         };
 
+        // The result variable
+        var results;
+
         if (typeof selector === 'string') {
 
             if (t.detect('querySelectorAll')) {
                 // Use querySelectorAll
-                results = tiramisu.d.querySelectorAll(selector);
+                results = toArray(tiramisu.d.querySelectorAll(selector));
             } else {
                 // Use the built-in CSS Selector
                 var lexer = new Tokenizer(selector);
@@ -1358,6 +1370,89 @@
                     }
                     return i;
                 }
+            },
+            /**
+             * Filter extension method
+             * -----------------------
+             *
+             * Filters a selector or a custom function to the CSS Selector list's results.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).filter([*FILTER*])
+             *
+             * where *SELECTOR* is a valid CSS selector, *FILTER* is a built-in filter (see the list below)
+             * or can be defined as a custom function.
+             *
+             * Currently implemented filters are:
+             * *  *:odd*;
+             * *  *:even*;
+             *
+             * Custom filter functions
+             * -----------------------
+             *
+             * A custom filter function **must** conform to the following scheme:
+             *
+             *     function([index]) {
+             *         ...code here...
+             *         return true or false;
+             *     }
+             *
+             * where **index** is an optional index which can be used to perform the filter's choices.
+             *
+             * Example #1 (Filtering even elements by using the built-in filter)
+             * -----------------------------------------------------------------
+             *
+             *     <p>Zero</p>
+             *     <p>One</p>
+             *     <p>Two</p>
+             *     <p>Three</p>
+             *     ...
+             *     t.get('p').filter(':even')
+             *
+             * gives the following selector list:
+             *
+             *      [<p>Zero</p>, <p>Two</p>]
+             *
+             * Example #2 (Filtering elements by using a custom function)
+             * ----------------------------------------------------------
+             *
+             *      <p>Zero</p>
+             *      <p>One</p>
+             *      <p>Two</p>
+             *      <p>Three</p>
+             *      ...
+             *      t.get('p').filter(function(index) {
+             *          return (index === 2) ? true : false;
+             *      });
+             *
+             */
+            'filter': function(selector) {
+                if (results[0] === undefined) {
+                    return '';
+                }
+
+                var selectors = {
+                    ':odd': function(index) {
+                        return (index % 2 !== 0) ? true : false;
+                    },
+                    ':even': function(index) {
+                        return (index % 2 === 0) ? true : false;
+                    }
+                };
+
+                if (typeof selector === 'string' && typeof selectors[selector] === 'function') {
+                    for (var i = len_result; i--;) {
+                        !selectors[selector](i) && results.splice(i, 1);
+                    }
+                } else if (typeof selector === 'function') {
+                    for (var i = 0; i < len_result; i++) {
+                        !selector(i) && results.splice(i, 1);
+                    }
+                }
+
+                return this;
             },
             /**
              * Empty extension method

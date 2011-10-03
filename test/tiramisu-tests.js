@@ -207,6 +207,21 @@ test('Empty childrens (single element)', function() {
     equal(rs2, 0);
 });
 
+test('Filter function using :even', function() {
+    var rs = t.get('#selector_test li').filter(':even');
+
+    equal(rs[0].innerHTML, '<p class=\"underlined\">This text is underlined</p>');
+    equal(rs[1].innerHTML, 'Oki-Doki.');
+    equal(rs.length, 2);
+});
+
+test('Filter function using :odd', function() {
+    var rs = t.get('#selector_test li').filter(':odd');
+
+    equal(rs[0].innerHTML, 'Another line');
+    equal(rs.length, 1)
+});
+
 test('Empty childrens (multiple elements)', function() {
     t.get('#selector_test li').empty();
     var rs = t.get('#selector_test')[0].innerHTML;
