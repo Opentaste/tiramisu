@@ -207,8 +207,8 @@ test('Empty childrens (single element)', function() {
     equal(rs2, 0);
 });
 
-test('Map function with :even filter', function() {
-    var rs = t.get('#selector_test').map(':even');
+test('Filter function using :even', function() {
+    var rs = t.get('#selector_test').filter(':even');
     equal(rs, '');
 });
 

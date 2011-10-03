@@ -253,6 +253,15 @@
             }
         }
 
+        function toArray(obj) {
+            var array = [];
+            // Zero-fill right shift to ensure that length is an UInt32
+            for (var i = obj.length; i--;) {
+                array[i] = obj[i];
+            }
+            return array;
+        }
+
         var macros = {
             'nl': '\n|\r\n|\r|\f',
             'nonascii': '[^\0-\177]',
@@ -557,11 +566,14 @@
             return results;
         };
 
+        // The result variable
+        var results;
+
         if (typeof selector === 'string') {
 
             if (t.detect('querySelectorAll')) {
                 // Use querySelectorAll
-                results = tiramisu.d.querySelectorAll(selector);
+                results = toArray(tiramisu.d.querySelectorAll(selector));
             } else {
                 // Use the built-in CSS Selector
                 var lexer = new Tokenizer(selector);
@@ -1289,6 +1301,39 @@
                     }
                     return i;
                 }
+            },
+            /**
+             * Filter extension method
+             * --------------------
+             *
+             *  Filters a selector or a custom function to the CSS Selector list's results.
+             *
+             */
+            'filter': function(selector) {
+                if (results[0] === undefined) {
+                    return '';
+                }
+
+                var selectors = {
+                    ':odd': function(index) {
+                        return (index % 2 !== 0) ? true : false;
+                    },
+                    ':even': function(index) {
+                        return (index % 2 === 0) ? true : false;
+                    }
+                };
+
+                if (typeof selector === 'string' && typeof selectors[selector] === 'function') {
+                    for (var i = len_result; i--;) {
+                        !selectors[selector](i) && results.splice(i, 1);
+                    }
+                } else if (typeof selector === 'function') {
+                    for (var i = 0; i < len_result; i++) {
+                        !selector(i) && results.splice(i, 1);
+                    }
+                }
+                
+                return this;
             },
             /**
              * Empty extension method
