@@ -1306,47 +1306,48 @@
              * Filter extension method
              * -----------------------
              *
-             *  Filters a selector or a custom function to the CSS Selector list's results.
+             * Filters a selector or a custom function to the CSS Selector list's results.
              *
-             *  Usage
-             *  -----
+             * Usage
+             * -----
              *
-             *  tiramisu.get(*SELECTOR*).filter([*FILTER*])
+             *     tiramisu.get(*SELECTOR*).filter([*FILTER*])
              *
-             *  where *SELECTOR* is a valid CSS selector, *FILTER* is a built-in filter (see the list below)
-             *  or can be defined as a custom function.
+             * where *SELECTOR* is a valid CSS selector, *FILTER* is a built-in filter (see the list below)
+             * or can be defined as a custom function.
              *
-             *  Currently implemented filters are:
-             *  *  *:odd*;
-             *  *  *:even*;
+             * Currently implemented filters are:
+             * *  *:odd*;
+             * *  *:even*;
              *
-             *  Custom filter functions
-             *  -----------------------
+             * Custom filter functions
+             * -----------------------
              *
-             *  A custom filter function **must** conform to the following scheme:
+             * A custom filter function **must** conform to the following scheme:
              *
-             *      function([index]) {
-             *          ...code here...
-             *          return true or false;
-             *      }
+             *     function([index]) {
+             *         ...code here...
+             *         return true or false;
+             *     }
              *
-             *  where **index** is an optional index which can be used to perform the filter's choices.
+             * where **index** is an optional index which can be used to perform the filter's choices.
              *
-             *  Example #1 (Filtering even elements by using the built-in filter)
-             *  -----------------------------------------------------------------
+             * Example #1 (Filtering even elements by using the built-in filter)
+             * -----------------------------------------------------------------
              *
-             *      <p>Zero</p>
-             *      <p>One</p>
-             *      <p>Two</p>
-             *      <p>Three</p>
-             *      ...
-             *      t.get('p').filter(':even')
+             *     <p>Zero</p>
+             *     <p>One</p>
+             *     <p>Two</p>
+             *     <p>Three</p>
+             *     ...
+             *     t.get('p').filter(':even')
              *
              * gives the following selector list:
              *
              *      [<p>Zero</p>, <p>Two</p>]
              *
              * Example #2 (Filtering elements by using a custom function)
+             * ----------------------------------------------------------
              *
              *      <p>Zero</p>
              *      <p>One</p>
@@ -1382,7 +1383,7 @@
                         !selector(i) && results.splice(i, 1);
                     }
                 }
-                
+
                 return this;
             },
             /**
