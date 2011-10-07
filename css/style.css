@@ -187,6 +187,30 @@ div.sep_4 {
     background: transparent url(../img/owl-logo.png) no-repeat;
 }
 
+.who-logo {
+    display: inline-block;
+    text-decoration: none;
+    text-indent: -9999px;
+    margin: 0 15px;
+    opacity: 0.4;
+}
+
+.who-logo:hover {
+    opacity: 1;
+}
+
+.who-logo.ot {
+    width: 147px;
+    height: 50px;
+    background: transparent url(../img/ot-logo.png) no-repeat;
+}
+
+.who-logo.owl {
+    width: 159px;
+    height: 40px;
+    background: transparent url(../img/owlstudios-logo.png) no-repeat;
+}
+
 /* Header Section */
 #header {
 	height: 470px;
@@ -307,6 +331,18 @@ ul#navbar a:hover {
     font-size: 36px;
     text-align: center;
     padding-top: 100px;
+}
+
+/* Who Section */
+#who {
+  background-color: #434248;
+  color: #fff;
+  padding: 50px;
+}
+
+#who h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
 }
 
 /* About Section */
