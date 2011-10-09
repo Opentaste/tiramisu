@@ -1528,12 +1528,12 @@
                     var res = t.get(selector + ' ' + el),
                         len = res.length;
                     for (var i = len; i--;) {
-                        parent = res[i].parentNode;
+                        var parent = res[i].parentNode;
                         parent.removeChild(res[i]);
                     }
                 } else {
                     for (i = len_result; i--;) {
-                        parent = results[i].parentNode;
+                        var parent = results[i].parentNode;
                         parent.removeChild(results[i]);
                     }
                 }
