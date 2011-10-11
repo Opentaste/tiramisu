@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.3-b11';
+        this.version = '0.1.3-b12';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -1756,12 +1756,17 @@
             url_cache = '',
             get_params = '';
 
-        if (window.XMLHttpRequest) {
-            xhr = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            xhr = new ActiveXObject("Microsoft.XMLHTTP");
-        } else {
-            setting.error('e_ajax#1');
+        try {
+            xhr = new ActiveXObject("Msxml2.XMLHTTP")
+        } catch (err) {
+            try {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            } catch (error) {
+                xhr = null
+            }
+        }
+        if (!xhr && typeof XMLHttpRequest != "undefined") {
+            xhr = new XMLHttpRequest
         }
 
         extend(setting, setting_input);
@@ -1842,7 +1847,6 @@
         }
 
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Set a request
-        
         // Set start load
         setting.start_load();
 

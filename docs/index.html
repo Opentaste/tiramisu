@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.3-b11</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.3-b12</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.3-b11)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.3-b12)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.3-b11'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.3-b12'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -1488,12 +1488,12 @@ t.get('p').filter(':even')</code></pre>
                     <span class="keyword">var</span> <span class="variable">res</span> = <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">selector</span> + <span class="string">' '</span> + <span class="variable">el</span>),
                         <span class="variable">len</span> = <span class="variable">res</span>.<span class="variable">length</span>;
                     <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len</span>; <span class="variable">i</span>--;) {
-                        <span class="variable">parent</span> = <span class="variable">res</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+                        <span class="keyword">var</span> <span class="variable">parent</span> = <span class="variable">res</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
                         <span class="variable">parent</span>.<span class="variable">removeChild</span>(<span class="variable">res</span>[<span class="variable">i</span>]);
                     }
                 } <span class="keyword">else</span> {
                     <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                        <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+                        <span class="keyword">var</span> <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
                         <span class="variable">parent</span>.<span class="variable">removeChild</span>(<span class="variable">results</span>[<span class="variable">i</span>]);
                     }
                 }
@@ -1574,28 +1574,39 @@ t.get('p').filter(':even')</code></pre>
     successHTML : 'responseWrapper'
 });</code></pre>
 
-<h2>Example #4 (Ajax POST request displaying a loader)</h2>
+<h2>Example #4 (Ajax POST request displaying a loader html)</h2>
 
 <pre><code>tiramisu.ajax({
      url: 'www.example.com',
      method : 'POST',
-     loader : 'url_image_loader',
+     loader : '&lt;img src="http://www.mysite.com/url_image_loader.jpg" alt="" /&gt;',
      successHTML : 'responseWrapper'
 });</code></pre>
 
-<h2>Example #5 (Ajax POST request with parameters)</h2>
+<h2>Example #5 (Ajax GET request with parameters)</h2>
 
 <pre><code>tiramisu.ajax({
-    method : 'POST',
-    loader : 'url_image_loader',
     parameter: {
         param_1 : 'variable 1',
         param_2 : 'variable 2'
     },
+    successHTML : 'responseWrapper'
     url : 'http://www.example.com');
 });</code></pre>
 
-<h2>Example #6 (Ajax GET request with success and error callbacks)</h2>
+<h2>Example #6 (Ajax POST request with parameters)</h2>
+
+<pre><code>tiramisu.ajax({
+    method : 'POST',
+    parameter: {
+        param_1 : 'variable 1',
+        param_2 : 'variable 2'
+    },
+    successHTML : 'responseWrapper'
+    url : 'http://www.example.com');
+});</code></pre>
+
+<h2>Example #7 (Ajax GET request with success and error callbacks)</h2>
 
 <pre><code>tiramisu.ajax({
     url: 'http://www.example.com',
@@ -1607,14 +1618,49 @@ t.get('p').filter(':even')</code></pre>
     }
 });</code></pre>
 
-<h2>Example #7 (Ajax POST request with successHTML and success callbacks)</h2>
+<h2>Example #8 (Ajax POST request with successHTML and success callbacks)</h2>
 
 <pre><code>tiramisu.ajax({
+   method : 'POST',
    parameter: {
         param_1 : 'variable 1',
         param_2 : 'variable 2'
     },
    success: function(){ ... },
+   successHTML: 'responseWrapper',
+   url : 'http://www.example.com');</code></pre>
+
+<p>   });</p>
+
+<h2>Example #9 (Ajax set content_type, connection, data_type)</h2>
+
+<pre><code>tiramisu.ajax({
+   content_type : '',
+   connection: '',
+   data_type: '',
+   successHTML: 'responseWrapper',
+   url : 'http://www.example.com');</code></pre>
+
+<p>   });</p>
+
+<h2>Example #10 (Ajax with start_load and end_load)</h2>
+
+<pre><code>tiramisu.ajax({
+   start_load: function() {
+
+   },
+   end_load: function() {
+
+   },
+   successHTML: 'responseWrapper',
+   url : 'http://www.example.com');</code></pre>
+
+<p>   });</p>
+
+<h2>Example #11 (Ajax with time stop)</h2>
+
+<pre><code>tiramisu.ajax({
+   stop : 2000,
    successHTML: 'responseWrapper',
    url : 'http://www.example.com');</code></pre>
 
@@ -1643,7 +1689,7 @@ t.get('p').filter(':even')</code></pre>
                 },
                 <span class="variable">start_load</span>: <span class="keyword">function</span>() {},
                 <span class="variable">end_load</span>: <span class="keyword">function</span>() {},
-                <span class="variable">loader</span>: <span class="string">''</span>,
+                <span class="variable">loader</span>: <span class="keyword">null</span>,
                 <span class="variable">method</span>: <span class="string">'GET'</span>,
                 <span class="variable">parameter</span>: <span class="string">''</span>,
                 <span class="variable">success</span>: <span class="keyword">function</span>() {},
@@ -1658,12 +1704,17 @@ t.get('p').filter(':even')</code></pre>
             <span class="variable">url_cache</span> = <span class="string">''</span>,
             <span class="variable">get_params</span> = <span class="string">''</span>;
 
-        <span class="keyword">if</span> (<span class="variable">window</span>.<span class="class">XMLHttpRequest</span>) {
-            <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">XMLHttpRequest</span>();
-        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">window</span>.<span class="class">ActiveXObject</span>) {
-            <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">ActiveXObject</span>(&<span class="variable">quot</span>;<span class="class">Microsoft</span>.<span class="class">XMLHTTP</span>&<span class="variable">quot</span>;);
-        } <span class="keyword">else</span> {
-            <span class="variable">setting</span>.<span class="variable">error</span>(<span class="string">'e_ajax#1'</span>);
+        <span class="keyword">try</span> {
+            <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">ActiveXObject</span>(&<span class="variable">quot</span>;<span class="class">Msxml2</span>.<span class="class">XMLHTTP</span>&<span class="variable">quot</span>;)
+        } <span class="keyword">catch</span> (<span class="variable">err</span>) {
+            <span class="keyword">try</span> {
+                <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">ActiveXObject</span>(&<span class="variable">quot</span>;<span class="class">Microsoft</span>.<span class="class">XMLHTTP</span>&<span class="variable">quot</span>;)
+            } <span class="keyword">catch</span> (<span class="variable">error</span>) {
+                <span class="variable">xhr</span> = <span class="keyword">null</span>
+            }
+        }
+        <span class="keyword">if</span> (!<span class="variable">xhr</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="class">XMLHttpRequest</span> != &<span class="variable">quot</span>;<span class="variable">undefined</span>&<span class="variable">quot</span>;) {
+            <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">XMLHttpRequest</span>
         }
 
         <span class="variable">extend</span>(<span class="variable">setting</span>, <span class="variable">setting_input</span>);
@@ -1715,6 +1766,18 @@ t.get('p').filter(':even')</code></pre>
                 <span class="variable">setting</span>.<span class="variable">end_load</span>();
                 <span class="comment">// fetched the wrong page or network error...</span>
                 <span class="variable">setting</span>.<span class="variable">error</span>(<span class="string">'Fetched the wrong page or network error'</span>);
+            } <span class="keyword">else</span> {
+                <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">successHTML</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">setting</span>.<span class="variable">loader</span>) {
+                    <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>) === <span class="string">'string'</span>) {
+                        <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">getElementById</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>).<span class="variable">innerHTML</span> = <span class="variable">setting</span>.<span class="variable">loader</span>;
+                    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>) === <span class="string">'object'</span>) {
+                        <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>.<span class="variable">html</span>) === <span class="string">'function'</span>) {
+                            <span class="variable">setting</span>.<span class="variable">successHTML</span>.<span class="variable">html</span>(<span class="variable">setting</span>.<span class="variable">loader</span>);
+                        } <span class="keyword">else</span> {
+                            <span class="variable">setting</span>.<span class="variable">successHTML</span>.<span class="variable">innerHTML</span> = <span class="variable">setting</span>.<span class="variable">loader</span>;
+                        }
+                    }
+                }
             }
         };
 
@@ -1730,12 +1793,9 @@ t.get('p').filter(':even')</code></pre>
         <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">data_type</span>) {
             <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'dataType'</span>, <span class="variable">setting</span>.<span class="variable">data_type</span>);
         }
-        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">loader</span>) {
-            <span class="keyword">var</span> <span class="variable">img</span> = <span class="string">'&lt;img src=&quot;'</span> + <span class="variable">setting</span>.<span class="variable">loader</span> + <span class="string">'&quot; alt=&quot;&quot; /&gt;'</span>;
-            <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">getElementById</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>).<span class="variable">innerHTML</span> = <span class="variable">img</span>;
-        }
 
         <span class="variable">xhr</span>.<span class="variable">setRequestHeader</span>(<span class="string">'X-Requested-With'</span>, <span class="string">'XMLHttpRequest'</span>); <span class="comment">// Set a request</span>
+        <span class="comment">// Set start load</span>
         <span class="variable">setting</span>.<span class="variable">start_load</span>();
 
         <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">stop</span>) {
