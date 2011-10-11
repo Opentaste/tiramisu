@@ -1624,30 +1624,42 @@
      *         successHTML : 'responseWrapper'
      *     });
      *
-     * Example #4 (Ajax POST request displaying a loader)
+     * Example #4 (Ajax POST request displaying a loader html)
      * --------------------------------------------------
      *
      *     tiramisu.ajax({
      *          url: 'www.example.com',
      *          method : 'POST',
-     *          loader : 'url_image_loader',
+     *          loader : '<img src="http://www.mysite.com/url_image_loader.jpg" alt="" />',
      *          successHTML : 'responseWrapper'
      *     });
      *
-     * Example #5 (Ajax POST request with parameters)
+     * Example #5 (Ajax GET request with parameters)
      * ----------------------------------------------
      *
      *     tiramisu.ajax({
-     *         method : 'POST',
-     *         loader : 'url_image_loader',
      *         parameter: {
      *             param_1 : 'variable 1',
      *             param_2 : 'variable 2'
      *         },
+     *         successHTML : 'responseWrapper'
      *         url : 'http://www.example.com');
      *     });
      *
-     * Example #6 (Ajax GET request with success and error callbacks)
+     * Example #6 (Ajax POST request with parameters)
+     * ----------------------------------------------
+     *
+     *     tiramisu.ajax({
+     *         method : 'POST',
+     *         parameter: {
+     *             param_1 : 'variable 1',
+     *             param_2 : 'variable 2'
+     *         },
+     *         successHTML : 'responseWrapper'
+     *         url : 'http://www.example.com');
+     *     });
+     *
+     * Example #7 (Ajax GET request with success and error callbacks)
      * --------------------------------------------------------------
      *
      *     tiramisu.ajax({
@@ -1660,15 +1672,50 @@
      *         }
      *     });
      *
-     * Example #7 (Ajax POST request with successHTML and success callbacks)
+     * Example #8 (Ajax POST request with successHTML and success callbacks)
      * --------------------------------------------------------------
      *
      *     tiramisu.ajax({
+     *        method : 'POST',
      *        parameter: {
      *             param_1 : 'variable 1',
      *             param_2 : 'variable 2'
      *         },
      *        success: function(){ ... },
+     *        successHTML: 'responseWrapper',
+     *        url : 'http://www.example.com');
+     *    });
+     *
+     * Example #9 (Ajax set content_type, connection, data_type)
+     * --------------------------------------------------------------
+     *
+     *     tiramisu.ajax({
+     *        content_type : '',
+     *        connection: '',
+     *        data_type: '',
+     *        successHTML: 'responseWrapper',
+     *        url : 'http://www.example.com');
+     *    });
+     *
+     * Example #10 (Ajax with start_load and end_load)
+     * --------------------------------------------------------------
+     *
+     *     tiramisu.ajax({
+     *        start_load: function() {
+     *
+     *        },
+     *        end_load: function() {
+     *
+     *        },
+     *        successHTML: 'responseWrapper',
+     *        url : 'http://www.example.com');
+     *    });
+     *
+     * Example #11 (Ajax with time stop)
+     * --------------------------------------------------------------
+     *
+     *     tiramisu.ajax({
+     *        stop : 2000,
      *        successHTML: 'responseWrapper',
      *        url : 'http://www.example.com');
      *    });
@@ -1694,7 +1741,7 @@
                 },
                 start_load: function() {},
                 end_load: function() {},
-                loader: '',
+                loader: null,
                 method: 'GET',
                 parameter: '',
                 success: function() {},
@@ -1766,6 +1813,18 @@
                 setting.end_load();
                 // fetched the wrong page or network error...
                 setting.error('Fetched the wrong page or network error');
+            } else {
+                if (setting.successHTML && setting.loader) {
+                    if (typeof(setting.successHTML) === 'string') {
+                        t.d.getElementById(setting.successHTML).innerHTML = setting.loader;
+                    } else if (typeof(setting.successHTML) === 'object') {
+                        if (typeof(setting.successHTML.html) === 'function') {
+                            setting.successHTML.html(setting.loader);
+                        } else {
+                            setting.successHTML.innerHTML = setting.loader;
+                        }
+                    }
+                }
             }
         };
 
@@ -1781,12 +1840,10 @@
         if (setting.data_type) {
             xhr.setRequestHeader('dataType', setting.data_type);
         }
-        if (setting.loader) {
-            var img = '<img src="' + setting.loader + '" alt="" />';
-            t.d.getElementById(setting.successHTML).innerHTML = img;
-        }
 
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Set a request
+        
+        // Set start load
         setting.start_load();
 
         if (setting.stop) {
