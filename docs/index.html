@@ -1666,6 +1666,15 @@ t.get('p').filter(':even')</code></pre>
 
 <p>   });</p>
 
+<h2>Example #12 (If there is new request then to abort the past requests.)</h2>
+
+<pre><code>tiramisu.ajax({
+   abort : true,
+   successHTML: 'responseWrapper',
+   url : 'http://www.example.com');</code></pre>
+
+<p>   });</p>
+
 <h2>Error</h2>
 
 <ul><li>#1 : Object Ajax Error!;</li></ul>
@@ -1678,6 +1687,7 @@ t.get('p').filter(':even')</code></pre>
 <pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
         <span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
             <span class="variable">setting</span> = {
+                <span class="variable">abort</span>: <span class="variable">false</span>,
                 <span class="variable">async</span>: <span class="variable">true</span>,
                 <span class="variable">content_type</span>: <span class="string">''</span>,
                 <span class="variable">connection</span>: <span class="string">''</span>,
@@ -1703,6 +1713,12 @@ t.get('p').filter(':even')</code></pre>
             <span class="variable">parameter_count</span> = <span class="number integer">0</span>,
             <span class="variable">url_cache</span> = <span class="string">''</span>,
             <span class="variable">get_params</span> = <span class="string">''</span>;
+
+        <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">abort</span>) {
+            <span class="keyword">if</span> (<span class="variable">xhr</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">readyState</span> != <span class="number integer">0</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">readyState</span> != <span class="number integer">4</span>) {
+                <span class="variable">xhr</span>.<span class="variable">abort</span>()
+            }
+        }
 
         <span class="keyword">try</span> {
             <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">ActiveXObject</span>(&<span class="variable">quot</span>;<span class="class">Msxml2</span>.<span class="class">XMLHTTP</span>&<span class="variable">quot</span>;)
@@ -1743,7 +1759,8 @@ t.get('p').filter(':even')</code></pre>
         }
 
         <span class="variable">xhr</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
-            <span class="keyword">if</span> (<span class="variable">xhr</span>.<span class="variable">readyState</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> == <span class="number integer">200</span>) {
+            <span class="keyword">var</span> <span class="variable">state</span> = <span class="variable">xhr</span>.<span class="variable">readyState</span>;
+            <span class="keyword">if</span> (<span class="variable">state</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">responseText</span>) {
                 <span class="comment">// success!</span>
                 <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">successHTML</span>) {
                     <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">setting</span>.<span class="variable">successHTML</span>) === <span class="string">'string'</span>) {
@@ -1758,13 +1775,13 @@ t.get('p').filter(':even')</code></pre>
                 }
                 <span class="variable">setting</span>.<span class="variable">end_load</span>();
                 <span class="variable">setting</span>.<span class="variable">success</span>(<span class="variable">xhr</span>.<span class="variable">responseText</span>);
-            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">xhr</span>.<span class="variable">readyState</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> == <span class="number integer">400</span>) {
-                <span class="variable">setting</span>.<span class="variable">end_load</span>();
+            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">state</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> == <span class="number integer">400</span>) {
                 <span class="comment">// 400 Bad Request</span>
-                <span class="variable">setting</span>.<span class="variable">error</span>(<span class="string">'400 Bad Request'</span>);
-            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">xhr</span>.<span class="variable">readyState</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> != <span class="number integer">200</span>) {
                 <span class="variable">setting</span>.<span class="variable">end_load</span>();
+                <span class="variable">setting</span>.<span class="variable">error</span>(<span class="string">'400 Bad Request'</span>);
+            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">state</span> == <span class="number integer">4</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">xhr</span>.<span class="variable">status</span> != <span class="number integer">200</span>) {
                 <span class="comment">// fetched the wrong page or network error...</span>
+                <span class="variable">setting</span>.<span class="variable">end_load</span>();
                 <span class="variable">setting</span>.<span class="variable">error</span>(<span class="string">'Fetched the wrong page or network error'</span>);
             } <span class="keyword">else</span> {
                 <span class="keyword">if</span> (<span class="variable">setting</span>.<span class="variable">successHTML</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">setting</span>.<span class="variable">loader</span>) {

@@ -1720,6 +1720,15 @@
      *        url : 'http://www.example.com');
      *    });
      *
+     * Example #12 (If there is new request then to abort the past requests.)
+     * --------------------------------------------------------------
+     *
+     *     tiramisu.ajax({
+     *        abort : true,
+     *        successHTML: 'responseWrapper',
+     *        url : 'http://www.example.com');
+     *    });
+     *
      * Error
      * -----
      * - #1 : Object Ajax Error!;
@@ -1730,6 +1739,7 @@
     Tiramisu.prototype.ajax = function(setting_input) {
         var setting_input = setting_input || {},
             setting = {
+                abort: false,
                 async: true,
                 content_type: '',
                 connection: '',
@@ -1755,6 +1765,12 @@
             parameter_count = 0,
             url_cache = '',
             get_params = '';
+
+        if (setting.abort) {
+            if (xhr && xhr.readyState != 0 && xhr.readyState != 4) {
+                xhr.abort()
+            }
+        }
 
         try {
             xhr = new ActiveXObject("Msxml2.XMLHTTP")
@@ -1795,7 +1811,8 @@
         }
 
         xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+            var state = xhr.readyState;
+            if (state == 4 && xhr.responseText) {
                 // success!
                 if (setting.successHTML) {
                     if (typeof(setting.successHTML) === 'string') {
@@ -1810,13 +1827,13 @@
                 }
                 setting.end_load();
                 setting.success(xhr.responseText);
-            } else if (xhr.readyState == 4 && xhr.status == 400) {
-                setting.end_load();
+            } else if (state == 4 && xhr.status == 400) {
                 // 400 Bad Request
-                setting.error('400 Bad Request');
-            } else if (xhr.readyState == 4 && xhr.status != 200) {
                 setting.end_load();
+                setting.error('400 Bad Request');
+            } else if (state == 4 && xhr.status != 200) {
                 // fetched the wrong page or network error...
+                setting.end_load();
                 setting.error('Fetched the wrong page or network error');
             } else {
                 if (setting.successHTML && setting.loader) {
