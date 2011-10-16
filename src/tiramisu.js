@@ -1257,26 +1257,23 @@
                 }
             },
             /**
-             * ?????
+             * Focus extension method
              * ---------------------------------
              *
-             * ????????????
+             * Set focus on elements
              *
              * Usage
              * -----
              *
              *     tiramisu.get(*SELECTOR*).focus()
              *
-             * where *SELECTOR* is a valid CSS selector ?????
+             * where *SELECTOR* is a valid CSS selector
              *
-             * Example #1 (????)
+             * Example #1 (Set focus on elements)
              * ---------------------------------------------------
              *
+             *     tiramisu.get(*SELECTOR*).focus()
              *
-             *
-             *
-             * @param {String} ????
-             * @return {[String]} ?????
              *
              */
             'focus': function() {
@@ -1519,6 +1516,43 @@
              * Destroy extension method
              * ---------------------------------
              *
+             * Removes element
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)
+             *
+             * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
+             *
+             * Example #1 (Remove all element child)
+             * -----------------------------------------
+             *
+             *     <ol id="myList">
+             *        <li>This is my <span class="tasty">icecake</span></li>
+             *        <li>I love <span class="tasty">chocolate</span> chips!</li>
+             *     </ol>
+             *
+             * calling *t.get('#myList').destroy('.tasty')* will give the following results:
+             *
+             *     <ol id="myList">
+             *         <li>I love <span class="tasty">chocolate</span> chips!</li>
+             *     </ol>
+             *
+             * Example #2 (Remove element and child)
+             * --------------------------------------
+             *
+             *     <ol id="myList">
+             *        <li>This is my <span class="tasty">icecake</span></li>
+             *        <li>I love <span class="tasty">chocolate chips!</span></li>
+             *     </ol>
+             *
+             * calling *t.get('#myList').destroy()* will give the following results:
+             *
+             *     <ol id="myList">
+             *     </ol>
+             *
+             *
              */
             'destroy': function(el) {
                 if (results[0] === undefined) {
@@ -1541,6 +1575,34 @@
             /**
              * Remove Class extension method
              * ---------------------------------
+             *
+             * Removes class
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).removeClass(*CLASS*)
+             *
+             * where *SELECTOR* is a valid CSS selector and *CLASS* is class name
+             *
+             * Example #1 (Remove class)
+             * -----------------------------------------
+             *
+             *     <p id="tasty" class="my_class my_class_two"></p>
+             *
+             * calling *t.get('#tasty').removeClass('.my_class_two')* will give the following results:
+             *
+             *     <p id="tasty" class="my_class"></p>
+             *
+             * Example #2 (Remove element and child)
+             * --------------------------------------
+             *
+             *     <p id="tasty" class="my_class my_class_two"></p>
+             *
+             * calling *t.get('#tasty').removeClass()* will give the following results:
+             *
+             *     <p id="tasty" class=""></p>
+             *
              *
              */
             'removeClass': function(el) {

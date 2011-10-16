@@ -1218,21 +1218,22 @@ t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']</code></pre>
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>?????</h2>
+<h2>Focus extension method</h2>
 
-<p>????????????</p>
+<p>Set focus on elements</p>
 
 <h2>Usage</h2>
 
 <pre><code>tiramisu.get(*SELECTOR*).focus()</code></pre>
 
-<p>where <em>SELECTOR</em> is a valid CSS selector ?????</p>
+<p>where <em>SELECTOR</em> is a valid CSS selector</p>
 
-<h2>Example #1 (????)</h2>
+<h2>Example #1 (Set focus on elements)</h2>
 
-<h2></h2>
+<pre><code>tiramisu.get(*SELECTOR*).focus()
 
-<ul><li><p><strong>param</strong>: <em>String</em>  ????</p></li><li><p><strong>return</strong>: <em>[String]</em>  ?????</p><pre><code>     </code></pre></li></ul>
+
+         </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'focus'</span>: <span class="keyword">function</span>() {
@@ -1477,7 +1478,41 @@ t.get('p').filter(':even')</code></pre>
 <td class="docs">
 <h2>Destroy extension method</h2>
 
-<pre><code>         </code></pre>
+<p>Removes element</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>ELEMENT</em> is the DOM element</p>
+
+<h2>Example #1 (Remove all element child)</h2>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate&lt;/span&gt; chips!&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<p>calling <em>t.get('#myList').destroy('.tasty')</em> will give the following results:</p>
+
+<pre><code>&lt;ol id="myList"&gt;
+    &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate&lt;/span&gt; chips!&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<h2>Example #2 (Remove element and child)</h2>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate chips!&lt;/span&gt;&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<p>calling <em>t.get('#myList').destroy()</em> will give the following results:</p>
+
+<pre><code>&lt;ol id="myList"&gt;
+&lt;/ol&gt;
+
+
+         </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'destroy'</span>: <span class="keyword">function</span>(<span class="variable">el</span>) {
@@ -1504,7 +1539,32 @@ t.get('p').filter(':even')</code></pre>
 <td class="docs">
 <h2>Remove Class extension method</h2>
 
-<pre><code>         </code></pre>
+<p>Removes class</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).removeClass(*CLASS*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>CLASS</em> is class name</p>
+
+<h2>Example #1 (Remove class)</h2>
+
+<pre><code>&lt;p id="tasty" class="my_class my_class_two"&gt;&lt;/p&gt;</code></pre>
+
+<p>calling *t.get('#tasty').removeClass('.my<em>class</em>two')* will give the following results:</p>
+
+<pre><code>&lt;p id="tasty" class="my_class"&gt;&lt;/p&gt;</code></pre>
+
+<h2>Example #2 (Remove element and child)</h2>
+
+<pre><code>&lt;p id="tasty" class="my_class my_class_two"&gt;&lt;/p&gt;</code></pre>
+
+<p>calling <em>t.get('#tasty').removeClass()</em> will give the following results:</p>
+
+<pre><code>&lt;p id="tasty" class=""&gt;&lt;/p&gt;
+
+
+         </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'removeClass'</span>: <span class="keyword">function</span>(<span class="variable">el</span>) {
