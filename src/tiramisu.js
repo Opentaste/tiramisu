@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.3-b13';
+        this.version = '0.1.3-b14';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -1331,6 +1331,7 @@
                         return results[0][attr];
                     }
                 }
+                return this;
             },
             /**
              * Index extension method
