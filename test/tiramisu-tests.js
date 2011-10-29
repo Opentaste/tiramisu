@@ -132,7 +132,7 @@ test('Calling t.get("#qunit-fixture select").value("Second.")', function() {
 test('Calling t.get("#hola_id").focus()', function() {
     t.get('#hola_id').focus();
     rs = document.activeElement.id;
-    equal(rs, 'hola_id', 'should return hola');
+    equal(rs, 'hola_id', 'should return hola_id');
 });
 
 test('Element Index (Found)', function() {
@@ -322,4 +322,21 @@ module('Attribute tests');
 test('Getting the attribute "id" of "#headline"', function() {
     var rs = t.get('#headline').attr('id');
     equals(rs, 'headline', 'should equal to "headline"');
+});
+
+test('Setting the attribute "id" of "#hola_id"', function() {
+    t.get('#hola_id').attr('id', 'new_id');
+    var rs = t.get('#new_id')[0].name
+    equals(rs, 'hola_name', 'should equal to "hola_name"');
+});
+
+test('Getting the attribute "class" of "#headline"', function() {
+    var rs = t.get('#headline').attr('class');
+    equals(rs, 'class_leo', 'should equal to "class_leo"');
+});
+
+test('Setting the attribute "class" of "#class_leo class_gianluca"', function() {
+    t.get('#headline').attr('class', 'class_leo class_gianluca');
+    var rs = t.get('#headline').attr('class');
+    equals(rs, 'class_leo class_gianluca', 'should equal to "class_leo class_gianluca"');
 });
