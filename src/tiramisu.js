@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.3-b15';
+        this.version = '0.1.3-b16';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -1156,6 +1156,7 @@
                 } else {
                     return results[0].innerHTML;
                 }
+                return this;
             },
             /**
              * Form field value extension method
@@ -1317,18 +1318,19 @@
              *
              */
             'attr': function(attr, value) {
-                if (value !== undefined) {
-                    if (attr === 'class') {
-                        results[0].className = value;
+                for (var i = len_result; i--;) {
+                    if (value !== undefined) {
+                        if (attr === 'class') {
+                            results[i].className = results[i].className + ' ' + value;
+                        } else {
+                            results[i][attr] = value;
+                        }
                     } else {
-                        results[0][attr] = value;
-                    }
-                    return this;
-                } else {
-                    if (attr === 'class') {
-                        return results[0].className;
-                    } else {
-                        return results[0][attr];
+                        if (attr === 'class') {
+                            return results[i].className;
+                        } else {
+                            return results[i][attr];
+                        }
                     }
                 }
                 return this;
@@ -1446,10 +1448,12 @@
                         !selectors[selector](i) && results.splice(i, 1);
                     }
                 } else if (typeof selector === 'function') {
-                    for (var i = 0; i < len_result; i++) {
+                    for (var i = len_result; i--;) {
                         !selector(i) && results.splice(i, 1);
                     }
                 }
+
+                len_result = results.length;
 
                 return this;
             },
@@ -1561,6 +1565,7 @@
                 if (results[0] === undefined) {
                     return '';
                 }
+
                 if (el !== undefined && typeof el === 'string') {
                     var res = t.get(selector + ' ' + el),
                         len = res.length;
@@ -1574,6 +1579,8 @@
                         parent.removeChild(results[i]);
                     }
                 }
+
+                return this;
             },
             /**
              * Remove Class extension method
@@ -1588,30 +1595,34 @@
              *
              * where *SELECTOR* is a valid CSS selector and *CLASS* is class name
              *
-             * Example #1 (Remove class of the element and child)
+             * Example #1 (Remove class of the element)
              * -----------------------------------------
              *
-             *     <p id="tasty" class="my_class my_class_two">
-             *          <span class="my_class_one">Hi one</span>
-             *          <span class="my_class_two">Hi two</span>
-             *     </p>
+             *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
              *
              * calling *t.get('#tasty').removeClass('my_class_two')* will give the following results:
              *
-             *     <p id="tasty" class="my_class">
-             *          <span class="my_class_one">Hi one</span>
-             *          <span class="">Hi two</span>
-             *     </p>
+             *     <p id="tasty" class="my_class">Hi Gianluca</p>
              *
-             * Example #2 (Remove all class of the element and child)
+             * Example #2 (Remove all class of the element)
              * --------------------------------------
              *
-             *     <p id="tasty" class="my_class my_class_two">
+             *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
+             *
+             * calling *t.get('#tasty').removeClass()* will give the following results:
+             *
+             *     <p id="tasty" class="">Hi Gianluca</p>
+             *
+             *
+             * Example #3 (Remove all class of the element and child)
+             * --------------------------------------
+             *
+             *     <p id="tasty" class="my_class">
              *          <span class="my_class_one">Hi one</span>
              *          <span class="my_class_two">Hi two</span>
              *     </p>
              *
-             * calling *t.get('#tasty').removeClass()* will give the following results:
+             * calling *t.get('#tasty').removeClass(':all')* will give the following results:
              *
              *     <p id="tasty" class="">
              *          <span class="">Hi one</span>
@@ -1624,46 +1635,51 @@
                 if (results[0] === undefined) {
                     return '';
                 }
-                var i, j, text;
+
+                var i, j, text, all = false;
+
+                if (el === ':all') {
+                    el = undefined;
+                    var all = true;
+                }
+
+
                 if (el !== undefined && typeof el === 'string') {
-                    var match = new RegExp(el, 'gi'),
-                        re = new RegExp('(\\s|^)' + el + '(\\s|$)'),
-                        res = t.get(selector + ' .' + el),
-                        len = res.length;
+
+                    var re = new RegExp('(\\s|^)' + el + '(\\s|$)');
+                    // Remove class into element
                     for (i = len_result; i--;) {
-                        // Remove class into element
-                        var find = results[i].className.search(match);
-                        if (find > 0) {
-                            text = results[i].className.replace(re, '');
-                            results[i].className = text;
-                        }
-                        // Remove class into child
-                        for (j = len; j--;) {
-                            text = res[j].className.replace(re, '');
-                            res[j].className = text;
-                        }
+                        text = results[i].className.replace(re, '');
+                        results[i].className = text;
                     }
+
                 } else {
+
                     for (i = len_result; i--;) {
                         // Remove all class into element
                         results[i].className = '';
+
                         // Remove all class into child
-                        var list_child = results[i].childNodes,
-                            len = list_child.length;
-                        if (len > 0) {
-                            (function(list, len) {
-                                for (var j = len; j--;) {
-                                    list[j].className = '';
-                                    var new_list = list[j].childNodes,
-                                        new_len = new_list.length;
-                                    if (new_len > 0) {
-                                        arguments.callee(new_list, new_len);
+                        if (all) {
+                            var list_child = results[i].childNodes,
+                                len = list_child.length;
+                            if (len > 0) {
+                                (function(list, len) {
+                                    for (var j = len; j--;) {
+                                        list[j].className = '';
+                                        var new_list = list[j].childNodes,
+                                            new_len = new_list.length;
+                                        if (new_len > 0) {
+                                            arguments.callee(new_list, new_len);
+                                        }
                                     }
-                                }
-                            })(list_child, len);
+                                })(list_child, len);
+                            }
                         }
                     }
+
                 }
+                return this;
             }
         };
 

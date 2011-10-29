@@ -340,7 +340,7 @@ test('Getting the attribute "id" of "#headline"', function() {
 
 test('Setting the attribute "id" of "#hola_id"', function() {
     t.get('#hola_id').attr('id', 'new_id');
-    var rs = t.get('#new_id')[0].name
+    var rs = t.get('#new_id')[0].name;
     equals(rs, 'hola_name', 'should equal to "hola_name"');
 });
 
