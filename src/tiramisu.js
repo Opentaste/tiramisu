@@ -1588,23 +1588,35 @@
              *
              * where *SELECTOR* is a valid CSS selector and *CLASS* is class name
              *
-             * Example #1 (Remove class)
+             * Example #1 (Remove class of the element and child)
              * -----------------------------------------
              *
-             *     <p id="tasty" class="my_class my_class_two"></p>
+             *     <p id="tasty" class="my_class my_class_two">
+             *          <span class="my_class_one">Hi one</span>
+             *          <span class="my_class_two">Hi two</span>
+             *     </p>
              *
-             * calling *t.get('#tasty').removeClass('.my_class_two')* will give the following results:
+             * calling *t.get('#tasty').removeClass('my_class_two')* will give the following results:
              *
-             *     <p id="tasty" class="my_class"></p>
+             *     <p id="tasty" class="my_class">
+             *          <span class="my_class_one">Hi one</span>
+             *          <span class="">Hi two</span>
+             *     </p>
              *
-             * Example #2 (Remove element and child)
+             * Example #2 (Remove all class of the element and child)
              * --------------------------------------
              *
-             *     <p id="tasty" class="my_class my_class_two"></p>
+             *     <p id="tasty" class="my_class my_class_two">
+             *          <span class="my_class_one">Hi one</span>
+             *          <span class="my_class_two">Hi two</span>
+             *     </p>
              *
              * calling *t.get('#tasty').removeClass()* will give the following results:
              *
-             *     <p id="tasty" class=""></p>
+             *     <p id="tasty" class="">
+             *          <span class="">Hi one</span>
+             *          <span class="">Hi two</span>
+             *     </p>
              *
              *
              */
@@ -1612,17 +1624,44 @@
                 if (results[0] === undefined) {
                     return '';
                 }
+                var i, j, text;
                 if (el !== undefined && typeof el === 'string') {
-                    var res = t.get(selector + ' .' + el),
+                    var match = new RegExp(el, 'gi'),
+                        re = new RegExp('(\\s|^)' + el + '(\\s|$)'),
+                        res = t.get(selector + ' .' + el),
                         len = res.length;
-                    for (var i = len; i--;) {
-                        var match = new RegExp('(\\s|^)' + el + '(\\s|$)');
-                        var text = res[i].className.replace(match, ' ');
-                        res[i].className = text;
+                    for (i = len_result; i--;) {
+                        // Remove class into element
+                        var find = results[i].className.search(match);
+                        if (find > 0) {
+                            text = results[i].className.replace(re, '');
+                            results[i].className = text;
+                        }
+                        // Remove class into child
+                        for (j = len; j--;) {
+                            text = res[j].className.replace(re, '');
+                            res[j].className = text;
+                        }
                     }
                 } else {
                     for (i = len_result; i--;) {
+                        // Remove all class into element
                         results[i].className = '';
+                        // Remove all class into child
+                        var list_child = results[i].childNodes,
+                            len = list_child.length;
+                        if (len > 0) {
+                            (function(list, len) {
+                                for (var j = len; j--;) {
+                                    list[j].className = '';
+                                    var new_list = list[j].childNodes,
+                                        new_len = new_list.length;
+                                    if (new_len > 0) {
+                                        arguments.callee(new_list, new_len);
+                                    }
+                                }
+                            })(list_child, len);
+                        }
                     }
                 }
             }
