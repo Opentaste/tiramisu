@@ -1537,7 +1537,8 @@
              * calling *t.get('#myList').destroy('.tasty')* will give the following results:
              *
              *     <ol id="myList">
-             *         <li>I love <span class="tasty">chocolate</span> chips!</li>
+             *         <li>This is my </li>
+             *         <li>I love  chips!</li>
              *     </ol>
              *
              * Example #2 (Remove element and child)
@@ -1550,8 +1551,9 @@
              *
              * calling *t.get('#myList').destroy()* will give the following results:
              *
-             *     <ol id="myList">
-             *     </ol>
+             *     <div id="myDestroyList">
+             *
+             *     </div>
              *
              *
              */

@@ -236,6 +236,20 @@ test('Empty childrens (multiple elements)', function() {
     equal(rs, attended);
 });
 
+test('Destroy all element child (Example #1)', function() {
+    t.get('#myList').destroy('.tasty')
+    var rs = t.get('#myList')[0].innerHTML;
+    var attended = '\n            <li>This is my </li>\n            <li>I love  chips!</li>\n        ';
+    equal(rs, attended);
+});
+
+test('Destroy element and child (Example #2)', function() {
+    t.get('#myList').destroy()
+    var rs = t.get('#myDestroyList').html();
+    var attended = '\n        \n    ';
+    equal(rs, attended);
+});
+
 module('CSS Manipulation tests');
 
 test('Setting the color of a node to #f6f6f6', function() {
