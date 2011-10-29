@@ -129,6 +129,12 @@ test('Calling t.get("#qunit-fixture select").value("Second.")', function() {
     equal(rs, 'Second.', 'should set element\'s HTML value to Second');
 });
 
+test('Calling t.get("#hola_id").focus()', function() {
+    t.get('#hola_id').focus();
+    rs = document.activeElement.id;
+    equal(rs, 'hola_id', 'should return hola');
+});
+
 test('Element Index (Found)', function() {
     var el = t.get('#selector_test li')[2];
     var rs = t.get('#selector_test li').index(el);
