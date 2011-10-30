@@ -1313,15 +1313,37 @@
              *     ...
              *     t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');
              *
+             * Example #3 (Set the class)
+             * ---------------------------------------------------
+             *
+             *     <p class="old_class old_class_two">Hi class</p>
+             *
+             * calling *t.get('p').attr('class', 'new_class')* will give the following results:
+             *
+             *     <p class="new_class">Hi class</p>
+             *
+             * Example #4 (Set the class)
+             * ---------------------------------------------------
+             *
+             *     <p class="old_class old_class_two">Hi class</p>
+             *
+             * calling *t.get('p').attr('class', 'new_class', true)* will give the following results:
+             *
+             *     <p class="old_class old_class_two new_class">Hi class</p>
+             *
              * @param {String} [set] An optional string containing the field src to set
              * @return {[String]} An optional string containing the selector's first element field src
              *
              */
-            'attr': function(attr, value) {
+            'attr': function(attr, value, add) {
                 for (var i = len_result; i--;) {
                     if (value !== undefined) {
                         if (attr === 'class') {
-                            results[i].className = results[i].className + ' ' + value;
+                            if (add) {
+                                results[i].className = results[i].className + ' ' + value;
+                            } else {
+                                results[i].className = value;
+                            }
                         } else {
                             results[i][attr] = value;
                         }

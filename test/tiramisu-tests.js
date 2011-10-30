@@ -358,14 +358,11 @@ test('Setting the attribute "class" of "#class_leo class_gianluca"', function() 
 test('Remove class of the element and child (Example #1)', function() {
     t.get('#tasty').removeClass('my_class_two');
     var rs = t.get('#tasty').attr('class');
-    var one = t.get('#tasty_one').attr('class');
-    var two = t.get('#tasty_two').attr('class');
-    rs = rs + '_' + one + '_' + two
-    equals(rs, 'my_class_my_class_one_', 'should equal to "my_class"');
+    equals(rs, 'my_class', 'should equal to "my_class"');
 });
 
 test('Remove all class of the element and child (Example #2)', function() {
-    t.get('#tasty').removeClass();
+    t.get('#tasty').removeClass(':all');
     var rs = t.get('#tasty').attr('class');
     var one = t.get('#tasty_one').attr('class');
     var two = t.get('#tasty_two').attr('class');
