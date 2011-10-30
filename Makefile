@@ -39,9 +39,11 @@ publish:
 	git checkout stable
 	git merge master
 	git push origin
+	git push origin --tags
 	git checkout master
 	cd ${TIRAMISU_HOME}
 	make clean && make
+	git add .
 	git commit -am "Updated homepage to version ${VERSION}, ${DATE}"
 	git push origin gh-pages
 	@echo "Tiramisu's homepage has been updated to the latest version"
