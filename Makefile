@@ -33,6 +33,8 @@ docs: docs/index.html
 
 publish:
 	make clean && make
+	git add .
+	git commit -am "Released version ${VERSION}"
 	git tag -f -a ${VERSION} -m "${DATE}"
 	git checkout stable
 	git merge master
