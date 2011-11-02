@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.4';
+        this.version = '0.1.4-b1';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -146,7 +146,7 @@
                 return this.browser() === "f3" || this.browser() === "f4+"
             },
 
-            'isChrome': function() {
+            'isWebkit': function() {
                 return this.browser() === 'webkit'
             },
 
@@ -163,6 +163,15 @@
         };
         return tests[key]();
     };
+
+    /**
+     * Make Module
+     * =========================
+     *
+     */
+    Tiramisu.prototype.make = function(element) {
+        return t.get(t.d.createElement(element));
+    }
 
     /**
      * Framework Selector Module
@@ -240,8 +249,10 @@
                 div = t.d.createElement('div')
                 if (typeof html === 'string') {
                     div.innerHTML = html;
+                } else if (typeof html.css === 'function') {
+                    div.appendChild(html[0]);
                 } else {
-                    div.innerHTML = html.outerHTML || new XMLSerializer().serializeToString(html)
+                    div.appendChild(html);
                 }
                 parent = results[i].parentNode;
                 while (ele = div.firstChild) {
