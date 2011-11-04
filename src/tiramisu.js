@@ -267,6 +267,14 @@
             }
         }
 
+        function insert_into(ele, before, append, parent, results, i) {
+            if (before) {
+                (append) ? results[i].insertBefore(ele, results[i].firstChild) : parent.insertBefore(ele, results[i]);
+            } else {
+                (append) ? results[i].appendChild(ele) : parent.insertBefore(ele, results[i].nextSibling);
+            }
+        }
+
         function toArray(obj) {
             var array = [];
             // Zero-fill right shift to ensure that length is an UInt32

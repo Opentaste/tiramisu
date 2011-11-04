@@ -366,6 +366,14 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
             }
         }
 
+        <span class="keyword">function</span> <span class="variable">insert_into</span>(<span class="variable">ele</span>, <span class="variable">before</span>, <span class="variable">append</span>, <span class="variable">parent</span>, <span class="variable">results</span>, <span class="variable">i</span>) {
+            <span class="keyword">if</span> (<span class="variable">before</span>) {
+                (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">firstChild</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>]);
+            } <span class="keyword">else</span> {
+                (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">appendChild</span>(<span class="variable">ele</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
+            }
+        }
+
         <span class="keyword">function</span> <span class="variable">toArray</span>(<span class="variable">obj</span>) {
             <span class="keyword">var</span> <span class="variable">array</span> = [];
             <span class="comment">// Zero-fill right shift to ensure that length is an UInt32</span>
