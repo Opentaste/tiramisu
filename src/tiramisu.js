@@ -240,16 +240,23 @@
 
         // DOM Node insertion generic utility
 
-       function insert_content(html, before, append) {
+        function insert_content(html, before, append) {
             if (results[0] === undefined) {
                 return '';
             }
 
-            var i, j, parent, 
-                elements = [];
+            var i, j, parent, elements = [];
 
-            var div = document.createElement('div');
-            var frag = document.createDocumentFragment();
+            var div = t.d.createElement('div');
+            // “...A better version will be to create a document fragment, update it "offline",
+            // and add it to the live DOM when it's ready. When you add a document fragment to
+            // the DOM tree, the content of the fragment gets added, not the fragment itself.
+            // And this is really convenient. So the document fragment is a good way to wrap
+            // a number of nodes even when you're not containing them in a suitable parent
+            // (for example, your paragraphs are not in a div element)”
+            // 
+            // From “JavaScript Patterns”, pages 184-185, chapter VIII
+            var frag = t.d.createDocumentFragment();
 
             for (i = 0; i < len_result; i++) {
 
@@ -268,12 +275,17 @@
                 for (j = 0; j < elements.length; j++) {
 
                     if (before) {
-                        (append) ? results[i].insertBefore(elements[j], results[i].firstChild) : parent.insertBefore(elements[j], results[i]);
+                        frag.insertBefore(elements[j], frag.firstChild);
                     } else {
-                        (append) ? frag.appendChild(elements[j]) : parent.insertBefore(elements[j], results[i].nextSibling);
+                        frag.appendChild(elements[j]);
                     }
                 }
-                results[i].appendChild(frag);
+
+                if (before) {
+                    (append) ? results[i].insertBefore(frag, results[i].firstChild) : parent.insertBefore(frag, results[i]);
+                } else {
+                    (append) ? results[i].appendChild(frag) : parent.insertBefore(frag, results[i].nextSibling);
+                }
             }
         }
 
@@ -638,7 +650,7 @@
 
             if (t.detect('querySelectorAll')) {
                 // Use querySelectorAll
-                results = toArray(tiramisu.d.querySelectorAll(selector));
+                results = [t.d.querySelectorAll(selector)];
             } else {
                 // Use the built-in CSS Selector
                 var lexer = new Tokenizer(selector);
