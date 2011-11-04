@@ -240,38 +240,40 @@
 
         // DOM Node insertion generic utility
 
-        function insert_content(html, before, append) {
+       function insert_content(html, before, append) {
             if (results[0] === undefined) {
                 return '';
             }
-            var i, parent, div, ele;
+
+            var i, j, parent, 
+                elements = [];
+
+            var div = document.createElement('div');
+            var frag = document.createDocumentFragment();
+
             for (i = 0; i < len_result; i++) {
-                div = t.d.createElement('div')
+
                 if (typeof html === 'string') {
                     div.innerHTML = html;
+                    elements = div.children;
+
                 } else if (typeof html.css === 'function') {
-                    div.appendChild(html[0]);
+                    elements.push(html[0]); // html is t.get(t.make('p'))
                 } else {
-                    div.appendChild(html);
+                    elements.push(html); // html is an element
                 }
+
                 parent = results[i].parentNode;
-                while (ele = div.firstChild) {
+
+                for (j = 0; j < elements.length; j++) {
+
                     if (before) {
-                        // Insert before
-                        (append) ? results[i].insertBefore(ele, results[i].firstChild) : parent.insertBefore(ele, results[i]);
+                        (append) ? results[i].insertBefore(elements[j], results[i].firstChild) : parent.insertBefore(elements[j], results[i]);
                     } else {
-                        // Insert after
-                        (append) ? results[i].appendChild(ele) : parent.insertBefore(ele, results[i].nextSibling);
+                        (append) ? frag.appendChild(elements[j]) : parent.insertBefore(elements[j], results[i].nextSibling);
                     }
                 }
-            }
-        }
-
-        function insert_into(ele, before, append, parent, results, i) {
-            if (before) {
-                (append) ? results[i].insertBefore(ele, results[i].firstChild) : parent.insertBefore(ele, results[i]);
-            } else {
-                (append) ? results[i].appendChild(ele) : parent.insertBefore(ele, results[i].nextSibling);
+                results[i].appendChild(frag);
             }
         }
 
@@ -1364,13 +1366,13 @@
                                 results[i].className = value;
                             }
                         } else {
-                            results[i][attr] = value;
+                            results[i].setAttribute(attr, value);
                         }
                     } else {
                         if (attr === 'class') {
                             return results[i].className;
                         } else {
-                            return results[i][attr];
+                            return results[i].getAttribute(attr);
                         }
                     }
                 }
