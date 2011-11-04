@@ -650,7 +650,7 @@
 
             if (t.detect('querySelectorAll')) {
                 // Use querySelectorAll
-                results = [t.d.querySelectorAll(selector)];
+                results = toArray(t.d.querySelectorAll(selector));
             } else {
                 // Use the built-in CSS Selector
                 var lexer = new Tokenizer(selector);
