@@ -38,17 +38,14 @@ def get_version(d=False):
         for line in f:
             version = re.search(r"this.version = '([0-9]\.[0-9](?:\.[0-9](?:-b[0-9]{1,2})?)?)';", line)
             if (version is not None):
-                print(version.group(1)) if not d else current_date
 
                 with open("VERSION", "w") as version_file:
                     version_file.write("""{version}\n{date}""".format(version=version.group(1), date=current_date))
 
-
                 with open("utils/docs-intro.md", "w") as intro:
                     for line in markdown_intro.format(version=version.group(1)):
                         intro.write(line)
-
-                break
-
-if __name__=='__main__':
-    get_version(sys.argv[1]) if len(sys.argv) > 1 else get_version()
+                if d:
+                    return current_date
+                else:
+                    return version.group(1)
