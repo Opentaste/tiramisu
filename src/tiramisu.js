@@ -712,6 +712,21 @@
                 return this;
             },
             /**
+             * Ready
+             * -----------------------
+             *
+             *
+             */
+            'ready': function( def ) {
+                t.d.onreadystatechange = function () { 
+                    if (t.d.readyState == "complete") {
+                        // Run the callback
+                	    def();
+                	    return this;
+                    }
+                }
+            },
+            /**
              * Event handler extension
              * -----------------------
              *
