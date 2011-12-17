@@ -19,7 +19,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.5';
+        this.version = '0.1.5-b1';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -40,6 +40,15 @@
             first[prop] = second[prop];
         }
     }
+    
+    // Cancels the event if it is cancelable, without stopping further propagation of the event.
+    Event.prototype.preventDefault = function() {
+		if (e.preventDefault) {
+			e.preventDefault();
+		} else { // IE
+			e.returnValue = false;
+		}
+	}
 
     // Keep in memory the events created
     var local_event = {};
