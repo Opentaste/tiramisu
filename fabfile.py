@@ -17,9 +17,7 @@ def beautify():
 def minify():
     print 'Minifying tiramisu.js...'
     print '##########################'
-    local('python utils/jsbeautifier.py '+src+'/tiramisu.js > '+src+'/tiramisu-beautified.js')
-    local('mv '+src+'/tiramisu-beautified.js '+src+'/tiramisu.js')
-    local('rm -f '+src+'/tiramisu-beautified.js')
+    local('yuicompressor -o '+src+'/tiramisu-'+vers+'-min.js '+src+'/tiramisu.js')
     print '\n'
 
 def docs():

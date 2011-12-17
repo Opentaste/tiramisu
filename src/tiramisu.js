@@ -722,10 +722,10 @@
              *
              *     tiramisu.get(*SELECTOR*).ready(*FUNCTION*)
              *
-             * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements) 
+             * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements)
              * and *FUNCTION* is the function to execute when the DOM is ready.
              *
-             * Example #1 
+             * Example #1
              * -----------------------------------------
              *
              *     t.get(document).ready(function(){
@@ -734,12 +734,12 @@
              *
              *
              */
-            'ready': function( def ) {
-                t.d.onreadystatechange = function () { 
+            'ready': function(def) {
+                t.d.onreadystatechange = function() {
                     if (t.d.readyState == "complete") {
                         // Run the callback
-                	    def();
-                	    return this;
+                        def();
+                        return this;
                     }
                 }
             },

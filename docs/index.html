@@ -664,6 +664,40 @@ iteration item.</p>
 </tr>
 <tr class="code">
 <td class="docs">
+<h2>Ready method</h2>
+
+<p>Make sure that DOM elements exist when it run the events.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).ready(*FUNCTION*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector (containing <em>one</em> or <em>more</em> elements)
+and <em>FUNCTION</em> is the function to execute when the DOM is ready.</p>
+
+<h2>Example #1</h2>
+
+<pre><code>t.get(document).ready(function(){
+     alert('This will be executed when the dom is ready");
+});
+
+
+         </code></pre>
+</td>
+<td class="code">
+<pre><code><span class="string">'ready'</span>: <span class="keyword">function</span>(<span class="variable">def</span>) {
+                <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
+                    <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">readyState</span> == &<span class="variable">quot</span>;<span class="variable">complete</span>&<span class="variable">quot</span>;) {
+                        <span class="comment">// Run the callback</span>
+                        <span class="variable">def</span>();
+                        <span class="keyword">return</span> <span class="this">this</span>;
+                    }
+                }
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
 <h2>Event handler extension</h2>
 
 <p>Attach a callback function to an event.</p>
