@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.4</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.5</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.4)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.5)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/tiramisu.js"><a href="#">tiramisu</a></h2></td><td>src/tiramisu.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
@@ -132,7 +132,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.4'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.5'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -248,7 +248,7 @@ the possible return values are:</p>
                 <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === &<span class="variable">quot</span>;<span class="variable">f3</span>&<span class="variable">quot</span>; || <span class="this">this</span>.<span class="variable">browser</span>() === &<span class="variable">quot</span>;<span class="variable">f4</span>+&<span class="variable">quot</span>;
             },
 
-            <span class="string">'isChrome'</span>: <span class="keyword">function</span>() {
+            <span class="string">'isWebkit'</span>: <span class="keyword">function</span>() {
                 <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'webkit'</span>
             },
 
@@ -265,6 +265,18 @@ the possible return values are:</p>
         };
         <span class="keyword">return</span> <span class="variable">tests</span>[<span class="variable">key</span>]();
     };</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h1>Make Module</h1>
+
+<pre><code> </code></pre>
+</td>
+<td class="code">
+<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">make</span> = <span class="keyword">function</span>(<span class="variable">element</span>) {
+        <span class="keyword">return</span> <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="variable">element</span>));
+    }</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -331,23 +343,47 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
             <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
                 <span class="keyword">return</span> <span class="string">''</span>;
             }
-            <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">parent</span>, <span class="variable">div</span>, <span class="variable">ele</span>;
+
+            <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">j</span>, <span class="variable">parent</span>, <span class="variable">elements</span> = [];
+
+            <span class="keyword">var</span> <span class="variable">div</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="string">'div'</span>);
+            <span class="comment">// “...A better version will be to create a document fragment, update it &quot;offline&quot;,</span>
+            <span class="comment">// and add it to the live DOM when it's ready. When you add a document fragment to</span>
+            <span class="comment">// the DOM tree, the content of the fragment gets added, not the fragment itself.</span>
+            <span class="comment">// And this is really convenient. So the document fragment is a good way to wrap</span>
+            <span class="comment">// a number of nodes even when you're not containing them in a suitable parent</span>
+            <span class="comment">// (for example, your paragraphs are not in a div element)”</span>
+            <span class="comment">// </span>
+            <span class="comment">// From “JavaScript Patterns”, pages 184-185, chapter VIII</span>
+            <span class="keyword">var</span> <span class="variable">frag</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createDocumentFragment</span>();
+
             <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
-                <span class="variable">div</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="string">'div'</span>)
+
                 <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">html</span> === <span class="string">'string'</span>) {
                     <span class="variable">div</span>.<span class="variable">innerHTML</span> = <span class="variable">html</span>;
+                    <span class="variable">elements</span> = <span class="variable">div</span>.<span class="variable">children</span>;
+
+                } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">html</span>.<span class="variable">css</span> === <span class="string">'function'</span>) {
+                    <span class="variable">elements</span>.<span class="variable">push</span>(<span class="variable">html</span>[<span class="number integer">0</span>]); <span class="comment">// html is t.get(t.make('p'))</span>
                 } <span class="keyword">else</span> {
-                    <span class="variable">div</span>.<span class="variable">innerHTML</span> = <span class="variable">html</span>.<span class="variable">outerHTML</span> || <span class="keyword">new</span> <span class="class">XMLSerializer</span>().<span class="variable">serializeToString</span>(<span class="variable">html</span>)
+                    <span class="variable">elements</span>.<span class="variable">push</span>(<span class="variable">html</span>); <span class="comment">// html is an element</span>
                 }
+
                 <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
-                <span class="keyword">while</span> (<span class="variable">ele</span> = <span class="variable">div</span>.<span class="variable">firstChild</span>) {
+
+                <span class="keyword">for</span> (<span class="variable">j</span> = <span class="number integer">0</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="variable">elements</span>.<span class="variable">length</span>; <span class="variable">j</span>++) {
+
                     <span class="keyword">if</span> (<span class="variable">before</span>) {
-                        <span class="comment">// Insert before</span>
-                        (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">firstChild</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>]);
+                        <span class="variable">frag</span>.<span class="variable">insertBefore</span>(<span class="variable">elements</span>[<span class="variable">j</span>], <span class="variable">frag</span>.<span class="variable">firstChild</span>);
                     } <span class="keyword">else</span> {
-                        <span class="comment">// Insert after</span>
-                        (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">appendChild</span>(<span class="variable">ele</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">ele</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
+                        <span class="variable">frag</span>.<span class="variable">appendChild</span>(<span class="variable">elements</span>[<span class="variable">j</span>]);
                     }
+                }
+
+                <span class="keyword">if</span> (<span class="variable">before</span>) {
+                    (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">firstChild</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>]);
+                } <span class="keyword">else</span> {
+                    (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">appendChild</span>(<span class="variable">frag</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
                 }
             }
         }
@@ -623,6 +659,40 @@ iteration item.</p>
                     <span class="variable">cb</span>.<span class="variable">apply</span>(<span class="variable">results</span>[<span class="variable">i</span>]);
                 }
                 <span class="keyword">return</span> <span class="this">this</span>;
+            },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Ready method</h2>
+
+<p>Make sure that DOM elements exist when it run the events.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).ready(*FUNCTION*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector (containing <em>one</em> or <em>more</em> elements)
+and <em>FUNCTION</em> is the function to execute when the DOM is ready.</p>
+
+<h2>Example #1</h2>
+
+<pre><code>t.get(document).ready(function(){
+     alert('This will be executed when the dom is ready");
+});
+
+
+         </code></pre>
+</td>
+<td class="code">
+<pre><code><span class="string">'ready'</span>: <span class="keyword">function</span>(<span class="variable">def</span>) {
+                <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
+                    <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">readyState</span> == &<span class="variable">quot</span>;<span class="variable">complete</span>&<span class="variable">quot</span>;) {
+                        <span class="comment">// Run the callback</span>
+                        <span class="variable">def</span>();
+                        <span class="keyword">return</span> <span class="this">this</span>;
+                    }
+                }
             },</code></pre>
 </td>
 </tr>
@@ -1303,13 +1373,13 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
                                 <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">value</span>;
                             }
                         } <span class="keyword">else</span> {
-                            <span class="variable">results</span>[<span class="variable">i</span>][<span class="variable">attr</span>] = <span class="variable">value</span>;
+                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">setAttribute</span>(<span class="variable">attr</span>, <span class="variable">value</span>);
                         }
                     } <span class="keyword">else</span> {
                         <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
                             <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span>;
                         } <span class="keyword">else</span> {
-                            <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>][<span class="variable">attr</span>];
+                            <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">getAttribute</span>(<span class="variable">attr</span>);
                         }
                     }
                 }
