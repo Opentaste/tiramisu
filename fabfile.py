@@ -9,31 +9,44 @@ tiramisu_home = '../tiramisu-home/'
 def beautify():
     print 'Beautifying tiramisu.js...'
     print '##########################'
-    local('python utils/jsbeautifier.py '+src+'/tiramisu.js > '+src+'/tiramisu-beautified.js')
-    local('mv '+src+'/tiramisu-beautified.js '+src+'/tiramisu.js')
-    local('rm -f '+src+'/tiramisu-beautified.js')
+    local('python utils/jsbeautifier.py '+src+'/build/tiramisu.js > '+src+'/build/tiramisu-beautified.js')
+    local('mv '+src+'/build/tiramisu-beautified.js '+src+'/build/tiramisu.js')
+    local('rm -f '+src+'/build/tiramisu-beautified.js')
+    print '\n'
+
+def unify():
+    print 'Unifying tiramisu.js...'
+    print '#######################'
+    modules = [ module for module in local("ls -d $(find src/modules) | grep '.*\.js'", capture=True).split()]
+    cat = "cat {src}/tiramisu.core.js {modules} > {src}/build/tiramisu.js".format(
+        src=src,
+        modules=" ".join(modules)
+    )
+    local(cat)
     print '\n'
 	
 def minify():
     print 'Minifying tiramisu.js...'
-    print '##########################'
-    local('yuicompressor -o '+src+'/tiramisu-'+vers+'-min.js '+src+'/tiramisu.js')
+    print '########################'
+    local('yuicompressor -o '+src+'/build/tiramisu-'+vers+'-min.js '+src+'/build/tiramisu.js')
     print '\n'
 
 def docs():
     print 'Generating docs...'
     print '##################'
-    local('dox --title Tiramisu '+src+'/tiramisu.js --intro utils/docs-intro.md > docs/index.html')
+    local('dox --title Tiramisu '+src+'/modules/tiramisu.*.js '+src+'/tiramisu.core.js --intro utils/docs-intro.md > docs/index.html')
     print '\n'
 
 def all():
+    unify()
     beautify()
     minify()
     docs()
 
 def clean():
     print "Cleaning..."
-    local('rm -f src/tiramisu-*-min.js')
+    print '###########'
+    local('rm -f src/build/*')
     local('rm -f docs/*')
     
 def publish():
