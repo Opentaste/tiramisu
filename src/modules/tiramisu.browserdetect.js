@@ -51,6 +51,12 @@
  * @api public
  */
 tiramisu.modules.detect = function(key) {
+    
+    // Each module within Tiramisu can to need inherit other modules.
+    var ingredients = {
+        dependencies : null
+    }
+    
     var nav_agent = navigator.userAgent,
         nav_name = navigator.appName;
 

@@ -1,4 +1,3 @@
-
 /** 
  * Framework Ajax Module
  * =====================
@@ -163,13 +162,19 @@
  * @api public
  */
 tiramisu.modules.ajax = function(setting_input) {
+    
+    // Each module within Tiramisu can to need inherit other modules.
+    var ingredients = {
+        dependencies : ['detect','task']
+    }
+    
     // Extending object1 with object2's methods
-
     function extend(first, second) {
         for (var prop in second) {
             first[prop] = second[prop];
         }
     }
+    
     var setting_input = setting_input || {},
         setting = {
             abort: false,
