@@ -3,7 +3,7 @@
  * Tiramisu - A JavaScript μFramework
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
- * Copyright: (c) 2011 Owl Studios
+ * Copyright: (c) 2011/2012 Gianluca Bargelli and Leonardo Zizzamia
  * License: BSD (See LICENSE for details)
  *
  * @private
@@ -1666,7 +1666,6 @@
         return results;
     };
 })(window);
-
 /** 
  * Framework Ajax Module
  * =====================
@@ -1831,13 +1830,19 @@
  * @api public
  */
 tiramisu.modules.ajax = function(setting_input) {
+    
+    // Each module within Tiramisu can to need inherit other modules.
+    var ingredients = {
+        dependencies : ['browserdetect','taskengine']
+    }
+    
     // Extending object1 with object2's methods
-
     function extend(first, second) {
         for (var prop in second) {
             first[prop] = second[prop];
         }
     }
+    
     var setting_input = setting_input || {},
         setting = {
             abort: false,
@@ -2030,6 +2035,12 @@ tiramisu.modules.ajax = function(setting_input) {
  * @api public
  */
 tiramisu.modules.detect = function(key) {
+    
+    // Each module within Tiramisu can to need inherit other modules.
+    var ingredients = {
+        dependencies : null
+    }
+    
     var nav_agent = navigator.userAgent,
         nav_name = navigator.appName;
 
@@ -2134,6 +2145,12 @@ tiramisu.modules.detect = function(key) {
  * @param {Function} cb The callback function
  */
 tiramisu.modules.task = function(delay, cb) {
+    
+    // Each module within Tiramisu can to need inherit other modules.
+    var ingredients = {
+        dependencies : null
+    }
+    
     var interval, requestAnimFrame = t.requestAnimFrame;
 
     if (arguments.length > 2) {

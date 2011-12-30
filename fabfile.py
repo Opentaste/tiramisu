@@ -1,3 +1,4 @@
+import re
 from fabric.api import *
 from utils.version import get_version
 
@@ -14,17 +15,49 @@ def beautify():
     local('rm -f '+src+'/build/tiramisu-beautified.js')
     print '\n'
 
-def unify():
+# fab unify:list_modules='ajax'
+def unify(list_modules=None):
     print 'Unifying tiramisu.js...'
     print '#######################'
-    modules = [ module for module in local("ls -d $(find src/modules) | grep '.*\.js'", capture=True).split()]
-    cat = "cat {src}/tiramisu.core.js {modules} > {src}/build/tiramisu.js".format(
-        src=src,
-        modules=" ".join(modules)
-    )
+    if list_modules:
+        # Unify only selected modules
+        modules = list_modules.split(',')
+        lista = check_dependency(modules)
+        name_version = modules
+        modules = [src+'/modules/tiramisu.'+x+'.js' for x in modules]
+        if len(lista) > 0:
+            modules = set([src+'/modules/tiramisu.'+x+'.js' for x in lista] + modules)
+            name_version = set([x for x in lista] + name_version)
+        cat = "cat {src}/tiramisu.core.js {modules} > {src}/build/tiramisu_{name_version}.js".format(
+            src=src,
+            modules=" ".join(modules),
+            name_version="_".join(name_version)
+        )
+    else:
+        # Unify all modules
+        modules = [ module for module in local("ls -d $(find src/modules) | grep '.*\.js'", capture=True).split()]
+        cat = "cat {src}/tiramisu.core.js {modules} > {src}/build/tiramisu.js".format(
+            src=src,
+            modules=" ".join(modules)
+        )
     local(cat)
     print '\n'
-	
+    
+def check_dependency(url):
+    lista = []
+    for x in url:
+        x = 'src/modules/tiramisu.'+x+'.js'
+        try:
+            with open(x, "r") as f:
+                for line in f:
+                    dep = re.search(r"dependencies : \[(.*?)\]", line)
+                    if dep:
+                        lista += [x.replace("\'","") for x in dep.group(1).split(',')]
+        except IOError:
+            print "Name modules isn't correct"
+            return lista
+    return lista
+            
 def minify():
     print 'Minifying tiramisu.js...'
     print '########################'

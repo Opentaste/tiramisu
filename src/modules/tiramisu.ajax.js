@@ -165,7 +165,7 @@ tiramisu.modules.ajax = function(setting_input) {
     
     // Each module within Tiramisu can to need inherit other modules.
     var ingredients = {
-        dependencies : ['detect','task']
+        dependencies : ['browserdetect','taskengine']
     }
     
     // Extending object1 with object2's methods

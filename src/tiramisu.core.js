@@ -3,7 +3,7 @@
  * Tiramisu - A JavaScript μFramework
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
- * Copyright: (c) 2011 Owl Studios
+ * Copyright: (c) 2011/2012 Gianluca Bargelli and Leonardo Zizzamia
  * License: BSD (See LICENSE for details)
  *
  * @private
