@@ -168,13 +168,6 @@ tiramisu.modules.ajax = function(setting_input) {
         dependencies : ['browserdetect','taskengine']
     }
     
-    // Extending object1 with object2's methods
-    function extend(first, second) {
-        for (var prop in second) {
-            first[prop] = second[prop];
-        }
-    }
-    
     var setting_input = setting_input || {},
         setting = {
             abort: false,
@@ -223,7 +216,7 @@ tiramisu.modules.ajax = function(setting_input) {
         xhr = new XMLHttpRequest
     }
 
-    extend(setting, setting_input);
+    t.extend(setting, setting_input);
 
     // object "setting.parameter" I create a string with the parameters 
     // to be passed in request

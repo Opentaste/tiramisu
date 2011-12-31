@@ -20,7 +20,7 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.5-b1';
+        this.version = '0.1.5-b2';
         this.d = document;
         this.selector = 'QSA'
         this.requestAnimFrame = (function() {
@@ -58,6 +58,19 @@
     Tiramisu.prototype.make = function(element) {
         return t.get(t.d.createElement(element));
     }
+    
+    /**
+     * Extend Module
+     * =========================
+     *
+     * Extending object1 with object2's methods
+     *
+     */
+    Tiramisu.prototype.extend =  function (first, second) {
+         for (var prop in second) {
+             first[prop] = second[prop];
+         }
+     }
 
     /**
      * Framework Selector Module
@@ -157,8 +170,9 @@
                 }
 
                 parent = results[i].parentNode;
+                var num_length = elements.length
 
-                for (j = 0; j < elements.length; j++) {
+                for (j = 0; j < num_length; j++) {
 
                     if (before) {
                         frag.insertBefore(elements[j], frag.firstChild);
