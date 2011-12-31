@@ -1,4 +1,4 @@
-import re
+import re, fileinput, shutil
 from fabric.api import *
 from utils.version import get_version
 
@@ -33,14 +33,23 @@ def unify(list_modules=None):
             modules=" ".join(modules),
             name_version="_".join(name_version)
         )
+        local(cat)
     else:
         # Unify all modules
         modules = [ module for module in local("ls -d $(find src/modules) | grep '.*\.js'", capture=True).split()]
-        cat = "cat {src}/tiramisu.core.js {modules} > {src}/build/tiramisu.js".format(
-            src=src,
-            modules=" ".join(modules)
-        )
-    local(cat)
+        processing_foo1s = False
+        shutil.copy(src+'/tiramisu.core.js', src+'/build/tiramisu.js')
+        for line in fileinput.input(src+'/build/tiramisu.js', inplace=1):
+            if line.startswith('    // Plugin Space -------------------------------------'):
+                processing_foo1s = True
+            else:
+                if processing_foo1s:
+                    for x in modules:
+                        f = open(x, 'r')
+                        print f.read()
+                        f.close()
+                processing_foo1s = False
+            print line,
     print '\n'
     
 def check_dependency(url):

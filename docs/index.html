@@ -270,13 +270,19 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
+    
+    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
+        <span class="variable">dependencies</span> : [<span class="string">'browserdetect'</span>,<span class="string">'taskengine'</span>]
+    }
+    
     <span class="comment">// Extending object1 with object2's methods</span>
-
     <span class="keyword">function</span> <span class="variable">extend</span>(<span class="variable">first</span>, <span class="variable">second</span>) {
         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">prop</span> <span class="keyword">in</span> <span class="variable">second</span>) {
             <span class="variable">first</span>[<span class="variable">prop</span>] = <span class="variable">second</span>[<span class="variable">prop</span>];
         }
     }
+    
     <span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
         <span class="variable">setting</span> = {
             <span class="variable">abort</span>: <span class="variable">false</span>,
@@ -459,6 +465,12 @@ the possible return values are:</p>
 </td>
 <td class="code">
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">detect</span> = <span class="keyword">function</span>(<span class="variable">key</span>) {
+    
+    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
+        <span class="variable">dependencies</span> : <span class="keyword">null</span>
+    }
+    
     <span class="keyword">var</span> <span class="variable">nav_agent</span> = <span class="variable">navigator</span>.<span class="variable">userAgent</span>,
         <span class="variable">nav_name</span> = <span class="variable">navigator</span>.<span class="variable">appName</span>;
 
@@ -558,6 +570,12 @@ or perform the same function several times in that time frame.</p>
 </td>
 <td class="code">
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">task</span> = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
+    
+    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
+        <span class="variable">dependencies</span> : <span class="keyword">null</span>
+    }
+    
     <span class="keyword">var</span> <span class="variable">interval</span>, <span class="variable">requestAnimFrame</span> = <span class="variable">t</span>.<span class="variable">requestAnimFrame</span>;
 
     <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
@@ -2099,7 +2117,7 @@ t.get('p').filter(':even')</code></pre>
                 <span class="keyword">return</span> <span class="this">this</span>;
             }
         };
-
+        
         <span class="comment">// Append methods to the result object</span>
         (<span class="keyword">function</span> <span class="variable">append_methods</span>() {
             <span class="keyword">var</span> <span class="variable">key</span>;
@@ -2109,6 +2127,10 @@ t.get('p').filter(':even')</code></pre>
         })();
         <span class="keyword">return</span> <span class="variable">results</span>;
     };
+    
+    <span class="comment">// Plugin Space -------------------------------------</span>
+    <span class="comment">// --------------------------------------------------</span>
+    
 })(<span class="variable">window</span>);
 </code></pre>
 </td>

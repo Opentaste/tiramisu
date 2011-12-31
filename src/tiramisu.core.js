@@ -1655,7 +1655,7 @@
                 return this;
             }
         };
-
+        
         // Append methods to the result object
         (function append_methods() {
             var key;
@@ -1665,4 +1665,8 @@
         })();
         return results;
     };
+    
+    // Plugin Space -------------------------------------
+    // --------------------------------------------------
+    
 })(window);
