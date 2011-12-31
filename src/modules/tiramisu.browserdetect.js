@@ -110,10 +110,6 @@ tiramisu.modules.detect = function(key) {
             return this.browser() === 'webkit'
         },
 
-        'querySelectorAll': function() {
-            return (tiramisu.selector === 'QSA' && typeof tiramisu.d.querySelectorAll !== 'undefined')
-        },
-
         'color': function() {
             if (this.isIEolder()) {
                 return false;

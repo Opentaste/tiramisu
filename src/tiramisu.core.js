@@ -20,18 +20,25 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.5-b2';
+        
         this.d = document;
-        this.selector = 'QSA'
+        
+        // Tiramisu modules
+        this.modules = Tiramisu.prototype;
+        
         this.requestAnimFrame = (function() {
             return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
             function(callback, element) {
                 window.setTimeout(callback, 1000 / 60);
             };
         })();
-
-        // Tiramisu modules
-        this.modules = Tiramisu.prototype;
+        
+        this.selector = 'QSA';
+        
+        this.qsa_chosen = (this.selector === 'QSA' && typeof this.d.querySelectorAll !== 'undefined' ? true : false);
+        
+        this.version = '0.1.5-b2';
+        
     }
 
     // Exposing the framework
@@ -138,7 +145,6 @@
     Tiramisu.prototype.get = function(selector) {
 
         // DOM Node insertion generic utility
-
         function insert_content(html, before, append) {
             if (results[0] === undefined) {
                 return '';
@@ -424,7 +430,6 @@
          * @param {String} finder The category of the selector;
          * @api private
          */
-
         function Token(identity, finder) {
             this.identity = identity;
             this.finder = finder;
@@ -434,13 +439,13 @@
             return 'identity: ' + this.identity + ', finder: ' + this.finder;
         };
 
+
         /**
          * Classify sections of the scanner output.
          *
          * @param {String} selector A CSS selector;
          * @api private
          */
-
         function Tokenizer(selector) {
             this.selector = normalize(selector);
             this.tokens = [];
@@ -473,6 +478,7 @@
             return this.tokens;
         };
 
+
         /**
          * Uses an array of tokens to perform DOM operations.
          *
@@ -480,7 +486,6 @@
          * @param {Array} tokens An array containing tokens;
          * @api private
          */
-
         function Searcher(root, tokens) {
             this.root = root;
             this.key_selector = tokens.pop();
@@ -528,7 +533,8 @@
             // Each element that matches the key selector is used as a 
             // starting point. Its ancestors are analysed to see 
             // if they match all of the selector’s rules.
-            for (i = 0; i < elements.length; i++) {
+            var num_ele = elements.length;
+            for (i = 0; i < num_ele; i++) {
                 element = elements[i];
                 if (this.tokens.length > 0) {
                     if (this.matchesAllRules(element.parentNode)) {
@@ -548,7 +554,7 @@
 
         if (typeof selector === 'string') {
 
-            if (t.detect('querySelectorAll')) {
+            if (this.qsa_chosen) {
                 // Use querySelectorAll
                 results = toArray(t.d.querySelectorAll(selector));
             } else {
@@ -1023,105 +1029,6 @@
                 return this;
             },
             /**
-             * Form field value extension method
-             * ---------------------------------
-             *
-             * Gets or sets the value of a form field of the first CSS Selector
-             * element.
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).value([*VALUE*])
-             *
-             * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an
-             * optional value to set the element's innerHTML value.
-             *
-             * Example #1 (Get the current value of a select list)
-             * ---------------------------------------------------
-             *
-             *     <form id="myForm" action='#' method="GET">
-             *       <select>
-             *         <option> Apple </option>
-             *         <option> Strawberry </option>
-             *         <option> Banana </option>
-             *       </select>
-             *     </form>
-             *     ...
-             *     // The default selected value is “Apple”
-             *     var current = t.get('myForm select').value();
-             *
-             * Example #2 (Set the current value of a select list)
-             * ---------------------------------------------------
-             *
-             *     <form id="myForm" action='#' method="GET">
-             *       <select>
-             *         <option> Apple </option>
-             *         <option> Strawberry </option>
-             *         <option> Banana </option>
-             *       </select>
-             *     </form>
-             *     ...
-             *     t.get('myForm select').value('Strawberry');
-             *
-             *     // Now the selected value is “Strawberry”
-             *     var current = t.get('myForm select').value();
-             *
-             * Example #3 (Get the current values of a series of elements)
-             * ---------------------------------------------------
-             *
-             *     <input type="hidden" name="name_one" value="one" class="i_am_class">
-             *     <input type="hidden" name="name_two" value="two" class="i_am_class">
-             *     <input type="hidden" name="name_three" value="three" class="i_am_class">
-             *     <input type="hidden" name="name_four" value="four" class="i_am_class">
-             *     ...
-             *     t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']
-             *
-             *
-             * @param {String} [set] An optional string containing the field value to set
-             * @return {[String]} An optional string containing the selector's first element field value
-             *
-             */
-            'value': function(set) {
-                var value = function(i) {
-                        if (t.detect('isIE') || t.detect('isIEolder')) {
-                            if (results[i].type == 'select-one') {
-                                return results[i].options[results[i].selectedIndex].value;
-                            }
-                            return results[i].value;
-                        }
-                        return results[i].value;
-                    };
-
-                var setValue = function(i, s) {
-                        if (t.detect('isIE') || t.detect('isIEolder')) {
-                            if (results[i].type == 'select-one') {
-                                results[i].options[results[i].selectedIndex].value = s;
-                            }
-                            results[i].value = s;
-                        } else {
-                            results[i].value = s;
-                        }
-                    };
-
-                if (results[0] === undefined) {
-                    return '';
-                }
-
-                if (set !== undefined) {
-                    setValue(0, set);
-                } else {
-                    if (len_result > 1) {
-                        var list = [];
-                        for (i = 0; i < len_result; i++) {
-                            list.push(value(i));
-                        }
-                        return list;
-                    }
-                    return value(0);
-                }
-            },
-            /**
              * Focus extension method
              * ---------------------------------
              *
@@ -1148,78 +1055,6 @@
                 for (var i = len_result; i--;) {
                     results[i].focus();
                 }
-            },
-            /**
-             * Attribute extension method
-             * ---------------------------------
-             *
-             * Gets or sets the attribute of an element.
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).attr(*ATTRIBUTE*, [*VALUE*])
-             *
-             * where *SELECTOR* is a valid CSS selector,*ATTRIBUTE* is the name of
-             * the attribute and *[VALUE]* is an optional value for setting the attribute.
-             *
-             * Example #1 (Get the current src of an image)
-             * ---------------------------------------------------
-             *
-             *     <img src="www.example.com/image_num_one.png" id="id_image" />
-             *     ...
-             *     var current = t.get('#id_image').attr('src');
-             *
-             * Example #2 (Set the current src of an image)
-             * ---------------------------------------------------
-             *
-             *     <img src="www.example.com/image_num_one.png" id="id_image" />
-             *     ...
-             *     t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');
-             *
-             * Example #3 (Set the class)
-             * ---------------------------------------------------
-             *
-             *     <p class="old_class old_class_two">Hi class</p>
-             *
-             * calling *t.get('p').attr('class', 'new_class')* will give the following results:
-             *
-             *     <p class="new_class">Hi class</p>
-             *
-             * Example #4 (Set the class)
-             * ---------------------------------------------------
-             *
-             *     <p class="old_class old_class_two">Hi class</p>
-             *
-             * calling *t.get('p').attr('class', 'new_class', true)* will give the following results:
-             *
-             *     <p class="old_class old_class_two new_class">Hi class</p>
-             *
-             * @param {String} [set] An optional string containing the field src to set
-             * @return {[String]} An optional string containing the selector's first element field src
-             *
-             */
-            'attr': function(attr, value, add) {
-                for (var i = len_result; i--;) {
-                    if (value !== undefined) {
-                        if (attr === 'class') {
-                            if (add) {
-                                results[i].className = results[i].className + ' ' + value;
-                            } else {
-                                results[i].className = value;
-                            }
-                        } else {
-                            results[i].setAttribute(attr, value);
-                        }
-                    } else {
-                        if (attr === 'class') {
-                            return results[i].className;
-                        } else {
-                            return results[i].getAttribute(attr);
-                        }
-                    }
-                }
-                return this;
             },
             /**
              * Index extension method
@@ -1257,315 +1092,6 @@
                     }
                     return i;
                 }
-            },
-            /**
-             * Filter extension method
-             * -----------------------
-             *
-             * Filters a selector or a custom function to the CSS Selector list's results.
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).filter([*FILTER*])
-             *
-             * where *SELECTOR* is a valid CSS selector, *FILTER* is a built-in filter (see the list below)
-             * or can be defined as a custom function.
-             *
-             * Currently implemented filters are:
-             * *  *:odd*;
-             * *  *:even*;
-             *
-             * Custom filter functions
-             * -----------------------
-             *
-             * A custom filter function **must** conform to the following scheme:
-             *
-             *     function([index]) {
-             *         ...code here...
-             *         return true or false;
-             *     }
-             *
-             * where **index** is an optional index which can be used to perform the filter's choices.
-             *
-             * Example #1 (Filtering even elements by using the built-in filter)
-             * -----------------------------------------------------------------
-             *
-             *     <p>Zero</p>
-             *     <p>One</p>
-             *     <p>Two</p>
-             *     <p>Three</p>
-             *     ...
-             *     t.get('p').filter(':even')
-             *
-             * gives the following selector list:
-             *
-             *      [<p>Zero</p>, <p>Two</p>]
-             *
-             * Example #2 (Filtering elements by using a custom function)
-             * ----------------------------------------------------------
-             *
-             *      <p>Zero</p>
-             *      <p>One</p>
-             *      <p>Two</p>
-             *      <p>Three</p>
-             *      ...
-             *      t.get('p').filter(function(index) {
-             *          return (index === 2) ? true : false;
-             *      });
-             *
-             */
-            'filter': function(selector) {
-                if (results[0] === undefined) {
-                    return '';
-                }
-
-                var selectors = {
-                    ':odd': function(index) {
-                        return (index % 2 !== 0) ? true : false;
-                    },
-                    ':even': function(index) {
-                        return (index % 2 === 0) ? true : false;
-                    }
-                };
-
-                if (typeof selector === 'string' && typeof selectors[selector] === 'function') {
-                    for (var i = len_result; i--;) {
-                        !selectors[selector](i) && results.splice(i, 1);
-                    }
-                } else if (typeof selector === 'function') {
-                    for (var i = len_result; i--;) {
-                        !selector(i) && results.splice(i, 1);
-                    }
-                }
-
-                len_result = results.length;
-
-                return this;
-            },
-            /**
-             * Empty extension method
-             * ----------------------
-             *
-             * Removes all the child elements of a specific node from the DOM.
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).empty()
-             *
-             * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements).
-             *
-             * Example #1 (Remove all element of a list)
-             * -----------------------------------------
-             *
-             *     <ol id="myList">
-             *        <li>This is my <span class="tasty">icecake</span></li>
-             *        <li>I love <span class="tasty">chocolate</span> chips!</li>
-             *     </ol>
-             *
-             * calling *t.get('#myList').empty()* will give the following results:
-             *
-             *     <ol id="myList"></ol>
-             *
-             * Example #2 (Remove a specific element)
-             * --------------------------------------
-             *
-             *     <ol id="myList">
-             *        <li>This is my <span class="tasty">icecake</span></li>
-             *        <li>I love <span class="tasty">chocolate chips!</span></li>
-             *     </ol>
-             *
-             * calling *t.get('.tasty').empty()* will give the following results:
-             *
-             *     <ol id="myList">
-             *        <li>This is my <span class="tasty"></span></li>
-             *        <li>I love <span class="tasty"></span> chips!</li>
-             *     </ol>
-             *
-             * Todo
-             * ----
-             *
-             * -    Remove events to avoid memory leaks;
-             *
-             */
-            'empty': function() {
-                if (results[0] === undefined) {
-                    return '';
-                }
-
-                for (var i = 0; i < len_result; i++) {
-                    var child = results[i].childNodes[0];
-                    while (child) {
-                        var next = child.nextSibling;
-                        results[i].removeChild(child);
-                        child = next;
-                    }
-                }
-            },
-            /**
-             * Destroy extension method
-             * ---------------------------------
-             *
-             * Removes element
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)
-             *
-             * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
-             *
-             * Example #1 (Remove all element child)
-             * -----------------------------------------
-             *
-             *     <ol id="myList">
-             *        <li>This is my <span class="tasty">icecake</span></li>
-             *        <li>I love <span class="tasty">chocolate</span> chips!</li>
-             *     </ol>
-             *
-             * calling *t.get('#myList').destroy('.tasty')* will give the following results:
-             *
-             *     <ol id="myList">
-             *         <li>This is my </li>
-             *         <li>I love  chips!</li>
-             *     </ol>
-             *
-             * Example #2 (Remove element and child)
-             * --------------------------------------
-             *
-             *     <ol id="myList">
-             *        <li>This is my <span class="tasty">icecake</span></li>
-             *        <li>I love <span class="tasty">chocolate chips!</span></li>
-             *     </ol>
-             *
-             * calling *t.get('#myList').destroy()* will give the following results:
-             *
-             *     <div id="myDestroyList">
-             *
-             *     </div>
-             *
-             *
-             */
-            'destroy': function(el) {
-                if (results[0] === undefined) {
-                    return '';
-                }
-
-                if (el !== undefined && typeof el === 'string') {
-                    var res = t.get(selector + ' ' + el),
-                        len = res.length;
-                    for (var i = len; i--;) {
-                        var parent = res[i].parentNode;
-                        parent.removeChild(res[i]);
-                    }
-                } else {
-                    for (i = len_result; i--;) {
-                        var parent = results[i].parentNode;
-                        parent.removeChild(results[i]);
-                    }
-                }
-
-                return this;
-            },
-            /**
-             * Remove Class extension method
-             * ---------------------------------
-             *
-             * Removes class
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).removeClass(*CLASS*)
-             *
-             * where *SELECTOR* is a valid CSS selector and *CLASS* is class name
-             *
-             * Example #1 (Remove class of the element)
-             * -----------------------------------------
-             *
-             *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
-             *
-             * calling *t.get('#tasty').removeClass('my_class_two')* will give the following results:
-             *
-             *     <p id="tasty" class="my_class">Hi Gianluca</p>
-             *
-             * Example #2 (Remove all class of the element)
-             * --------------------------------------
-             *
-             *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
-             *
-             * calling *t.get('#tasty').removeClass()* will give the following results:
-             *
-             *     <p id="tasty" class="">Hi Gianluca</p>
-             *
-             *
-             * Example #3 (Remove all class of the element and child)
-             * --------------------------------------
-             *
-             *     <p id="tasty" class="my_class">
-             *          <span class="my_class_one">Hi one</span>
-             *          <span class="my_class_two">Hi two</span>
-             *     </p>
-             *
-             * calling *t.get('#tasty').removeClass(':all')* will give the following results:
-             *
-             *     <p id="tasty" class="">
-             *          <span class="">Hi one</span>
-             *          <span class="">Hi two</span>
-             *     </p>
-             *
-             *
-             */
-            'removeClass': function(el) {
-                if (results[0] === undefined) {
-                    return '';
-                }
-
-                var i, j, text, all = false;
-
-                if (el === ':all') {
-                    el = undefined;
-                    var all = true;
-                }
-
-
-                if (el !== undefined && typeof el === 'string') {
-
-                    var re = new RegExp('(\\s|^)' + el + '(\\s|$)');
-                    // Remove class into element
-                    for (i = len_result; i--;) {
-                        text = results[i].className.replace(re, '');
-                        results[i].className = text;
-                    }
-
-                } else {
-
-                    for (i = len_result; i--;) {
-                        // Remove all class into element
-                        results[i].className = '';
-
-                        // Remove all class into child
-                        if (all) {
-                            var list_child = results[i].childNodes,
-                                len = list_child.length;
-                            if (len > 0) {
-                                (function(list, len) {
-                                    for (var j = len; j--;) {
-                                        list[j].className = '';
-                                        var new_list = list[j].childNodes,
-                                            new_len = new_list.length;
-                                        if (new_len > 0) {
-                                            arguments.callee(new_list, new_len);
-                                        }
-                                    }
-                                })(list_child, len);
-                            }
-                        }
-                    }
-
-                }
-                return this;
             },
             // Modules integrated into t.get --------------------
             // --------------------------------------------------
