@@ -37,18 +37,29 @@ def unify(list_modules=None):
     else:
         # Unify all modules
         modules = [ module for module in local("ls -d $(find src/modules) | grep '.*\.js'", capture=True).split()]
-        processing_foo1s = False
+        get_modules = [ module for module in local("ls -d $(find src/get_modules) | grep '.*\.js'", capture=True).split()]
+        processing_find = False
+        processing_find_two = False
         shutil.copy(src+'/tiramisu.core.js', src+'/build/tiramisu.js')
         for line in fileinput.input(src+'/build/tiramisu.js', inplace=1):
             if line.startswith('    // Plugin Space -------------------------------------'):
-                processing_foo1s = True
+                processing_find = True
             else:
-                if processing_foo1s:
+                if processing_find:
                     for x in modules:
                         f = open(x, 'r')
                         print f.read()
                         f.close()
-                processing_foo1s = False
+                processing_find = False
+            if line.startswith('            // Modules integrated into t.get --------------------'):
+                processing_find_two = True
+            else:
+                if processing_find_two:
+                    for x in get_modules:
+                        f = open(x, 'r')
+                        print f.read()
+                        f.close()
+                processing_find_two = False
             print line,
     print '\n'
     

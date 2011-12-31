@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.5-b1</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.5-b2</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.5-b1)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.5-b2)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
 <td class="docs">
 <h1>Framework Ajax Module</h1>
 
@@ -276,13 +276,6 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
         <span class="variable">dependencies</span> : [<span class="string">'browserdetect'</span>,<span class="string">'taskengine'</span>]
     }
     
-    <span class="comment">// Extending object1 with object2's methods</span>
-    <span class="keyword">function</span> <span class="variable">extend</span>(<span class="variable">first</span>, <span class="variable">second</span>) {
-        <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">prop</span> <span class="keyword">in</span> <span class="variable">second</span>) {
-            <span class="variable">first</span>[<span class="variable">prop</span>] = <span class="variable">second</span>[<span class="variable">prop</span>];
-        }
-    }
-    
     <span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
         <span class="variable">setting</span> = {
             <span class="variable">abort</span>: <span class="variable">false</span>,
@@ -331,7 +324,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
         <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">XMLHttpRequest</span>
     }
 
-    <span class="variable">extend</span>(<span class="variable">setting</span>, <span class="variable">setting_input</span>);
+    <span class="variable">t</span>.<span class="variable">extend</span>(<span class="variable">setting</span>, <span class="variable">setting_input</span>);
 
     <span class="comment">// object &quot;setting.parameter&quot; I create a string with the parameters </span>
     <span class="comment">// to be passed in request</span>
@@ -621,7 +614,7 @@ or perform the same function several times in that time frame.</p>
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.5-b1'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.5-b2'</span>;
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
         <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
@@ -662,6 +655,22 @@ or perform the same function several times in that time frame.</p>
 <pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">make</span> = <span class="keyword">function</span>(<span class="variable">element</span>) {
         <span class="keyword">return</span> <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="variable">element</span>));
     }</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h1>Extend Module</h1>
+
+<p>Extending object1 with object2's methods</p>
+
+<pre><code> </code></pre>
+</td>
+<td class="code">
+<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">extend</span> =  <span class="keyword">function</span> (<span class="variable">first</span>, <span class="variable">second</span>) {
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">prop</span> <span class="keyword">in</span> <span class="variable">second</span>) {
+             <span class="variable">first</span>[<span class="variable">prop</span>] = <span class="variable">second</span>[<span class="variable">prop</span>];
+         }
+     }</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -755,8 +764,9 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
                 }
 
                 <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+                <span class="keyword">var</span> <span class="variable">num_length</span> = <span class="variable">elements</span>.<span class="variable">length</span>
 
-                <span class="keyword">for</span> (<span class="variable">j</span> = <span class="number integer">0</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="variable">elements</span>.<span class="variable">length</span>; <span class="variable">j</span>++) {
+                <span class="keyword">for</span> (<span class="variable">j</span> = <span class="number integer">0</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="variable">num_length</span>; <span class="variable">j</span>++) {
 
                     <span class="keyword">if</span> (<span class="variable">before</span>) {
                         <span class="variable">frag</span>.<span class="variable">insertBefore</span>(<span class="variable">elements</span>[<span class="variable">j</span>], <span class="variable">frag</span>.<span class="variable">firstChild</span>);
@@ -1429,109 +1439,6 @@ produces the following:
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>CSS handler extension</h2>
-
-<p>Alter the CSS properties of a list of DOM nodes.</p>
-
-<h2>Usage</h2>
-
-<pre><code>tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)</code></pre>
-
-<p>where <em>SELECTOR</em> is a valid CSS selector and <em>CSS_PROPERTIES</em>
-is an object containing the CSS properties to set.</p>
-
-<h2>Example #1 (Set all h1 tags to 34px with color red)</h2>
-
-<pre><code>&lt;h1&gt; This is one headline. &lt;/h1&gt;
-&lt;h1&gt; This is another headline. &lt;/h1&gt;
-...
-tiramisu.get('h1').css({
-    'font-size': '12px',
-    'color': 'red'
-});</code></pre>
-
-<h2>Example #2 (Get attribute out of style)</h2>
-
-<pre><code>&lt;h1 id="my_id" style="color:red"&gt; This is one headline. &lt;/h1&gt;
-...
-tiramisu.get('#my_id').css("color")</code></pre>
-
-<h2></h2>
-
-<ul><li><p><strong>param</strong>: <em>Object</em>  obj An object containing CSS properties</p><pre><code>     </code></pre></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="string">'css'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>) {
-                <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">key</span>, <span class="variable">browser</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'browser'</span>),
-                    <span class="variable">ie_older</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIEolder'</span>),
-                    <span class="variable">ie</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>);
-
-                <span class="comment">// For handling IE CSS Attributes</span>
-                <span class="keyword">var</span> <span class="variable">attr</span> = {
-                    <span class="string">'opacity'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>, <span class="variable">value</span>) {
-                        <span class="keyword">if</span> (<span class="variable">value</span> !== <span class="variable">undefined</span>) {
-                            <span class="comment">// Setter</span>
-                            <span class="keyword">if</span> (<span class="variable">ie</span>) {
-                                <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">value</span>;
-                                <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">filter</span> = <span class="string">'alpha(opacity='</span> + <span class="variable">value</span> * <span class="number integer">100</span> + <span class="string">')'</span>;
-                            } <span class="keyword">else</span> {
-                                <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">value</span>;
-                            }
-                        } <span class="keyword">else</span> {
-                            <span class="comment">// Getter</span>
-                            <span class="keyword">return</span> <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span>
-                        }
-                    },
-                    <span class="string">'border-radius'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>, <span class="variable">value</span>) {
-                        <span class="keyword">if</span> (<span class="variable">value</span>) {
-                            <span class="keyword">if</span> (<span class="variable">browser</span> === <span class="string">'f3'</span>) {
-                                <span class="variable">obj</span>.<span class="variable">style</span>.<span class="class">MozBorderRadius</span> = <span class="variable">value</span>; <span class="comment">// Firefox 3.6 &lt;=</span>
-                            }
-                        } <span class="keyword">else</span> {
-                            <span class="keyword">if</span> (<span class="variable">browser</span> === <span class="string">'f3'</span>) {
-                                <span class="keyword">return</span> <span class="variable">obj</span>.<span class="variable">style</span>.<span class="class">MozBorderRadius</span>;
-                            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">browser</span> === <span class="string">'ie9+'</span>) {
-                                <span class="keyword">return</span> <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">borderRadius</span>;
-                            }
-                        }
-                    }
-                };
-
-                <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">obj</span>) === <span class="string">'string'</span>) {
-                    <span class="keyword">if</span> (<span class="variable">ie</span> || <span class="variable">browser</span> === <span class="string">'f3'</span>) {
-                        <span class="keyword">if</span> (<span class="variable">obj</span> == <span class="string">'border-radius'</span>) {
-                            <span class="keyword">return</span> <span class="variable">attr</span>[<span class="variable">obj</span>](<span class="variable">results</span>[<span class="number integer">0</span>])
-                        }
-                        <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">style</span>[<span class="variable">obj</span>];
-                    }
-                    <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">style</span>[<span class="variable">obj</span>];
-                }
-
-                <span class="comment">// Apply to all elements</span>
-                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                    <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">obj</span>) {
-                        <span class="keyword">if</span> (<span class="variable">obj</span>.<span class="variable">hasOwnProperty</span>(<span class="variable">key</span>)) {
-                            <span class="comment">// Need to handle different browsers</span>
-                            <span class="keyword">if</span> (<span class="variable">ie</span> || <span class="variable">browser</span> === <span class="string">'f3'</span>) {
-                                <span class="keyword">if</span> (<span class="variable">attr</span>[<span class="variable">key</span>] !== <span class="variable">undefined</span>) {
-                                    <span class="variable">attr</span>[<span class="variable">key</span>](<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">obj</span>[<span class="variable">key</span>]);
-                                } <span class="keyword">else</span> {
-                                    <span class="comment">// No match in attr</span>
-                                    <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>[<span class="variable">key</span>] = <span class="variable">obj</span>[<span class="variable">key</span>];
-                                }
-                            } <span class="keyword">else</span> {
-                                <span class="comment">// The third param is for W3C Standard</span>
-                                <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">setProperty</span>(<span class="variable">key</span>, <span class="variable">obj</span>[<span class="variable">key</span>], <span class="string">''</span>);
-                            }
-                        }
-                    }
-                }
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
 <h2>HTML extension method</h2>
 
 <p>Gets or sets the HTML Markup of the first CSS
@@ -2115,7 +2022,9 @@ t.get('p').filter(':even')</code></pre>
 
                 }
                 <span class="keyword">return</span> <span class="this">this</span>;
-            }
+            },
+            <span class="comment">// Modules integrated into t.get --------------------</span>
+            <span class="comment">// --------------------------------------------------</span>
         };
         
         <span class="comment">// Append methods to the result object</span>
