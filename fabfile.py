@@ -35,7 +35,7 @@ def unify(list_modules=None):
         )
     else:
         # Unify all modules
-        modules = [ module for module in local("ls -d $(find src/modules) | grep '.*\.js'", capture=True).split()]
+        modules = [ module for module in local("ls -rd $(find src/modules) | grep '.*\.js'", capture=True).split()]
         cat = "cat {src}/tiramisu.core.js {modules} > {src}/build/tiramisu.js".format(
             src=src,
             modules=" ".join(modules)
