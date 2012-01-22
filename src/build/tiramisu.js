@@ -632,7 +632,1079 @@ tiramisu.modules.get = function(selector) {
 
     // Keeps the number of results obtained from the selector
     var len_result = results.length;
-    var methods = this.modules.get.methods.list();
+
+    // Exposing methods
+    var methods = {
+        /**
+         * Each iterator extension
+         * -----------------------
+         *
+         * Applies a callback function to a list of DOM nodes.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).each(*CALLBACK*)
+         *
+         * Where *SELECTOR* is a valid CSS selector and *CALLBACK* a
+         * function object.
+         *
+         * It is common to retrieve a list of DOM nodes and then apply the
+         * *same* function to all of it's element:
+         *
+         * Example #1 (alert the innerHTML of every element in a list)
+         * -----------------------------------------------------------
+         *
+         *     <ul>
+         *       <li> One. </li>
+         *       <li> Two. </li>
+         *       <li> Three. </li>
+         *     </ul>
+         *     ...
+         *     tiramisu.get('ul li').each(function() {
+         *         alert(this.innerHTML);
+         *     });
+         *
+         * As you can see, **this** is used for referencing the current
+         * iteration item.
+         *
+         * @param {function} cb The callback function to apply
+         */
+        'each': function(cb) {
+            var i;
+            for (i = 0; i < results.length; i++) {
+                cb.apply(results[i]);
+            }
+            return this;
+        },
+        /**
+         * Event handler extension
+         * -----------------------
+         *
+         * Attach a callback function to an event.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
+         *
+         * where *SELECTOR* is a valid CSS selector, *EVENT* is
+         * the event listener and *CALLBACK* the function to attach.
+         *
+         * Example #1 (Clicking on a p element displays “Hello!”)
+         * ------------------------------------------------------
+         *
+         *     <p> Click me! </p>
+         *     <p> Click me too! </p>
+         *     <p> And me? </p>
+         *     ...
+         *     tiramisu.get('p').on('click', function() {
+         *         alert('Hello!');
+         *     });
+         *
+         * Example #2 (Hovering on a li element displays his innerHTML)
+         * ------------------------------------------------------------
+         *
+         *      <ol>
+         *        <li> Banana </li>
+         *        <li> Apple </li>
+         *        <li> Pineapple </li>
+         *        <li> Strawberry </li>
+         *      </ol>
+         *      ...
+         *      tiramisu.get('ul li').on('mouseover', function() {
+         *          alert(this.innerHTML);
+         *      });
+         *
+         *  As in the “each” example, it is possible to use **this** to
+         *  reference the current list item.
+         *
+         * Example #3 (Defining a window.onload callback)
+         * ----------------------------------------------
+         *
+         *     tiramisu.get(window).on('load', function() {
+         *         alert('This will be executed after the DOM loading");
+         *     });
+         *
+         * Example #4 (Alert message when pressing the “m” key)
+         * ----------------------------------------------------
+         *
+         *     tiramisu.get(document).on('keydown', function(evt) {
+         *         if (evt.keyCode == 77) {
+         *             alert("M as Marvelous!");
+         *         }
+         *     });
+         *
+         * Example #5 ()
+         * ----------------------------------------------------
+         *
+         *     tiramisu.get('p').on('keydown', 'click', function(evt) {
+         *         alert('This will be executed after click or keydown on 'p' element");
+         *     });
+         *
+         * @param {event} evt An event listener
+         * @param {function} cb The callback function to attach
+         */
+        'on': function(evt, cb) {
+            if (results[0] === undefined || arguments.length > 2) {
+                return '';
+            }
+            var evt_len = 1,
+                ev = [],
+                callback = [];
+            if (typeof(evt) === 'string') {
+                ev[0] = evt;
+                callback[0] = cb;
+            } else if (typeof(evt) === 'object') {
+                if (typeof(evt[0]) === 'string') {
+                    ev = evt;
+                    callback[0] = cb;
+                } else {
+                    for (key in evt) {
+                        evt_len = ev.push(key);
+                        callback.push(evt[key]);
+                    }
+                }
+            }
+            // if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
+            for (var j = evt_len; j--;) {
+                var cb = callback[j];
+                for (i = len_result; i--;) {
+                    add_handler(results[i], ev[j], cb);
+                }
+                if (typeof selector === 'string') {
+                    local_event[selector] = {};
+                    local_event[selector] = {
+                        'cb': cb,
+                        'element': results
+                    };
+                }
+            }
+            return this;
+        },
+        /**
+         * Remove Event handler extension
+         * -----------------------
+         *
+         */
+        'off': function(evt) {
+            if (results[0] === undefined || arguments.length > 1) {
+                return '';
+            }
+            if (typeof selector === 'string') {
+                if (local_event[selector] !== undefined) {
+                    var cb = local_event[selector]['cb'],
+                        element = local_event[selector]['element'],
+                        len = element.length;
+                    for (i = len; i--;) {
+                        remove_handler(results[i], evt, cb);
+                    }
+                    delete local_event[selector];
+                }
+            }
+
+            return this;
+        },
+        /**
+         * Insert Before method
+         * --------------------
+         *
+         * Insert text or html, before each element.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).before(*HTML*)
+         *
+         * where *SELECTOR* is a valid CSS selector, *HTML* is
+         * the element to insert.
+         *
+         * Example #1 ()
+         * ------------------------------------------------------
+         *
+         *     <h1>Hello Tiramisu</h1>
+         *     <div class="inner">ciao</div>
+         *     <div class="inner">mondo</div>
+         *     ...
+         *     t.get('.inner').before('<p>ciccio</p>')
+         *
+         *     produce the following result:
+         *
+         *     <h1>Hello Tiramisu</h1>
+         *     <p>ciccio</p>
+         *     <div class="inner">ciao</div>
+         *     <p>ciccio</p>
+         *     <div class="inner">mondo</div>
+         *
+         *
+         * @param {html} The element to insert
+         */
+        'before': function(html) {
+            insert_content(html, true, false)
+            return this;
+        },
+        /**
+         * Insert After method
+         * -------------------
+         *
+         * Insert text or html, after each element.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).after(*HTML*)
+         *
+         * where *SELECTOR* is a valid CSS selector and *HTML* is
+         * the element to insert.
+         *
+         * Example #1 (Inserting an element multiple times)
+         * ------------------------------------------------
+         *
+         *     <h1>Hello Tiramisu</h1>
+         *     <div class="inner">ciao</div>
+         *     <div class="inner">mondo</div>
+         *     ...
+         *     t.get('.inner').after('<p>ciccio</p>')
+         *
+         *     produces the following result:
+         *
+         *     <h1>Hello Tiramisu</h1>
+         *     <div class="inner">ciao</div>
+         *     <p>ciccio</p>
+         *     <div class="inner">mondo</div>
+         *     <p>ciccio</p>
+         *
+         *
+         * @param {html} The element to insert
+         */
+        'after': function(html) {
+            insert_content(html, false, false);
+            return this;
+        },
+        /**
+         * Append method
+         * -------------
+         *
+         * Appends a DOM element into a list of selector results.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).append(*HTML*)
+         *
+         * where *SELECTOR* is a valid CSS selector and *HTML* is
+         * a string containing some HTML (such as "<p>hi</p>,
+         * <h1>headline</h1> etc.)
+         *
+         * Example #1 (Append a single element)
+         * ------------------------------------
+         *
+         *     <ul>
+         *       <li>One</li>
+         *       <li>Two</li>
+         *     </ul>
+         *     ...
+         *     t.get('ul').append('<li>Three</li>');
+         *
+         *     produces the following:
+         *
+         *     <ul>
+         *       <li>One</li>
+         *       <li>Two</li>
+         *       <li>Three</li>
+         *     </ul>
+         *
+         * Example #2 (Append multiple elements)
+         * -------------------------------------
+         *
+         *      <ul>
+         *        <li>
+         *          <p>One</p>
+         *        </li>
+         *        <li>
+         *          <p>Two</p>
+         *        </li>
+         *      </ul>
+         *      ...
+         *      t.get('ul li').append('<p>append</p>');
+         *
+         *      produces the following:
+         *
+         *      <ul>
+         *        <li>
+         *          <p>One</p>
+         *          <p>append</p>
+         *        </li>
+         *        <li>
+         *          <p>Two</p>
+         *          <p>append</p>
+         *        </li>
+         *      </ul>
+         *
+         * @param {html} The element to append
+         */
+        'append': function(html) {
+            insert_content(html, false, true);
+            return this;
+        },
+        /**
+         * Prepend method
+         * --------------
+         *
+         * Prepends a DOM element into a list of selector results.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).prepend(*HTML*)
+         *
+         * where *SELECTOR* is a valid CSS selector and *HTML* is
+         * a string containing some HTML (such as "<p>hi</p>,
+         * <h1>headline</h1> etc.)
+         *
+         * Example #1 (Prepend a single element)
+         * ------------------------------------
+         *
+         *     <ul>
+         *       <li>One</li>
+         *       <li>Two</li>
+         *     </ul>
+         *     ...
+         *     t.get('ul').prepend('<li>Three</li>');
+         *
+         *     produces the following:
+         *
+         *     <ul>
+         *       <li>Zero</li>
+         *       <li>One</li>
+         *       <li>Two</li>
+         *     </ul>
+         *
+         * Example #2 (Prepend multiple elements)
+         * -------------------------------------
+         *
+         *      <ul>
+         *        <li>
+         *          <p>One</p>
+         *        </li>
+         *        <li>
+         *          <p>Two</p>
+         *        </li>
+         *      </ul>
+         *      ...
+         *      t.get('ul li').prepend('<p>prepend</p>');
+         *
+         *      produces the following:
+         *
+         *      <ul>
+         *        <li>
+         *          <p>prepend</p>
+         *          <p>One</p>
+         *        </li>
+         *        <li>
+         *          <p>prepend</p>
+         *          <p>Two</p>
+         *        </li>
+         *      </ul>
+         *
+         * @param {html} The element to prepend
+         */
+        'prepend': function(html) {
+            insert_content(html, true, true);
+            return this;
+        },
+        /**
+         * CSS handler extension
+         * ---------------------
+         *
+         * Alter the CSS properties of a list of DOM nodes.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)
+         *
+         * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES*
+         * is an object containing the CSS properties to set.
+         *
+         * Example #1 (Set all h1 tags to 34px with color red)
+         * ---------------------------------------------------
+         *
+         *     <h1> This is one headline. </h1>
+         *     <h1> This is another headline. </h1>
+         *     ...
+         *     tiramisu.get('h1').css({
+         *         'font-size': '12px',
+         *         'color': 'red'
+         *     });
+         *
+         * Example #2 (Get attribute out of style)
+         * ---------------------------------------------------
+         *
+         *     <h1 id="my_id" style="color:red"> This is one headline. </h1>
+         *     ...
+         *     tiramisu.get('#my_id').css("color")
+         *
+         *  @param {Object} obj An object containing CSS properties
+         */
+        'css': function(obj) {
+            var i, key, browser = t.detect('browser'),
+                ie_older = t.detect('isIEolder'),
+                ie = t.detect('isIE');
+
+            // For handling IE CSS Attributes
+            var attr = {
+                'opacity': function(obj, value) {
+                    if (value !== undefined) {
+                        // Setter
+                        if (ie) {
+                            obj.style.opacity = value;
+                            obj.style.filter = 'alpha(opacity=' + value * 100 + ')';
+                        } else {
+                            obj.style.opacity = value;
+                        }
+                    } else {
+                        // Getter
+                        return obj.style.opacity
+                    }
+                },
+                'border-radius': function(obj, value) {
+                    if (value) {
+                        if (browser === 'f3') {
+                            obj.style.MozBorderRadius = value; // Firefox 3.6 <=
+                        }
+                    } else {
+                        if (browser === 'f3') {
+                            return obj.style.MozBorderRadius;
+                        } else if (browser === 'ie9+') {
+                            return obj.style.borderRadius;
+                        }
+                    }
+                }
+            };
+
+            if (typeof(obj) === 'string') {
+                if (ie || browser === 'f3') {
+                    if (obj == 'border-radius') {
+                        return attr[obj](results[0])
+                    }
+                    return results[0].style[obj];
+                }
+                return results[0].style[obj];
+            }
+
+            // Apply to all elements
+            for (i = len_result; i--;) {
+                for (key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        // Need to handle different browsers
+                        if (ie || browser === 'f3') {
+                            if (attr[key] !== undefined) {
+                                attr[key](results[i], obj[key]);
+                            } else {
+                                // No match in attr
+                                results[i].style[key] = obj[key];
+                            }
+                        } else {
+                            // The third param is for W3C Standard
+                            results[i].style.setProperty(key, obj[key], '');
+                        }
+                    }
+                }
+            }
+            return this;
+        },
+        /**
+         * HTML extension method
+         * ---------------------
+         *
+         * Gets or sets the HTML Markup of the first CSS
+         * selector element.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).html([*HTML*])
+         *
+         * where *SELECTOR* is a valid CSS selector and *[HTML]* is an
+         * optional value to set the element's innerHTML value.
+         *
+         * Example #1 (Getting the HTML value of a div)
+         * --------------------------------------------
+         *
+         *     <div id="header">
+         *       <p> I love pizza! </p>
+         *     </div>
+         *     ...
+         *     var pizza = tiramisu.get('#header').html()
+         *
+         * Example #2 (Setting the HTML value of a div)
+         *
+         *     <div id="header">
+         *       <p> I love pizza! </p>
+         *     </div>
+         *     ...
+         *     tiramisu.get('#header').html('<p> i hate cakes! </p>');
+         *
+         * @param {String} [set] An optional string containing the HTML to replace
+         * @return {[String]} An optional string containing the selector's first element HTML value
+         */
+        'html': function(set) {
+            if (set !== undefined) {
+                results[0].innerHTML = set;
+            } else {
+                return results[0].innerHTML;
+            }
+            return this;
+        },
+        /**
+         * Form field value extension method
+         * ---------------------------------
+         *
+         * Gets or sets the value of a form field of the first CSS Selector
+         * element.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).value([*VALUE*])
+         *
+         * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an
+         * optional value to set the element's innerHTML value.
+         *
+         * Example #1 (Get the current value of a select list)
+         * ---------------------------------------------------
+         *
+         *     <form id="myForm" action='#' method="GET">
+         *       <select>
+         *         <option> Apple </option>
+         *         <option> Strawberry </option>
+         *         <option> Banana </option>
+         *       </select>
+         *     </form>
+         *     ...
+         *     // The default selected value is “Apple”
+         *     var current = t.get('myForm select').value();
+         *
+         * Example #2 (Set the current value of a select list)
+         * ---------------------------------------------------
+         *
+         *     <form id="myForm" action='#' method="GET">
+         *       <select>
+         *         <option> Apple </option>
+         *         <option> Strawberry </option>
+         *         <option> Banana </option>
+         *       </select>
+         *     </form>
+         *     ...
+         *     t.get('myForm select').value('Strawberry');
+         *
+         *     // Now the selected value is “Strawberry”
+         *     var current = t.get('myForm select').value();
+         *
+         * Example #3 (Get the current values of a series of elements)
+         * ---------------------------------------------------
+         *
+         *     <input type="hidden" name="name_one" value="one" class="i_am_class">
+         *     <input type="hidden" name="name_two" value="two" class="i_am_class">
+         *     <input type="hidden" name="name_three" value="three" class="i_am_class">
+         *     <input type="hidden" name="name_four" value="four" class="i_am_class">
+         *     ...
+         *     t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']
+         *
+         *
+         * @param {String} [set] An optional string containing the field value to set
+         * @return {[String]} An optional string containing the selector's first element field value
+         *
+         */
+        'value': function(set) {
+            var value = function(i) {
+                    if (t.detect('isIE') || t.detect('isIEolder')) {
+                        if (results[i].type == 'select-one') {
+                            return results[i].options[results[i].selectedIndex].value;
+                        }
+                        return results[i].value;
+                    }
+                    return results[i].value;
+                };
+
+            var setValue = function(i, s) {
+                    if (t.detect('isIE') || t.detect('isIEolder')) {
+                        if (results[i].type == 'select-one') {
+                            results[i].options[results[i].selectedIndex].value = s;
+                        }
+                        results[i].value = s;
+                    } else {
+                        results[i].value = s;
+                    }
+                };
+
+            if (results[0] === undefined) {
+                return '';
+            }
+
+            if (set !== undefined) {
+                setValue(0, set);
+            } else {
+                if (len_result > 1) {
+                    var list = [];
+                    for (i = 0; i < len_result; i++) {
+                        list.push(value(i));
+                    }
+                    return list;
+                }
+                return value(0);
+            }
+        },
+        /**
+         * Focus extension method
+         * ---------------------------------
+         *
+         * Set focus on elements
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).focus()
+         *
+         * where *SELECTOR* is a valid CSS selector
+         *
+         * Example #1 (Set focus on elements)
+         * ---------------------------------------------------
+         *
+         *     tiramisu.get(*SELECTOR*).focus()
+         *
+         *
+         */
+        'focus': function() {
+            if (results[0] === undefined) {
+                return '';
+            }
+            for (var i = len_result; i--;) {
+                results[i].focus();
+            }
+        },
+        /**
+         * Attribute extension method
+         * ---------------------------------
+         *
+         * Gets or sets the attribute of an element.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).attr(*ATTRIBUTE*, [*VALUE*])
+         *
+         * where *SELECTOR* is a valid CSS selector,*ATTRIBUTE* is the name of
+         * the attribute and *[VALUE]* is an optional value for setting the attribute.
+         *
+         * Example #1 (Get the current src of an image)
+         * ---------------------------------------------------
+         *
+         *     <img src="www.example.com/image_num_one.png" id="id_image" />
+         *     ...
+         *     var current = t.get('#id_image').attr('src');
+         *
+         * Example #2 (Set the current src of an image)
+         * ---------------------------------------------------
+         *
+         *     <img src="www.example.com/image_num_one.png" id="id_image" />
+         *     ...
+         *     t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');
+         *
+         * Example #3 (Set the class)
+         * ---------------------------------------------------
+         *
+         *     <p class="old_class old_class_two">Hi class</p>
+         *
+         * calling *t.get('p').attr('class', 'new_class')* will give the following results:
+         *
+         *     <p class="new_class">Hi class</p>
+         *
+         * Example #4 (Set the class)
+         * ---------------------------------------------------
+         *
+         *     <p class="old_class old_class_two">Hi class</p>
+         *
+         * calling *t.get('p').attr('class', 'new_class', true)* will give the following results:
+         *
+         *     <p class="old_class old_class_two new_class">Hi class</p>
+         *
+         * @param {String} [set] An optional string containing the field src to set
+         * @return {[String]} An optional string containing the selector's first element field src
+         *
+         */
+        'attr': function(attr, value, add) {
+            for (var i = len_result; i--;) {
+                if (value !== undefined) {
+                    if (attr === 'class') {
+                        if (add) {
+                            results[i].className = results[i].className + ' ' + value;
+                        } else {
+                            results[i].className = value;
+                        }
+                    } else {
+                        results[i].setAttribute(attr, value);
+                    }
+                } else {
+                    if (attr === 'class') {
+                        return results[i].className;
+                    } else {
+                        return results[i].getAttribute(attr);
+                    }
+                }
+            }
+            return this;
+        },
+        /**
+         * Index extension method
+         * ---------------------------------
+         *
+         * Get the index position of an element.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).index(*ELEMENT*)
+         *
+         * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
+         * to search.
+         *
+         * The function returns -1 if no element is found.
+         *
+         * Example #1 (Get the index of a selector element)
+         * ------------------------------------------------
+         *
+         *     <p>This</p>      // element 0
+         *     <p>is</p>        // element 1
+         *     <p>Sparta!</p>   // element 2
+         *     ...
+         *     var el = t.get('p')[2];
+         *     var index = t.get('p').index(el); // Contains '2';
+         *
+         * @param {Object} the element to search (that is, a DOM element, not a *string*)
+         * @return {index} the index of the element if found, -1 otherwise
+         */
+        'index': function(el) {
+            if (el !== undefined) {
+                for (var i = len_result; i >= 0; i--) {
+                    if (results[i] === el) break;
+                }
+                return i;
+            }
+        },
+        /**
+         * Filter extension method
+         * -----------------------
+         *
+         * Filters a selector or a custom function to the CSS Selector list's results.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).filter([*FILTER*])
+         *
+         * where *SELECTOR* is a valid CSS selector, *FILTER* is a built-in filter (see the list below)
+         * or can be defined as a custom function.
+         *
+         * Currently implemented filters are:
+         * *  *:odd*;
+         * *  *:even*;
+         *
+         * Custom filter functions
+         * -----------------------
+         *
+         * A custom filter function **must** conform to the following scheme:
+         *
+         *     function([index]) {
+         *         ...code here...
+         *         return true or false;
+         *     }
+         *
+         * where **index** is an optional index which can be used to perform the filter's choices.
+         *
+         * Example #1 (Filtering even elements by using the built-in filter)
+         * -----------------------------------------------------------------
+         *
+         *     <p>Zero</p>
+         *     <p>One</p>
+         *     <p>Two</p>
+         *     <p>Three</p>
+         *     ...
+         *     t.get('p').filter(':even')
+         *
+         * gives the following selector list:
+         *
+         *      [<p>Zero</p>, <p>Two</p>]
+         *
+         * Example #2 (Filtering elements by using a custom function)
+         * ----------------------------------------------------------
+         *
+         *      <p>Zero</p>
+         *      <p>One</p>
+         *      <p>Two</p>
+         *      <p>Three</p>
+         *      ...
+         *      t.get('p').filter(function(index) {
+         *          return (index === 2) ? true : false;
+         *      });
+         *
+         */
+        'filter': function(selector) {
+            if (results[0] === undefined) {
+                return '';
+            }
+
+            var selectors = {
+                ':odd': function(index) {
+                    return (index % 2 !== 0) ? true : false;
+                },
+                ':even': function(index) {
+                    return (index % 2 === 0) ? true : false;
+                }
+            };
+
+            if (typeof selector === 'string' && typeof selectors[selector] === 'function') {
+                for (var i = len_result; i--;) {
+                    !selectors[selector](i) && results.splice(i, 1);
+                }
+            } else if (typeof selector === 'function') {
+                for (var i = len_result; i--;) {
+                    !selector(i) && results.splice(i, 1);
+                }
+            }
+
+            len_result = results.length;
+
+            return this;
+        },
+        /**
+         * Empty extension method
+         * ----------------------
+         *
+         * Removes all the child elements of a specific node from the DOM.
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).empty()
+         *
+         * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements).
+         *
+         * Example #1 (Remove all element of a list)
+         * -----------------------------------------
+         *
+         *     <ol id="myList">
+         *        <li>This is my <span class="tasty">icecake</span></li>
+         *        <li>I love <span class="tasty">chocolate</span> chips!</li>
+         *     </ol>
+         *
+         * calling *t.get('#myList').empty()* will give the following results:
+         *
+         *     <ol id="myList"></ol>
+         *
+         * Example #2 (Remove a specific element)
+         * --------------------------------------
+         *
+         *     <ol id="myList">
+         *        <li>This is my <span class="tasty">icecake</span></li>
+         *        <li>I love <span class="tasty">chocolate chips!</span></li>
+         *     </ol>
+         *
+         * calling *t.get('.tasty').empty()* will give the following results:
+         *
+         *     <ol id="myList">
+         *        <li>This is my <span class="tasty"></span></li>
+         *        <li>I love <span class="tasty"></span> chips!</li>
+         *     </ol>
+         *
+         * Todo
+         * ----
+         *
+         * -    Remove events to avoid memory leaks;
+         *
+         */
+        'empty': function() {
+            if (results[0] === undefined) {
+                return '';
+            }
+
+            for (var i = 0; i < len_result; i++) {
+                var child = results[i].childNodes[0];
+                while (child) {
+                    var next = child.nextSibling;
+                    results[i].removeChild(child);
+                    child = next;
+                }
+            }
+        },
+        /**
+         * Destroy extension method
+         * ---------------------------------
+         *
+         * Removes element
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)
+         *
+         * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
+         *
+         * Example #1 (Remove all element child)
+         * -----------------------------------------
+         *
+         *     <ol id="myList">
+         *        <li>This is my <span class="tasty">icecake</span></li>
+         *        <li>I love <span class="tasty">chocolate</span> chips!</li>
+         *     </ol>
+         *
+         * calling *t.get('#myList').destroy('.tasty')* will give the following results:
+         *
+         *     <ol id="myList">
+         *         <li>This is my </li>
+         *         <li>I love  chips!</li>
+         *     </ol>
+         *
+         * Example #2 (Remove element and child)
+         * --------------------------------------
+         *
+         *     <ol id="myList">
+         *        <li>This is my <span class="tasty">icecake</span></li>
+         *        <li>I love <span class="tasty">chocolate chips!</span></li>
+         *     </ol>
+         *
+         * calling *t.get('#myList').destroy()* will give the following results:
+         *
+         *     <div id="myDestroyList">
+         *
+         *     </div>
+         *
+         *
+         */
+        'destroy': function(el) {
+            if (results[0] === undefined) {
+                return '';
+            }
+
+            if (el !== undefined && typeof el === 'string') {
+                var res = t.get(selector + ' ' + el),
+                    len = res.length;
+                for (var i = len; i--;) {
+                    var parent = res[i].parentNode;
+                    parent.removeChild(res[i]);
+                }
+            } else {
+                for (i = len_result; i--;) {
+                    var parent = results[i].parentNode;
+                    parent.removeChild(results[i]);
+                }
+            }
+
+            return this;
+        },
+        /**
+         * Remove Class extension method
+         * ---------------------------------
+         *
+         * Removes class
+         *
+         * Usage
+         * -----
+         *
+         *     tiramisu.get(*SELECTOR*).removeClass(*CLASS*)
+         *
+         * where *SELECTOR* is a valid CSS selector and *CLASS* is class name
+         *
+         * Example #1 (Remove class of the element)
+         * -----------------------------------------
+         *
+         *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
+         *
+         * calling *t.get('#tasty').removeClass('my_class_two')* will give the following results:
+         *
+         *     <p id="tasty" class="my_class">Hi Gianluca</p>
+         *
+         * Example #2 (Remove all class of the element)
+         * --------------------------------------
+         *
+         *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
+         *
+         * calling *t.get('#tasty').removeClass()* will give the following results:
+         *
+         *     <p id="tasty" class="">Hi Gianluca</p>
+         *
+         *
+         * Example #3 (Remove all class of the element and child)
+         * --------------------------------------
+         *
+         *     <p id="tasty" class="my_class">
+         *          <span class="my_class_one">Hi one</span>
+         *          <span class="my_class_two">Hi two</span>
+         *     </p>
+         *
+         * calling *t.get('#tasty').removeClass(':all')* will give the following results:
+         *
+         *     <p id="tasty" class="">
+         *          <span class="">Hi one</span>
+         *          <span class="">Hi two</span>
+         *     </p>
+         *
+         *
+         */
+        'removeClass': function(el) {
+            if (results[0] === undefined) {
+                return '';
+            }
+
+            var i, j, text, all = false;
+
+            if (el === ':all') {
+                el = undefined;
+                var all = true;
+            }
+
+
+            if (el !== undefined && typeof el === 'string') {
+
+                var re = new RegExp('(\\s|^)' + el + '(\\s|$)');
+                // Remove class into element
+                for (i = len_result; i--;) {
+                    text = results[i].className.replace(re, '');
+                    results[i].className = text;
+                }
+
+            } else {
+
+                for (i = len_result; i--;) {
+                    // Remove all class into element
+                    results[i].className = '';
+
+                    // Remove all class into child
+                    if (all) {
+                        var list_child = results[i].childNodes,
+                            len = list_child.length;
+                        if (len > 0) {
+                            (function(list, len) {
+                                for (var j = len; j--;) {
+                                    list[j].className = '';
+                                    var new_list = list[j].childNodes,
+                                        new_len = new_list.length;
+                                    if (new_len > 0) {
+                                        arguments.callee(new_list, new_len);
+                                    }
+                                }
+                            })(list_child, len);
+                        }
+                    }
+                }
+
+            }
+            return this;
+        }
+    };
+
+    console.log(methods);
 
     // Append methods to the result object
     (function append_methods() {
@@ -641,56 +1713,60 @@ tiramisu.modules.get = function(selector) {
         for (key in methods) {
             results[key] = methods[key];
         }
-        console.log(methods);
+
+        if (typeof(tiramisu.modules.get.methods) !== 'undefined') {
+            // Addictional methods
+            console.log('Adding some stuff...');
+            for (key in tiramisu.modules.get.methods) {
+                results[key] = tiramisu.modules.get.methods[key];
+            }
+        }
+
     })();
+    // Exposing results
+    tiramisu.modules.get.results = results;
     return results;
 };
-
-// Exposing methods
-tiramisu.modules.get.methods = (function() {
-    this.obj = this.obj || {};
-
-    return {
-        'list': function() {
-            return obj;
-        },
-        'add': function(name, method) {
-            obj[name] = method;
+tiramisu.modules.get.methods = {
+    /**
+     * Ready method
+     * ----------------------
+     *
+     * Make sure that DOM elements exist when it run the events.
+     *
+     * Usage
+     * -----
+     *
+     *     tiramisu.get(*SELECTOR*).ready(*FUNCTION*)
+     *
+     * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements)
+     * and *FUNCTION* is the function to execute when the DOM is ready.
+     *
+     * Example #1
+     * -----------------------------------------
+     *
+     *     t.get(document).ready(function(){
+     *          alert('This will be executed when the dom is ready");
+     *     });
+     *
+     *
+     */
+    'ready': function(def) {
+        t.d.onreadystatechange = function() {
+            if (t.d.readyState == "complete") {
+                // Run the callback
+                def();
+                return this;
+            }
         }
-    };
-})();
-/**
- * Ready method
- * ----------------------
- *
- * Make sure that DOM elements exist when it run the events.
- *
- * Usage
- * -----
- *
- *     tiramisu.get(*SELECTOR*).ready(*FUNCTION*)
- *
- * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements)
- * and *FUNCTION* is the function to execute when the DOM is ready.
- *
- * Example #1
- * -----------------------------------------
- *
- *     t.get(document).ready(function(){
- *          alert('This will be executed when the dom is ready");
- *     });
- *
- *
- */
-tiramisu.modules.get.methods.add('ready', function(def) {
-    t.d.onreadystatechange = function() {
-        if (t.d.readyState == "complete") {
-            // Run the callback
-            def();
-            return this;
-        }
+    },
+    'hello': function() {
+        alert(tiramisu.modules.get.results.html());
+    },
+    'set': function(thing) {
+        tiramisu.modules.get.results[0] = thing;
     }
-});
+};
 /** 
  * Framework Detection Module
  * ==========================
