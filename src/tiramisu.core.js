@@ -37,7 +37,7 @@
         
         this.qsa_chosen = (this.selector === 'QSA' && typeof this.d.querySelectorAll !== 'undefined' ? true : false);
         
-        this.version = '0.1.5-b2';
+        this.version = '0.1.6';
         
     }
 
@@ -146,9 +146,6 @@
 
         // DOM Node insertion generic utility
         function insert_content(html, before, append) {
-            if (results[0] === undefined) {
-                return '';
-            }
 
             var i, j, parent, elements = [];
 
@@ -718,7 +715,7 @@
              * @param {function} cb The callback function to attach
              */
             'on': function(evt, cb) {
-                if (results[0] === undefined || arguments.length > 2) {
+                if (arguments.length > 2) {
                     return '';
                 }
                 var evt_len = 1,
@@ -760,7 +757,7 @@
              *
              */
             'off': function(evt) {
-                if (results[0] === undefined || arguments.length > 1) {
+                if (arguments.length > 1) {
                     return '';
                 }
                 if (typeof selector === 'string') {
@@ -1049,9 +1046,6 @@
              *
              */
             'focus': function() {
-                if (results[0] === undefined) {
-                    return '';
-                }
                 for (var i = len_result; i--;) {
                     results[i].focus();
                 }
@@ -1101,7 +1095,12 @@
         (function append_methods() {
             var key;
             for (key in methods) {
-                results[key] = methods[key];
+                // returns an empty function if selector result is empty 
+                if (len_result) {
+                    results[key] = methods[key];
+                } else {
+                    results[key] = function(){};
+                }
             }
         })();
         return results;

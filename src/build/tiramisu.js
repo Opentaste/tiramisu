@@ -20,9 +20,12 @@
      */
 
     function Tiramisu() {
-        this.version = '0.1.5-b2';
+
         this.d = document;
-        this.selector = 'QSA'
+
+        // Tiramisu modules
+        this.modules = Tiramisu.prototype;
+
         this.requestAnimFrame = (function() {
             return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
             function(callback, element) {
@@ -30,8 +33,12 @@
             };
         })();
 
-        // Tiramisu modules
-        this.modules = Tiramisu.prototype;
+        this.selector = 'QSA';
+
+        this.qsa_chosen = (this.selector === 'QSA' && typeof this.d.querySelectorAll !== 'undefined' ? true : false);
+
+        this.version = '0.1.6';
+
     }
 
     // Exposing the framework
@@ -139,10 +146,8 @@
 
         // DOM Node insertion generic utility
 
+
         function insert_content(html, before, append) {
-            if (results[0] === undefined) {
-                return '';
-            }
 
             var i, j, parent, elements = [];
 
@@ -434,6 +439,7 @@
             return 'identity: ' + this.identity + ', finder: ' + this.finder;
         };
 
+
         /**
          * Classify sections of the scanner output.
          *
@@ -472,6 +478,7 @@
             }
             return this.tokens;
         };
+
 
         /**
          * Uses an array of tokens to perform DOM operations.
@@ -528,7 +535,8 @@
             // Each element that matches the key selector is used as a 
             // starting point. Its ancestors are analysed to see 
             // if they match all of the selector’s rules.
-            for (i = 0; i < elements.length; i++) {
+            var num_ele = elements.length;
+            for (i = 0; i < num_ele; i++) {
                 element = elements[i];
                 if (this.tokens.length > 0) {
                     if (this.matchesAllRules(element.parentNode)) {
@@ -548,7 +556,7 @@
 
         if (typeof selector === 'string') {
 
-            if (t.detect('querySelectorAll')) {
+            if (this.qsa_chosen) {
                 // Use querySelectorAll
                 results = toArray(t.d.querySelectorAll(selector));
             } else {
@@ -712,7 +720,7 @@
              * @param {function} cb The callback function to attach
              */
             'on': function(evt, cb) {
-                if (results[0] === undefined || arguments.length > 2) {
+                if (arguments.length > 2) {
                     return '';
                 }
                 var evt_len = 1,
@@ -754,7 +762,7 @@
              *
              */
             'off': function(evt) {
-                if (results[0] === undefined || arguments.length > 1) {
+                if (arguments.length > 1) {
                     return '';
                 }
                 if (typeof selector === 'string') {
@@ -1023,105 +1031,6 @@
                 return this;
             },
             /**
-             * Form field value extension method
-             * ---------------------------------
-             *
-             * Gets or sets the value of a form field of the first CSS Selector
-             * element.
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).value([*VALUE*])
-             *
-             * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an
-             * optional value to set the element's innerHTML value.
-             *
-             * Example #1 (Get the current value of a select list)
-             * ---------------------------------------------------
-             *
-             *     <form id="myForm" action='#' method="GET">
-             *       <select>
-             *         <option> Apple </option>
-             *         <option> Strawberry </option>
-             *         <option> Banana </option>
-             *       </select>
-             *     </form>
-             *     ...
-             *     // The default selected value is “Apple”
-             *     var current = t.get('myForm select').value();
-             *
-             * Example #2 (Set the current value of a select list)
-             * ---------------------------------------------------
-             *
-             *     <form id="myForm" action='#' method="GET">
-             *       <select>
-             *         <option> Apple </option>
-             *         <option> Strawberry </option>
-             *         <option> Banana </option>
-             *       </select>
-             *     </form>
-             *     ...
-             *     t.get('myForm select').value('Strawberry');
-             *
-             *     // Now the selected value is “Strawberry”
-             *     var current = t.get('myForm select').value();
-             *
-             * Example #3 (Get the current values of a series of elements)
-             * ---------------------------------------------------
-             *
-             *     <input type="hidden" name="name_one" value="one" class="i_am_class">
-             *     <input type="hidden" name="name_two" value="two" class="i_am_class">
-             *     <input type="hidden" name="name_three" value="three" class="i_am_class">
-             *     <input type="hidden" name="name_four" value="four" class="i_am_class">
-             *     ...
-             *     t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']
-             *
-             *
-             * @param {String} [set] An optional string containing the field value to set
-             * @return {[String]} An optional string containing the selector's first element field value
-             *
-             */
-            'value': function(set) {
-                var value = function(i) {
-                        if (t.detect('isIE') || t.detect('isIEolder')) {
-                            if (results[i].type == 'select-one') {
-                                return results[i].options[results[i].selectedIndex].value;
-                            }
-                            return results[i].value;
-                        }
-                        return results[i].value;
-                    };
-
-                var setValue = function(i, s) {
-                        if (t.detect('isIE') || t.detect('isIEolder')) {
-                            if (results[i].type == 'select-one') {
-                                results[i].options[results[i].selectedIndex].value = s;
-                            }
-                            results[i].value = s;
-                        } else {
-                            results[i].value = s;
-                        }
-                    };
-
-                if (results[0] === undefined) {
-                    return '';
-                }
-
-                if (set !== undefined) {
-                    setValue(0, set);
-                } else {
-                    if (len_result > 1) {
-                        var list = [];
-                        for (i = 0; i < len_result; i++) {
-                            list.push(value(i));
-                        }
-                        return list;
-                    }
-                    return value(0);
-                }
-            },
-            /**
              * Focus extension method
              * ---------------------------------
              *
@@ -1142,13 +1051,48 @@
              *
              */
             'focus': function() {
-                if (results[0] === undefined) {
-                    return '';
-                }
                 for (var i = len_result; i--;) {
                     results[i].focus();
                 }
             },
+            /**
+             * Index extension method
+             * ---------------------------------
+             *
+             * Get the index position of an element.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).index(*ELEMENT*)
+             *
+             * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
+             * to search.
+             *
+             * The function returns -1 if no element is found.
+             *
+             * Example #1 (Get the index of a selector element)
+             * ------------------------------------------------
+             *
+             *     <p>This</p>      // element 0
+             *     <p>is</p>        // element 1
+             *     <p>Sparta!</p>   // element 2
+             *     ...
+             *     var el = t.get('p')[2];
+             *     var index = t.get('p').index(el); // Contains '2';
+             *
+             * @param {Object} the element to search (that is, a DOM element, not a *string*)
+             * @return {index} the index of the element if found, -1 otherwise
+             */
+            'index': function(el) {
+                if (el !== undefined) {
+                    for (var i = len_result; i >= 0; i--) {
+                        if (results[i] === el) break;
+                    }
+                    return i;
+                }
+            },
+            // Modules integrated into t.get --------------------
             /**
              * Attribute extension method
              * ---------------------------------
@@ -1222,41 +1166,204 @@
                 return this;
             },
             /**
-             * Index extension method
+             * Remove Class extension method
              * ---------------------------------
              *
-             * Get the index position of an element.
+             * Removes class
              *
              * Usage
              * -----
              *
-             *     tiramisu.get(*SELECTOR*).index(*ELEMENT*)
+             *     tiramisu.get(*SELECTOR*).removeClass(*CLASS*)
              *
-             * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
-             * to search.
+             * where *SELECTOR* is a valid CSS selector and *CLASS* is class name
              *
-             * The function returns -1 if no element is found.
+             * Example #1 (Remove class of the element)
+             * -----------------------------------------
              *
-             * Example #1 (Get the index of a selector element)
-             * ------------------------------------------------
+             *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
              *
-             *     <p>This</p>      // element 0
-             *     <p>is</p>        // element 1
-             *     <p>Sparta!</p>   // element 2
-             *     ...
-             *     var el = t.get('p')[2];
-             *     var index = t.get('p').index(el); // Contains '2';
+             * calling *t.get('#tasty').removeClass('my_class_two')* will give the following results:
              *
-             * @param {Object} the element to search (that is, a DOM element, not a *string*)
-             * @return {index} the index of the element if found, -1 otherwise
+             *     <p id="tasty" class="my_class">Hi Gianluca</p>
+             *
+             * Example #2 (Remove all class of the element)
+             * --------------------------------------
+             *
+             *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
+             *
+             * calling *t.get('#tasty').removeClass()* will give the following results:
+             *
+             *     <p id="tasty" class="">Hi Gianluca</p>
+             *
+             *
+             * Example #3 (Remove all class of the element and child)
+             * --------------------------------------
+             *
+             *     <p id="tasty" class="my_class">
+             *          <span class="my_class_one">Hi one</span>
+             *          <span class="my_class_two">Hi two</span>
+             *     </p>
+             *
+             * calling *t.get('#tasty').removeClass(':all')* will give the following results:
+             *
+             *     <p id="tasty" class="">
+             *          <span class="">Hi one</span>
+             *          <span class="">Hi two</span>
+             *     </p>
+             *
+             *
              */
-            'index': function(el) {
-                if (el !== undefined) {
-                    for (var i = len_result; i >= 0; i--) {
-                        if (results[i] === el) break;
-                    }
-                    return i;
+            'removeClass': function(el) {
+                if (results[0] === undefined) {
+                    return '';
                 }
+
+                var i, j, text, all = false;
+
+                if (el === ':all') {
+                    el = undefined;
+                    var all = true;
+                }
+
+
+                if (el !== undefined && typeof el === 'string') {
+
+                    var re = new RegExp('(\\s|^)' + el + '(\\s|$)');
+                    // Remove class into element
+                    for (i = len_result; i--;) {
+                        text = results[i].className.replace(re, '');
+                        results[i].className = text;
+                    }
+
+                } else {
+
+                    for (i = len_result; i--;) {
+                        // Remove all class into element
+                        results[i].className = '';
+
+                        // Remove all class into child
+                        if (all) {
+                            var list_child = results[i].childNodes,
+                                len = list_child.length;
+                            if (len > 0) {
+                                (function(list, len) {
+                                    for (var j = len; j--;) {
+                                        list[j].className = '';
+                                        var new_list = list[j].childNodes,
+                                            new_len = new_list.length;
+                                        if (new_len > 0) {
+                                            arguments.callee(new_list, new_len);
+                                        }
+                                    }
+                                })(list_child, len);
+                            }
+                        }
+                    }
+
+                }
+                return this;
+            },
+            /**
+             * CSS handler extension
+             * ---------------------
+             *
+             * Alter the CSS properties of a list of DOM nodes.
+             *
+             * Usage
+             * -----
+             *
+             *     tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)
+             *
+             * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES*
+             * is an object containing the CSS properties to set.
+             *
+             * Example #1 (Set all h1 tags to 34px with color red)
+             * ---------------------------------------------------
+             *
+             *     <h1> This is one headline. </h1>
+             *     <h1> This is another headline. </h1>
+             *     ...
+             *     tiramisu.get('h1').css({
+             *         'font-size': '12px',
+             *         'color': 'red'
+             *     });
+             *
+             * Example #2 (Get attribute out of style)
+             * ---------------------------------------------------
+             *
+             *     <h1 id="my_id" style="color:red"> This is one headline. </h1>
+             *     ...
+             *     tiramisu.get('#my_id').css("color")
+             *
+             *  @param {Object} obj An object containing CSS properties
+             */
+            'css': function(obj) {
+                var i, key, browser = t.detect('browser'),
+                    ie_older = t.detect('isIEolder'),
+                    ie = t.detect('isIE');
+
+                // For handling IE CSS Attributes
+                var attr = {
+                    'opacity': function(obj, value) {
+                        if (value !== undefined) {
+                            // Setter
+                            if (ie) {
+                                obj.style.opacity = value;
+                                obj.style.filter = 'alpha(opacity=' + value * 100 + ')';
+                            } else {
+                                obj.style.opacity = value;
+                            }
+                        } else {
+                            // Getter
+                            return obj.style.opacity
+                        }
+                    },
+                    'border-radius': function(obj, value) {
+                        if (value) {
+                            if (browser === 'f3') {
+                                obj.style.MozBorderRadius = value; // Firefox 3.6 <=
+                            }
+                        } else {
+                            if (browser === 'f3') {
+                                return obj.style.MozBorderRadius;
+                            } else if (browser === 'ie9+') {
+                                return obj.style.borderRadius;
+                            }
+                        }
+                    }
+                };
+
+                if (typeof(obj) === 'string') {
+                    if (ie || browser === 'f3') {
+                        if (obj == 'border-radius') {
+                            return attr[obj](results[0])
+                        }
+                        return results[0].style[obj];
+                    }
+                    return results[0].style[obj];
+                }
+
+                // Apply to all elements
+                for (i = len_result; i--;) {
+                    for (key in obj) {
+                        if (obj.hasOwnProperty(key)) {
+                            // Need to handle different browsers
+                            if (ie || browser === 'f3') {
+                                if (attr[key] !== undefined) {
+                                    attr[key](results[i], obj[key]);
+                                } else {
+                                    // No match in attr
+                                    results[i].style[key] = obj[key];
+                                }
+                            } else {
+                                // The third param is for W3C Standard
+                                results[i].style.setProperty(key, obj[key], '');
+                            }
+                        }
+                    }
+                }
+                return this;
             },
             /**
              * Filter extension method
@@ -1469,205 +1576,103 @@
                 return this;
             },
             /**
-             * Remove Class extension method
+             * Form field value extension method
              * ---------------------------------
              *
-             * Removes class
+             * Gets or sets the value of a form field of the first CSS Selector
+             * element.
              *
              * Usage
              * -----
              *
-             *     tiramisu.get(*SELECTOR*).removeClass(*CLASS*)
+             *     tiramisu.get(*SELECTOR*).value([*VALUE*])
              *
-             * where *SELECTOR* is a valid CSS selector and *CLASS* is class name
+             * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an
+             * optional value to set the element's innerHTML value.
              *
-             * Example #1 (Remove class of the element)
-             * -----------------------------------------
+             * Example #1 (Get the current value of a select list)
+             * ---------------------------------------------------
              *
-             *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
+             *     <form id="myForm" action='#' method="GET">
+             *       <select>
+             *         <option> Apple </option>
+             *         <option> Strawberry </option>
+             *         <option> Banana </option>
+             *       </select>
+             *     </form>
+             *     ...
+             *     // The default selected value is “Apple”
+             *     var current = t.get('myForm select').value();
              *
-             * calling *t.get('#tasty').removeClass('my_class_two')* will give the following results:
+             * Example #2 (Set the current value of a select list)
+             * ---------------------------------------------------
              *
-             *     <p id="tasty" class="my_class">Hi Gianluca</p>
+             *     <form id="myForm" action='#' method="GET">
+             *       <select>
+             *         <option> Apple </option>
+             *         <option> Strawberry </option>
+             *         <option> Banana </option>
+             *       </select>
+             *     </form>
+             *     ...
+             *     t.get('myForm select').value('Strawberry');
              *
-             * Example #2 (Remove all class of the element)
-             * --------------------------------------
+             *     // Now the selected value is “Strawberry”
+             *     var current = t.get('myForm select').value();
              *
-             *     <p id="tasty" class="my_class my_class_two">Hi Gianluca</p>
+             * Example #3 (Get the current values of a series of elements)
+             * ---------------------------------------------------
              *
-             * calling *t.get('#tasty').removeClass()* will give the following results:
+             *     <input type="hidden" name="name_one" value="one" class="i_am_class">
+             *     <input type="hidden" name="name_two" value="two" class="i_am_class">
+             *     <input type="hidden" name="name_three" value="three" class="i_am_class">
+             *     <input type="hidden" name="name_four" value="four" class="i_am_class">
+             *     ...
+             *     t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']
              *
-             *     <p id="tasty" class="">Hi Gianluca</p>
              *
-             *
-             * Example #3 (Remove all class of the element and child)
-             * --------------------------------------
-             *
-             *     <p id="tasty" class="my_class">
-             *          <span class="my_class_one">Hi one</span>
-             *          <span class="my_class_two">Hi two</span>
-             *     </p>
-             *
-             * calling *t.get('#tasty').removeClass(':all')* will give the following results:
-             *
-             *     <p id="tasty" class="">
-             *          <span class="">Hi one</span>
-             *          <span class="">Hi two</span>
-             *     </p>
-             *
+             * @param {String} [set] An optional string containing the field value to set
+             * @return {[String]} An optional string containing the selector's first element field value
              *
              */
-            'removeClass': function(el) {
+            'value': function(set) {
+                var value = function(i) {
+                        if (t.detect('isIE') || t.detect('isIEolder')) {
+                            if (results[i].type == 'select-one') {
+                                return results[i].options[results[i].selectedIndex].value;
+                            }
+                            return results[i].value;
+                        }
+                        return results[i].value;
+                    };
+
+                var setValue = function(i, s) {
+                        if (t.detect('isIE') || t.detect('isIEolder')) {
+                            if (results[i].type == 'select-one') {
+                                results[i].options[results[i].selectedIndex].value = s;
+                            }
+                            results[i].value = s;
+                        } else {
+                            results[i].value = s;
+                        }
+                    };
+
                 if (results[0] === undefined) {
                     return '';
                 }
 
-                var i, j, text, all = false;
-
-                if (el === ':all') {
-                    el = undefined;
-                    var all = true;
-                }
-
-
-                if (el !== undefined && typeof el === 'string') {
-
-                    var re = new RegExp('(\\s|^)' + el + '(\\s|$)');
-                    // Remove class into element
-                    for (i = len_result; i--;) {
-                        text = results[i].className.replace(re, '');
-                        results[i].className = text;
-                    }
-
+                if (set !== undefined) {
+                    setValue(0, set);
                 } else {
-
-                    for (i = len_result; i--;) {
-                        // Remove all class into element
-                        results[i].className = '';
-
-                        // Remove all class into child
-                        if (all) {
-                            var list_child = results[i].childNodes,
-                                len = list_child.length;
-                            if (len > 0) {
-                                (function(list, len) {
-                                    for (var j = len; j--;) {
-                                        list[j].className = '';
-                                        var new_list = list[j].childNodes,
-                                            new_len = new_list.length;
-                                        if (new_len > 0) {
-                                            arguments.callee(new_list, new_len);
-                                        }
-                                    }
-                                })(list_child, len);
-                            }
+                    if (len_result > 1) {
+                        var list = [];
+                        for (i = 0; i < len_result; i++) {
+                            list.push(value(i));
                         }
+                        return list;
                     }
-
+                    return value(0);
                 }
-                return this;
-            },
-            // Modules integrated into t.get --------------------
-            /**
-             * CSS handler extension
-             * ---------------------
-             *
-             * Alter the CSS properties of a list of DOM nodes.
-             *
-             * Usage
-             * -----
-             *
-             *     tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)
-             *
-             * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES*
-             * is an object containing the CSS properties to set.
-             *
-             * Example #1 (Set all h1 tags to 34px with color red)
-             * ---------------------------------------------------
-             *
-             *     <h1> This is one headline. </h1>
-             *     <h1> This is another headline. </h1>
-             *     ...
-             *     tiramisu.get('h1').css({
-             *         'font-size': '12px',
-             *         'color': 'red'
-             *     });
-             *
-             * Example #2 (Get attribute out of style)
-             * ---------------------------------------------------
-             *
-             *     <h1 id="my_id" style="color:red"> This is one headline. </h1>
-             *     ...
-             *     tiramisu.get('#my_id').css("color")
-             *
-             *  @param {Object} obj An object containing CSS properties
-             */
-            'css': function(obj) {
-                var i, key, browser = t.detect('browser'),
-                    ie_older = t.detect('isIEolder'),
-                    ie = t.detect('isIE');
-
-                // For handling IE CSS Attributes
-                var attr = {
-                    'opacity': function(obj, value) {
-                        if (value !== undefined) {
-                            // Setter
-                            if (ie) {
-                                obj.style.opacity = value;
-                                obj.style.filter = 'alpha(opacity=' + value * 100 + ')';
-                            } else {
-                                obj.style.opacity = value;
-                            }
-                        } else {
-                            // Getter
-                            return obj.style.opacity
-                        }
-                    },
-                    'border-radius': function(obj, value) {
-                        if (value) {
-                            if (browser === 'f3') {
-                                obj.style.MozBorderRadius = value; // Firefox 3.6 <=
-                            }
-                        } else {
-                            if (browser === 'f3') {
-                                return obj.style.MozBorderRadius;
-                            } else if (browser === 'ie9+') {
-                                return obj.style.borderRadius;
-                            }
-                        }
-                    }
-                };
-
-                if (typeof(obj) === 'string') {
-                    if (ie || browser === 'f3') {
-                        if (obj == 'border-radius') {
-                            return attr[obj](results[0])
-                        }
-                        return results[0].style[obj];
-                    }
-                    return results[0].style[obj];
-                }
-
-                // Apply to all elements
-                for (i = len_result; i--;) {
-                    for (key in obj) {
-                        if (obj.hasOwnProperty(key)) {
-                            // Need to handle different browsers
-                            if (ie || browser === 'f3') {
-                                if (attr[key] !== undefined) {
-                                    attr[key](results[i], obj[key]);
-                                } else {
-                                    // No match in attr
-                                    results[i].style[key] = obj[key];
-                                }
-                            } else {
-                                // The third param is for W3C Standard
-                                results[i].style.setProperty(key, obj[key], '');
-                            }
-                        }
-                    }
-                }
-                return this;
             },
             // --------------------------------------------------
         };
@@ -1676,7 +1681,12 @@
         (function append_methods() {
             var key;
             for (key in methods) {
-                results[key] = methods[key];
+                // returns an empty function if selector result is empty 
+                if (len_result) {
+                    results[key] = methods[key];
+                } else {
+                    results[key] = function() {};
+                }
             }
         })();
         return results;
@@ -2103,10 +2113,6 @@
 
             'isWebkit': function() {
                 return this.browser() === 'webkit'
-            },
-
-            'querySelectorAll': function() {
-                return (tiramisu.selector === 'QSA' && typeof tiramisu.d.querySelectorAll !== 'undefined')
             },
 
             'color': function() {
