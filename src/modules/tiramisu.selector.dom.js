@@ -52,7 +52,7 @@
     }
 }
 
-tiramisu.modules.get.methods = {
+tiramisu.modules.get.methods.dom = {
 	/**
 	 * Ready method
 	 * ----------------------
