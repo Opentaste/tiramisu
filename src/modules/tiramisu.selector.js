@@ -401,7 +401,7 @@ tiramisu.modules.get = function(selector) {
     // Keeps the number of results obtained from the selector
     var len_result = results.length;
 
-    // Exposing methods
+    // Exposing basic methods
     var methods = {
         /**
          * Each iterator extension

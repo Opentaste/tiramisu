@@ -1,90 +1,15 @@
-// DOM Node insertion generic utility
- function insert_content(html, before, append) {
-	// Aliasing results
-	var results 	= tiramisu.get.results,
-		len_result 	= results.length;
-
-    if (results[0] === undefined) {
-        return '';
-    }
-
-    var i, j, parent, elements = [];
-
-    var div = t.d.createElement('div');
-    // “...A better version will be to create a document fragment, update it "offline",
-    // and add it to the live DOM when it's ready. When you add a document fragment to
-    // the DOM tree, the content of the fragment gets added, not the fragment itself.
-    // And this is really convenient. So the document fragment is a good way to wrap
-    // a number of nodes even when you're not containing them in a suitable parent
-    // (for example, your paragraphs are not in a div element)”
-    // 
-    // From “JavaScript Patterns”, pages 184-185, chapter VIII
-    var frag = t.d.createDocumentFragment();
-
-    for (i = 0; i < len_result; i++) {
-
-        if (typeof html === 'string') {
-            div.innerHTML = html;
-            elements = div.children;
-
-        } else if (typeof html.css === 'function') {
-            elements.push(html[0]); // html is t.get(t.make('p'))
-        } else {
-            elements.push(html); // html is an element
-        }
-
-        parent = results[i].parentNode;
-
-        for (j = 0; j < elements.length; j++) {
-
-            if (before) {
-                frag.insertBefore(elements[j], frag.firstChild);
-            } else {
-                frag.appendChild(elements[j]);
-            }
-        }
-
-        if (before) {
-            (append) ? results[i].insertBefore(frag, results[i].firstChild) : parent.insertBefore(frag, results[i]);
-        } else {
-            (append) ? results[i].appendChild(frag) : parent.insertBefore(frag, results[i].nextSibling);
-        }
-    }
-}
-
+/**
+ * DOM Selector methods
+ * ====================
+ * 
+ * Several methods for DOM-related tasks:
+ *
+ * *  *Insert/Append*
+ * *  *Insert Before/Prepend*
+ * *  *Empty/Destroy*
+ *
+ */
 tiramisu.modules.get.methods.dom = {
-	/**
-	 * Ready method
-	 * ----------------------
-	 *
-	 * Make sure that DOM elements exist when it run the events.
-	 *
-	 * Usage
-	 * -----
-	 *
-	 *     tiramisu.get(*SELECTOR*).ready(*FUNCTION*)
-	 *
-	 * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements)
-	 * and *FUNCTION* is the function to execute when the DOM is ready.
-	 *
-	 * Example #1
-	 * -----------------------------------------
-	 *
-	 *     t.get(document).ready(function(){
-	 *          alert('This will be executed when the dom is ready");
-	 *     });
-	 *
-	 *
- 	 */
-	'ready': function(def) {
-    	t.d.onreadystatechange = function() {
-	        if (t.d.readyState == "complete") {
-	            // Run the callback
-	            def();
-	            return this;
-	        }
-	    }
-    },
     /**
      * Insert Before method
      * --------------------
@@ -418,3 +343,57 @@ tiramisu.modules.get.methods.dom = {
         return this;
     },
 };
+
+// DOM Node insertion generic utility
+ function insert_content(html, before, append) {
+    // Aliasing results
+    var results     = tiramisu.get.results,
+        len_result  = results.length;
+
+    if (results[0] === undefined) {
+        return '';
+    }
+
+    var i, j, parent, elements = [];
+
+    var div = t.d.createElement('div');
+    // “...A better version will be to create a document fragment, update it "offline",
+    // and add it to the live DOM when it's ready. When you add a document fragment to
+    // the DOM tree, the content of the fragment gets added, not the fragment itself.
+    // And this is really convenient. So the document fragment is a good way to wrap
+    // a number of nodes even when you're not containing them in a suitable parent
+    // (for example, your paragraphs are not in a div element)”
+    // 
+    // From “JavaScript Patterns”, pages 184-185, chapter VIII
+    var frag = t.d.createDocumentFragment();
+
+    for (i = 0; i < len_result; i++) {
+
+        if (typeof html === 'string') {
+            div.innerHTML = html;
+            elements = div.children;
+
+        } else if (typeof html.css === 'function') {
+            elements.push(html[0]); // html is t.get(t.make('p'))
+        } else {
+            elements.push(html); // html is an element
+        }
+
+        parent = results[i].parentNode;
+
+        for (j = 0; j < elements.length; j++) {
+
+            if (before) {
+                frag.insertBefore(elements[j], frag.firstChild);
+            } else {
+                frag.appendChild(elements[j]);
+            }
+        }
+
+        if (before) {
+            (append) ? results[i].insertBefore(frag, results[i].firstChild) : parent.insertBefore(frag, results[i]);
+        } else {
+            (append) ? results[i].appendChild(frag) : parent.insertBefore(frag, results[i].nextSibling);
+        }
+    }
+}
