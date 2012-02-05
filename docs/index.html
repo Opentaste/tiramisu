@@ -584,9 +584,31 @@ produce the following result:
 <td class="docs">
 <h2>Insert After method</h2>
 
-<p>Insert text or html, after each element.</p>
-
-<h2>Usage</h2>
+<ul><li>A version number;</li><li>A document object reference;</li><li><em>requestAnimFrame</em> (used for handling tasks).</li><li>A <em>Module Container</em> (TODO: Write detailed docs about it)
+ </li></ul>
+</td>
+<td class="code">
+<pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
+        
+        <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
+        
+        <span class="comment">// Tiramisu modules</span>
+        <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
+        
+        <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
+            <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
+            <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
+                <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
+            };
+        })();
+        
+        <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>;
+        
+        <span class="this">this</span>.<span class="variable">qsa_chosen</span> = (<span class="this">this</span>.<span class="variable">selector</span> === <span class="string">'QSA'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span> ? <span class="variable">true</span> : <span class="variable">false</span>);
+        
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6'</span>;
+        
+    }
 
 <pre><code>tiramisu.get(*SELECTOR*).after(*HTML*)</code></pre>
 
