@@ -1,6 +1,6 @@
 /**
  *
- * Tiramisu - A JavaScript μFramework
+ * Tiramisu - A JavaScript μLibrary
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
  * Copyright: (c) 2011/2012 Gianluca Bargelli and Leonardo Zizzamia

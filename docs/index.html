@@ -110,7 +110,7 @@ code .this { color: #19469D; }</style>
 	<body>
 <table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.6</h3>
 
-<p>Tiramisu is a tiny, modular and fast JavaScript framework 
+<p>Tiramisu is a tiny, modular and fast JavaScript library 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
 
 <pre><code>tiramisu.get('h1').each(function() {
@@ -1272,6 +1272,8 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 </td>
 <td class="code">
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
+    <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>;
+    <span class="this">this</span>.<span class="variable">native_qsa</span> = (<span class="this">this</span>.<span class="variable">selector</span> === <span class="string">'QSA'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span> ? <span class="variable">true</span> : <span class="variable">false</span>);
 
     <span class="keyword">function</span> <span class="variable">toArray</span>(<span class="variable">obj</span>) {
         <span class="keyword">var</span> <span class="variable">array</span> = [];
@@ -2114,8 +2116,6 @@ t.get('p').filter(':even')</code></pre>
             };
         })();
         
-        <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>;
-        <span class="this">this</span>.<span class="variable">native_qsa</span> = (<span class="this">this</span>.<span class="variable">selector</span> === <span class="string">'QSA'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span> ? <span class="variable">true</span> : <span class="variable">false</span>);
         <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6'</span>;
     }
 

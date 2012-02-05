@@ -1,7 +1,7 @@
 
 ### version 0.1.6 ###
 
-Tiramisu is a tiny, modular and fast JavaScript framework 
+Tiramisu is a tiny, modular and fast JavaScript library 
 which takes inspiration from the famous [jQuery][1] syntax:
 
     tiramisu.get('h1').each(function() {
