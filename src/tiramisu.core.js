@@ -33,8 +33,6 @@
             };
         })();
         
-        this.selector = 'QSA';
-        this.native_qsa = (this.selector === 'QSA' && typeof this.d.querySelectorAll !== 'undefined' ? true : false);
         this.version = '0.1.6';
     }
 

@@ -62,6 +62,8 @@
  *
  */
 tiramisu.modules.get = function(selector) {
+    this.selector = 'QSA';
+    this.native_qsa = (this.selector === 'QSA' && typeof this.d.querySelectorAll !== 'undefined' ? true : false);
 
     function toArray(obj) {
         var array = [];
