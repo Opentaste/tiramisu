@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.5-b2</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.6</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript framework 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -123,7 +123,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.5-b2)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
+<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.6)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
 <td class="docs">
 <h1>Framework Ajax Module</h1>
 
@@ -273,7 +273,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
     
     <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
     <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span> : [<span class="string">'browserdetect'</span>,<span class="string">'taskengine'</span>]
+        <span class="variable">dependencies</span> : [<span class="string">'browserdetect'</span>, <span class="string">'taskengine'</span>]
     }
     
     <span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
@@ -461,7 +461,7 @@ the possible return values are:</p>
     
     <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
     <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span> : <span class="keyword">null</span>
+        <span class="variable">dependencies</span> : []
     }
     
     <span class="keyword">var</span> <span class="variable">nav_agent</span> = <span class="variable">navigator</span>.<span class="variable">userAgent</span>,
@@ -517,10 +517,6 @@ the possible return values are:</p>
             <span class="keyword">return</span> <span class="this">this</span>.<span class="variable">browser</span>() === <span class="string">'webkit'</span>
         },
 
-        <span class="string">'querySelectorAll'</span>: <span class="keyword">function</span>() {
-            <span class="keyword">return</span> (<span class="variable">tiramisu</span>.<span class="variable">selector</span> === <span class="string">'QSA'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">tiramisu</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span>)
-        },
-
         <span class="string">'color'</span>: <span class="keyword">function</span>() {
             <span class="keyword">if</span> (<span class="this">this</span>.<span class="variable">isIEolder</span>()) {
                 <span class="keyword">return</span> <span class="variable">false</span>;
@@ -532,529 +528,413 @@ the possible return values are:</p>
 };
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/modules/tiramisu.taskengine.js"><a href="#">tiramisu.taskengine</a></h2></td><td>src/modules/tiramisu.taskengine.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="src/modules/tiramisu.selector.dom.js"><a href="#">tiramisu.selector.dom</a></h2></td><td>src/modules/tiramisu.selector.dom.js</td></tr><tr class="code">
 <td class="docs">
-<h1>Task Engine Module</h1>
+<h1>DOM Selector methods</h1>
 
-<p>This module is used to perform a function at a particular amount of time
-or perform the same function several times in that time frame.</p>
+<p>Several methods for DOM-related tasks:</p>
+
+<ul><li><em>Insert/Append</em></li><li><em>Insert Before/Prepend</em></li><li><p><em>Empty/Destroy</em></p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>.<span class="variable">dom</span> = {</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Insert Before method</h2>
+
+<p>Insert text or html, before each element.</p>
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.task(delay, [interval], callback);</code></pre>
+<pre><code>tiramisu.get(*SELECTOR*).before(*HTML*)</code></pre>
 
-<p>where “interval” is an optional argument</p>
+<p>where <em>SELECTOR</em> is a valid CSS selector, <em>HTML</em> is
+the element to insert.</p>
 
-<h2>Example #1 (The callback is executed after 2000 ms)</h2>
+<h2>Example #1 ()</h2>
 
-<pre><code>tiramisu.task(2000, callback)</code></pre>
+<pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
+...
+t.get('.inner').before('&lt;p&gt;ciccio&lt;/p&gt;')
 
-<h2>Example #2 (The callback is executed every 100 ms in a period of 2000ms)</h2>
+produce the following result:
 
-<pre><code>tiramisu.task(2000, 100, callback)</code></pre>
-
-<h2>Example #3 (The callback is executed every 500 ms in loop.)</h2>
-
-<pre><code>tiramisu.task('loop', 500, callback)</code></pre>
+&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;</code></pre>
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>integer</em>  delay The total task delay(ms)</p></li><li><p><strong>param</strong>: <em>integer</em>  [interval] The interval of the repetitions(ms)</p></li><li><p><strong>param</strong>: <em>Function</em>  cb The callback function</p></li></ul>
+<ul><li><p><strong>param</strong>: <em>html</em>  The element to insert</p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">task</span> = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
-    
-    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
-    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span> : <span class="keyword">null</span>
-    }
-    
-    <span class="keyword">var</span> <span class="variable">interval</span>, <span class="variable">requestAnimFrame</span> = <span class="variable">t</span>.<span class="variable">requestAnimFrame</span>;
-
-    <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
-        <span class="variable">interval</span> = <span class="variable">arguments</span>[<span class="number integer">1</span>];
-        <span class="variable">cb</span> = <span class="variable">arguments</span>[<span class="number integer">2</span>];
-    }
-
-    <span class="keyword">var</span> <span class="variable">start</span> = +<span class="keyword">new</span> <span class="class">Date</span>(),
-        <span class="variable">pass</span> = <span class="variable">interval</span>;
-
-    <span class="keyword">function</span> <span class="variable">animate</span>() {
-        <span class="keyword">var</span> <span class="variable">progress</span> = +<span class="keyword">new</span> <span class="class">Date</span>() - <span class="variable">start</span>;
-
-        <span class="keyword">if</span> (<span class="variable">interval</span> !== <span class="variable">undefined</span>) {
-            <span class="keyword">if</span> (<span class="variable">progress</span> &<span class="variable">gt</span>; <span class="variable">pass</span>) {
-                <span class="variable">pass</span> += <span class="variable">interval</span>;
-                <span class="variable">cb</span>();
-            }
-        }
-
-        <span class="comment">// The recursion continues only in two cases:</span>
-        <span class="comment">// - The elapsed time is less than the total time;</span>
-        <span class="comment">// - The total time is infinite (so a loop) but there </span>
-        <span class="comment">//   is an interval of time between repetitions of the callback.</span>
-        <span class="keyword">if</span> (<span class="variable">progress</span> &<span class="variable">lt</span>; <span class="variable">delay</span> || (<span class="variable">delay</span> == <span class="string">'loop'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">interval</span> !== <span class="variable">undefined</span>)) {
-            <span class="variable">requestAnimFrame</span>(<span class="variable">animate</span>);
-        } <span class="keyword">else</span> {
-            <span class="keyword">if</span> (<span class="variable">interval</span> === <span class="variable">undefined</span>) {
-                <span class="variable">cb</span>();
-            }
-        }
-    }
-    <span class="variable">animate</span>();
-};
-</code></pre>
-</td>
-</tr><tr class="filename"><td><h2 id="src/tiramisu.core.js"><a href="#">tiramisu.core</a></h2></td><td>src/tiramisu.core.js</td></tr><tr class="code">
-<td class="docs">
-<p>The Framework's costructor exposes externally:</p>
-
-<ul><li>A version number;</li><li>A document object reference;</li><li><em>requestAnimFrame</em> (used for handling tasks).</li><li>A <em>Module Container</em> (TODO: Write detailed docs about it)
- </li></ul>
-</td>
-<td class="code">
-<pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.5-b2'</span>;
-        <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
-        <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>
-        <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
-            <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
-            <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
-                <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
-            };
-        })();
-
-        <span class="comment">// Tiramisu modules</span>
-        <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
-    }
-
-    <span class="comment">// Exposing the framework</span>
-    <span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
-
-
-    <span class="comment">// Cancels the event if it is cancelable, without stopping further propagation of the event.</span>
-    <span class="class">Event</span>.<span class="variable">prototype</span>.<span class="variable">preventDefault</span> = <span class="keyword">function</span>() {
-        <span class="keyword">if</span> (<span class="variable">e</span>.<span class="variable">preventDefault</span>) {
-            <span class="variable">e</span>.<span class="variable">preventDefault</span>();
-        } <span class="keyword">else</span> { <span class="comment">// IE</span>
-            <span class="variable">e</span>.<span class="variable">returnValue</span> = <span class="variable">false</span>;
-        }
-    }
-
-    <span class="comment">// Keep in memory the events created</span>
-    <span class="keyword">var</span> <span class="variable">local_event</span> = {};</code></pre>
+<pre><code><span class="string">'before'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+        <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">true</span>, <span class="variable">false</span>)
+        <span class="keyword">return</span> <span class="this">this</span>;
+    },</code></pre>
 </td>
 </tr>
 <tr class="code">
 <td class="docs">
-<h1>Make Module</h1>
+<h2>Insert After method</h2>
 
-<pre><code> </code></pre>
-</td>
-<td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">make</span> = <span class="keyword">function</span>(<span class="variable">element</span>) {
-        <span class="keyword">return</span> <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="variable">element</span>));
-    }</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<h1>Extend Module</h1>
-
-<p>Extending object1 with object2's methods</p>
-
-<pre><code> </code></pre>
-</td>
-<td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">extend</span> =  <span class="keyword">function</span> (<span class="variable">first</span>, <span class="variable">second</span>) {
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">prop</span> <span class="keyword">in</span> <span class="variable">second</span>) {
-             <span class="variable">first</span>[<span class="variable">prop</span>] = <span class="variable">second</span>[<span class="variable">prop</span>];
-         }
-     }</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<h1>Framework Selector Module</h1>
-
-<p>A CSS Parser for handling DOM elements.</p>
+<p>Insert text or html, after each element.</p>
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.get(*SELECTOR*)</code></pre>
+<pre><code>tiramisu.get(*SELECTOR*).after(*HTML*)</code></pre>
 
-<p>or</p>
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
+the element to insert.</p>
 
-<pre><code>t.get(*SELECTOR*)</code></pre>
+<h2>Example #1 (Inserting an element multiple times)</h2>
 
-<p>where <em>SELECTOR</em> is a <em>valid</em> CSS selector or, alternatively, an object
-(see examples below).</p>
-
-<p>Tiramisu will use <em>querySelectorAll</em> if the current browser implements it;
-if not present <strong>Tiramisu</strong> fallback to a custom, simple CSS selector.</p>
-
-<p>This simple selector implementation is <em>cross-browser</em> and actually implements
-the following CSS rules:</p>
-
-<ul><li><em>id and name</em>;</li><li><em>id</em>;</li><li><em>class</em>;</li><li><em>name and class</em>;</li><li><em>element</em>;</li></ul>
-
-<p>Note that this implementation is not fast as <em>querySelectorAll</em> since it relies
-on pure (<em>not optimized</em>) JavaScript.</p>
-
-<h2>Example #1 (Select all li elements)</h2>
-
-<pre><code>&lt;ul id="myList"&gt;
-  &lt;li&gt; First. &lt;/li&gt;
-  &lt;li&gt; Second. &lt;/li&gt;
-  &lt;li&gt; Third. &lt;/li&gt;
-&lt;/ul&gt;
+<pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
 ...
-var li = tiramisu.get('#myList li');</code></pre>
+t.get('.inner').after('&lt;p&gt;ciccio&lt;/p&gt;')
 
-<h2>Example #2 (Select all li with class “special”)</h2>
+produces the following result:
 
-<pre><code>&lt;ul id="myList"&gt;
-  &lt;li&gt; First. &lt;/li&gt;
-  &lt;li class="special"&gt; Second. &lt;/li&gt;
-  &lt;li&gt; Third. &lt;/li&gt;
-&lt;/ul&gt;
-...
-var li_special1 = tiramisu.get('#myList .special');
-
-// Better way to do it :)
-var li_special2 = tiramisu.get('#myList li.special');</code></pre>
+&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
+&lt;div class="inner"&gt;ciao&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;
+&lt;div class="inner"&gt;mondo&lt;/div&gt;
+&lt;p&gt;ciccio&lt;/p&gt;</code></pre>
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>String</em>  selector A CSS Selector</p></li><li><p><strong>returns</strong>: <em>Object</em>  The node list</p></li><li><p><strong>api</strong>: <em>public</em></p><p> </p></li></ul>
+<ul><li><p><strong>param</strong>: <em>html</em>  The element to insert</p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="class">Tiramisu</span>.<span class="variable">prototype</span>.<span class="variable">get</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
-
-        <span class="comment">// DOM Node insertion generic utility</span>
-
-        <span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">before</span>, <span class="variable">append</span>) {
-            <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
-                <span class="keyword">return</span> <span class="string">''</span>;
-            }
-
-            <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">j</span>, <span class="variable">parent</span>, <span class="variable">elements</span> = [];
-
-            <span class="keyword">var</span> <span class="variable">div</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="string">'div'</span>);
-            <span class="comment">// “...A better version will be to create a document fragment, update it &quot;offline&quot;,</span>
-            <span class="comment">// and add it to the live DOM when it's ready. When you add a document fragment to</span>
-            <span class="comment">// the DOM tree, the content of the fragment gets added, not the fragment itself.</span>
-            <span class="comment">// And this is really convenient. So the document fragment is a good way to wrap</span>
-            <span class="comment">// a number of nodes even when you're not containing them in a suitable parent</span>
-            <span class="comment">// (for example, your paragraphs are not in a div element)”</span>
-            <span class="comment">// </span>
-            <span class="comment">// From “JavaScript Patterns”, pages 184-185, chapter VIII</span>
-            <span class="keyword">var</span> <span class="variable">frag</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createDocumentFragment</span>();
-
-            <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
-
-                <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">html</span> === <span class="string">'string'</span>) {
-                    <span class="variable">div</span>.<span class="variable">innerHTML</span> = <span class="variable">html</span>;
-                    <span class="variable">elements</span> = <span class="variable">div</span>.<span class="variable">children</span>;
-
-                } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">html</span>.<span class="variable">css</span> === <span class="string">'function'</span>) {
-                    <span class="variable">elements</span>.<span class="variable">push</span>(<span class="variable">html</span>[<span class="number integer">0</span>]); <span class="comment">// html is t.get(t.make('p'))</span>
-                } <span class="keyword">else</span> {
-                    <span class="variable">elements</span>.<span class="variable">push</span>(<span class="variable">html</span>); <span class="comment">// html is an element</span>
-                }
-
-                <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
-                <span class="keyword">var</span> <span class="variable">num_length</span> = <span class="variable">elements</span>.<span class="variable">length</span>
-
-                <span class="keyword">for</span> (<span class="variable">j</span> = <span class="number integer">0</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="variable">num_length</span>; <span class="variable">j</span>++) {
-
-                    <span class="keyword">if</span> (<span class="variable">before</span>) {
-                        <span class="variable">frag</span>.<span class="variable">insertBefore</span>(<span class="variable">elements</span>[<span class="variable">j</span>], <span class="variable">frag</span>.<span class="variable">firstChild</span>);
-                    } <span class="keyword">else</span> {
-                        <span class="variable">frag</span>.<span class="variable">appendChild</span>(<span class="variable">elements</span>[<span class="variable">j</span>]);
-                    }
-                }
-
-                <span class="keyword">if</span> (<span class="variable">before</span>) {
-                    (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">firstChild</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>]);
-                } <span class="keyword">else</span> {
-                    (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">appendChild</span>(<span class="variable">frag</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
-                }
-            }
-        }
-
-        <span class="keyword">function</span> <span class="variable">toArray</span>(<span class="variable">obj</span>) {
-            <span class="keyword">var</span> <span class="variable">array</span> = [];
-            <span class="comment">// Zero-fill right shift to ensure that length is an UInt32</span>
-            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">obj</span>.<span class="variable">length</span>; <span class="variable">i</span>--;) {
-                <span class="variable">array</span>[<span class="variable">i</span>] = <span class="variable">obj</span>[<span class="variable">i</span>];
-            }
-            <span class="keyword">return</span> <span class="variable">array</span>;
-        }
-
-        <span class="comment">// The good way to eliminate a work repetition in functions is through lazy loading.</span>
-        <span class="comment">// Lazy loading means that no work is done until the information is necessary.</span>
-        <span class="comment">// Here I implement a lazy-loading pattern. The first time either method is</span>
-        <span class="comment">// called, a check is made to determine the appropriate way to attach or detach the</span>
-        <span class="comment">// event handler. Then the original function is overwrittern with a new function that</span>
-        <span class="comment">// contains just the appropriate course of action.</span>
-        <span class="comment">// By High Performance JavaScript, Nicholas C. Zakas</span>
-        <span class="keyword">var</span> <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-
-                <span class="comment">// overwrite te existing function</span>
-                <span class="keyword">if</span> (<span class="variable">target</span>.<span class="variable">addEventListener</span>) { <span class="comment">// DOM 2 Events</span>
-                    <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-                        <span class="variable">target</span>.<span class="variable">addEventListener</span>(<span class="variable">event_type</span>, <span class="variable">handler</span>, <span class="variable">false</span>);
-                    }
-                } <span class="keyword">else</span> { <span class="comment">// IE</span>
-                    <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-                        <span class="variable">target</span>.<span class="variable">attachEvent</span>(<span class="string">'on'</span> + <span class="variable">event_type</span>, <span class="variable">handler</span>);
-                    }
-                }
-
-                <span class="comment">// call the new functions</span>
-                <span class="variable">add_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
-            }
-            <span class="comment">// And brother function, remove_handler</span>
-        <span class="keyword">var</span> <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-
-                <span class="comment">// overwrite te existing function</span>
-                <span class="keyword">if</span> (<span class="variable">target</span>.<span class="variable">removeEventListener</span>) { <span class="comment">// DOM 2 Events</span>
-                    <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-                        <span class="variable">target</span>.<span class="variable">removeEventListener</span>(<span class="variable">event_type</span>, <span class="variable">handler</span>, <span class="variable">false</span>);
-                    }
-                } <span class="keyword">else</span> { <span class="comment">// IE</span>
-                    <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-                        <span class="variable">target</span>.<span class="variable">detachEvent</span>(<span class="string">'on'</span> + <span class="variable">event_type</span>, <span class="variable">handler</span>);
-                    }
-                }
-
-                <span class="comment">// call the new functions</span>
-                <span class="variable">remove_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
-            }
-
-        <span class="keyword">var</span> <span class="variable">macros</span> = {
-            <span class="string">'nl'</span>: <span class="string">'\n|\r\n|\r|\f'</span>,
-            <span class="string">'nonascii'</span>: <span class="string">'[^\0-\177]'</span>,
-            <span class="string">'unicode'</span>: <span class="string">'\\[0-9A-Fa-f]{1,6}(\r\n|[\s\n\r\t\f])?'</span>,
-            <span class="string">'escape'</span>: <span class="string">'#{unicode}|\\[^\n\r\f0-9A-Fa-f]'</span>,
-            <span class="string">'nmchar'</span>: <span class="string">'[_A-Za-z0-9-]|#{nonascii}|#{escape}'</span>,
-            <span class="string">'nmstart'</span>: <span class="string">'[_A-Za-z]|#{nonascii}|#{escape}'</span>,
-            <span class="string">'ident'</span>: <span class="string">'[-@]?(#{nmstart})(#{nmchar})*'</span>,
-            <span class="string">'name'</span>: <span class="string">'(#{nmchar})+'</span>
-        };
-
-        <span class="keyword">var</span> <span class="variable">rules</span> = {
-            <span class="string">'id and name'</span>: <span class="string">'(#{ident}##{ident})'</span>,
-            <span class="string">'id'</span>: <span class="string">'(##{ident})'</span>,
-            <span class="string">'class'</span>: <span class="string">'(\\.#{ident})'</span>,
-            <span class="string">'name and class'</span>: <span class="string">'(#{ident}\\.#{ident})'</span>,
-            <span class="string">'element'</span>: <span class="string">'(#{ident})'</span>,
-            <span class="string">'pseudo class'</span>: <span class="string">'(:#{ident})'</span>
-        };
-
-        <span class="comment">// Normalize the selector</span>
-
-        <span class="keyword">function</span> <span class="variable">normalize</span>(<span class="variable">text</span>) {
-            <span class="keyword">return</span> <span class="variable">text</span>.<span class="variable">replace</span>(<span class="regexp">/^\s+|\s+$/g</span>, <span class="string">''</span>).<span class="variable">replace</span>(<span class="regexp">/[ \t\r\n\f]+/g</span>, <span class="string">' '</span>);
-        }
-
-        <span class="comment">// Scan macros and rules to build a big regex</span>
-        <span class="keyword">var</span> <span class="variable">scanner</span> = <span class="keyword">function</span>() {
-                <span class="keyword">function</span> <span class="variable">replacePattern</span>(<span class="variable">pattern</span>, <span class="variable">patterns</span>) {
-                    <span class="keyword">var</span> <span class="variable">matched</span> = <span class="variable">true</span>,
-                        <span class="variable">match</span>;
-                    <span class="keyword">while</span> (<span class="variable">matched</span>) {
-                        <span class="variable">match</span> = <span class="variable">pattern</span>.<span class="variable">match</span>(<span class="regexp">/#\{([^}]+)\}/</span>);
-                        <span class="keyword">if</span> (<span class="variable">match</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">match</span>[<span class="number integer">1</span>]) {
-                            <span class="variable">pattern</span> = <span class="variable">pattern</span>.<span class="variable">replace</span>(<span class="keyword">new</span> <span class="class">RegExp</span>(<span class="string">'#\{'</span> + <span class="variable">match</span>[<span class="number integer">1</span>] + <span class="string">'\}'</span>, <span class="string">'g'</span>), <span class="variable">patterns</span>[<span class="variable">match</span>[<span class="number integer">1</span>]]);
-                            <span class="variable">matched</span> = <span class="variable">true</span>;
-                        } <span class="keyword">else</span> {
-                            <span class="variable">matched</span> = <span class="variable">false</span>;
-                        }
-                    }
-                    <span class="keyword">return</span> <span class="variable">pattern</span>;
-                }
-
-                <span class="keyword">function</span> <span class="variable">escapePattern</span>(<span class="variable">text</span>) {
-                    <span class="keyword">return</span> <span class="variable">text</span>.<span class="variable">replace</span>(<span class="regexp">/\/</span><span class="regexp">/g, '/</span>/');
-                }
-
-                <span class="keyword">function</span> <span class="variable">convertPatterns</span>() {
-                    <span class="keyword">var</span> <span class="variable">key</span>, <span class="variable">pattern</span>, <span class="variable">results</span> = {},
-                        <span class="variable">patterns</span>, <span class="variable">source</span>;
-
-                    <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> === <span class="number integer">2</span>) {
-                        <span class="variable">source</span> = <span class="variable">arguments</span>[<span class="number integer">0</span>];
-                        <span class="variable">patterns</span> = <span class="variable">arguments</span>[<span class="number integer">1</span>]
-                    } <span class="keyword">else</span> {
-                        <span class="variable">source</span> = <span class="variable">arguments</span>[<span class="number integer">0</span>];
-                        <span class="variable">patterns</span> = <span class="variable">arguments</span>[<span class="number integer">0</span>];
-                    }
-
-                    <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">patterns</span>) {
-                        <span class="variable">pattern</span> = <span class="variable">escapePattern</span>(<span class="variable">replacePattern</span>(<span class="variable">patterns</span>[<span class="variable">key</span>], <span class="variable">source</span>));
-                        <span class="variable">results</span>[<span class="variable">key</span>] = <span class="variable">pattern</span>;
-                    }
-                    <span class="keyword">return</span> <span class="variable">results</span>;
-                }
-
-                <span class="keyword">function</span> <span class="variable">joinPatterns</span>(<span class="variable">regexps</span>) {
-                    <span class="keyword">var</span> <span class="variable">results</span> = [],
-                        <span class="variable">key</span>;
-
-                    <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">regexps</span>) {
-                        <span class="variable">results</span>.<span class="variable">push</span>(<span class="variable">regexps</span>[<span class="variable">key</span>]);
-                    }
-
-                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="class">RegExp</span>(<span class="variable">results</span>.<span class="variable">join</span>(<span class="string">'|'</span>), <span class="string">'g'</span>);
-                }
-
-                <span class="keyword">return</span> <span class="variable">joinPatterns</span>(<span class="variable">convertPatterns</span>(<span class="variable">convertPatterns</span>(<span class="variable">macros</span>), <span class="variable">rules</span>));
-            };
-
-        <span class="keyword">var</span> <span class="variable">filter</span> = {
-            <span class="string">'byAttr'</span>: <span class="keyword">function</span>(<span class="variable">elements</span>, <span class="variable">attribute</span>, <span class="variable">value</span>) {
-                <span class="keyword">var</span> <span class="variable">key</span>, <span class="variable">results</span> = [];
-                <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">elements</span>) {
-                    <span class="keyword">if</span> (<span class="variable">elements</span>[<span class="variable">key</span>] &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">elements</span>[<span class="variable">key</span>][<span class="variable">attribute</span>] === <span class="variable">value</span>) {
-                        <span class="variable">results</span>.<span class="variable">push</span>(<span class="variable">elements</span>[<span class="variable">key</span>]);
-                    }
-                }
-                <span class="keyword">return</span> <span class="variable">results</span>;
-            }
-        };
-
-        <span class="keyword">var</span> <span class="variable">find</span> = {
-            <span class="string">'byId'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">id</span>) {
-                <span class="keyword">return</span> (<span class="variable">root</span>) ? [<span class="variable">root</span>.<span class="variable">getElementById</span>(<span class="variable">id</span>)] : [];
-            },
-
-            <span class="string">'byNodeName'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">tagName</span>) {
-                <span class="keyword">if</span> (<span class="variable">root</span> === <span class="keyword">null</span>) <span class="keyword">return</span> [];
-                <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">results</span> = [],
-                    <span class="variable">nodes</span> = <span class="variable">root</span>.<span class="variable">getElementsByTagName</span>(<span class="variable">tagName</span>);
-
-                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">nodes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
-                    <span class="variable">results</span>.<span class="variable">push</span>(<span class="variable">nodes</span>[<span class="variable">i</span>]);
-                }
-                <span class="keyword">return</span> <span class="variable">results</span>;
-            },
-
-            <span class="string">'byClassName'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">className</span>) {
-                <span class="keyword">if</span> (<span class="variable">root</span> === <span class="keyword">null</span>) <span class="keyword">return</span> [];
-                <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">results</span> = [],
-                    <span class="variable">nodes</span> = <span class="variable">root</span>.<span class="variable">getElementsByTagName</span>(<span class="string">'*'</span>);
-
-                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">nodes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
-                    <span class="keyword">if</span> (<span class="variable">nodes</span>[<span class="variable">i</span>].<span class="variable">className</span>.<span class="variable">match</span>(<span class="string">'\\b'</span> + <span class="variable">className</span> + <span class="string">'\\b'</span>)) {
-                        <span class="variable">results</span>.<span class="variable">push</span>(<span class="variable">nodes</span>[<span class="variable">i</span>]);
-                    }
-                }
-                <span class="keyword">return</span> <span class="variable">results</span>;
-            }
-        };
-
-        <span class="keyword">var</span> <span class="variable">findMap</span> = {
-            <span class="string">'id'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
-                <span class="variable">selector</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'#'</span>)[<span class="number integer">1</span>];
-                <span class="keyword">return</span> <span class="variable">find</span>.<span class="variable">byId</span>(<span class="variable">root</span>, <span class="variable">selector</span>);
-            },
-
-            <span class="string">'name and id'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
-                <span class="keyword">var</span> <span class="variable">matches</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'#'</span>),
-                    <span class="variable">name</span> = <span class="variable">matches</span>[<span class="number integer">0</span>],
-                    <span class="variable">id</span> = <span class="variable">matches</span>[<span class="number integer">1</span>];
-                <span class="keyword">return</span> <span class="variable">filter</span>.<span class="variable">byAttr</span>(<span class="variable">find</span>.<span class="variable">byId</span>(<span class="variable">root</span>, <span class="variable">id</span>), <span class="string">'nodeName'</span>, <span class="variable">name</span>.<span class="variable">toUpperCase</span>());
-            },
-
-            <span class="string">'name'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
-                <span class="keyword">return</span> <span class="variable">find</span>.<span class="variable">byNodeName</span>(<span class="variable">root</span>, <span class="variable">selector</span>);
-            },
-
-            <span class="string">'class'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
-                <span class="variable">selector</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'\.'</span>)[<span class="number integer">1</span>];
-                <span class="keyword">return</span> <span class="variable">find</span>.<span class="variable">byClassName</span>(<span class="variable">root</span>, <span class="variable">selector</span>);
-            },
-
-            <span class="string">'name and class'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
-                <span class="keyword">var</span> <span class="variable">matches</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'\.'</span>),
-                    <span class="variable">name</span> = <span class="variable">matches</span>[<span class="number integer">0</span>],
-                    <span class="variable">className</span> = <span class="variable">matches</span>[<span class="number integer">1</span>];
-                <span class="keyword">return</span> <span class="variable">filter</span>.<span class="variable">byAttr</span>(<span class="variable">find</span>.<span class="variable">byClassName</span>(<span class="variable">root</span>, <span class="variable">className</span>), <span class="string">'nodeName'</span>, <span class="variable">name</span>.<span class="variable">toUpperCase</span>());
-            }
-        };
-
-        <span class="keyword">var</span> <span class="variable">matchMap</span> = {
-            <span class="string">'id'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">selector</span>) {
-                <span class="variable">selector</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'#'</span>)[<span class="number integer">1</span>];
-                <span class="keyword">return</span> <span class="variable">element</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">element</span>.<span class="variable">id</span> === <span class="variable">selector</span>;
-            },
-
-            <span class="string">'name'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">nodeName</span>) {
-                <span class="keyword">return</span> <span class="variable">element</span>.<span class="variable">nodeName</span> === <span class="variable">nodeName</span>.<span class="variable">toUpperCase</span>();
-            },
-
-            <span class="string">'name and id'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">selector</span>) {
-                <span class="keyword">return</span> <span class="variable">matchMap</span>.<span class="variable">id</span>(<span class="variable">element</span>, <span class="variable">selector</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">matchMap</span>.<span class="variable">name</span>(<span class="variable">element</span>, <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'#'</span>)[<span class="number integer">0</span>]);
-            },
-
-            <span class="string">'class'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">selector</span>) {
-                <span class="keyword">if</span> (<span class="variable">element</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">element</span>.<span class="variable">className</span>) {
-                    <span class="variable">selector</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'\.'</span>)[<span class="number integer">1</span>];
-                    <span class="keyword">return</span> <span class="variable">element</span>.<span class="variable">className</span>.<span class="variable">match</span>(<span class="string">'\\b'</span> + <span class="variable">selector</span> + <span class="string">'\\b'</span>);
-                }
-            },
-
-            <span class="string">'name and class'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">selector</span>) {
-                <span class="keyword">return</span> <span class="variable">matchMap</span>[<span class="string">'class'</span>](<span class="variable">element</span>, <span class="variable">selector</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">matchMap</span>.<span class="variable">name</span>(<span class="variable">element</span>, <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'\.'</span>)[<span class="number integer">0</span>]);
-            }
-        };</code></pre>
+<pre><code><span class="string">'after'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+        <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">false</span>, <span class="variable">false</span>);
+        <span class="keyword">return</span> <span class="this">this</span>;
+    },</code></pre>
 </td>
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>Each iterator extension</h2>
+<h2>Append method</h2>
 
-<p>Applies a callback function to a list of DOM nodes.</p>
+<p>Appends a DOM element into a list of selector results.</p>
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.get(*SELECTOR*).each(*CALLBACK*)</code></pre>
+<pre><code>tiramisu.get(*SELECTOR*).append(*HTML*)</code></pre>
 
-<p>Where <em>SELECTOR</em> is a valid CSS selector and <em>CALLBACK</em> a
-function object.</p>
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
+a string containing some HTML (such as "&lt;p&gt;hi&lt;/p&gt;,
+&lt;h1&gt;headline&lt;/h1&gt; etc.)</p>
 
-<p>It is common to retrieve a list of DOM nodes and then apply the
-<em>same</em> function to all of it's element:</p>
-
-<h2>Example #1 (alert the innerHTML of every element in a list)</h2>
+<h2>Example #1 (Append a single element)</h2>
 
 <pre><code>&lt;ul&gt;
-  &lt;li&gt; One. &lt;/li&gt;
-  &lt;li&gt; Two. &lt;/li&gt;
-  &lt;li&gt; Three. &lt;/li&gt;
+  &lt;li&gt;One&lt;/li&gt;
+  &lt;li&gt;Two&lt;/li&gt;
 &lt;/ul&gt;
 ...
-tiramisu.get('ul li').each(function() {
-    alert(this.innerHTML);
-});</code></pre>
+t.get('ul').append('&lt;li&gt;Three&lt;/li&gt;');
 
-<p>As you can see, <strong>this</strong> is used for referencing the current
-iteration item.</p>
+produces the following:
+
+&lt;ul&gt;
+  &lt;li&gt;One&lt;/li&gt;
+  &lt;li&gt;Two&lt;/li&gt;
+  &lt;li&gt;Three&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<h2>Example #2 (Append multiple elements)</h2>
+
+<pre><code> &lt;ul&gt;
+   &lt;li&gt;
+     &lt;p&gt;One&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;
+     &lt;p&gt;Two&lt;/p&gt;
+   &lt;/li&gt;
+ &lt;/ul&gt;
+ ...
+ t.get('ul li').append('&lt;p&gt;append&lt;/p&gt;');
+
+ produces the following:
+
+ &lt;ul&gt;
+   &lt;li&gt;
+     &lt;p&gt;One&lt;/p&gt;
+     &lt;p&gt;append&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;
+     &lt;p&gt;Two&lt;/p&gt;
+     &lt;p&gt;append&lt;/p&gt;
+   &lt;/li&gt;
+ &lt;/ul&gt;</code></pre>
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>function</em>  cb The callback function to apply</p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>html</em>  The element to append</p><p> </p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="string">'each'</span>: <span class="keyword">function</span>(<span class="variable">cb</span>) {
-                <span class="keyword">var</span> <span class="variable">i</span>;
-                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
-                    <span class="variable">cb</span>.<span class="variable">apply</span>(<span class="variable">results</span>[<span class="variable">i</span>]);
-                }
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
+<pre><code><span class="string">'append'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+        <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">false</span>, <span class="variable">true</span>);
+        <span class="keyword">return</span> <span class="this">this</span>;
+    },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Prepend method</h2>
+
+<p>Prepends a DOM element into a list of selector results.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).prepend(*HTML*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
+a string containing some HTML (such as "&lt;p&gt;hi&lt;/p&gt;,
+&lt;h1&gt;headline&lt;/h1&gt; etc.)</p>
+
+<h2>Example #1 (Prepend a single element)</h2>
+
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;One&lt;/li&gt;
+  &lt;li&gt;Two&lt;/li&gt;
+&lt;/ul&gt;
+...
+t.get('ul').prepend('&lt;li&gt;Three&lt;/li&gt;');
+
+produces the following:
+
+&lt;ul&gt;
+  &lt;li&gt;Zero&lt;/li&gt;
+  &lt;li&gt;One&lt;/li&gt;
+  &lt;li&gt;Two&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<h2>Example #2 (Prepend multiple elements)</h2>
+
+<pre><code> &lt;ul&gt;
+   &lt;li&gt;
+     &lt;p&gt;One&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;
+     &lt;p&gt;Two&lt;/p&gt;
+   &lt;/li&gt;
+ &lt;/ul&gt;
+ ...
+ t.get('ul li').prepend('&lt;p&gt;prepend&lt;/p&gt;');
+
+ produces the following:
+
+ &lt;ul&gt;
+   &lt;li&gt;
+     &lt;p&gt;prepend&lt;/p&gt;
+     &lt;p&gt;One&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;
+     &lt;p&gt;prepend&lt;/p&gt;
+     &lt;p&gt;Two&lt;/p&gt;
+   &lt;/li&gt;
+ &lt;/ul&gt;</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>html</em>  The element to prepend</p><p> </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'prepend'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
+        <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">true</span>, <span class="variable">true</span>);
+        <span class="keyword">return</span> <span class="this">this</span>;
+    },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Empty extension method</h2>
+
+<p>Removes all the child elements of a specific node from the DOM.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).empty()</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector (containing <em>one</em> or <em>more</em> elements).</p>
+
+<h2>Example #1 (Remove all element of a list)</h2>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate&lt;/span&gt; chips!&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<p>calling <em>t.get('#myList').empty()</em> will give the following results:</p>
+
+<pre><code>&lt;ol id="myList"&gt;&lt;/ol&gt;</code></pre>
+
+<h2>Example #2 (Remove a specific element)</h2>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate chips!&lt;/span&gt;&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<p>calling <em>t.get('.tasty').empty()</em> will give the following results:</p>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;&lt;/span&gt; chips!&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<h2>Todo</h2>
+
+<ul><li><p>Remove events to avoid memory leaks;</p><p> </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="string">'empty'</span>: <span class="keyword">function</span>() {
+        <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+            <span class="keyword">var</span> <span class="variable">child</span> = <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">childNodes</span>[<span class="number integer">0</span>];
+            <span class="keyword">while</span> (<span class="variable">child</span>) {
+                <span class="keyword">var</span> <span class="variable">next</span> = <span class="variable">child</span>.<span class="variable">nextSibling</span>;
+                <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">removeChild</span>(<span class="variable">child</span>);
+                <span class="variable">child</span> = <span class="variable">next</span>;
+            }
+        }
+    },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h2>Destroy extension method</h2>
+
+<p>Removes element</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>ELEMENT</em> is the DOM element</p>
+
+<h2>Example #1 (Remove all element child)</h2>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate&lt;/span&gt; chips!&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<p>calling <em>t.get('#myList').destroy('.tasty')</em> will give the following results:</p>
+
+<pre><code>&lt;ol id="myList"&gt;
+    &lt;li&gt;This is my &lt;/li&gt;
+    &lt;li&gt;I love  chips!&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<h2>Example #2 (Remove element and child)</h2>
+
+<pre><code>&lt;ol id="myList"&gt;
+   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
+   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate chips!&lt;/span&gt;&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+<p>calling <em>t.get('#myList').destroy()</em> will give the following results:</p>
+
+<pre><code>&lt;div id="myDestroyList"&gt;
+
+&lt;/div&gt;
+
+
+ </code></pre>
+</td>
+<td class="code">
+<pre><code><span class="string">'destroy'</span>: <span class="keyword">function</span>(<span class="variable">el</span>) {
+        <span class="keyword">if</span> (<span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
+            <span class="keyword">return</span> <span class="string">''</span>;
+        }
+
+        <span class="keyword">if</span> (<span class="variable">el</span> !== <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">el</span> === <span class="string">'string'</span>) {
+            <span class="keyword">var</span> <span class="variable">res</span> = <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">selector</span> + <span class="string">' '</span> + <span class="variable">el</span>),
+                <span class="variable">len</span> = <span class="variable">res</span>.<span class="variable">length</span>;
+            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len</span>; <span class="variable">i</span>--;) {
+                <span class="keyword">var</span> <span class="variable">parent</span> = <span class="variable">res</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+                <span class="variable">parent</span>.<span class="variable">removeChild</span>(<span class="variable">res</span>[<span class="variable">i</span>]);
+            }
+        } <span class="keyword">else</span> {
+            <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>--;) {
+                <span class="keyword">var</span> <span class="variable">parent</span> = <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+                <span class="variable">parent</span>.<span class="variable">removeChild</span>(<span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="variable">i</span>]);
+            }
+        }
+        <span class="keyword">return</span> <span class="this">this</span>;
+    },
+};
+
+<span class="comment">// DOM Node insertion generic utility</span>
+ <span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">before</span>, <span class="variable">append</span>) {
+    <span class="comment">// Aliasing results</span>
+    <span class="keyword">var</span> <span class="variable">results</span>     = <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>,
+        <span class="variable">len_result</span>  = <span class="variable">results</span>.<span class="variable">length</span>;
+
+    <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">j</span>, <span class="variable">parent</span>, <span class="variable">elements</span> = [];
+
+    <span class="keyword">var</span> <span class="variable">div</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="string">'div'</span>);
+    <span class="comment">// “...A better version will be to create a document fragment, update it &quot;offline&quot;,</span>
+    <span class="comment">// and add it to the live DOM when it's ready. When you add a document fragment to</span>
+    <span class="comment">// the DOM tree, the content of the fragment gets added, not the fragment itself.</span>
+    <span class="comment">// And this is really convenient. So the document fragment is a good way to wrap</span>
+    <span class="comment">// a number of nodes even when you're not containing them in a suitable parent</span>
+    <span class="comment">// (for example, your paragraphs are not in a div element)”</span>
+    <span class="comment">// </span>
+    <span class="comment">// From “JavaScript Patterns”, pages 184-185, chapter VIII</span>
+    <span class="keyword">var</span> <span class="variable">frag</span> = <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createDocumentFragment</span>();
+
+    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
+
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">html</span> === <span class="string">'string'</span>) {
+            <span class="variable">div</span>.<span class="variable">innerHTML</span> = <span class="variable">html</span>;
+            <span class="variable">elements</span> = <span class="variable">div</span>.<span class="variable">children</span>;
+
+        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">html</span>.<span class="variable">css</span> === <span class="string">'function'</span>) {
+            <span class="variable">elements</span>.<span class="variable">push</span>(<span class="variable">html</span>[<span class="number integer">0</span>]); <span class="comment">// html is t.get(t.make('p'))</span>
+        } <span class="keyword">else</span> {
+            <span class="variable">elements</span>.<span class="variable">push</span>(<span class="variable">html</span>); <span class="comment">// html is an element</span>
+        }
+
+        <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
+
+        <span class="keyword">for</span> (<span class="variable">j</span> = <span class="number integer">0</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="variable">elements</span>.<span class="variable">length</span>; <span class="variable">j</span>++) {
+
+            <span class="keyword">if</span> (<span class="variable">before</span>) {
+                <span class="variable">frag</span>.<span class="variable">insertBefore</span>(<span class="variable">elements</span>[<span class="variable">j</span>], <span class="variable">frag</span>.<span class="variable">firstChild</span>);
+            } <span class="keyword">else</span> {
+                <span class="variable">frag</span>.<span class="variable">appendChild</span>(<span class="variable">elements</span>[<span class="variable">j</span>]);
+            }
+        }
+
+        <span class="keyword">if</span> (<span class="variable">before</span>) {
+            (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">firstChild</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>]);
+        } <span class="keyword">else</span> {
+            (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">appendChild</span>(<span class="variable">frag</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
+        }
+    }
+}</code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="src/modules/tiramisu.selector.event.js"><a href="#">tiramisu.selector.event</a></h2></td><td>src/modules/tiramisu.selector.event.js</td></tr><tr class="code">
+<td class="docs">
+<h1>Event Selector methods</h1>
+
+<p>Several methods for Events tasks:</p>
+
+<ul><li><em>Ready</em></li><li><p><em>On/Off</em></p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>.<span class="variable">event</span> = {</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1077,18 +957,18 @@ and <em>FUNCTION</em> is the function to execute when the DOM is ready.</p>
 });
 
 
-         </code></pre>
+ </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'ready'</span>: <span class="keyword">function</span>(<span class="variable">def</span>) {
-                <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
-                    <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">readyState</span> == &<span class="variable">quot</span>;<span class="variable">complete</span>&<span class="variable">quot</span>;) {
-                        <span class="comment">// Run the callback</span>
-                        <span class="variable">def</span>();
-                        <span class="keyword">return</span> <span class="this">this</span>;
-                    }
-                }
-            },</code></pre>
+        <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
+            <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">readyState</span> == &<span class="variable">quot</span>;<span class="variable">complete</span>&<span class="variable">quot</span>;) {
+                <span class="comment">// Run the callback</span>
+                <span class="variable">def</span>();
+                <span class="keyword">return</span> <span class="this">this</span>;
+            }
+        }
+    },</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1152,289 +1032,581 @@ tiramisu.get('p').on('click', function() {
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>event</em>  evt An event listener</p></li><li><p><strong>param</strong>: <em>function</em>  cb The callback function to attach</p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>event</em>  evt An event listener</p></li><li><p><strong>param</strong>: <em>function</em>  cb The callback function to attach</p><p> </p></li></ul>
 </td>
 <td class="code">
 <pre><code><span class="string">'on'</span>: <span class="keyword">function</span>(<span class="variable">evt</span>, <span class="variable">cb</span>) {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span> || <span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
-                    <span class="keyword">return</span> <span class="string">''</span>;
+        <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
+            <span class="keyword">return</span> <span class="string">''</span>;
+        }
+        <span class="keyword">var</span> <span class="variable">evt_len</span> = <span class="number integer">1</span>,
+            <span class="variable">ev</span> = [],
+            <span class="variable">callback</span> = [];
+        <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">evt</span>) === <span class="string">'string'</span>) {
+            <span class="variable">ev</span>[<span class="number integer">0</span>] = <span class="variable">evt</span>;
+            <span class="variable">callback</span>[<span class="number integer">0</span>] = <span class="variable">cb</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">evt</span>) === <span class="string">'object'</span>) {
+            <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">evt</span>[<span class="number integer">0</span>]) === <span class="string">'string'</span>) {
+                <span class="variable">ev</span> = <span class="variable">evt</span>;
+                <span class="variable">callback</span>[<span class="number integer">0</span>] = <span class="variable">cb</span>;
+            } <span class="keyword">else</span> {
+                <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">evt</span>) {
+                    <span class="variable">evt_len</span> = <span class="variable">ev</span>.<span class="variable">push</span>(<span class="variable">key</span>);
+                    <span class="variable">callback</span>.<span class="variable">push</span>(<span class="variable">evt</span>[<span class="variable">key</span>]);
                 }
-                <span class="keyword">var</span> <span class="variable">evt_len</span> = <span class="number integer">1</span>,
-                    <span class="variable">ev</span> = [],
-                    <span class="variable">callback</span> = [];
-                <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">evt</span>) === <span class="string">'string'</span>) {
-                    <span class="variable">ev</span>[<span class="number integer">0</span>] = <span class="variable">evt</span>;
-                    <span class="variable">callback</span>[<span class="number integer">0</span>] = <span class="variable">cb</span>;
-                } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">evt</span>) === <span class="string">'object'</span>) {
-                    <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">evt</span>[<span class="number integer">0</span>]) === <span class="string">'string'</span>) {
-                        <span class="variable">ev</span> = <span class="variable">evt</span>;
-                        <span class="variable">callback</span>[<span class="number integer">0</span>] = <span class="variable">cb</span>;
-                    } <span class="keyword">else</span> {
-                        <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">evt</span>) {
-                            <span class="variable">evt_len</span> = <span class="variable">ev</span>.<span class="variable">push</span>(<span class="variable">key</span>);
-                            <span class="variable">callback</span>.<span class="variable">push</span>(<span class="variable">evt</span>[<span class="variable">key</span>]);
-                        }
-                    }
-                }
-                <span class="comment">// if results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)</span>
-                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span> = <span class="variable">evt_len</span>; <span class="variable">j</span>--;) {
-                    <span class="keyword">var</span> <span class="variable">cb</span> = <span class="variable">callback</span>[<span class="variable">j</span>];
-                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                        <span class="variable">add_handler</span>(<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">ev</span>[<span class="variable">j</span>], <span class="variable">cb</span>);
-                    }
-                    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'string'</span>) {
-                        <span class="variable">local_event</span>[<span class="variable">selector</span>] = {};
-                        <span class="variable">local_event</span>[<span class="variable">selector</span>] = {
-                            <span class="string">'cb'</span>: <span class="variable">cb</span>,
-                            <span class="string">'element'</span>: <span class="variable">results</span>
-                        };
-                    }
-                }
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
+            }
+        }
+        <span class="comment">// if tiramisu.get.results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)</span>
+        <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span> = <span class="variable">evt_len</span>; <span class="variable">j</span>--;) {
+            <span class="keyword">var</span> <span class="variable">cb</span> = <span class="variable">callback</span>[<span class="variable">j</span>];
+            <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>--;) {
+                <span class="variable">add_handler</span>(<span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">ev</span>[<span class="variable">j</span>], <span class="variable">cb</span>);
+            }
+            <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'string'</span>) {
+                <span class="variable">local_event</span>[<span class="variable">selector</span>] = {};
+                <span class="variable">local_event</span>[<span class="variable">selector</span>] = {
+                    <span class="string">'cb'</span>: <span class="variable">cb</span>,
+                    <span class="string">'element'</span>: <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>
+                };
+            }
+        }
+        <span class="keyword">return</span> <span class="this">this</span>;
+    },</code></pre>
 </td>
 </tr>
 <tr class="code">
 <td class="docs">
 <h2>Remove Event handler extension</h2>
 
-<pre><code>         </code></pre>
+<pre><code> </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'off'</span>: <span class="keyword">function</span>(<span class="variable">evt</span>) {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span> || <span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">1</span>) {
-                    <span class="keyword">return</span> <span class="string">''</span>;
+        <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">1</span>) {
+            <span class="keyword">return</span> <span class="string">''</span>;
+        }
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'string'</span>) {
+            <span class="keyword">if</span> (<span class="variable">local_event</span>[<span class="variable">selector</span>] !== <span class="variable">undefined</span>) {
+                <span class="keyword">var</span> <span class="variable">cb</span> = <span class="variable">local_event</span>[<span class="variable">selector</span>][<span class="string">'cb'</span>],
+                    <span class="variable">element</span> = <span class="variable">local_event</span>[<span class="variable">selector</span>][<span class="string">'element'</span>],
+                    <span class="variable">len</span> = <span class="variable">element</span>.<span class="variable">length</span>;
+                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len</span>; <span class="variable">i</span>--;) {
+                    <span class="variable">remove_handler</span>(<span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">evt</span>, <span class="variable">cb</span>);
                 }
-                <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'string'</span>) {
-                    <span class="keyword">if</span> (<span class="variable">local_event</span>[<span class="variable">selector</span>] !== <span class="variable">undefined</span>) {
-                        <span class="keyword">var</span> <span class="variable">cb</span> = <span class="variable">local_event</span>[<span class="variable">selector</span>][<span class="string">'cb'</span>],
-                            <span class="variable">element</span> = <span class="variable">local_event</span>[<span class="variable">selector</span>][<span class="string">'element'</span>],
-                            <span class="variable">len</span> = <span class="variable">element</span>.<span class="variable">length</span>;
-                        <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len</span>; <span class="variable">i</span>--;) {
-                            <span class="variable">remove_handler</span>(<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">evt</span>, <span class="variable">cb</span>);
-                        }
-                        <span class="keyword">delete</span> <span class="variable">local_event</span>[<span class="variable">selector</span>];
+                <span class="keyword">delete</span> <span class="variable">local_event</span>[<span class="variable">selector</span>];
+            }
+        }
+
+        <span class="keyword">return</span> <span class="this">this</span>;
+    },
+}
+
+<span class="comment">// The good way to eliminate a work repetition in functions is through lazy loading.</span>
+<span class="comment">// Lazy loading means that no work is done until the information is necessary.</span>
+<span class="comment">// Here I implement a lazy-loading pattern. The first time either method is</span>
+<span class="comment">// called, a check is made to determine the appropriate way to attach or detach the</span>
+<span class="comment">// event handler. Then the original function is overwrittern with a new function that</span>
+<span class="comment">// contains just the appropriate course of action.</span>
+<span class="comment">// By High Performance JavaScript, Nicholas C. Zakas</span>
+<span class="keyword">var</span> <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+
+    <span class="comment">// overwrite te existing function</span>
+    <span class="keyword">if</span> (<span class="variable">target</span>.<span class="variable">addEventListener</span>) { <span class="comment">// DOM 2 Events</span>
+        <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+            <span class="variable">target</span>.<span class="variable">addEventListener</span>(<span class="variable">event_type</span>, <span class="variable">handler</span>, <span class="variable">false</span>);
+        }
+    } <span class="keyword">else</span> { <span class="comment">// IE</span>
+        <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+            <span class="variable">target</span>.<span class="variable">attachEvent</span>(<span class="string">'on'</span> + <span class="variable">event_type</span>, <span class="variable">handler</span>);
+        }
+    }
+
+    <span class="comment">// call the new functions</span>
+    <span class="variable">add_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
+}
+
+<span class="comment">// And brother function, remove_handler</span>
+<span class="keyword">var</span> <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+
+    <span class="comment">// overwrite te existing function</span>
+    <span class="keyword">if</span> (<span class="variable">target</span>.<span class="variable">removeEventListener</span>) { <span class="comment">// DOM 2 Events</span>
+        <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+            <span class="variable">target</span>.<span class="variable">removeEventListener</span>(<span class="variable">event_type</span>, <span class="variable">handler</span>, <span class="variable">false</span>);
+        }
+    } <span class="keyword">else</span> { <span class="comment">// IE</span>
+        <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+            <span class="variable">target</span>.<span class="variable">detachEvent</span>(<span class="string">'on'</span> + <span class="variable">event_type</span>, <span class="variable">handler</span>);
+        }
+    }
+
+    <span class="comment">// call the new functions</span>
+    <span class="variable">remove_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
+}</code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="src/modules/tiramisu.taskengine.js"><a href="#">tiramisu.taskengine</a></h2></td><td>src/modules/tiramisu.taskengine.js</td></tr><tr class="code">
+<td class="docs">
+<h1>Task Engine Module</h1>
+
+<p>This module is used to perform a function at a particular amount of time
+or perform the same function several times in that time frame.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.task(delay, [interval], callback);</code></pre>
+
+<p>where “interval” is an optional argument</p>
+
+<h2>Example #1 (The callback is executed after 2000 ms)</h2>
+
+<pre><code>tiramisu.task(2000, callback)</code></pre>
+
+<h2>Example #2 (The callback is executed every 100 ms in a period of 2000ms)</h2>
+
+<pre><code>tiramisu.task(2000, 100, callback)</code></pre>
+
+<h2>Example #3 (The callback is executed every 500 ms in loop.)</h2>
+
+<pre><code>tiramisu.task('loop', 500, callback)</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>integer</em>  delay The total task delay(ms)</p></li><li><p><strong>param</strong>: <em>integer</em>  [interval] The interval of the repetitions(ms)</p></li><li><p><strong>param</strong>: <em>Function</em>  cb The callback function</p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">task</span> = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
+    
+    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
+        <span class="variable">dependencies</span> : []
+    }
+    
+    <span class="keyword">var</span> <span class="variable">interval</span>, <span class="variable">requestAnimFrame</span> = <span class="variable">t</span>.<span class="variable">requestAnimFrame</span>;
+
+    <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
+        <span class="variable">interval</span> = <span class="variable">arguments</span>[<span class="number integer">1</span>];
+        <span class="variable">cb</span> = <span class="variable">arguments</span>[<span class="number integer">2</span>];
+    }
+
+    <span class="keyword">var</span> <span class="variable">start</span> = +<span class="keyword">new</span> <span class="class">Date</span>(),
+        <span class="variable">pass</span> = <span class="variable">interval</span>;
+
+    <span class="keyword">function</span> <span class="variable">animate</span>() {
+        <span class="keyword">var</span> <span class="variable">progress</span> = +<span class="keyword">new</span> <span class="class">Date</span>() - <span class="variable">start</span>;
+
+        <span class="keyword">if</span> (<span class="variable">interval</span> !== <span class="variable">undefined</span>) {
+            <span class="keyword">if</span> (<span class="variable">progress</span> &<span class="variable">gt</span>; <span class="variable">pass</span>) {
+                <span class="variable">pass</span> += <span class="variable">interval</span>;
+                <span class="variable">cb</span>();
+            }
+        }
+
+        <span class="comment">// The recursion continues only in two cases:</span>
+        <span class="comment">// - The elapsed time is less than the total time;</span>
+        <span class="comment">// - The total time is infinite (so a loop) but there </span>
+        <span class="comment">//   is an interval of time between repetitions of the callback.</span>
+        <span class="keyword">if</span> (<span class="variable">progress</span> &<span class="variable">lt</span>; <span class="variable">delay</span> || (<span class="variable">delay</span> == <span class="string">'loop'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">interval</span> !== <span class="variable">undefined</span>)) {
+            <span class="variable">requestAnimFrame</span>(<span class="variable">animate</span>);
+        } <span class="keyword">else</span> {
+            <span class="keyword">if</span> (<span class="variable">interval</span> === <span class="variable">undefined</span>) {
+                <span class="variable">cb</span>();
+            }
+        }
+    }
+    <span class="variable">animate</span>();
+};</code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="src/modules/tiramisu.selector.js"><a href="#">tiramisu.selector</a></h2></td><td>src/modules/tiramisu.selector.js</td></tr><tr class="code">
+<td class="docs">
+<h1>Framework Selector Module</h1>
+
+<p>A CSS Parser for handling DOM elements.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.get(*SELECTOR*)</code></pre>
+
+<p>or</p>
+
+<pre><code>t.get(*SELECTOR*)</code></pre>
+
+<p>where <em>SELECTOR</em> is a <em>valid</em> CSS selector or, alternatively, an object
+(see examples below).</p>
+
+<p>Tiramisu will use <em>querySelectorAll</em> if the current browser implements it;
+if not present <strong>Tiramisu</strong> fallback to a custom, simple CSS selector.</p>
+
+<p>This simple selector implementation is <em>cross-browser</em> and actually implements
+the following CSS rules:</p>
+
+<ul><li><em>id and name</em>;</li><li><em>id</em>;</li><li><em>class</em>;</li><li><em>name and class</em>;</li><li><em>element</em>;</li></ul>
+
+<p>Note that this implementation is not fast as <em>querySelectorAll</em> since it relies
+on pure (<em>not optimized</em>) JavaScript.</p>
+
+<h2>Example #1 (Select all li elements)</h2>
+
+<pre><code>&lt;ul id="myList"&gt;
+  &lt;li&gt; First. &lt;/li&gt;
+  &lt;li&gt; Second. &lt;/li&gt;
+  &lt;li&gt; Third. &lt;/li&gt;
+&lt;/ul&gt;
+...
+var li = tiramisu.get('#myList li');</code></pre>
+
+<h2>Example #2 (Select all li with class “special”)</h2>
+
+<pre><code>&lt;ul id="myList"&gt;
+  &lt;li&gt; First. &lt;/li&gt;
+  &lt;li class="special"&gt; Second. &lt;/li&gt;
+  &lt;li&gt; Third. &lt;/li&gt;
+&lt;/ul&gt;
+...
+var li_special1 = tiramisu.get('#myList .special');
+
+// Better way to do it :)
+var li_special2 = tiramisu.get('#myList li.special');</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  selector A CSS Selector</p></li><li><p><strong>returns</strong>: <em>Object</em>  The node list</p></li><li><p><strong>api</strong>: <em>public</em></p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
+
+    <span class="keyword">function</span> <span class="variable">toArray</span>(<span class="variable">obj</span>) {
+        <span class="keyword">var</span> <span class="variable">array</span> = [];
+        <span class="comment">// Zero-fill right shift to ensure that length is an UInt32</span>
+        <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">obj</span>.<span class="variable">length</span>; <span class="variable">i</span>--;) {
+            <span class="variable">array</span>[<span class="variable">i</span>] = <span class="variable">obj</span>[<span class="variable">i</span>];
+        }
+        <span class="keyword">return</span> <span class="variable">array</span>;
+    }
+
+    <span class="keyword">var</span> <span class="variable">macros</span> = {
+        <span class="string">'nl'</span>: <span class="string">'\n|\r\n|\r|\f'</span>,
+        <span class="string">'nonascii'</span>: <span class="string">'[^\0-\177]'</span>,
+        <span class="string">'unicode'</span>: <span class="string">'\\[0-9A-Fa-f]{1,6}(\r\n|[\s\n\r\t\f])?'</span>,
+        <span class="string">'escape'</span>: <span class="string">'#{unicode}|\\[^\n\r\f0-9A-Fa-f]'</span>,
+        <span class="string">'nmchar'</span>: <span class="string">'[_A-Za-z0-9-]|#{nonascii}|#{escape}'</span>,
+        <span class="string">'nmstart'</span>: <span class="string">'[_A-Za-z]|#{nonascii}|#{escape}'</span>,
+        <span class="string">'ident'</span>: <span class="string">'[-@]?(#{nmstart})(#{nmchar})*'</span>,
+        <span class="string">'name'</span>: <span class="string">'(#{nmchar})+'</span>
+    };
+
+    <span class="keyword">var</span> <span class="variable">rules</span> = {
+        <span class="string">'id and name'</span>: <span class="string">'(#{ident}##{ident})'</span>,
+        <span class="string">'id'</span>: <span class="string">'(##{ident})'</span>,
+        <span class="string">'class'</span>: <span class="string">'(\\.#{ident})'</span>,
+        <span class="string">'name and class'</span>: <span class="string">'(#{ident}\\.#{ident})'</span>,
+        <span class="string">'element'</span>: <span class="string">'(#{ident})'</span>,
+        <span class="string">'pseudo class'</span>: <span class="string">'(:#{ident})'</span>
+    };
+
+    <span class="comment">// Normalize the selector</span>
+
+    <span class="keyword">function</span> <span class="variable">normalize</span>(<span class="variable">text</span>) {
+        <span class="keyword">return</span> <span class="variable">text</span>.<span class="variable">replace</span>(<span class="regexp">/^\s+|\s+$/g</span>, <span class="string">''</span>).<span class="variable">replace</span>(<span class="regexp">/[ \t\r\n\f]+/g</span>, <span class="string">' '</span>);
+    }
+
+    <span class="comment">// Scan macros and rules to build a big regex</span>
+    <span class="keyword">var</span> <span class="variable">scanner</span> = <span class="keyword">function</span>() {
+            <span class="keyword">function</span> <span class="variable">replacePattern</span>(<span class="variable">pattern</span>, <span class="variable">patterns</span>) {
+                <span class="keyword">var</span> <span class="variable">matched</span> = <span class="variable">true</span>,
+                    <span class="variable">match</span>;
+                <span class="keyword">while</span> (<span class="variable">matched</span>) {
+                    <span class="variable">match</span> = <span class="variable">pattern</span>.<span class="variable">match</span>(<span class="regexp">/#\{([^}]+)\}/</span>);
+                    <span class="keyword">if</span> (<span class="variable">match</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">match</span>[<span class="number integer">1</span>]) {
+                        <span class="variable">pattern</span> = <span class="variable">pattern</span>.<span class="variable">replace</span>(<span class="keyword">new</span> <span class="class">RegExp</span>(<span class="string">'#\{'</span> + <span class="variable">match</span>[<span class="number integer">1</span>] + <span class="string">'\}'</span>, <span class="string">'g'</span>), <span class="variable">patterns</span>[<span class="variable">match</span>[<span class="number integer">1</span>]]);
+                        <span class="variable">matched</span> = <span class="variable">true</span>;
+                    } <span class="keyword">else</span> {
+                        <span class="variable">matched</span> = <span class="variable">false</span>;
                     }
                 }
+                <span class="keyword">return</span> <span class="variable">pattern</span>;
+            }
 
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
+            <span class="keyword">function</span> <span class="variable">escapePattern</span>(<span class="variable">text</span>) {
+                <span class="keyword">return</span> <span class="variable">text</span>.<span class="variable">replace</span>(<span class="regexp">/\/</span><span class="regexp">/g, '/</span>/');
+            }
+
+            <span class="keyword">function</span> <span class="variable">convertPatterns</span>() {
+                <span class="keyword">var</span> <span class="variable">key</span>, <span class="variable">pattern</span>, <span class="variable">results</span> = {},
+                    <span class="variable">patterns</span>, <span class="variable">source</span>;
+
+                <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> === <span class="number integer">2</span>) {
+                    <span class="variable">source</span> = <span class="variable">arguments</span>[<span class="number integer">0</span>];
+                    <span class="variable">patterns</span> = <span class="variable">arguments</span>[<span class="number integer">1</span>]
+                } <span class="keyword">else</span> {
+                    <span class="variable">source</span> = <span class="variable">arguments</span>[<span class="number integer">0</span>];
+                    <span class="variable">patterns</span> = <span class="variable">arguments</span>[<span class="number integer">0</span>];
+                }
+
+                <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">patterns</span>) {
+                    <span class="variable">pattern</span> = <span class="variable">escapePattern</span>(<span class="variable">replacePattern</span>(<span class="variable">patterns</span>[<span class="variable">key</span>], <span class="variable">source</span>));
+                    <span class="variable">results</span>[<span class="variable">key</span>] = <span class="variable">pattern</span>;
+                }
+                <span class="keyword">return</span> <span class="variable">results</span>;
+            }
+
+            <span class="keyword">function</span> <span class="variable">joinPatterns</span>(<span class="variable">regexps</span>) {
+                <span class="keyword">var</span> <span class="variable">results</span> = [],
+                    <span class="variable">key</span>;
+
+                <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">regexps</span>) {
+                    <span class="variable">results</span>.<span class="variable">push</span>(<span class="variable">regexps</span>[<span class="variable">key</span>]);
+                }
+
+                <span class="keyword">return</span> <span class="keyword">new</span> <span class="class">RegExp</span>(<span class="variable">results</span>.<span class="variable">join</span>(<span class="string">'|'</span>), <span class="string">'g'</span>);
+            }
+
+            <span class="keyword">return</span> <span class="variable">joinPatterns</span>(<span class="variable">convertPatterns</span>(<span class="variable">convertPatterns</span>(<span class="variable">macros</span>), <span class="variable">rules</span>));
+        };
+
+    <span class="keyword">var</span> <span class="variable">filter</span> = {
+        <span class="string">'byAttr'</span>: <span class="keyword">function</span>(<span class="variable">elements</span>, <span class="variable">attribute</span>, <span class="variable">value</span>) {
+            <span class="keyword">var</span> <span class="variable">key</span>, <span class="variable">results</span> = [];
+            <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">elements</span>) {
+                <span class="keyword">if</span> (<span class="variable">elements</span>[<span class="variable">key</span>] &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">elements</span>[<span class="variable">key</span>][<span class="variable">attribute</span>] === <span class="variable">value</span>) {
+                    <span class="variable">results</span>.<span class="variable">push</span>(<span class="variable">elements</span>[<span class="variable">key</span>]);
+                }
+            }
+            <span class="keyword">return</span> <span class="variable">results</span>;
+        }
+    };
+
+    <span class="keyword">var</span> <span class="variable">find</span> = {
+        <span class="string">'byId'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">id</span>) {
+            <span class="keyword">return</span> (<span class="variable">root</span>) ? [<span class="variable">root</span>.<span class="variable">getElementById</span>(<span class="variable">id</span>)] : [];
+        },
+
+        <span class="string">'byNodeName'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">tagName</span>) {
+            <span class="keyword">if</span> (<span class="variable">root</span> === <span class="keyword">null</span>) <span class="keyword">return</span> [];
+            <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">results</span> = [],
+                <span class="variable">nodes</span> = <span class="variable">root</span>.<span class="variable">getElementsByTagName</span>(<span class="variable">tagName</span>);
+
+            <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">nodes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+                <span class="variable">results</span>.<span class="variable">push</span>(<span class="variable">nodes</span>[<span class="variable">i</span>]);
+            }
+            <span class="keyword">return</span> <span class="variable">results</span>;
+        },
+
+        <span class="string">'byClassName'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">className</span>) {
+            <span class="keyword">if</span> (<span class="variable">root</span> === <span class="keyword">null</span>) <span class="keyword">return</span> [];
+            <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">results</span> = [],
+                <span class="variable">nodes</span> = <span class="variable">root</span>.<span class="variable">getElementsByTagName</span>(<span class="string">'*'</span>);
+
+            <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">nodes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+                <span class="keyword">if</span> (<span class="variable">nodes</span>[<span class="variable">i</span>].<span class="variable">className</span>.<span class="variable">match</span>(<span class="string">'\\b'</span> + <span class="variable">className</span> + <span class="string">'\\b'</span>)) {
+                    <span class="variable">results</span>.<span class="variable">push</span>(<span class="variable">nodes</span>[<span class="variable">i</span>]);
+                }
+            }
+            <span class="keyword">return</span> <span class="variable">results</span>;
+        }
+    };
+
+    <span class="keyword">var</span> <span class="variable">findMap</span> = {
+        <span class="string">'id'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
+            <span class="variable">selector</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'#'</span>)[<span class="number integer">1</span>];
+            <span class="keyword">return</span> <span class="variable">find</span>.<span class="variable">byId</span>(<span class="variable">root</span>, <span class="variable">selector</span>);
+        },
+
+        <span class="string">'name and id'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
+            <span class="keyword">var</span> <span class="variable">matches</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'#'</span>),
+                <span class="variable">name</span> = <span class="variable">matches</span>[<span class="number integer">0</span>],
+                <span class="variable">id</span> = <span class="variable">matches</span>[<span class="number integer">1</span>];
+            <span class="keyword">return</span> <span class="variable">filter</span>.<span class="variable">byAttr</span>(<span class="variable">find</span>.<span class="variable">byId</span>(<span class="variable">root</span>, <span class="variable">id</span>), <span class="string">'nodeName'</span>, <span class="variable">name</span>.<span class="variable">toUpperCase</span>());
+        },
+
+        <span class="string">'name'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
+            <span class="keyword">return</span> <span class="variable">find</span>.<span class="variable">byNodeName</span>(<span class="variable">root</span>, <span class="variable">selector</span>);
+        },
+
+        <span class="string">'class'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
+            <span class="variable">selector</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'\.'</span>)[<span class="number integer">1</span>];
+            <span class="keyword">return</span> <span class="variable">find</span>.<span class="variable">byClassName</span>(<span class="variable">root</span>, <span class="variable">selector</span>);
+        },
+
+        <span class="string">'name and class'</span>: <span class="keyword">function</span>(<span class="variable">root</span>, <span class="variable">selector</span>) {
+            <span class="keyword">var</span> <span class="variable">matches</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'\.'</span>),
+                <span class="variable">name</span> = <span class="variable">matches</span>[<span class="number integer">0</span>],
+                <span class="variable">className</span> = <span class="variable">matches</span>[<span class="number integer">1</span>];
+            <span class="keyword">return</span> <span class="variable">filter</span>.<span class="variable">byAttr</span>(<span class="variable">find</span>.<span class="variable">byClassName</span>(<span class="variable">root</span>, <span class="variable">className</span>), <span class="string">'nodeName'</span>, <span class="variable">name</span>.<span class="variable">toUpperCase</span>());
+        }
+    };
+
+    <span class="keyword">var</span> <span class="variable">matchMap</span> = {
+        <span class="string">'id'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">selector</span>) {
+            <span class="variable">selector</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'#'</span>)[<span class="number integer">1</span>];
+            <span class="keyword">return</span> <span class="variable">element</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">element</span>.<span class="variable">id</span> === <span class="variable">selector</span>;
+        },
+
+        <span class="string">'name'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">nodeName</span>) {
+            <span class="keyword">return</span> <span class="variable">element</span>.<span class="variable">nodeName</span> === <span class="variable">nodeName</span>.<span class="variable">toUpperCase</span>();
+        },
+
+        <span class="string">'name and id'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">selector</span>) {
+            <span class="keyword">return</span> <span class="variable">matchMap</span>.<span class="variable">id</span>(<span class="variable">element</span>, <span class="variable">selector</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">matchMap</span>.<span class="variable">name</span>(<span class="variable">element</span>, <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'#'</span>)[<span class="number integer">0</span>]);
+        },
+
+        <span class="string">'class'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">selector</span>) {
+            <span class="keyword">if</span> (<span class="variable">element</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">element</span>.<span class="variable">className</span>) {
+                <span class="variable">selector</span> = <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'\.'</span>)[<span class="number integer">1</span>];
+                <span class="keyword">return</span> <span class="variable">element</span>.<span class="variable">className</span>.<span class="variable">match</span>(<span class="string">'\\b'</span> + <span class="variable">selector</span> + <span class="string">'\\b'</span>);
+            }
+        },
+
+        <span class="string">'name and class'</span>: <span class="keyword">function</span>(<span class="variable">element</span>, <span class="variable">selector</span>) {
+            <span class="keyword">return</span> <span class="variable">matchMap</span>[<span class="string">'class'</span>](<span class="variable">element</span>, <span class="variable">selector</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">matchMap</span>.<span class="variable">name</span>(<span class="variable">element</span>, <span class="variable">selector</span>.<span class="variable">split</span>(<span class="string">'\.'</span>)[<span class="number integer">0</span>]);
+        }
+    };</code></pre>
 </td>
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>Insert Before method</h2>
+<h2>Each iterator extension</h2>
 
-<p>Insert text or html, before each element.</p>
-
-<h2>Usage</h2>
-
-<pre><code>tiramisu.get(*SELECTOR*).before(*HTML*)</code></pre>
-
-<p>where <em>SELECTOR</em> is a valid CSS selector, <em>HTML</em> is
-the element to insert.</p>
-
-<h2>Example #1 ()</h2>
-
-<pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
-&lt;div class="inner"&gt;ciao&lt;/div&gt;
-&lt;div class="inner"&gt;mondo&lt;/div&gt;
-...
-t.get('.inner').before('&lt;p&gt;ciccio&lt;/p&gt;')
-
-produce the following result:
-
-&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
-&lt;p&gt;ciccio&lt;/p&gt;
-&lt;div class="inner"&gt;ciao&lt;/div&gt;
-&lt;p&gt;ciccio&lt;/p&gt;
-&lt;div class="inner"&gt;mondo&lt;/div&gt;</code></pre>
-
-<h2></h2>
-
-<ul><li><p><strong>param</strong>: <em>html</em>  The element to insert</p><pre><code>     </code></pre></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="string">'before'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
-                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">true</span>, <span class="variable">false</span>)
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<h2>Insert After method</h2>
-
-<p>Insert text or html, after each element.</p>
+<p>Applies a callback function to a list of DOM nodes.</p>
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.get(*SELECTOR*).after(*HTML*)</code></pre>
+<pre><code>tiramisu.get(*SELECTOR*).each(*CALLBACK*)</code></pre>
 
-<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
-the element to insert.</p>
+<p>Where <em>SELECTOR</em> is a valid CSS selector and <em>CALLBACK</em> a
+function object.</p>
 
-<h2>Example #1 (Inserting an element multiple times)</h2>
+<p>It is common to retrieve a list of DOM nodes and then apply the
+<em>same</em> function to all of it's element:</p>
 
-<pre><code>&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
-&lt;div class="inner"&gt;ciao&lt;/div&gt;
-&lt;div class="inner"&gt;mondo&lt;/div&gt;
-...
-t.get('.inner').after('&lt;p&gt;ciccio&lt;/p&gt;')
-
-produces the following result:
-
-&lt;h1&gt;Hello Tiramisu&lt;/h1&gt;
-&lt;div class="inner"&gt;ciao&lt;/div&gt;
-&lt;p&gt;ciccio&lt;/p&gt;
-&lt;div class="inner"&gt;mondo&lt;/div&gt;
-&lt;p&gt;ciccio&lt;/p&gt;</code></pre>
-
-<h2></h2>
-
-<ul><li><p><strong>param</strong>: <em>html</em>  The element to insert</p><pre><code>     </code></pre></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="string">'after'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
-                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">false</span>, <span class="variable">false</span>);
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<h2>Append method</h2>
-
-<p>Appends a DOM element into a list of selector results.</p>
-
-<h2>Usage</h2>
-
-<pre><code>tiramisu.get(*SELECTOR*).append(*HTML*)</code></pre>
-
-<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
-a string containing some HTML (such as "&lt;p&gt;hi&lt;/p&gt;,
-&lt;h1&gt;headline&lt;/h1&gt; etc.)</p>
-
-<h2>Example #1 (Append a single element)</h2>
+<h2>Example #1 (alert the innerHTML of every element in a list)</h2>
 
 <pre><code>&lt;ul&gt;
-  &lt;li&gt;One&lt;/li&gt;
-  &lt;li&gt;Two&lt;/li&gt;
+  &lt;li&gt; One. &lt;/li&gt;
+  &lt;li&gt; Two. &lt;/li&gt;
+  &lt;li&gt; Three. &lt;/li&gt;
 &lt;/ul&gt;
 ...
-t.get('ul').append('&lt;li&gt;Three&lt;/li&gt;');
+tiramisu.get('ul li').each(function() {
+    alert(this.innerHTML);
+});</code></pre>
 
-produces the following:
-
-&lt;ul&gt;
-  &lt;li&gt;One&lt;/li&gt;
-  &lt;li&gt;Two&lt;/li&gt;
-  &lt;li&gt;Three&lt;/li&gt;
-&lt;/ul&gt;</code></pre>
-
-<h2>Example #2 (Append multiple elements)</h2>
-
-<pre><code> &lt;ul&gt;
-   &lt;li&gt;
-     &lt;p&gt;One&lt;/p&gt;
-   &lt;/li&gt;
-   &lt;li&gt;
-     &lt;p&gt;Two&lt;/p&gt;
-   &lt;/li&gt;
- &lt;/ul&gt;
- ...
- t.get('ul li').append('&lt;p&gt;append&lt;/p&gt;');
-
- produces the following:
-
- &lt;ul&gt;
-   &lt;li&gt;
-     &lt;p&gt;One&lt;/p&gt;
-     &lt;p&gt;append&lt;/p&gt;
-   &lt;/li&gt;
-   &lt;li&gt;
-     &lt;p&gt;Two&lt;/p&gt;
-     &lt;p&gt;append&lt;/p&gt;
-   &lt;/li&gt;
- &lt;/ul&gt;</code></pre>
+<p>As you can see, <strong>this</strong> is used for referencing the current
+iteration item.</p>
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>html</em>  The element to append</p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>function</em>  cb The callback function to apply</p><pre><code> </code></pre></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="string">'append'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
-                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">false</span>, <span class="variable">true</span>);
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
+<pre><code><span class="string">'each'</span>: <span class="keyword">function</span>(<span class="variable">cb</span>) {
+            <span class="keyword">var</span> <span class="variable">i</span>;
+            <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">results</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+                <span class="variable">cb</span>.<span class="variable">apply</span>(<span class="variable">results</span>[<span class="variable">i</span>]);
+            }
+            <span class="keyword">return</span> <span class="this">this</span>;
+        },</code></pre>
 </td>
 </tr>
 <tr class="code">
 <td class="docs">
-<h2>Prepend method</h2>
+<h2>CSS handler extension</h2>
 
-<p>Prepends a DOM element into a list of selector results.</p>
+<p>Alter the CSS properties of a list of DOM nodes.</p>
 
 <h2>Usage</h2>
 
-<pre><code>tiramisu.get(*SELECTOR*).prepend(*HTML*)</code></pre>
+<pre><code>tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)</code></pre>
 
-<p>where <em>SELECTOR</em> is a valid CSS selector and <em>HTML</em> is
-a string containing some HTML (such as "&lt;p&gt;hi&lt;/p&gt;,
-&lt;h1&gt;headline&lt;/h1&gt; etc.)</p>
+<p>where <em>SELECTOR</em> is a valid CSS selector and <em>CSS_PROPERTIES</em>
+is an object containing the CSS properties to set.</p>
 
-<h2>Example #1 (Prepend a single element)</h2>
+<h2>Example #1 (Set all h1 tags to 34px with color red)</h2>
 
-<pre><code>&lt;ul&gt;
-  &lt;li&gt;One&lt;/li&gt;
-  &lt;li&gt;Two&lt;/li&gt;
-&lt;/ul&gt;
+<pre><code>&lt;h1&gt; This is one headline. &lt;/h1&gt;
+&lt;h1&gt; This is another headline. &lt;/h1&gt;
 ...
-t.get('ul').prepend('&lt;li&gt;Three&lt;/li&gt;');
+tiramisu.get('h1').css({
+    'font-size': '12px',
+    'color': 'red'
+});</code></pre>
 
-produces the following:
+<h2>Example #2 (Get attribute out of style)</h2>
 
-&lt;ul&gt;
-  &lt;li&gt;Zero&lt;/li&gt;
-  &lt;li&gt;One&lt;/li&gt;
-  &lt;li&gt;Two&lt;/li&gt;
-&lt;/ul&gt;</code></pre>
-
-<h2>Example #2 (Prepend multiple elements)</h2>
-
-<pre><code> &lt;ul&gt;
-   &lt;li&gt;
-     &lt;p&gt;One&lt;/p&gt;
-   &lt;/li&gt;
-   &lt;li&gt;
-     &lt;p&gt;Two&lt;/p&gt;
-   &lt;/li&gt;
- &lt;/ul&gt;
- ...
- t.get('ul li').prepend('&lt;p&gt;prepend&lt;/p&gt;');
-
- produces the following:
-
- &lt;ul&gt;
-   &lt;li&gt;
-     &lt;p&gt;prepend&lt;/p&gt;
-     &lt;p&gt;One&lt;/p&gt;
-   &lt;/li&gt;
-   &lt;li&gt;
-     &lt;p&gt;prepend&lt;/p&gt;
-     &lt;p&gt;Two&lt;/p&gt;
-   &lt;/li&gt;
- &lt;/ul&gt;</code></pre>
+<pre><code>&lt;h1 id="my_id" style="color:red"&gt; This is one headline. &lt;/h1&gt;
+...
+tiramisu.get('#my_id').css("color")</code></pre>
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>html</em>  The element to prepend</p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>Object</em>  obj An object containing CSS properties</p><pre><code> </code></pre></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="string">'prepend'</span>: <span class="keyword">function</span>(<span class="variable">html</span>) {
-                <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">true</span>, <span class="variable">true</span>);
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
+<pre><code><span class="string">'css'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>) {
+            <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">key</span>, <span class="variable">browser</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'browser'</span>),
+                <span class="variable">ie_older</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIEolder'</span>),
+                <span class="variable">ie</span> = <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>);
+
+            <span class="comment">// For handling IE CSS Attributes</span>
+            <span class="keyword">var</span> <span class="variable">attr</span> = {
+                <span class="string">'opacity'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>, <span class="variable">value</span>) {
+                    <span class="keyword">if</span> (<span class="variable">value</span> !== <span class="variable">undefined</span>) {
+                        <span class="comment">// Setter</span>
+                        <span class="keyword">if</span> (<span class="variable">ie</span>) {
+                            <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">value</span>;
+                            <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">filter</span> = <span class="string">'alpha(opacity='</span> + <span class="variable">value</span> * <span class="number integer">100</span> + <span class="string">')'</span>;
+                        } <span class="keyword">else</span> {
+                            <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span> = <span class="variable">value</span>;
+                        }
+                    } <span class="keyword">else</span> {
+                        <span class="comment">// Getter</span>
+                        <span class="keyword">return</span> <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">opacity</span>
+                    }
+                },
+                <span class="string">'border-radius'</span>: <span class="keyword">function</span>(<span class="variable">obj</span>, <span class="variable">value</span>) {
+                    <span class="keyword">if</span> (<span class="variable">value</span>) {
+                        <span class="keyword">if</span> (<span class="variable">browser</span> === <span class="string">'f3'</span>) {
+                            <span class="variable">obj</span>.<span class="variable">style</span>.<span class="class">MozBorderRadius</span> = <span class="variable">value</span>; <span class="comment">// Firefox 3.6 &lt;=</span>
+                        }
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">if</span> (<span class="variable">browser</span> === <span class="string">'f3'</span>) {
+                            <span class="keyword">return</span> <span class="variable">obj</span>.<span class="variable">style</span>.<span class="class">MozBorderRadius</span>;
+                        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">browser</span> === <span class="string">'ie9+'</span>) {
+                            <span class="keyword">return</span> <span class="variable">obj</span>.<span class="variable">style</span>.<span class="variable">borderRadius</span>;
+                        }
+                    }
+                }
+            };
+
+            <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">obj</span>) === <span class="string">'string'</span>) {
+                <span class="keyword">if</span> (<span class="variable">ie</span> || <span class="variable">browser</span> === <span class="string">'f3'</span>) {
+                    <span class="keyword">if</span> (<span class="variable">obj</span> == <span class="string">'border-radius'</span>) {
+                        <span class="keyword">return</span> <span class="variable">attr</span>[<span class="variable">obj</span>](<span class="variable">results</span>[<span class="number integer">0</span>])
+                    }
+                    <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">style</span>[<span class="variable">obj</span>];
+                }
+                <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">style</span>[<span class="variable">obj</span>];
+            }
+
+            <span class="comment">// Apply to all elements</span>
+            <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">obj</span>) {
+                    <span class="keyword">if</span> (<span class="variable">obj</span>.<span class="variable">hasOwnProperty</span>(<span class="variable">key</span>)) {
+                        <span class="comment">// Need to handle different browsers</span>
+                        <span class="keyword">if</span> (<span class="variable">ie</span> || <span class="variable">browser</span> === <span class="string">'f3'</span>) {
+                            <span class="keyword">if</span> (<span class="variable">attr</span>[<span class="variable">key</span>] !== <span class="variable">undefined</span>) {
+                                <span class="variable">attr</span>[<span class="variable">key</span>](<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">obj</span>[<span class="variable">key</span>]);
+                            } <span class="keyword">else</span> {
+                                <span class="comment">// No match in attr</span>
+                                <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>[<span class="variable">key</span>] = <span class="variable">obj</span>[<span class="variable">key</span>];
+                            }
+                        } <span class="keyword">else</span> {
+                            <span class="comment">// The third param is for W3C Standard</span>
+                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">style</span>.<span class="variable">setProperty</span>(<span class="variable">key</span>, <span class="variable">obj</span>[<span class="variable">key</span>], <span class="string">''</span>);
+                        }
+                    }
+                }
+            }
+            <span class="keyword">return</span> <span class="this">this</span>;
+        },</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1469,17 +1641,17 @@ tiramisu.get('#header').html('&lt;p&gt; i hate cakes! &lt;/p&gt;');</code></pre>
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>String</em>  [set] An optional string containing the HTML to replace</p></li><li><p><strong>return</strong>: <em>[String]</em>  An optional string containing the selector's first element HTML value</p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>String</em>  [set] An optional string containing the HTML to replace</p></li><li><p><strong>return</strong>: <em>[String]</em>  An optional string containing the selector's first element HTML value</p><pre><code> </code></pre></li></ul>
 </td>
 <td class="code">
 <pre><code><span class="string">'html'</span>: <span class="keyword">function</span>(<span class="variable">set</span>) {
-                <span class="keyword">if</span> (<span class="variable">set</span> !== <span class="variable">undefined</span>) {
-                    <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span> = <span class="variable">set</span>;
-                } <span class="keyword">else</span> {
-                    <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span>;
-                }
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
+            <span class="keyword">if</span> (<span class="variable">set</span> !== <span class="variable">undefined</span>) {
+                <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span> = <span class="variable">set</span>;
+            } <span class="keyword">else</span> {
+                <span class="keyword">return</span> <span class="variable">results</span>[<span class="number integer">0</span>].<span class="variable">innerHTML</span>;
+            }
+            <span class="keyword">return</span> <span class="this">this</span>;
+        },</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1535,48 +1707,48 @@ t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']</code></pre>
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>String</em>  [set] An optional string containing the field value to set</p></li><li><p><strong>return</strong>: <em>[String]</em>  An optional string containing the selector's first element field value</p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>String</em>  [set] An optional string containing the field value to set</p></li><li><p><strong>return</strong>: <em>[String]</em>  An optional string containing the selector's first element field value</p><pre><code> </code></pre></li></ul>
 </td>
 <td class="code">
 <pre><code><span class="string">'value'</span>: <span class="keyword">function</span>(<span class="variable">set</span>) {
-                <span class="keyword">var</span> <span class="variable">value</span> = <span class="keyword">function</span>(<span class="variable">i</span>) {
-                        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>) || <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIEolder'</span>)) {
-                            <span class="keyword">if</span> (<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">type</span> == <span class="string">'select-one'</span>) {
-                                <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">options</span>[<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">selectedIndex</span>].<span class="variable">value</span>;
-                            }
-                            <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">value</span>;
+            <span class="keyword">var</span> <span class="variable">value</span> = <span class="keyword">function</span>(<span class="variable">i</span>) {
+                    <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>) || <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIEolder'</span>)) {
+                        <span class="keyword">if</span> (<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">type</span> == <span class="string">'select-one'</span>) {
+                            <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">options</span>[<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">selectedIndex</span>].<span class="variable">value</span>;
                         }
                         <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">value</span>;
-                    };
-
-                <span class="keyword">var</span> <span class="variable">setValue</span> = <span class="keyword">function</span>(<span class="variable">i</span>, <span class="variable">s</span>) {
-                        <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>) || <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIEolder'</span>)) {
-                            <span class="keyword">if</span> (<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">type</span> == <span class="string">'select-one'</span>) {
-                                <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">options</span>[<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">selectedIndex</span>].<span class="variable">value</span> = <span class="variable">s</span>;
-                            }
-                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">value</span> = <span class="variable">s</span>;
-                        } <span class="keyword">else</span> {
-                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">value</span> = <span class="variable">s</span>;
-                        }
-                    };
-
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
-                    <span class="keyword">return</span> <span class="string">''</span>;
-                }
-
-                <span class="keyword">if</span> (<span class="variable">set</span> !== <span class="variable">undefined</span>) {
-                    <span class="variable">setValue</span>(<span class="number integer">0</span>, <span class="variable">set</span>);
-                } <span class="keyword">else</span> {
-                    <span class="keyword">if</span> (<span class="variable">len_result</span> &<span class="variable">gt</span>; <span class="number integer">1</span>) {
-                        <span class="keyword">var</span> <span class="variable">list</span> = [];
-                        <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
-                            <span class="variable">list</span>.<span class="variable">push</span>(<span class="variable">value</span>(<span class="variable">i</span>));
-                        }
-                        <span class="keyword">return</span> <span class="variable">list</span>;
                     }
-                    <span class="keyword">return</span> <span class="variable">value</span>(<span class="number integer">0</span>);
+                    <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">value</span>;
+                };
+
+            <span class="keyword">var</span> <span class="variable">setValue</span> = <span class="keyword">function</span>(<span class="variable">i</span>, <span class="variable">s</span>) {
+                    <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIE'</span>) || <span class="variable">t</span>.<span class="variable">detect</span>(<span class="string">'isIEolder'</span>)) {
+                        <span class="keyword">if</span> (<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">type</span> == <span class="string">'select-one'</span>) {
+                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">options</span>[<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">selectedIndex</span>].<span class="variable">value</span> = <span class="variable">s</span>;
+                        }
+                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">value</span> = <span class="variable">s</span>;
+                    } <span class="keyword">else</span> {
+                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">value</span> = <span class="variable">s</span>;
+                    }
+                };
+
+            <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
+                <span class="keyword">return</span> <span class="string">''</span>;
+            }
+
+            <span class="keyword">if</span> (<span class="variable">set</span> !== <span class="variable">undefined</span>) {
+                <span class="variable">setValue</span>(<span class="number integer">0</span>, <span class="variable">set</span>);
+            } <span class="keyword">else</span> {
+                <span class="keyword">if</span> (<span class="variable">len_result</span> &<span class="variable">gt</span>; <span class="number integer">1</span>) {
+                    <span class="keyword">var</span> <span class="variable">list</span> = [];
+                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
+                        <span class="variable">list</span>.<span class="variable">push</span>(<span class="variable">value</span>(<span class="variable">i</span>));
+                    }
+                    <span class="keyword">return</span> <span class="variable">list</span>;
                 }
-            },</code></pre>
+                <span class="keyword">return</span> <span class="variable">value</span>(<span class="number integer">0</span>);
+            }
+        },</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1596,17 +1768,14 @@ t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']</code></pre>
 <pre><code>tiramisu.get(*SELECTOR*).focus()
 
 
-         </code></pre>
+     </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'focus'</span>: <span class="keyword">function</span>() {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
-                    <span class="keyword">return</span> <span class="string">''</span>;
-                }
-                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                    <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">focus</span>();
-                }
-            },</code></pre>
+            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">focus</span>();
+            }
+        },</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1652,31 +1821,31 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>String</em>  [set] An optional string containing the field src to set</p></li><li><p><strong>return</strong>: <em>[String]</em>  An optional string containing the selector's first element field src</p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>String</em>  [set] An optional string containing the field src to set</p></li><li><p><strong>return</strong>: <em>[String]</em>  An optional string containing the selector's first element field src</p><pre><code> </code></pre></li></ul>
 </td>
 <td class="code">
 <pre><code><span class="string">'attr'</span>: <span class="keyword">function</span>(<span class="variable">attr</span>, <span class="variable">value</span>, <span class="variable">add</span>) {
-                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                    <span class="keyword">if</span> (<span class="variable">value</span> !== <span class="variable">undefined</span>) {
-                        <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
-                            <span class="keyword">if</span> (<span class="variable">add</span>) {
-                                <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> + <span class="string">' '</span> + <span class="variable">value</span>;
-                            } <span class="keyword">else</span> {
-                                <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">value</span>;
-                            }
+            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                <span class="keyword">if</span> (<span class="variable">value</span> !== <span class="variable">undefined</span>) {
+                    <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
+                        <span class="keyword">if</span> (<span class="variable">add</span>) {
+                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> + <span class="string">' '</span> + <span class="variable">value</span>;
                         } <span class="keyword">else</span> {
-                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">setAttribute</span>(<span class="variable">attr</span>, <span class="variable">value</span>);
+                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">value</span>;
                         }
                     } <span class="keyword">else</span> {
-                        <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
-                            <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span>;
-                        } <span class="keyword">else</span> {
-                            <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">getAttribute</span>(<span class="variable">attr</span>);
-                        }
+                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">setAttribute</span>(<span class="variable">attr</span>, <span class="variable">value</span>);
+                    }
+                } <span class="keyword">else</span> {
+                    <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
+                        <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span>;
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">getAttribute</span>(<span class="variable">attr</span>);
                     }
                 }
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
+            }
+            <span class="keyword">return</span> <span class="this">this</span>;
+        },</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1705,17 +1874,17 @@ var index = t.get('p').index(el); // Contains '2';</code></pre>
 
 <h2></h2>
 
-<ul><li><p><strong>param</strong>: <em>Object</em>  the element to search (that is, a DOM element, not a <em>string</em>)</p></li><li><p><strong>return</strong>: <em>index</em>  the index of the element if found, -1 otherwise</p><pre><code>     </code></pre></li></ul>
+<ul><li><p><strong>param</strong>: <em>Object</em>  the element to search (that is, a DOM element, not a <em>string</em>)</p></li><li><p><strong>return</strong>: <em>index</em>  the index of the element if found, -1 otherwise</p><pre><code> </code></pre></li></ul>
 </td>
 <td class="code">
 <pre><code><span class="string">'index'</span>: <span class="keyword">function</span>(<span class="variable">el</span>) {
-                <span class="keyword">if</span> (<span class="variable">el</span> !== <span class="variable">undefined</span>) {
-                    <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span> &<span class="variable">gt</span>;= <span class="number integer">0</span>; <span class="variable">i</span>--) {
-                        <span class="keyword">if</span> (<span class="variable">results</span>[<span class="variable">i</span>] === <span class="variable">el</span>) <span class="keyword">break</span>;
-                    }
-                    <span class="keyword">return</span> <span class="variable">i</span>;
+            <span class="keyword">if</span> (<span class="variable">el</span> !== <span class="variable">undefined</span>) {
+                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span> &<span class="variable">gt</span>;= <span class="number integer">0</span>; <span class="variable">i</span>--) {
+                    <span class="keyword">if</span> (<span class="variable">results</span>[<span class="variable">i</span>] === <span class="variable">el</span>) <span class="keyword">break</span>;
                 }
-            },</code></pre>
+                <span class="keyword">return</span> <span class="variable">i</span>;
+            }
+        },</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1770,161 +1939,33 @@ t.get('p').filter(':even')</code></pre>
      return (index === 2) ? true : false;
  });
 
-         </code></pre>
+     </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'filter'</span>: <span class="keyword">function</span>(<span class="variable">selector</span>) {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
-                    <span class="keyword">return</span> <span class="string">''</span>;
+            <span class="keyword">var</span> <span class="variable">selectors</span> = {
+                <span class="string">':odd'</span>: <span class="keyword">function</span>(<span class="variable">index</span>) {
+                    <span class="keyword">return</span> (<span class="variable">index</span> % <span class="number integer">2</span> !== <span class="number integer">0</span>) ? <span class="variable">true</span> : <span class="variable">false</span>;
+                },
+                <span class="string">':even'</span>: <span class="keyword">function</span>(<span class="variable">index</span>) {
+                    <span class="keyword">return</span> (<span class="variable">index</span> % <span class="number integer">2</span> === <span class="number integer">0</span>) ? <span class="variable">true</span> : <span class="variable">false</span>;
                 }
+            };
 
-                <span class="keyword">var</span> <span class="variable">selectors</span> = {
-                    <span class="string">':odd'</span>: <span class="keyword">function</span>(<span class="variable">index</span>) {
-                        <span class="keyword">return</span> (<span class="variable">index</span> % <span class="number integer">2</span> !== <span class="number integer">0</span>) ? <span class="variable">true</span> : <span class="variable">false</span>;
-                    },
-                    <span class="string">':even'</span>: <span class="keyword">function</span>(<span class="variable">index</span>) {
-                        <span class="keyword">return</span> (<span class="variable">index</span> % <span class="number integer">2</span> === <span class="number integer">0</span>) ? <span class="variable">true</span> : <span class="variable">false</span>;
-                    }
-                };
-
-                <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'string'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">selectors</span>[<span class="variable">selector</span>] === <span class="string">'function'</span>) {
-                    <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                        !<span class="variable">selectors</span>[<span class="variable">selector</span>](<span class="variable">i</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">results</span>.<span class="variable">splice</span>(<span class="variable">i</span>, <span class="number integer">1</span>);
-                    }
-                } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'function'</span>) {
-                    <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                        !<span class="variable">selector</span>(<span class="variable">i</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">results</span>.<span class="variable">splice</span>(<span class="variable">i</span>, <span class="number integer">1</span>);
-                    }
+            <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'string'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">selectors</span>[<span class="variable">selector</span>] === <span class="string">'function'</span>) {
+                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                    !<span class="variable">selectors</span>[<span class="variable">selector</span>](<span class="variable">i</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">results</span>.<span class="variable">splice</span>(<span class="variable">i</span>, <span class="number integer">1</span>);
                 }
-
-                <span class="variable">len_result</span> = <span class="variable">results</span>.<span class="variable">length</span>;
-
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<h2>Empty extension method</h2>
-
-<p>Removes all the child elements of a specific node from the DOM.</p>
-
-<h2>Usage</h2>
-
-<pre><code>tiramisu.get(*SELECTOR*).empty()</code></pre>
-
-<p>where <em>SELECTOR</em> is a valid CSS selector (containing <em>one</em> or <em>more</em> elements).</p>
-
-<h2>Example #1 (Remove all element of a list)</h2>
-
-<pre><code>&lt;ol id="myList"&gt;
-   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
-   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate&lt;/span&gt; chips!&lt;/li&gt;
-&lt;/ol&gt;</code></pre>
-
-<p>calling <em>t.get('#myList').empty()</em> will give the following results:</p>
-
-<pre><code>&lt;ol id="myList"&gt;&lt;/ol&gt;</code></pre>
-
-<h2>Example #2 (Remove a specific element)</h2>
-
-<pre><code>&lt;ol id="myList"&gt;
-   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
-   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate chips!&lt;/span&gt;&lt;/li&gt;
-&lt;/ol&gt;</code></pre>
-
-<p>calling <em>t.get('.tasty').empty()</em> will give the following results:</p>
-
-<pre><code>&lt;ol id="myList"&gt;
-   &lt;li&gt;This is my &lt;span class="tasty"&gt;&lt;/span&gt;&lt;/li&gt;
-   &lt;li&gt;I love &lt;span class="tasty"&gt;&lt;/span&gt; chips!&lt;/li&gt;
-&lt;/ol&gt;</code></pre>
-
-<h2>Todo</h2>
-
-<ul><li><p>Remove events to avoid memory leaks;</p><pre><code>     </code></pre></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="string">'empty'</span>: <span class="keyword">function</span>() {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
-                    <span class="keyword">return</span> <span class="string">''</span>;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'function'</span>) {
+                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                    !<span class="variable">selector</span>(<span class="variable">i</span>) &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">results</span>.<span class="variable">splice</span>(<span class="variable">i</span>, <span class="number integer">1</span>);
                 }
+            }
 
-                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len_result</span>; <span class="variable">i</span>++) {
-                    <span class="keyword">var</span> <span class="variable">child</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">childNodes</span>[<span class="number integer">0</span>];
-                    <span class="keyword">while</span> (<span class="variable">child</span>) {
-                        <span class="keyword">var</span> <span class="variable">next</span> = <span class="variable">child</span>.<span class="variable">nextSibling</span>;
-                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">removeChild</span>(<span class="variable">child</span>);
-                        <span class="variable">child</span> = <span class="variable">next</span>;
-                    }
-                }
-            },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<h2>Destroy extension method</h2>
+            <span class="variable">len_result</span> = <span class="variable">results</span>.<span class="variable">length</span>;
 
-<p>Removes element</p>
-
-<h2>Usage</h2>
-
-<pre><code>tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)</code></pre>
-
-<p>where <em>SELECTOR</em> is a valid CSS selector and <em>ELEMENT</em> is the DOM element</p>
-
-<h2>Example #1 (Remove all element child)</h2>
-
-<pre><code>&lt;ol id="myList"&gt;
-   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
-   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate&lt;/span&gt; chips!&lt;/li&gt;
-&lt;/ol&gt;</code></pre>
-
-<p>calling <em>t.get('#myList').destroy('.tasty')</em> will give the following results:</p>
-
-<pre><code>&lt;ol id="myList"&gt;
-    &lt;li&gt;This is my &lt;/li&gt;
-    &lt;li&gt;I love  chips!&lt;/li&gt;
-&lt;/ol&gt;</code></pre>
-
-<h2>Example #2 (Remove element and child)</h2>
-
-<pre><code>&lt;ol id="myList"&gt;
-   &lt;li&gt;This is my &lt;span class="tasty"&gt;icecake&lt;/span&gt;&lt;/li&gt;
-   &lt;li&gt;I love &lt;span class="tasty"&gt;chocolate chips!&lt;/span&gt;&lt;/li&gt;
-&lt;/ol&gt;</code></pre>
-
-<p>calling <em>t.get('#myList').destroy()</em> will give the following results:</p>
-
-<pre><code>&lt;div id="myDestroyList"&gt;
-
-&lt;/div&gt;
-
-
-         </code></pre>
-</td>
-<td class="code">
-<pre><code><span class="string">'destroy'</span>: <span class="keyword">function</span>(<span class="variable">el</span>) {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
-                    <span class="keyword">return</span> <span class="string">''</span>;
-                }
-
-                <span class="keyword">if</span> (<span class="variable">el</span> !== <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">el</span> === <span class="string">'string'</span>) {
-                    <span class="keyword">var</span> <span class="variable">res</span> = <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">selector</span> + <span class="string">' '</span> + <span class="variable">el</span>),
-                        <span class="variable">len</span> = <span class="variable">res</span>.<span class="variable">length</span>;
-                    <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len</span>; <span class="variable">i</span>--;) {
-                        <span class="keyword">var</span> <span class="variable">parent</span> = <span class="variable">res</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
-                        <span class="variable">parent</span>.<span class="variable">removeChild</span>(<span class="variable">res</span>[<span class="variable">i</span>]);
-                    }
-                } <span class="keyword">else</span> {
-                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                        <span class="keyword">var</span> <span class="variable">parent</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">parentNode</span>;
-                        <span class="variable">parent</span>.<span class="variable">removeChild</span>(<span class="variable">results</span>[<span class="variable">i</span>]);
-                    }
-                }
-
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },</code></pre>
+            <span class="keyword">return</span> <span class="this">this</span>;
+        },</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1970,75 +2011,141 @@ t.get('p').filter(':even')</code></pre>
 &lt;/p&gt;
 
 
-         </code></pre>
+     </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="string">'removeClass'</span>: <span class="keyword">function</span>(<span class="variable">el</span>) {
-                <span class="keyword">if</span> (<span class="variable">results</span>[<span class="number integer">0</span>] === <span class="variable">undefined</span>) {
-                    <span class="keyword">return</span> <span class="string">''</span>;
+            <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">j</span>, <span class="variable">text</span>, <span class="variable">all</span> = <span class="variable">false</span>;
+
+            <span class="keyword">if</span> (<span class="variable">el</span> === <span class="string">':all'</span>) {
+                <span class="variable">el</span> = <span class="variable">undefined</span>;
+                <span class="keyword">var</span> <span class="variable">all</span> = <span class="variable">true</span>;
+            }
+
+            <span class="keyword">if</span> (<span class="variable">el</span> !== <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">el</span> === <span class="string">'string'</span>) {
+
+                <span class="keyword">var</span> <span class="variable">re</span> = <span class="keyword">new</span> <span class="class">RegExp</span>(<span class="string">'(\\s|^)'</span> + <span class="variable">el</span> + <span class="string">'(\\s|$)'</span>);
+                <span class="comment">// Remove class into element</span>
+                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                    <span class="variable">text</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span>.<span class="variable">replace</span>(<span class="variable">re</span>, <span class="string">''</span>);
+                    <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">text</span>;
                 }
+            } <span class="keyword">else</span> {
+                <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                    <span class="comment">// Remove all class into element</span>
+                    <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="string">''</span>;
 
-                <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">j</span>, <span class="variable">text</span>, <span class="variable">all</span> = <span class="variable">false</span>;
+                    <span class="comment">// Remove all class into child</span>
+                    <span class="keyword">if</span> (<span class="variable">all</span>) {
+                        <span class="keyword">var</span> <span class="variable">list_child</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">childNodes</span>,
+                            <span class="variable">len</span> = <span class="variable">list_child</span>.<span class="variable">length</span>;
 
-                <span class="keyword">if</span> (<span class="variable">el</span> === <span class="string">':all'</span>) {
-                    <span class="variable">el</span> = <span class="variable">undefined</span>;
-                    <span class="keyword">var</span> <span class="variable">all</span> = <span class="variable">true</span>;
-                }
-
-
-                <span class="keyword">if</span> (<span class="variable">el</span> !== <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="variable">el</span> === <span class="string">'string'</span>) {
-
-                    <span class="keyword">var</span> <span class="variable">re</span> = <span class="keyword">new</span> <span class="class">RegExp</span>(<span class="string">'(\\s|^)'</span> + <span class="variable">el</span> + <span class="string">'(\\s|$)'</span>);
-                    <span class="comment">// Remove class into element</span>
-                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                        <span class="variable">text</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span>.<span class="variable">replace</span>(<span class="variable">re</span>, <span class="string">''</span>);
-                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">text</span>;
-                    }
-
-                } <span class="keyword">else</span> {
-
-                    <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                        <span class="comment">// Remove all class into element</span>
-                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="string">''</span>;
-
-                        <span class="comment">// Remove all class into child</span>
-                        <span class="keyword">if</span> (<span class="variable">all</span>) {
-                            <span class="keyword">var</span> <span class="variable">list_child</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">childNodes</span>,
-                                <span class="variable">len</span> = <span class="variable">list_child</span>.<span class="variable">length</span>;
-                            <span class="keyword">if</span> (<span class="variable">len</span> &<span class="variable">gt</span>; <span class="number integer">0</span>) {
-                                (<span class="keyword">function</span>(<span class="variable">list</span>, <span class="variable">len</span>) {
-                                    <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span> = <span class="variable">len</span>; <span class="variable">j</span>--;) {
-                                        <span class="variable">list</span>[<span class="variable">j</span>].<span class="variable">className</span> = <span class="string">''</span>;
-                                        <span class="keyword">var</span> <span class="variable">new_list</span> = <span class="variable">list</span>[<span class="variable">j</span>].<span class="variable">childNodes</span>,
-                                            <span class="variable">new_len</span> = <span class="variable">new_list</span>.<span class="variable">length</span>;
-                                        <span class="keyword">if</span> (<span class="variable">new_len</span> &<span class="variable">gt</span>; <span class="number integer">0</span>) {
-                                            <span class="variable">arguments</span>.<span class="variable">callee</span>(<span class="variable">new_list</span>, <span class="variable">new_len</span>);
-                                        }
+                        <span class="keyword">if</span> (<span class="variable">len</span> &<span class="variable">gt</span>; <span class="number integer">0</span>) {
+                            (<span class="keyword">function</span>(<span class="variable">list</span>, <span class="variable">len</span>) {
+                                <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span> = <span class="variable">len</span>; <span class="variable">j</span>--;) {
+                                    <span class="variable">list</span>[<span class="variable">j</span>].<span class="variable">className</span> = <span class="string">''</span>;
+                                    <span class="keyword">var</span> <span class="variable">new_list</span> = <span class="variable">list</span>[<span class="variable">j</span>].<span class="variable">childNodes</span>,
+                                        <span class="variable">new_len</span> = <span class="variable">new_list</span>.<span class="variable">length</span>;
+                                    <span class="keyword">if</span> (<span class="variable">new_len</span> &<span class="variable">gt</span>; <span class="number integer">0</span>) {
+                                        <span class="variable">arguments</span>.<span class="variable">callee</span>(<span class="variable">new_list</span>, <span class="variable">new_len</span>);
                                     }
-                                })(<span class="variable">list_child</span>, <span class="variable">len</span>);
-                            }
+                                }
+                            })(<span class="variable">list_child</span>, <span class="variable">len</span>);
                         }
                     }
-
                 }
-                <span class="keyword">return</span> <span class="this">this</span>;
-            },
-            <span class="comment">// Modules integrated into t.get --------------------</span>
-            <span class="comment">// --------------------------------------------------</span>
-        };
-        
-        <span class="comment">// Append methods to the result object</span>
-        (<span class="keyword">function</span> <span class="variable">append_methods</span>() {
-            <span class="keyword">var</span> <span class="variable">key</span>;
-            <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">methods</span>) {
+            }
+            <span class="keyword">return</span> <span class="this">this</span>;
+        }  
+    };
+
+    <span class="comment">// Append methods to the result object</span>
+    (<span class="keyword">function</span> <span class="variable">append_methods</span>() {
+        <span class="keyword">var</span> <span class="variable">key</span>;
+
+        <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">methods</span>) {
+            <span class="keyword">if</span> (<span class="variable">len_result</span>) {
                 <span class="variable">results</span>[<span class="variable">key</span>] = <span class="variable">methods</span>[<span class="variable">key</span>];
             }
-        })();
-        <span class="keyword">return</span> <span class="variable">results</span>;
-    };
+        }
+
+        <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>) !== <span class="string">'undefined'</span>) {
+
+            <span class="comment">// Addictional methods</span>
+            <span class="keyword">for</span> (<span class="variable">key</span> <span class="keyword">in</span> <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>) {
+                <span class="keyword">for</span> (<span class="variable">method</span> <span class="keyword">in</span> <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>[<span class="variable">key</span>]) {
+                    <span class="keyword">if</span> (<span class="variable">len_result</span>) {
+                        <span class="variable">results</span>[<span class="variable">method</span>] = <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>[<span class="variable">key</span>][<span class="variable">method</span>];
+                    }
+                }
+            }
+        }
+    })();
+    <span class="comment">// Exposing results</span>
+    <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span> = <span class="variable">results</span>;
+    <span class="comment">// Exposing selector</span>
+    <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">selector</span> = <span class="variable">selector</span>;
     
-    <span class="comment">// Plugin Space -------------------------------------</span>
-    <span class="comment">// --------------------------------------------------</span>
+    <span class="keyword">return</span> <span class="variable">results</span>;
+};
+
+<span class="comment">// Allocate methods object</span>
+<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> = <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> || {};</code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="src/tiramisu.core.js"><a href="#">tiramisu.core</a></h2></td><td>src/tiramisu.core.js</td></tr><tr class="code">
+<td class="docs">
+<p>The Framework's costructor exposes externally:</p>
+
+<ul><li>A version number;</li><li>A document object reference;</li><li><em>requestAnimFrame</em> (used for handling tasks).</li><li>A <em>Module Container</em> (TODO: Write detailed docs about it)
+ </li></ul>
+</td>
+<td class="code">
+<pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
+        
+        <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
+        
+        <span class="comment">// Tiramisu modules</span>
+        <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
+        
+        <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
+            <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
+            <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
+                <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
+            };
+        })();
+        
+        <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>;
+        <span class="this">this</span>.<span class="variable">native_qsa</span> = (<span class="this">this</span>.<span class="variable">selector</span> === <span class="string">'QSA'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span> ? <span class="variable">true</span> : <span class="variable">false</span>);
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6'</span>;
+    }
+
+    <span class="comment">// Exposing the framework</span>
+    <span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
+
+
+    <span class="comment">// Cancels the event if it is cancelable, without stopping further propagation of the event.</span>
+    <span class="class">Event</span>.<span class="variable">prototype</span>.<span class="variable">preventDefault</span> = <span class="keyword">function</span>() {
+        <span class="keyword">if</span> (<span class="variable">e</span>.<span class="variable">preventDefault</span>) {
+            <span class="variable">e</span>.<span class="variable">preventDefault</span>();
+        } <span class="keyword">else</span> { <span class="comment">// IE</span>
+            <span class="variable">e</span>.<span class="variable">returnValue</span> = <span class="variable">false</span>;
+        }
+    }
+
+    <span class="comment">// Keep in memory the events created</span>
+    <span class="keyword">var</span> <span class="variable">local_event</span> = {};</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h1>Make Module</h1>
+
+<pre><code> </code></pre>
+</td>
+<td class="code">
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">make</span> = <span class="keyword">function</span>(<span class="variable">element</span>) {
+        <span class="keyword">return</span> <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="variable">element</span>));
+    }
     
 })(<span class="variable">window</span>);
 </code></pre>
