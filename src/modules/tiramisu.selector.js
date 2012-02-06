@@ -811,11 +811,19 @@ tiramisu.modules.get = function(selector) {
          *
          */
         'ready': function(def) {
+            t.list_def.push(def);
             t.d.onreadystatechange = function() {
-                if (t.d.readyState == "complete") {
-                    // Run the callback
-                    def();
+                if (t.d.readyState == "complete") { 
+                               
+                    var len = t.lista.length;
+                    for (var i = 0; i < len; i++) {
+                        var def = t.lista[i];
+                        // Run the callback
+                        def();
+                    }
+                    
                     return this;
+                    
                 }
             }
         },
