@@ -108,22 +108,24 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h3>version 0.1.6</h3>
+<table id="source"><tbody><tr><td><h1>Tiramisu</h1><h1>[Tiramisu][0]</h1>
 
-<p>Tiramisu is a tiny, modular and fast JavaScript library 
+<h3>version 0.1.6</h3>
+
+<p>Tiramisu is a tiny, modular and fast JavaScript Library 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
 
 <pre><code>tiramisu.get('h1').each(function() {
     alert(h1.html());
 });</code></pre>
 
-<p>Here are some highlights:</p>
+<h2>Here are some highlights:</h2>
 
-<ul><li>Modular <em>philosophy</em>;</li><li><em>Very small</em> size (7,1Kb minified);</li><li><em>Chainable</em> methods;</li><li>Task management (a.k.a. Callbacks scheduling);</li></ul>
+<ul><li>Modular <em>philosophy</em>;</li><li><em>Very small</em> size (16Kb minified);</li><li><em>Chainable</em> methods;</li><li>Task management (a.k.a. Callbacks scheduling);</li></ul>
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/docs/index.html">Documentation (0.1.6)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
+<ul><li><a href="http://www.tiramisujs.com/docs">Documentation (0.1.6)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li><li><a href="http://tiramisu-proudlygeek.dotcloud.com/">Benchmarks</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
 <td class="docs">
 <h1>Framework Ajax Module</h1>
 
@@ -584,31 +586,9 @@ produce the following result:
 <td class="docs">
 <h2>Insert After method</h2>
 
-<ul><li>A version number;</li><li>A document object reference;</li><li><em>requestAnimFrame</em> (used for handling tasks).</li><li>A <em>Module Container</em> (TODO: Write detailed docs about it)
- </li></ul>
-</td>
-<td class="code">
-<pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        
-        <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
-        
-        <span class="comment">// Tiramisu modules</span>
-        <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
-        
-        <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
-            <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
-            <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
-                <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
-            };
-        })();
-        
-        <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>;
-        
-        <span class="this">this</span>.<span class="variable">qsa_chosen</span> = (<span class="this">this</span>.<span class="variable">selector</span> === <span class="string">'QSA'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span> ? <span class="variable">true</span> : <span class="variable">false</span>);
-        
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6'</span>;
-        
-    }
+<p>Insert text or html, after each element.</p>
+
+<h2>Usage</h2>
 
 <pre><code>tiramisu.get(*SELECTOR*).after(*HTML*)</code></pre>
 
@@ -1164,78 +1144,6 @@ tiramisu.get('p').on('click', function() {
     <span class="comment">// call the new functions</span>
     <span class="variable">remove_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
 }</code></pre>
-</td>
-</tr><tr class="filename"><td><h2 id="src/modules/tiramisu.taskengine.js"><a href="#">tiramisu.taskengine</a></h2></td><td>src/modules/tiramisu.taskengine.js</td></tr><tr class="code">
-<td class="docs">
-<h1>Task Engine Module</h1>
-
-<p>This module is used to perform a function at a particular amount of time
-or perform the same function several times in that time frame.</p>
-
-<h2>Usage</h2>
-
-<pre><code>tiramisu.task(delay, [interval], callback);</code></pre>
-
-<p>where “interval” is an optional argument</p>
-
-<h2>Example #1 (The callback is executed after 2000 ms)</h2>
-
-<pre><code>tiramisu.task(2000, callback)</code></pre>
-
-<h2>Example #2 (The callback is executed every 100 ms in a period of 2000ms)</h2>
-
-<pre><code>tiramisu.task(2000, 100, callback)</code></pre>
-
-<h2>Example #3 (The callback is executed every 500 ms in loop.)</h2>
-
-<pre><code>tiramisu.task('loop', 500, callback)</code></pre>
-
-<h2></h2>
-
-<ul><li><p><strong>param</strong>: <em>integer</em>  delay The total task delay(ms)</p></li><li><p><strong>param</strong>: <em>integer</em>  [interval] The interval of the repetitions(ms)</p></li><li><p><strong>param</strong>: <em>Function</em>  cb The callback function</p></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">task</span> = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
-    
-    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
-    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span> : []
-    }
-    
-    <span class="keyword">var</span> <span class="variable">interval</span>, <span class="variable">requestAnimFrame</span> = <span class="variable">t</span>.<span class="variable">requestAnimFrame</span>;
-
-    <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
-        <span class="variable">interval</span> = <span class="variable">arguments</span>[<span class="number integer">1</span>];
-        <span class="variable">cb</span> = <span class="variable">arguments</span>[<span class="number integer">2</span>];
-    }
-
-    <span class="keyword">var</span> <span class="variable">start</span> = +<span class="keyword">new</span> <span class="class">Date</span>(),
-        <span class="variable">pass</span> = <span class="variable">interval</span>;
-
-    <span class="keyword">function</span> <span class="variable">animate</span>() {
-        <span class="keyword">var</span> <span class="variable">progress</span> = +<span class="keyword">new</span> <span class="class">Date</span>() - <span class="variable">start</span>;
-
-        <span class="keyword">if</span> (<span class="variable">interval</span> !== <span class="variable">undefined</span>) {
-            <span class="keyword">if</span> (<span class="variable">progress</span> &<span class="variable">gt</span>; <span class="variable">pass</span>) {
-                <span class="variable">pass</span> += <span class="variable">interval</span>;
-                <span class="variable">cb</span>();
-            }
-        }
-
-        <span class="comment">// The recursion continues only in two cases:</span>
-        <span class="comment">// - The elapsed time is less than the total time;</span>
-        <span class="comment">// - The total time is infinite (so a loop) but there </span>
-        <span class="comment">//   is an interval of time between repetitions of the callback.</span>
-        <span class="keyword">if</span> (<span class="variable">progress</span> &<span class="variable">lt</span>; <span class="variable">delay</span> || (<span class="variable">delay</span> == <span class="string">'loop'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">interval</span> !== <span class="variable">undefined</span>)) {
-            <span class="variable">requestAnimFrame</span>(<span class="variable">animate</span>);
-        } <span class="keyword">else</span> {
-            <span class="keyword">if</span> (<span class="variable">interval</span> === <span class="variable">undefined</span>) {
-                <span class="variable">cb</span>();
-            }
-        }
-    }
-    <span class="variable">animate</span>();
-};</code></pre>
 </td>
 </tr><tr class="filename"><td><h2 id="src/modules/tiramisu.selector.js"><a href="#">tiramisu.selector</a></h2></td><td>src/modules/tiramisu.selector.js</td></tr><tr class="code">
 <td class="docs">
@@ -2116,6 +2024,78 @@ t.get('p').filter(':even')</code></pre>
 <span class="comment">// Allocate methods object</span>
 <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> = <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> || {};</code></pre>
 </td>
+</tr><tr class="filename"><td><h2 id="src/modules/tiramisu.taskengine.js"><a href="#">tiramisu.taskengine</a></h2></td><td>src/modules/tiramisu.taskengine.js</td></tr><tr class="code">
+<td class="docs">
+<h1>Task Engine Module</h1>
+
+<p>This module is used to perform a function at a particular amount of time
+or perform the same function several times in that time frame.</p>
+
+<h2>Usage</h2>
+
+<pre><code>tiramisu.task(delay, [interval], callback);</code></pre>
+
+<p>where “interval” is an optional argument</p>
+
+<h2>Example #1 (The callback is executed after 2000 ms)</h2>
+
+<pre><code>tiramisu.task(2000, callback)</code></pre>
+
+<h2>Example #2 (The callback is executed every 100 ms in a period of 2000ms)</h2>
+
+<pre><code>tiramisu.task(2000, 100, callback)</code></pre>
+
+<h2>Example #3 (The callback is executed every 500 ms in loop.)</h2>
+
+<pre><code>tiramisu.task('loop', 500, callback)</code></pre>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>integer</em>  delay The total task delay(ms)</p></li><li><p><strong>param</strong>: <em>integer</em>  [interval] The interval of the repetitions(ms)</p></li><li><p><strong>param</strong>: <em>Function</em>  cb The callback function</p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">task</span> = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
+    
+    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
+        <span class="variable">dependencies</span> : []
+    }
+    
+    <span class="keyword">var</span> <span class="variable">interval</span>, <span class="variable">requestAnimFrame</span> = <span class="variable">t</span>.<span class="variable">requestAnimFrame</span>;
+
+    <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
+        <span class="variable">interval</span> = <span class="variable">arguments</span>[<span class="number integer">1</span>];
+        <span class="variable">cb</span> = <span class="variable">arguments</span>[<span class="number integer">2</span>];
+    }
+
+    <span class="keyword">var</span> <span class="variable">start</span> = +<span class="keyword">new</span> <span class="class">Date</span>(),
+        <span class="variable">pass</span> = <span class="variable">interval</span>;
+
+    <span class="keyword">function</span> <span class="variable">animate</span>() {
+        <span class="keyword">var</span> <span class="variable">progress</span> = +<span class="keyword">new</span> <span class="class">Date</span>() - <span class="variable">start</span>;
+
+        <span class="keyword">if</span> (<span class="variable">interval</span> !== <span class="variable">undefined</span>) {
+            <span class="keyword">if</span> (<span class="variable">progress</span> &<span class="variable">gt</span>; <span class="variable">pass</span>) {
+                <span class="variable">pass</span> += <span class="variable">interval</span>;
+                <span class="variable">cb</span>();
+            }
+        }
+
+        <span class="comment">// The recursion continues only in two cases:</span>
+        <span class="comment">// - The elapsed time is less than the total time;</span>
+        <span class="comment">// - The total time is infinite (so a loop) but there </span>
+        <span class="comment">//   is an interval of time between repetitions of the callback.</span>
+        <span class="keyword">if</span> (<span class="variable">progress</span> &<span class="variable">lt</span>; <span class="variable">delay</span> || (<span class="variable">delay</span> == <span class="string">'loop'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">interval</span> !== <span class="variable">undefined</span>)) {
+            <span class="variable">requestAnimFrame</span>(<span class="variable">animate</span>);
+        } <span class="keyword">else</span> {
+            <span class="keyword">if</span> (<span class="variable">interval</span> === <span class="variable">undefined</span>) {
+                <span class="variable">cb</span>();
+            }
+        }
+    }
+    <span class="variable">animate</span>();
+};</code></pre>
+</td>
 </tr><tr class="filename"><td><h2 id="src/tiramisu.core.js"><a href="#">tiramisu.core</a></h2></td><td>src/tiramisu.core.js</td></tr><tr class="code">
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
@@ -2125,52 +2105,51 @@ t.get('p').filter(':even')</code></pre>
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-        
+
         <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
-        
+
         <span class="comment">// Tiramisu modules</span>
         <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
-        
+
         <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
             <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
             <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
                 <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
             };
         })();
-        
+
         <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6'</span>;
-    }
+     }
 
-    <span class="comment">// Exposing the framework</span>
-    <span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
+     <span class="comment">// Exposing the framework</span>
+     <span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
 
 
-    <span class="comment">// Cancels the event if it is cancelable, without stopping further propagation of the event.</span>
-    <span class="class">Event</span>.<span class="variable">prototype</span>.<span class="variable">preventDefault</span> = <span class="keyword">function</span>() {
+     <span class="comment">// Cancels the event if it is cancelable, without stopping further propagation of the event.</span>
+     <span class="class">Event</span>.<span class="variable">prototype</span>.<span class="variable">preventDefault</span> = <span class="keyword">function</span>() {
         <span class="keyword">if</span> (<span class="variable">e</span>.<span class="variable">preventDefault</span>) {
             <span class="variable">e</span>.<span class="variable">preventDefault</span>();
         } <span class="keyword">else</span> { <span class="comment">// IE</span>
             <span class="variable">e</span>.<span class="variable">returnValue</span> = <span class="variable">false</span>;
         }
-    }
+     }
 
-    <span class="comment">// Keep in memory the events created</span>
-    <span class="keyword">var</span> <span class="variable">local_event</span> = {};</code></pre>
+     <span class="comment">// Keep in memory the events created</span>
+     <span class="keyword">var</span> <span class="variable">local_event</span> = {};</code></pre>
 </td>
 </tr>
 <tr class="code">
 <td class="docs">
 <h1>Make Module</h1>
 
-<pre><code> </code></pre>
+<pre><code>  </code></pre>
 </td>
 <td class="code">
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">make</span> = <span class="keyword">function</span>(<span class="variable">element</span>) {
-        <span class="keyword">return</span> <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="variable">element</span>));
-    }
-    
-})(<span class="variable">window</span>);
-</code></pre>
+         <span class="keyword">return</span> <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="variable">element</span>));
+     }
+
+})(<span class="variable">window</span>);</code></pre>
 </td>
 </tr>	</body>
 </html></tbody></table>
