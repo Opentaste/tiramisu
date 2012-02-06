@@ -815,9 +815,9 @@ tiramisu.modules.get = function(selector) {
             t.d.onreadystatechange = function() {
                 if (t.d.readyState == "complete") { 
                                
-                    var len = t.lista.length;
+                    var len = t.list_def.length;
                     for (var i = 0; i < len; i++) {
-                        var def = t.lista[i];
+                        var def = t.list_def[i];
                         // Run the callback
                         def();
                     }

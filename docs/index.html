@@ -1774,9 +1774,9 @@ and <em>FUNCTION</em> is the function to execute when the DOM is ready.</p>
             <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
                 <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">readyState</span> == &<span class="variable">quot</span>;<span class="variable">complete</span>&<span class="variable">quot</span>;) { 
                                
-                    <span class="keyword">var</span> <span class="variable">len</span> = <span class="variable">t</span>.<span class="variable">lista</span>.<span class="variable">length</span>;
+                    <span class="keyword">var</span> <span class="variable">len</span> = <span class="variable">t</span>.<span class="variable">list_def</span>.<span class="variable">length</span>;
                     <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len</span>; <span class="variable">i</span>++) {
-                        <span class="keyword">var</span> <span class="variable">def</span> = <span class="variable">t</span>.<span class="variable">lista</span>[<span class="variable">i</span>];
+                        <span class="keyword">var</span> <span class="variable">def</span> = <span class="variable">t</span>.<span class="variable">list_def</span>[<span class="variable">i</span>];
                         <span class="comment">// Run the callback</span>
                         <span class="variable">def</span>();
                     }
@@ -2032,64 +2032,6 @@ t.get('p').filter(':even')</code></pre>
 <span class="comment">// Allocate methods object</span>
 <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> = <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> || {};</code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/tiramisu.core.js"><a href="#">tiramisu.core</a></h2></td><td>src/tiramisu.core.js</td></tr><tr class="code">
-<td class="docs">
-<p>The Framework's costructor exposes externally:</p>
-
-<ul><li>A version number;</li><li>A document object reference;</li><li><em>requestAnimFrame</em> (used for handling tasks).</li><li>A <em>Module Container</em> (TODO: Write detailed docs about it)
- </li></ul>
-</td>
-<td class="code">
-<pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-
-        <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
-
-        <span class="comment">// Tiramisu modules</span>
-        <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
-
-        <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
-            <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
-            <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
-                <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
-            };
-        })();
-        
-        <span class="comment">// used in Ready function</span>
-        <span class="this">this</span>.<span class="variable">list_def</span> = [];
-
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6-b2'</span>;
-     }
-
-     <span class="comment">// Exposing the framework</span>
-     <span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
-
-
-     <span class="comment">// Cancels the event if it is cancelable, without stopping further propagation of the event.</span>
-     <span class="class">Event</span>.<span class="variable">prototype</span>.<span class="variable">preventDefault</span> = <span class="keyword">function</span>() {
-        <span class="keyword">if</span> (<span class="variable">e</span>.<span class="variable">preventDefault</span>) {
-            <span class="variable">e</span>.<span class="variable">preventDefault</span>();
-        } <span class="keyword">else</span> { <span class="comment">// IE</span>
-            <span class="variable">e</span>.<span class="variable">returnValue</span> = <span class="variable">false</span>;
-        }
-     }
-
-     <span class="comment">// Keep in memory the events created</span>
-     <span class="keyword">var</span> <span class="variable">local_event</span> = {};</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<h1>Make Module</h1>
-
-<pre><code>  </code></pre>
-</td>
-<td class="code">
-<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">make</span> = <span class="keyword">function</span>(<span class="variable">element</span>) {
-         <span class="keyword">return</span> <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="variable">element</span>));
-     }
-
-})(<span class="variable">window</span>);</code></pre>
-</td>
 </tr><tr class="filename"><td><h2 id="src/modules/tiramisu.taskengine.js"><a href="#">tiramisu.taskengine</a></h2></td><td>src/modules/tiramisu.taskengine.js</td></tr><tr class="code">
 <td class="docs">
 <h1>Task Engine Module</h1>
@@ -2161,6 +2103,64 @@ or perform the same function several times in that time frame.</p>
     }
     <span class="variable">animate</span>();
 };</code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="src/tiramisu.core.js"><a href="#">tiramisu.core</a></h2></td><td>src/tiramisu.core.js</td></tr><tr class="code">
+<td class="docs">
+<p>The Framework's costructor exposes externally:</p>
+
+<ul><li>A version number;</li><li>A document object reference;</li><li><em>requestAnimFrame</em> (used for handling tasks).</li><li>A <em>Module Container</em> (TODO: Write detailed docs about it)
+ </li></ul>
+</td>
+<td class="code">
+<pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
+
+        <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
+
+        <span class="comment">// Tiramisu modules</span>
+        <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
+
+        <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
+            <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
+            <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
+                <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
+            };
+        })();
+        
+        <span class="comment">// used in Ready function</span>
+        <span class="this">this</span>.<span class="variable">list_def</span> = [];
+
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6-b2'</span>;
+     }
+
+     <span class="comment">// Exposing the framework</span>
+     <span class="variable">window</span>.<span class="variable">tiramisu</span> = <span class="variable">window</span>.<span class="variable">t</span> = <span class="keyword">new</span> <span class="class">Tiramisu</span>();
+
+
+     <span class="comment">// Cancels the event if it is cancelable, without stopping further propagation of the event.</span>
+     <span class="class">Event</span>.<span class="variable">prototype</span>.<span class="variable">preventDefault</span> = <span class="keyword">function</span>() {
+        <span class="keyword">if</span> (<span class="variable">e</span>.<span class="variable">preventDefault</span>) {
+            <span class="variable">e</span>.<span class="variable">preventDefault</span>();
+        } <span class="keyword">else</span> { <span class="comment">// IE</span>
+            <span class="variable">e</span>.<span class="variable">returnValue</span> = <span class="variable">false</span>;
+        }
+     }
+
+     <span class="comment">// Keep in memory the events created</span>
+     <span class="keyword">var</span> <span class="variable">local_event</span> = {};</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<h1>Make Module</h1>
+
+<pre><code>  </code></pre>
+</td>
+<td class="code">
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">make</span> = <span class="keyword">function</span>(<span class="variable">element</span>) {
+         <span class="keyword">return</span> <span class="variable">t</span>.<span class="variable">get</span>(<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">createElement</span>(<span class="variable">element</span>));
+     }
+
+})(<span class="variable">window</span>);</code></pre>
 </td>
 </tr>	</body>
 </html></tbody></table>
