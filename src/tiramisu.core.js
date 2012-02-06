@@ -36,7 +36,7 @@
         // used in Ready function
         this.list_def = [];
 
-        this.version = '0.1.6';
+        this.version = '0.1.6-b2';
      }
 
      // Exposing the framework
