@@ -215,8 +215,11 @@ tiramisu.modules.ajax = function(setting_input) {
     if (!xhr && typeof XMLHttpRequest != "undefined") {
         xhr = new XMLHttpRequest
     }
-
-    t.extend(setting, setting_input);
+    
+    // extend object
+    for (var prop in setting_input) {
+        setting[prop] = setting_input[prop];
+    }
 
     // object "setting.parameter" I create a string with the parameters 
     // to be passed in request

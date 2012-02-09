@@ -110,7 +110,7 @@ code .this { color: #19469D; }</style>
 	<body>
 <table id="source"><tbody><tr><td><h1>Tiramisu</h1><h1>[Tiramisu][0]</h1>
 
-<h3>version 0.1.6-b3</h3>
+<h3>version 0.1.6-b4</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript Library 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -125,7 +125,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://www.tiramisujs.com/docs">Documentation (0.1.6-b3)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li><li><a href="http://tiramisu-proudlygeek.dotcloud.com/">Benchmarks</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
+<ul><li><a href="http://www.tiramisujs.com/docs">Documentation (0.1.6-b4)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li><li><a href="http://tiramisu-proudlygeek.dotcloud.com/">Benchmarks</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
 <td class="docs">
 <h1>Framework Ajax Module</h1>
 
@@ -325,8 +325,11 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
     <span class="keyword">if</span> (!<span class="variable">xhr</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="class">XMLHttpRequest</span> != &<span class="variable">quot</span>;<span class="variable">undefined</span>&<span class="variable">quot</span>;) {
         <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">XMLHttpRequest</span>
     }
-
-    <span class="variable">t</span>.<span class="variable">extend</span>(<span class="variable">setting</span>, <span class="variable">setting_input</span>);
+    
+    <span class="comment">// extend object</span>
+    <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">prop</span> <span class="keyword">in</span> <span class="variable">setting_input</span>) {
+        <span class="variable">setting</span>[<span class="variable">prop</span>] = <span class="variable">setting_input</span>[<span class="variable">prop</span>];
+    }
 
     <span class="comment">// object &quot;setting.parameter&quot; I create a string with the parameters </span>
     <span class="comment">// to be passed in request</span>
@@ -2019,6 +2022,8 @@ t.get('p').filter(':even')</code></pre>
                 <span class="keyword">for</span> (<span class="variable">method</span> <span class="keyword">in</span> <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>[<span class="variable">key</span>]) {
                     <span class="keyword">if</span> (<span class="variable">len_result</span>) {
                         <span class="variable">results</span>[<span class="variable">method</span>] = <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>[<span class="variable">key</span>][<span class="variable">method</span>];
+                    } <span class="keyword">else</span> {
+                        <span class="variable">results</span>[<span class="variable">method</span>] = <span class="keyword">function</span>() {};
                     }
                 }
             }
@@ -2132,7 +2137,7 @@ or perform the same function several times in that time frame.</p>
         <span class="comment">// used in Ready function</span>
         <span class="this">this</span>.<span class="variable">list_def</span> = [];
 
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6-b3'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6-b4'</span>;
      }
 
      <span class="comment">// Exposing the framework</span>

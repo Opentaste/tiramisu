@@ -1059,6 +1059,8 @@ tiramisu.modules.get = function(selector) {
                 for (method in tiramisu.modules.get.methods[key]) {
                     if (len_result) {
                         results[method] = tiramisu.modules.get.methods[key][method];
+                    } else {
+                        results[method] = function() {};
                     }
                 }
             }
