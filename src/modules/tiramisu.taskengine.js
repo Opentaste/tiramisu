@@ -36,12 +36,12 @@
  * @param {Function} cb The callback function
  */
 tiramisu.modules.task = function(delay, cb) {
-    
+
     // Each module within Tiramisu can to need inherit other modules.
     var ingredients = {
-        dependencies : []
+        dependencies: []
     }
-    
+
     var interval, requestAnimFrame = t.requestAnimFrame;
 
     if (arguments.length > 2) {

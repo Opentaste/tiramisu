@@ -272,12 +272,12 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 </td>
 <td class="code">
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
-    
+
     <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
     <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span> : [<span class="string">'browserdetect'</span>, <span class="string">'taskengine'</span>]
+        <span class="variable">dependencies</span>: [<span class="string">'browserdetect'</span>, <span class="string">'taskengine'</span>]
     }
-    
+
     <span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
         <span class="variable">setting</span> = {
             <span class="variable">abort</span>: <span class="variable">false</span>,
@@ -325,7 +325,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
     <span class="keyword">if</span> (!<span class="variable">xhr</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="class">XMLHttpRequest</span> != &<span class="variable">quot</span>;<span class="variable">undefined</span>&<span class="variable">quot</span>;) {
         <span class="variable">xhr</span> = <span class="keyword">new</span> <span class="class">XMLHttpRequest</span>
     }
-    
+
     <span class="comment">// extend object</span>
     <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">prop</span> <span class="keyword">in</span> <span class="variable">setting_input</span>) {
         <span class="variable">setting</span>[<span class="variable">prop</span>] = <span class="variable">setting_input</span>[<span class="variable">prop</span>];
@@ -463,12 +463,12 @@ the possible return values are:</p>
 </td>
 <td class="code">
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">detect</span> = <span class="keyword">function</span>(<span class="variable">key</span>) {
-    
+
     <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
     <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span> : []
+        <span class="variable">dependencies</span>: []
     }
-    
+
     <span class="keyword">var</span> <span class="variable">nav_agent</span> = <span class="variable">navigator</span>.<span class="variable">userAgent</span>,
         <span class="variable">nav_name</span> = <span class="variable">navigator</span>.<span class="variable">appName</span>;
 
@@ -881,10 +881,12 @@ produces the following:
 };
 
 <span class="comment">// DOM Node insertion generic utility</span>
- <span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">before</span>, <span class="variable">append</span>) {
+
+
+<span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">before</span>, <span class="variable">append</span>) {
     <span class="comment">// Aliasing results</span>
-    <span class="keyword">var</span> <span class="variable">results</span>     = <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>,
-        <span class="variable">len_result</span>  = <span class="variable">results</span>.<span class="variable">length</span>;
+    <span class="keyword">var</span> <span class="variable">results</span> = <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>,
+        <span class="variable">len_result</span> = <span class="variable">results</span>.<span class="variable">length</span>;
 
     <span class="keyword">var</span> <span class="variable">i</span>, <span class="variable">j</span>, <span class="variable">parent</span>, <span class="variable">elements</span> = [];
 
@@ -928,7 +930,8 @@ produces the following:
             (<span class="variable">append</span>) ? <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">appendChild</span>(<span class="variable">frag</span>) : <span class="variable">parent</span>.<span class="variable">insertBefore</span>(<span class="variable">frag</span>, <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">nextSibling</span>);
         }
     }
-}</code></pre>
+}
+</code></pre>
 </td>
 </tr><tr class="filename"><td><h2 id="src/modules/tiramisu.selector.event.js"><a href="#">tiramisu.selector.event</a></h2></td><td>src/modules/tiramisu.selector.event.js</td></tr><tr class="code">
 <td class="docs">
@@ -1081,38 +1084,39 @@ tiramisu.get('p').on('click', function() {
 <span class="comment">// By High Performance JavaScript, Nicholas C. Zakas</span>
 <span class="keyword">var</span> <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
 
-    <span class="comment">// overwrite te existing function</span>
-    <span class="keyword">if</span> (<span class="variable">target</span>.<span class="variable">addEventListener</span>) { <span class="comment">// DOM 2 Events</span>
-        <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-            <span class="variable">target</span>.<span class="variable">addEventListener</span>(<span class="variable">event_type</span>, <span class="variable">handler</span>, <span class="variable">false</span>);
+        <span class="comment">// overwrite te existing function</span>
+        <span class="keyword">if</span> (<span class="variable">target</span>.<span class="variable">addEventListener</span>) { <span class="comment">// DOM 2 Events</span>
+            <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+                <span class="variable">target</span>.<span class="variable">addEventListener</span>(<span class="variable">event_type</span>, <span class="variable">handler</span>, <span class="variable">false</span>);
+            }
+        } <span class="keyword">else</span> { <span class="comment">// IE</span>
+            <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+                <span class="variable">target</span>.<span class="variable">attachEvent</span>(<span class="string">'on'</span> + <span class="variable">event_type</span>, <span class="variable">handler</span>);
+            }
         }
-    } <span class="keyword">else</span> { <span class="comment">// IE</span>
-        <span class="variable">add_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-            <span class="variable">target</span>.<span class="variable">attachEvent</span>(<span class="string">'on'</span> + <span class="variable">event_type</span>, <span class="variable">handler</span>);
-        }
+
+        <span class="comment">// call the new functions</span>
+        <span class="variable">add_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
     }
 
-    <span class="comment">// call the new functions</span>
-    <span class="variable">add_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
-}
-
-<span class="comment">// And brother function, remove_handler</span>
+    <span class="comment">// And brother function, remove_handler</span>
 <span class="keyword">var</span> <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
 
-    <span class="comment">// overwrite te existing function</span>
-    <span class="keyword">if</span> (<span class="variable">target</span>.<span class="variable">removeEventListener</span>) { <span class="comment">// DOM 2 Events</span>
-        <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-            <span class="variable">target</span>.<span class="variable">removeEventListener</span>(<span class="variable">event_type</span>, <span class="variable">handler</span>, <span class="variable">false</span>);
+        <span class="comment">// overwrite te existing function</span>
+        <span class="keyword">if</span> (<span class="variable">target</span>.<span class="variable">removeEventListener</span>) { <span class="comment">// DOM 2 Events</span>
+            <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+                <span class="variable">target</span>.<span class="variable">removeEventListener</span>(<span class="variable">event_type</span>, <span class="variable">handler</span>, <span class="variable">false</span>);
+            }
+        } <span class="keyword">else</span> { <span class="comment">// IE</span>
+            <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
+                <span class="variable">target</span>.<span class="variable">detachEvent</span>(<span class="string">'on'</span> + <span class="variable">event_type</span>, <span class="variable">handler</span>);
+            }
         }
-    } <span class="keyword">else</span> { <span class="comment">// IE</span>
-        <span class="variable">remove_handler</span> = <span class="keyword">function</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>) {
-            <span class="variable">target</span>.<span class="variable">detachEvent</span>(<span class="string">'on'</span> + <span class="variable">event_type</span>, <span class="variable">handler</span>);
-        }
-    }
 
-    <span class="comment">// call the new functions</span>
-    <span class="variable">remove_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
-}</code></pre>
+        <span class="comment">// call the new functions</span>
+        <span class="variable">remove_handler</span>(<span class="variable">target</span>, <span class="variable">event_type</span>, <span class="variable">handler</span>);
+    }
+</code></pre>
 </td>
 </tr><tr class="filename"><td><h2 id="src/modules/tiramisu.selector.js"><a href="#">tiramisu.selector</a></h2></td><td>src/modules/tiramisu.selector.js</td></tr><tr class="code">
 <td class="docs">
@@ -1775,17 +1779,17 @@ and <em>FUNCTION</em> is the function to execute when the DOM is ready.</p>
 <pre><code><span class="string">'ready'</span>: <span class="keyword">function</span>(<span class="variable">def</span>) {
             <span class="variable">t</span>.<span class="variable">list_def</span>.<span class="variable">push</span>(<span class="variable">def</span>);
             <span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">onreadystatechange</span> = <span class="keyword">function</span>() {
-                <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">readyState</span> == &<span class="variable">quot</span>;<span class="variable">complete</span>&<span class="variable">quot</span>;) { 
-                               
+                <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">d</span>.<span class="variable">readyState</span> == &<span class="variable">quot</span>;<span class="variable">complete</span>&<span class="variable">quot</span>;) {
+
                     <span class="keyword">var</span> <span class="variable">len</span> = <span class="variable">t</span>.<span class="variable">list_def</span>.<span class="variable">length</span>;
                     <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">len</span>; <span class="variable">i</span>++) {
                         <span class="keyword">var</span> <span class="variable">def</span> = <span class="variable">t</span>.<span class="variable">list_def</span>[<span class="variable">i</span>];
                         <span class="comment">// Run the callback</span>
                         <span class="variable">def</span>();
                     }
-                    
+
                     <span class="keyword">return</span> <span class="this">this</span>;
-                    
+
                 }
             }
         },</code></pre>
@@ -1999,7 +2003,7 @@ t.get('p').filter(':even')</code></pre>
                 }
             }
             <span class="keyword">return</span> <span class="this">this</span>;
-        }  
+        }
     };
 
     <span class="comment">// Append methods to the result object</span>
@@ -2011,7 +2015,7 @@ t.get('p').filter(':even')</code></pre>
             <span class="keyword">if</span> (<span class="variable">len_result</span>) {
                 <span class="variable">results</span>[<span class="variable">key</span>] = <span class="variable">methods</span>[<span class="variable">key</span>];
             } <span class="keyword">else</span> {
-                <span class="variable">results</span>[<span class="variable">key</span>] = <span class="keyword">function</span>(){};
+                <span class="variable">results</span>[<span class="variable">key</span>] = <span class="keyword">function</span>() {};
             }
         }
 
@@ -2033,12 +2037,13 @@ t.get('p').filter(':even')</code></pre>
     <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span> = <span class="variable">results</span>;
     <span class="comment">// Exposing selector</span>
     <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">selector</span> = <span class="variable">selector</span>;
-    
+
     <span class="keyword">return</span> <span class="variable">results</span>;
 };
 
 <span class="comment">// Allocate methods object</span>
-<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> = <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> || {};</code></pre>
+<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> = <span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span> || {};
+</code></pre>
 </td>
 </tr><tr class="filename"><td><h2 id="src/modules/tiramisu.taskengine.js"><a href="#">tiramisu.taskengine</a></h2></td><td>src/modules/tiramisu.taskengine.js</td></tr><tr class="code">
 <td class="docs">
@@ -2071,12 +2076,12 @@ or perform the same function several times in that time frame.</p>
 </td>
 <td class="code">
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">task</span> = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
-    
+
     <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
     <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span> : []
+        <span class="variable">dependencies</span>: []
     }
-    
+
     <span class="keyword">var</span> <span class="variable">interval</span>, <span class="variable">requestAnimFrame</span> = <span class="variable">t</span>.<span class="variable">requestAnimFrame</span>;
 
     <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">2</span>) {
@@ -2110,7 +2115,8 @@ or perform the same function several times in that time frame.</p>
         }
     }
     <span class="variable">animate</span>();
-};</code></pre>
+};
+</code></pre>
 </td>
 </tr><tr class="filename"><td><h2 id="src/tiramisu.core.js"><a href="#">tiramisu.core</a></h2></td><td>src/tiramisu.core.js</td></tr><tr class="code">
 <td class="docs">

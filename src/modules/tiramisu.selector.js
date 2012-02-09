@@ -813,17 +813,17 @@ tiramisu.modules.get = function(selector) {
         'ready': function(def) {
             t.list_def.push(def);
             t.d.onreadystatechange = function() {
-                if (t.d.readyState == "complete") { 
-                               
+                if (t.d.readyState == "complete") {
+
                     var len = t.list_def.length;
                     for (var i = 0; i < len; i++) {
                         var def = t.list_def[i];
                         // Run the callback
                         def();
                     }
-                    
+
                     return this;
-                    
+
                 }
             }
         },
@@ -1036,7 +1036,7 @@ tiramisu.modules.get = function(selector) {
                 }
             }
             return this;
-        }  
+        }
     };
 
     // Append methods to the result object
@@ -1048,7 +1048,7 @@ tiramisu.modules.get = function(selector) {
             if (len_result) {
                 results[key] = methods[key];
             } else {
-                results[key] = function(){};
+                results[key] = function() {};
             }
         }
 
@@ -1070,7 +1070,7 @@ tiramisu.modules.get = function(selector) {
     tiramisu.get.results = results;
     // Exposing selector
     tiramisu.get.selector = selector;
-    
+
     return results;
 };
 

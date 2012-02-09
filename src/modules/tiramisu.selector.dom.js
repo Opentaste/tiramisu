@@ -1,7 +1,7 @@
 /**
  * DOM Selector methods
  * ====================
- * 
+ *
  * Several methods for DOM-related tasks:
  *
  * *  *Insert/Append*
@@ -341,10 +341,12 @@ tiramisu.modules.get.methods.dom = {
 };
 
 // DOM Node insertion generic utility
- function insert_content(html, before, append) {
+
+
+function insert_content(html, before, append) {
     // Aliasing results
-    var results     = tiramisu.get.results,
-        len_result  = results.length;
+    var results = tiramisu.get.results,
+        len_result = results.length;
 
     var i, j, parent, elements = [];
 

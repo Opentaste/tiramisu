@@ -162,12 +162,12 @@
  * @api public
  */
 tiramisu.modules.ajax = function(setting_input) {
-    
+
     // Each module within Tiramisu can to need inherit other modules.
     var ingredients = {
-        dependencies : ['browserdetect', 'taskengine']
+        dependencies: ['browserdetect', 'taskengine']
     }
-    
+
     var setting_input = setting_input || {},
         setting = {
             abort: false,
@@ -215,7 +215,7 @@ tiramisu.modules.ajax = function(setting_input) {
     if (!xhr && typeof XMLHttpRequest != "undefined") {
         xhr = new XMLHttpRequest
     }
-    
+
     // extend object
     for (var prop in setting_input) {
         setting[prop] = setting_input[prop];
