@@ -342,7 +342,6 @@ tiramisu.modules.get.methods.dom = {
 
 // DOM Node insertion generic utility
 
-
 function insert_content(html, before, append) {
     // Aliasing results
     var results = tiramisu.get.results,

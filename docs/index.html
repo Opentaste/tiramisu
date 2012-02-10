@@ -110,7 +110,7 @@ code .this { color: #19469D; }</style>
 	<body>
 <table id="source"><tbody><tr><td><h1>Tiramisu</h1><h1>[Tiramisu][0]</h1>
 
-<h3>version 0.1.6-b4</h3>
+<h3>version 0.1.6-b5</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript Library 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -125,7 +125,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://www.tiramisujs.com/docs">Documentation (0.1.6-b4)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li><li><a href="http://tiramisu-proudlygeek.dotcloud.com/">Benchmarks</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
+<ul><li><a href="http://www.tiramisujs.com/docs">Documentation (0.1.6-b5)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li><li><a href="http://tiramisu-proudlygeek.dotcloud.com/">Benchmarks</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
 <td class="docs">
 <h1>Framework Ajax Module</h1>
 
@@ -881,7 +881,6 @@ produces the following:
 };
 
 <span class="comment">// DOM Node insertion generic utility</span>
-
 
 <span class="keyword">function</span> <span class="variable">insert_content</span>(<span class="variable">html</span>, <span class="variable">before</span>, <span class="variable">append</span>) {
     <span class="comment">// Aliasing results</span>
@@ -1730,26 +1729,45 @@ t.get('#id_image').attr('src', 'www.example.com/image_num_two.png');</code></pre
 </td>
 <td class="code">
 <pre><code><span class="string">'attr'</span>: <span class="keyword">function</span>(<span class="variable">attr</span>, <span class="variable">value</span>, <span class="variable">add</span>) {
-            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
-                <span class="keyword">if</span> (<span class="variable">value</span> !== <span class="variable">undefined</span>) {
-                    <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
-                        <span class="keyword">if</span> (<span class="variable">add</span>) {
-                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> + <span class="string">' '</span> + <span class="variable">value</span>;
-                        } <span class="keyword">else</span> {
-                            <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">value</span>;
+            <span class="comment">// A list with the desired attribute for each result.</span>
+            <span class="keyword">var</span> <span class="variable">list_attr</span> = [];
+
+            <span class="comment">// The good way to eliminate a work repetition in functions is through lazy loading.</span>
+            <span class="keyword">var</span> <span class="variable">get_or_set_value</span> = <span class="keyword">function</span>() {
+                    <span class="keyword">if</span> (<span class="variable">value</span> !== <span class="variable">undefined</span>) {
+                        <span class="comment">// set value</span>
+                        <span class="variable">get_or_set_value</span> = <span class="keyword">function</span>() {
+                            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                                <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
+                                    <span class="keyword">if</span> (<span class="variable">add</span>) {
+                                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> + <span class="string">' '</span> + <span class="variable">value</span>;
+                                    } <span class="keyword">else</span> {
+                                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span> = <span class="variable">value</span>;
+                                    }
+                                } <span class="keyword">else</span> {
+                                    <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">setAttribute</span>(<span class="variable">attr</span>, <span class="variable">value</span>);
+                                }
+                            }
                         }
                     } <span class="keyword">else</span> {
-                        <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">setAttribute</span>(<span class="variable">attr</span>, <span class="variable">value</span>);
+                        <span class="comment">// get value</span>
+                        <span class="variable">get_or_set_value</span> = <span class="keyword">function</span>() {
+                            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">len_result</span>; <span class="variable">i</span>--;) {
+                                <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
+                                    <span class="variable">list_attr</span>.<span class="variable">push</span>(<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span>);
+                                } <span class="keyword">else</span> {
+                                    <span class="variable">list_attr</span>.<span class="variable">push</span>(<span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">getAttribute</span>(<span class="variable">attr</span>));
+                                }
+                            }
+                            <span class="keyword">return</span> <span class="variable">list_attr</span>;
+                        }
                     }
-                } <span class="keyword">else</span> {
-                    <span class="keyword">if</span> (<span class="variable">attr</span> === <span class="string">'class'</span>) {
-                        <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">className</span>;
-                    } <span class="keyword">else</span> {
-                        <span class="keyword">return</span> <span class="variable">results</span>[<span class="variable">i</span>].<span class="variable">getAttribute</span>(<span class="variable">attr</span>);
-                    }
+                    <span class="keyword">return</span> <span class="variable">get_or_set_value</span>();
                 }
-            }
-            <span class="keyword">return</span> <span class="this">this</span>;
+
+                <span class="comment">// set_value returns undefined when used so return this </span>
+                <span class="comment">// else return list_attr (get value)</span>
+            <span class="keyword">return</span> <span class="variable">get_or_set_value</span>() || <span class="this">this</span>;
         },</code></pre>
 </td>
 </tr>
@@ -2143,7 +2161,7 @@ or perform the same function several times in that time frame.</p>
         <span class="comment">// used in Ready function</span>
         <span class="this">this</span>.<span class="variable">list_def</span> = [];
 
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6-b4'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.6-b5'</span>;
      }
 
      <span class="comment">// Exposing the framework</span>

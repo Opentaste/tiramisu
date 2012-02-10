@@ -766,26 +766,45 @@ tiramisu.modules.get = function(selector) {
          *
          */
         'attr': function(attr, value, add) {
-            for (var i = len_result; i--;) {
-                if (value !== undefined) {
-                    if (attr === 'class') {
-                        if (add) {
-                            results[i].className = results[i].className + ' ' + value;
-                        } else {
-                            results[i].className = value;
+            // A list with the desired attribute for each result.
+            var list_attr = [];
+
+            // The good way to eliminate a work repetition in functions is through lazy loading.
+            var get_or_set_value = function() {
+                    if (value !== undefined) {
+                        // set value
+                        get_or_set_value = function() {
+                            for (var i = len_result; i--;) {
+                                if (attr === 'class') {
+                                    if (add) {
+                                        results[i].className = results[i].className + ' ' + value;
+                                    } else {
+                                        results[i].className = value;
+                                    }
+                                } else {
+                                    results[i].setAttribute(attr, value);
+                                }
+                            }
                         }
                     } else {
-                        results[i].setAttribute(attr, value);
+                        // get value
+                        get_or_set_value = function() {
+                            for (var i = len_result; i--;) {
+                                if (attr === 'class') {
+                                    list_attr.push(results[i].className);
+                                } else {
+                                    list_attr.push(results[i].getAttribute(attr));
+                                }
+                            }
+                            return list_attr;
+                        }
                     }
-                } else {
-                    if (attr === 'class') {
-                        return results[i].className;
-                    } else {
-                        return results[i].getAttribute(attr);
-                    }
+                    return get_or_set_value();
                 }
-            }
-            return this;
+
+                // set_value returns undefined when used so return this 
+                // else return list_attr (get value)
+            return get_or_set_value() || this;
         },
         /**
          * Ready method
