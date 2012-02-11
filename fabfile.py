@@ -1,6 +1,7 @@
 import os, re, fileinput, shutil
 from fabric.api import local
 from utils.version import get_version
+from itertools import combinations
 
 VERSION = get_version()
 DATE = get_version(True)
@@ -18,6 +19,9 @@ official_dictionary_names = [
     'selector.event',
     'taskengine'
 ]
+
+# all the cups_of_coffee of Tiramisu
+ALL_CUPS_OF_COFFEE = '123456'
 
 
 def beautify():
@@ -39,30 +43,41 @@ def beautify_modules():
 
 # fab unify:list_modules='ajax'
 def unify(list_modules=None):
-    print '\n####### Unifying tiramisu.js #######'
-    
     # list of all dependencies of own Tiramisu
     list_dependency = []
     
     # list_modules contains modules chosen to create their own tiramisu
     if list_modules:
         # Unify only selected modules
+        print '\n####### Unifying custom Tiramisu #######'
         check_dependency(list_dependency, list_modules)
-        list_modules = sorted(list_modules + ''.join(list_dependency))
+        list_modules = sorted(set(list_modules + ''.join(list_dependency)))
         modules = [SRC+'/modules/tiramisu.'+official_dictionary_names[int(x)]+'.js' for x in list_modules]
         
         modules.sort() # sorts normally by alphabetical order
         modules.sort(key=len) # sorts by length
         
         # modules in tiramisu
-        cat = "cat %s/tiramisu.core.js %s > %s/custom/tiramisu_%s.js" % (SRC, ' '.join(modules), SRC, ''.join(list_modules))
+        name_custom = ''.join(list_modules)
+        
+        # unify modules with cat command
+        cat = "cat %s/tiramisu.core.js %s > %s/custom/tiramisu-%s.js" % (SRC, ' '.join(modules), SRC, name_custom)
+        local(cat)
+        
+        # minify tiramisy with yuicompressor 
+        local('yuicompressor -o %s/custom/tiramisu-%s-min.js %s/custom/tiramisu-%s.js' % (SRC, name_custom, SRC, name_custom))
         
     else:
         # Unify all modules
+        print '\n####### Unifying all modules in tiramisu.js #######'
         modules = [ module for module in local("ls -rd $(find src/modules) | grep '.*\.js'", capture=True).split()]
-        cat = 'cat %s/tiramisu.core.js %s > %s/build/tiramisu.js' % (SRC, ' '.join(modules), SRC)
         
-    local(cat)
+        # unify modules with cat command
+        cat = 'cat %s/tiramisu.core.js %s > %s/build/tiramisu.js' % (SRC, ' '.join(modules), SRC)
+        local(cat)
+        
+        # minify tiramisy with yuicompressor 
+        local('yuicompressor -o %s/build/tiramisu-%s-min.js %s/build/tiramisu.js' % (SRC, VERSION, SRC))
     
     
 def check_dependency(list_dependency, list_modules):
@@ -75,7 +90,7 @@ def check_dependency(list_dependency, list_modules):
                     find = False
                     dependency = []
                     dep = re.search(r"ingredients = \[(.*?)\]", line)
-                    dep_two = re.search(r"ingredients : \[(.*?)\]", line)
+                    dep_two = re.search(r"'ingredients': \[(.*?)\]", line)
                     if dep:
                         find = True
                         dependency = [x.replace("\'","") for x in dep.group(1).split(',')]
@@ -105,11 +120,18 @@ def docs():
 
 
 def all():
-    unify()
     beautify_modules()
+    unify()
     beautify()
-    minify()
     docs()
+    
+    
+def cook_all_tiramisu():
+    for i in range(1,6):
+        for cups_of_coffee in [x for x in combinations(ALL_CUPS_OF_COFFEE,i)]:
+            cups_of_coffee = ''.join(cups_of_coffee)
+            if cups_of_coffee != ALL_CUPS_OF_COFFEE:
+                unify(cups_of_coffee)
 
 
 def clean():
