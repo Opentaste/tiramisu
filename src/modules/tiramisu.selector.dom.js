@@ -10,6 +10,12 @@
  *
  */
 tiramisu.modules.get.methods.dom = {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    ingredients: [1],
+    cups_of_coffee: 3,
+
     /**
      * Insert Before method
      * --------------------

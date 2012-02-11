@@ -15,28 +15,14 @@
      *
      * - A version number;
      * - A document object reference;
-     * - *requestAnimFrame* (used for handling tasks).
      * - A *Module Container* (TODO: Write detailed docs about it)
      */
-
     function Tiramisu() {
-
-        this.d = document;
-
-        // Tiramisu modules
-        this.modules = Tiramisu.prototype;
-
-        this.requestAnimFrame = (function() {
-            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-            function(callback, element) {
-                window.setTimeout(callback, 1000 / 60);
-            };
-        })();
         
-        // used in Ready function
-        this.list_def = [];
-
-        this.version = '0.1.7';
+        this.version = '0.1.7-b1';
+        this.d = document;
+        this.modules = Tiramisu.prototype;
+                
      }
 
      // Exposing the framework
@@ -51,9 +37,6 @@
             e.returnValue = false;
         }
      }
-
-     // Keep in memory the events created
-     var local_event = {};
 
      /**
       * Make Module

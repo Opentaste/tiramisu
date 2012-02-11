@@ -61,7 +61,14 @@
  * @api public
  *
  */
+tiramisu.modules.list_def = [];
 tiramisu.modules.get = function(selector) {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    var ingredients = [2],
+        cups_of_coffee = 1;
+
     this.selector = 'QSA';
     this.native_qsa = (this.selector === 'QSA' && typeof this.d.querySelectorAll !== 'undefined' ? true : false);
 

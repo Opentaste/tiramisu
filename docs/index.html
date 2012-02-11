@@ -110,7 +110,7 @@ code .this { color: #19469D; }</style>
 	<body>
 <table id="source"><tbody><tr><td><h1>Tiramisu</h1><h1>[Tiramisu][0]</h1>
 
-<h3>version 0.1.7</h3>
+<h3>version 0.1.7-b1</h3>
 
 <p>Tiramisu is a tiny, modular and fast JavaScript Library 
 which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> syntax:</p>
@@ -125,7 +125,7 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 
 <h2>Resources</h2>
 
-<ul><li><a href="http://www.tiramisujs.com/docs">Documentation (0.1.7)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li><li><a href="http://tiramisu-proudlygeek.dotcloud.com/">Benchmarks</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
+<ul><li><a href="http://www.tiramisujs.com/docs">Documentation (0.1.7-b1)</a></li><li><a href="http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html">Unit Tests</a></li><li><a href="http://tiramisu-proudlygeek.dotcloud.com/">Benchmarks</a></li></ul></td><td></td></tr><tr class="filename"><td><h2 id="src/modules/tiramisu.ajax.js"><a href="#">tiramisu.ajax</a></h2></td><td>src/modules/tiramisu.ajax.js</td></tr><tr class="code">
 <td class="docs">
 <h1>Framework Ajax Module</h1>
 
@@ -274,9 +274,9 @@ which takes inspiration from the famous <a href="http://jquery.com/">jQuery</a> 
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">ajax</span> = <span class="keyword">function</span>(<span class="variable">setting_input</span>) {
 
     <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
-    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span>: [<span class="string">'browserdetect'</span>, <span class="string">'taskengine'</span>]
-    }
+    <span class="comment">// The number of cups of coffee is identified for each module.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = [<span class="number integer">2</span>],
+        <span class="variable">cups_of_coffee</span> = <span class="number integer">4</span>;
 
     <span class="keyword">var</span> <span class="variable">setting_input</span> = <span class="variable">setting_input</span> || {},
         <span class="variable">setting</span> = {
@@ -465,9 +465,9 @@ the possible return values are:</p>
 <pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">detect</span> = <span class="keyword">function</span>(<span class="variable">key</span>) {
 
     <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
-    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span>: []
-    }
+    <span class="comment">// The number of cups of coffee is identified for each module.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = [<span class="number integer">1</span>],
+        <span class="variable">cups_of_coffee</span> = <span class="number integer">2</span>;
 
     <span class="keyword">var</span> <span class="variable">nav_agent</span> = <span class="variable">navigator</span>.<span class="variable">userAgent</span>,
         <span class="variable">nav_name</span> = <span class="variable">navigator</span>.<span class="variable">appName</span>;
@@ -542,7 +542,12 @@ the possible return values are:</p>
 <ul><li><em>Insert/Append</em></li><li><em>Insert Before/Prepend</em></li><li><p><em>Empty/Destroy</em></p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>.<span class="variable">dom</span> = {</code></pre>
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>.<span class="variable">dom</span> = {
+
+    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
+    <span class="comment">// The number of cups of coffee is identified for each module.</span>
+    <span class="variable">ingredients</span>: [<span class="number integer">1</span>],
+    <span class="variable">cups_of_coffee</span>: <span class="number integer">3</span>,</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -941,7 +946,14 @@ produces the following:
 <ul><li><p><em>On/Off</em></p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>.<span class="variable">event</span> = {</code></pre>
+<pre><code><span class="comment">// Keep in memory the events created</span>
+<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">local_event</span> = {};
+<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span>.<span class="variable">methods</span>.<span class="variable">event</span> = {
+
+    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
+    <span class="comment">// The number of cups of coffee is identified for each module.</span>
+    <span class="variable">ingredients</span>: [<span class="number integer">1</span>],
+    <span class="variable">cups_of_coffee</span>: <span class="number integer">5</span>,</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -1036,8 +1048,8 @@ tiramisu.get('p').on('click', function() {
                 <span class="variable">add_handler</span>(<span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">ev</span>[<span class="variable">j</span>], <span class="variable">cb</span>);
             }
             <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'string'</span>) {
-                <span class="variable">local_event</span>[<span class="variable">selector</span>] = {};
-                <span class="variable">local_event</span>[<span class="variable">selector</span>] = {
+                <span class="variable">t</span>.<span class="variable">local_event</span>[<span class="variable">selector</span>] = {};
+                <span class="variable">t</span>.<span class="variable">local_event</span>[<span class="variable">selector</span>] = {
                     <span class="string">'cb'</span>: <span class="variable">cb</span>,
                     <span class="string">'element'</span>: <span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>
                 };
@@ -1059,14 +1071,14 @@ tiramisu.get('p').on('click', function() {
             <span class="keyword">return</span> <span class="string">''</span>;
         }
         <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable">selector</span> === <span class="string">'string'</span>) {
-            <span class="keyword">if</span> (<span class="variable">local_event</span>[<span class="variable">selector</span>] !== <span class="variable">undefined</span>) {
-                <span class="keyword">var</span> <span class="variable">cb</span> = <span class="variable">local_event</span>[<span class="variable">selector</span>][<span class="string">'cb'</span>],
-                    <span class="variable">element</span> = <span class="variable">local_event</span>[<span class="variable">selector</span>][<span class="string">'element'</span>],
+            <span class="keyword">if</span> (<span class="variable">t</span>.<span class="variable">local_event</span>[<span class="variable">selector</span>] !== <span class="variable">undefined</span>) {
+                <span class="keyword">var</span> <span class="variable">cb</span> = <span class="variable">t</span>.<span class="variable">local_event</span>[<span class="variable">selector</span>][<span class="string">'cb'</span>],
+                    <span class="variable">element</span> = <span class="variable">t</span>.<span class="variable">local_event</span>[<span class="variable">selector</span>][<span class="string">'element'</span>],
                     <span class="variable">len</span> = <span class="variable">element</span>.<span class="variable">length</span>;
                 <span class="keyword">for</span> (<span class="variable">i</span> = <span class="variable">len</span>; <span class="variable">i</span>--;) {
                     <span class="variable">remove_handler</span>(<span class="variable">tiramisu</span>.<span class="variable">get</span>.<span class="variable">results</span>[<span class="variable">i</span>], <span class="variable">evt</span>, <span class="variable">cb</span>);
                 }
-                <span class="keyword">delete</span> <span class="variable">local_event</span>[<span class="variable">selector</span>];
+                <span class="keyword">delete</span> <span class="variable">t</span>.<span class="variable">local_event</span>[<span class="variable">selector</span>];
             }
         }
 
@@ -1173,7 +1185,14 @@ var li_special2 = tiramisu.get('#myList li.special');</code></pre>
 <ul><li><p><strong>param</strong>: <em>String</em>  selector A CSS Selector</p></li><li><p><strong>returns</strong>: <em>Object</em>  The node list</p></li><li><p><strong>api</strong>: <em>public</em></p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
+<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">list_def</span> = [];
+<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">get</span> = <span class="keyword">function</span>(<span class="variable">selector</span>) {
+
+    <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
+    <span class="comment">// The number of cups of coffee is identified for each module.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = [<span class="number integer">2</span>],
+        <span class="variable">cups_of_coffee</span> = <span class="number integer">1</span>;
+
     <span class="this">this</span>.<span class="variable">selector</span> = <span class="string">'QSA'</span>;
     <span class="this">this</span>.<span class="variable">native_qsa</span> = (<span class="this">this</span>.<span class="variable">selector</span> === <span class="string">'QSA'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="keyword">typeof</span> <span class="this">this</span>.<span class="variable">d</span>.<span class="variable">querySelectorAll</span> !== <span class="string">'undefined'</span> ? <span class="variable">true</span> : <span class="variable">false</span>);
 
@@ -2093,12 +2112,19 @@ or perform the same function several times in that time frame.</p>
 <ul><li><p><strong>param</strong>: <em>integer</em>  delay The total task delay(ms)</p></li><li><p><strong>param</strong>: <em>integer</em>  [interval] The interval of the repetitions(ms)</p></li><li><p><strong>param</strong>: <em>Function</em>  cb The callback function</p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">task</span> = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
+<pre><code><span class="comment">// *requestAnimFrame* (used for handling tasks), thx @paul_irish for this idea</span>
+<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
+    <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
+    <span class="keyword">function</span>(<span class="variable">callback</span>) {
+        <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
+    };
+})();
+<span class="variable">tiramisu</span>.<span class="variable">modules</span>.<span class="variable">task</span> = <span class="keyword">function</span>(<span class="variable">delay</span>, <span class="variable">cb</span>) {
 
     <span class="comment">// Each module within Tiramisu can to need inherit other modules.</span>
-    <span class="keyword">var</span> <span class="variable">ingredients</span> = {
-        <span class="variable">dependencies</span>: []
-    }
+    <span class="comment">// The number of cups of coffee is identified for each module.</span>
+    <span class="keyword">var</span> <span class="variable">ingredients</span> = [],
+        <span class="variable">cups_of_coffee</span> = <span class="number integer">6</span>;
 
     <span class="keyword">var</span> <span class="variable">interval</span>, <span class="variable">requestAnimFrame</span> = <span class="variable">t</span>.<span class="variable">requestAnimFrame</span>;
 
@@ -2140,28 +2166,16 @@ or perform the same function several times in that time frame.</p>
 <td class="docs">
 <p>The Framework's costructor exposes externally:</p>
 
-<ul><li>A version number;</li><li>A document object reference;</li><li><em>requestAnimFrame</em> (used for handling tasks).</li><li>A <em>Module Container</em> (TODO: Write detailed docs about it)
+<ul><li>A version number;</li><li>A document object reference;</li><li>A <em>Module Container</em> (TODO: Write detailed docs about it)
  </li></ul>
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">Tiramisu</span>() {
-
-        <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
-
-        <span class="comment">// Tiramisu modules</span>
-        <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
-
-        <span class="this">this</span>.<span class="variable">requestAnimFrame</span> = (<span class="keyword">function</span>() {
-            <span class="keyword">return</span> <span class="variable">window</span>.<span class="variable">requestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">webkitRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">mozRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">oRequestAnimationFrame</span> || <span class="variable">window</span>.<span class="variable">msRequestAnimationFrame</span> ||
-            <span class="keyword">function</span>(<span class="variable">callback</span>, <span class="variable">element</span>) {
-                <span class="variable">window</span>.<span class="variable">setTimeout</span>(<span class="variable">callback</span>, <span class="number integer">1000</span> / <span class="number integer">60</span>);
-            };
-        })();
         
-        <span class="comment">// used in Ready function</span>
-        <span class="this">this</span>.<span class="variable">list_def</span> = [];
-
-        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.7'</span>;
+        <span class="this">this</span>.<span class="variable">version</span> = <span class="string">'0.1.7-b1'</span>;
+        <span class="this">this</span>.<span class="variable">d</span> = <span class="variable">document</span>;
+        <span class="this">this</span>.<span class="variable">modules</span> = <span class="class">Tiramisu</span>.<span class="variable">prototype</span>;
+                
      }
 
      <span class="comment">// Exposing the framework</span>
@@ -2175,10 +2189,7 @@ or perform the same function several times in that time frame.</p>
         } <span class="keyword">else</span> { <span class="comment">// IE</span>
             <span class="variable">e</span>.<span class="variable">returnValue</span> = <span class="variable">false</span>;
         }
-     }
-
-     <span class="comment">// Keep in memory the events created</span>
-     <span class="keyword">var</span> <span class="variable">local_event</span> = {};</code></pre>
+     }</code></pre>
 </td>
 </tr>
 <tr class="code">

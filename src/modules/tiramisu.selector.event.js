@@ -7,7 +7,15 @@
  * *  *On/Off*
  *
  */
+// Keep in memory the events created
+tiramisu.modules.local_event = {};
 tiramisu.modules.get.methods.event = {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    ingredients: [1],
+    cups_of_coffee: 5,
+
     /**
      * Event handler extension
      * -----------------------
@@ -104,8 +112,8 @@ tiramisu.modules.get.methods.event = {
                 add_handler(tiramisu.get.results[i], ev[j], cb);
             }
             if (typeof selector === 'string') {
-                local_event[selector] = {};
-                local_event[selector] = {
+                t.local_event[selector] = {};
+                t.local_event[selector] = {
                     'cb': cb,
                     'element': tiramisu.get.results
                 };
@@ -123,14 +131,14 @@ tiramisu.modules.get.methods.event = {
             return '';
         }
         if (typeof selector === 'string') {
-            if (local_event[selector] !== undefined) {
-                var cb = local_event[selector]['cb'],
-                    element = local_event[selector]['element'],
+            if (t.local_event[selector] !== undefined) {
+                var cb = t.local_event[selector]['cb'],
+                    element = t.local_event[selector]['element'],
                     len = element.length;
                 for (i = len; i--;) {
                     remove_handler(tiramisu.get.results[i], evt, cb);
                 }
-                delete local_event[selector];
+                delete t.local_event[selector];
             }
         }
 

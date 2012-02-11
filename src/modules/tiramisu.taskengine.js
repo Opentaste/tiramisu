@@ -35,12 +35,19 @@
  * @param {integer} [interval] The interval of the repetitions(ms)
  * @param {Function} cb The callback function
  */
+// *requestAnimFrame* (used for handling tasks), thx @paul_irish for this idea
+tiramisu.modules.requestAnimFrame = (function() {
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+    function(callback) {
+        window.setTimeout(callback, 1000 / 60);
+    };
+})();
 tiramisu.modules.task = function(delay, cb) {
 
     // Each module within Tiramisu can to need inherit other modules.
-    var ingredients = {
-        dependencies: []
-    }
+    // The number of cups of coffee is identified for each module.
+    var ingredients = [],
+        cups_of_coffee = 6;
 
     var interval, requestAnimFrame = t.requestAnimFrame;
 

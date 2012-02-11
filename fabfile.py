@@ -7,6 +7,18 @@ DATE = get_version(True)
 SRC = 'src'
 tiramisu_home = '../tiramisu-home/'
 
+# Lists all the names of the modules of Tiramisu, 
+# each module has an identification number (also called "cups_of_coffee")
+official_dictionary_names = [
+    '',
+    'selector',
+    'browserdetect',
+    'selector.dom',
+    'ajax',
+    'selector.event',
+    'taskengine'
+]
+
 
 def beautify():
     print '\n####### Beautifying tiramisu.js #######'
@@ -28,20 +40,22 @@ def beautify_modules():
 # fab unify:list_modules='ajax'
 def unify(list_modules=None):
     print '\n####### Unifying tiramisu.js #######'
+    
+    # list of all dependencies of own Tiramisu
+    list_dependency = []
+    
+    # list_modules contains modules chosen to create their own tiramisu
     if list_modules:
         # Unify only selected modules
-        modules = list_modules.split(',')
-        lista = check_dependency(modules)
-        name_version = modules
-        modules = [SRC+'/modules/tiramisu.'+x+'.js' for x in modules]
+        check_dependency(list_dependency, list_modules)
+        list_modules = sorted(list_modules + ''.join(list_dependency))
+        modules = [SRC+'/modules/tiramisu.'+official_dictionary_names[int(x)]+'.js' for x in list_modules]
         
-        if len(lista) > 0:
-            modules = set([SRC+'/modules/tiramisu.'+x+'.js' for x in lista] + modules)
-            name_version = set([x for x in lista] + name_version)
-
+        modules.sort() # sorts normally by alphabetical order
+        modules.sort(key=len) # sorts by length
+        
         # modules in tiramisu
-        cat = "cat %s/tiramisu.core.js %s > %s/build/tiramisu_%s.js" % (SRC, ' '.join(modules), SRC, '_'.join(name_version))
-        local(cat)
+        cat = "cat %s/tiramisu.core.js %s > %s/custom/tiramisu_%s.js" % (SRC, ' '.join(modules), SRC, ''.join(list_modules))
         
     else:
         # Unify all modules
@@ -51,21 +65,34 @@ def unify(list_modules=None):
     local(cat)
     
     
-def check_dependency(url):
-    lista = []
-    for x in url:
-        x = 'src/modules/tiramisu.'+x+'.js'
+def check_dependency(list_dependency, list_modules):
+    for cups_of_coffee in list_modules:
         try:
-            with open(x, "r") as f:
+            # For each module is looking for its dependencies, and if not already on the list are added
+            url = 'src/modules/tiramisu.%s.js' % official_dictionary_names[int(cups_of_coffee)]
+            with open(url, "r") as f:
                 for line in f:
-                    dep = re.search(r"dependencies : \[(.*?)\]", line)
+                    find = False
+                    dependency = []
+                    dep = re.search(r"ingredients = \[(.*?)\]", line)
+                    dep_two = re.search(r"ingredients : \[(.*?)\]", line)
                     if dep:
-                        lista += [x.replace("\'","") for x in dep.group(1).split(',')]
+                        find = True
+                        dependency = [x.replace("\'","") for x in dep.group(1).split(',')]
+                    elif dep_two:
+                        find = True
+                        dependency = [x.replace("\'","") for x in dep_two.group(1).split(',')] 
+                    # For each dependency is looking for its dependencies
+                    for x in dependency:
+                        if not x in list_dependency and len(x):
+                            list_dependency.append(x)
+                            check_dependency(list_dependency, x)
+                    if find:
+                        break
+                                
         except IOError:
-            print "Name modules isn't correct"
-            return lista
-    return lista
-         
+            print 'Error, there is no module with id ' + cups_of_coffee
+        
             
 def minify():
     print '\n####### Minifying tiramisu.js #######'
