@@ -1,4 +1,5 @@
-import os, re, fileinput, shutil
+import os, re, fileinput, shutil, urllib2
+import simplejson as json 
 from fabric.api import local
 from utils.version import get_version
 from itertools import combinations
@@ -46,6 +47,11 @@ def unify(list_modules=None):
     # list of all dependencies of own Tiramisu
     list_dependency = []
     
+    # read tiramisu.json
+    f = open('tiramisu.json', 'r')
+    tiramisu_json = json.load(f)
+    f.close()
+    
     # list_modules contains modules chosen to create their own tiramisu
     if list_modules:
         # Unify only selected modules
@@ -67,6 +73,12 @@ def unify(list_modules=None):
         # minify tiramisy with yuicompressor 
         local('yuicompressor -o %s/custom/tiramisu-%s-min.js %s/custom/tiramisu-%s.js' % (SRC, name_custom, SRC, name_custom))
         
+        # Get size Tiramisu in KiloBytes
+        bytes = os.path.getsize('%s/custom/tiramisu-%s-min.js' % (SRC, name_custom))
+        size = round(bytes / 1024.0, 2)
+        
+        tiramisu_json['custom'][name_custom] = size
+        
     else:
         # Unify all modules
         print '\n####### Unifying all modules in tiramisu.js #######'
@@ -78,6 +90,18 @@ def unify(list_modules=None):
         
         # minify tiramisy with yuicompressor 
         local('yuicompressor -o %s/build/tiramisu-%s-min.js %s/build/tiramisu.js' % (SRC, VERSION, SRC))
+        
+        # Get size Tiramisu in KiloBytes
+        bytes = os.path.getsize('%s/build/tiramisu-%s-min.js' % (SRC, VERSION))
+        size = round(bytes / 1024.0, 2)
+        
+        tiramisu_json['tiramisu_size'] = size
+        
+    
+    # write tiramisu.json
+    outfile = open("tiramisu.json", "w")
+    outfile.write(json.dumps(tiramisu_json))
+    outfile.close()
     
     
 def check_dependency(list_dependency, list_modules):
@@ -127,6 +151,10 @@ def all():
     
     
 def cook_all_tiramisu():
+    local('rm src/custom/* ')
+    f = open('tiramisu.json', 'r')
+    tiramisu_json = json.load(f)
+    f.close()
     for i in range(1,6):
         for cups_of_coffee in [x for x in combinations(ALL_CUPS_OF_COFFEE,i)]:
             cups_of_coffee = ''.join(cups_of_coffee)
