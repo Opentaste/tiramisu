@@ -56,6 +56,7 @@ def unify(list_modules=None):
     if list_modules:
         # Unify only selected modules
         print '\n####### Unifying custom Tiramisu #######'
+        modules_chosen = ''.join(list_modules)
         check_dependency(list_dependency, list_modules)
         list_modules = sorted(set(list_modules + ''.join(list_dependency)))
         modules = [SRC+'/modules/tiramisu.'+official_dictionary_names[int(x)]+'.js' for x in list_modules]
@@ -77,7 +78,9 @@ def unify(list_modules=None):
         bytes = os.path.getsize('%s/custom/tiramisu-%s-min.js' % (SRC, name_custom))
         size = round(bytes / 1024.0, 2)
         
-        tiramisu_json['custom'][name_custom] = size
+        # Saves for each combination as tiramisu needs, and the weight of tiramisu created
+        tiramisu_json['custom'][modules_chosen] = name_custom
+        tiramisu_json['custom_size'][name_custom] = size
         
     else:
         # Unify all modules
@@ -95,6 +98,7 @@ def unify(list_modules=None):
         bytes = os.path.getsize('%s/build/tiramisu-%s-min.js' % (SRC, VERSION))
         size = round(bytes / 1024.0, 2)
         
+        # Saves the weight of tiramisu created
         tiramisu_json['tiramisu_size'] = size
         
     
