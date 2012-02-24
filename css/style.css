@@ -64,6 +64,16 @@ div.sep_4 {
     background: transparent url(../img/line-sep.png) repeat-x;
 }
 
+div.sep_5 {
+    height: 3px;
+    background: transparent url(../img/line-sep-single-up.png) repeat-x;
+}
+
+div.sep_6 {
+    height: 3px;
+    background: transparent url(../img/line-sep-single-down.png) repeat-x;
+}
+
 .black_shadow {
     text-shadow: 0 1px 1px rgba(67, 66, 72, 0.75);
 }
@@ -103,12 +113,20 @@ div.sep_4 {
     margin-left: 0;
 }
 
+.button.green {
+    background-color: #b6c66e;
+    border: 2px solid #5c8249;
+}
+
+.button.orange {
+    background-color: #ecc38f;
+    border: 2px solid #e5ab63;
+}
+
 .button {
     display: block;
     text-decoration: none;
     color: inherit;
-    background-color: #b6c66e;
-    border: 2px solid #5c8249;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -118,17 +136,18 @@ div.sep_4 {
     height: 124px;
 }
 
-.button:hover {
+.button.green:hover {
     background-color: #a4b849;
     border-color: #456137;
 }
 
-.button h1 {
-    font-size: 48px;
+.button.orange:hover {
+    background-color: #e5ab63;
+    border-color: #de9337;
 }
 
-.button h2 {
-    padding: 0 !important;
+.button h1 {
+    font-size: 48px;
 }
 
 .button p {
@@ -140,16 +159,21 @@ div.sep_4 {
     display: block;
     font-size: 14px !important;
     font-weight: bold !important;
+    color: white;
+}
+
+.button h2 {
+    padding: 38px 0 !important;
+    font-size: 36px;
+    text-align: center;
+    padding-top: 100px;
+    color: white;
 }
 
 .button.disabled {
     background-color: #c5c5c7;
     border-color: #777;
     cursor: default;
-}
-
-.button.disabled h2 {
-    padding: 38px 0 !important;
 }
 
 .developer {
@@ -312,6 +336,10 @@ ul#navbar a:hover {
     padding: 50px;
 }
 
+#footer .container_12 .clearfix {
+    position: relative;
+}
+
 #footer p, #footer h1, #footer h2 {
     margin: 0;
 }
@@ -331,6 +359,23 @@ ul#navbar a:hover {
     font-size: 36px;
     text-align: center;
     padding-top: 100px;
+}
+
+#customize {
+    background-color: #f0eec7;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    -webkit-transition: all .22s ease-out;
+    -moz-transition: all .22s ease-out;
+    transition: all .22s ease-out;
+}
+
+#customize .custom_left {
+    opacity: 0;
+    -webkit-transition: all .22s ease-out;
+    -moz-transition: all .22s ease-out;
+    transition: all .22s ease-out;
 }
 
 /* Who Section */
@@ -384,4 +429,101 @@ ul#navbar a:hover {
 #copyright a {
     text-decoration: none;
     color: #e5ab63;
+}
+
+.custom_left {
+    float: left;
+    margin-left: 30px;
+    width: 300px;
+}
+
+#customize {
+    padding: 0;
+    position: relative;
+}
+
+#customize h1 {
+    font-size: 36px;
+}
+
+#customize .cup_container h2 {
+    font-size: 28px;
+    text-align: center;
+}
+
+#customize h3 {
+    margin-bottom: 5px;
+}
+
+#customize .button h2 {
+    padding-top: 25px !important;
+    padding-bottom: 0px !important;
+    margin-bottom: 0;
+}
+
+#customize .button span {
+    padding: 0 !important;
+}
+
+#customize .form {
+    margin-bottom: 90px;
+}
+
+#customize label {
+    background-color: #B8B79E;
+    color: #555555;
+    display: block;
+    cursor: pointer;
+    padding: 4px 8px 4px 20px;
+    margin:2px 0 4px 0;
+}
+
+#customize .cup_container {
+    overflow: hidden;
+}
+
+#customize .cup {
+    position: relative;
+    z-index: 9999;
+}
+
+#customize .coffee_level {
+    background: url(../img/coffee-level.png) transparent repeat;
+    width: 200px;
+    height: 0;
+    position: absolute;
+    left: 81px;
+    bottom: 0;
+    margin-bottom: 35px;
+    -webkit-transition: height .85s ease-in-out;
+    -moz-transition: height .85s ease-in-out;
+    transition: -webkit-transition: height .85s ease-in-out;
+}
+
+#arrow_1 {
+    visibility: hidden;
+    position: absolute;
+    width: 318px;
+    height: 0;
+    margin-left: 330px;
+    margin-top: 196px;
+    background: url(../img/arrow-1.png) transparent no-repeat;
+    z-index: 1;
+    -webkit-transition: all .22s ease-out;
+    -moz-transition: all .22s ease-out;
+    transition: all .22s ease-out;
+}
+
+#arrow_2 {
+    position: absolute;
+    width: 229px;
+    height: 0;
+    visibility: hidden;
+    margin-top: 280px;
+    margin-left: 71px;
+    background: url(../img/arrow-2.png) transparent no-repeat;
+    z-index: 1;
+    -webkit-transition: all .22s ease-out;
+    -moz-transition: all .22s ease-out;
+    transition: all .22s ease-out;
 }
