@@ -105,17 +105,17 @@ tiramisu.modules.get.methods.event = {
                 }
             }
         }
-        // if tiramisu.get.results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
+        // if this[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;
         for (var j = evt_len; j--;) {
             var cb = callback[j];
-            for (i = tiramisu.get.results.length; i--;) {
-                add_handler(tiramisu.get.results[i], ev[j], cb);
+            for (i = this.length; i--;) {
+                add_handler(this[i], ev[j], cb);
             }
             if (typeof selector === 'string') {
                 t.local_event[selector] = {};
                 t.local_event[selector] = {
                     'cb': cb,
-                    'element': tiramisu.get.results
+                    'element': this
                 };
             }
         }
