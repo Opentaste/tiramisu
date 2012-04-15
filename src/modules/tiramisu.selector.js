@@ -1070,11 +1070,11 @@ tiramisu.modules.get = function(selector) {
         var key;
 
         for (key in methods) {
-            // returns an empty function if selector result is empty 
+            // returns an empty string inside a function if selector result is empty 
             if (len_result) {
                 results[key] = methods[key];
             } else {
-                results[key] = function() {};
+                results[key] = function() { return ''; };
             }
         }
 
@@ -1086,7 +1086,7 @@ tiramisu.modules.get = function(selector) {
                     if (len_result) {
                         results[method] = tiramisu.modules.get.methods[key][method];
                     } else {
-                        results[method] = function() {};
+                        results[method] = function() { return ''; };
                     }
                 }
             }
