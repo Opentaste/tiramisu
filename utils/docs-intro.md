@@ -1,7 +1,7 @@
 
 # [Tiramisu][0]
 
-### version 0.1.7-b3 ###
+### version 0.1.7-b4 ###
 
 Tiramisu is a tiny, modular and fast JavaScript Library 
 which takes inspiration from the famous [jQuery][1] syntax:
@@ -19,7 +19,7 @@ which takes inspiration from the famous [jQuery][1] syntax:
 
 ## Resources
 
-*  [Documentation (0.1.7-b3)][2]
+*  [Documentation (0.1.7-b4)][2]
 *  [Unit Tests][3]
 *  [Benchmarks][4]
 

@@ -380,3 +380,7 @@ test('Parse text to json, test two', function() {
     var json_object = t.json.parse('{"age" : 24, "name" : "leo" }');
     equals(json_object.age, 24, 'should equal to 24');
 });
+test('Parse text to json, test three', function() {
+    var json_object = t.json.parse('{"age" : 24 / / /, "name" : "leo" }');
+    equals(json_object, '', 'should equal to 24');
+});

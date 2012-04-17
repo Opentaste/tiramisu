@@ -48,7 +48,7 @@ tiramisu.modules.json =  {
         try {
             return JSON.parse(my_json_text, reviver);
         } catch (e) {
-            console.log('Input is not a valid JSON, you can check it on http://jsonlint.com/');
+            // Input is not a valid JSON, you can check it on http://jsonlint.com/
             return '';
         }
         
