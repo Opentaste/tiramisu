@@ -1846,16 +1846,13 @@ function insert_content(html, before, append) {
  * Example #2 (...)
  * -----------------------------
  *
- *     tiramisu.json.parse(text, function (key, value) {
- *         var type;
+ *     t.json.parse('{ "age" : {"today": 24 }, "name" : "leo" }', function (key, value) {
  *         if (value && typeof value === 'object') {
- *             type = value.type;
- *             if (typeof type === 'string' && typeof window[type] === 'function') {
- *                 return new (window[type])(value);
- *             }
+ *             return value;
  *         }
- *         return value;
- *     });
+ *         var text = value + "_tiramisu";
+ *         return text;
+ *     })
  *
  *
  * @api public
