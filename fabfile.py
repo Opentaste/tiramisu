@@ -18,11 +18,12 @@ official_dictionary_names = [
     'selector.dom',
     'ajax',
     'selector.event',
-    'taskengine'
+    'taskengine',
+    'json'
 ]
 
 # all the cups_of_coffee of Tiramisu
-ALL_CUPS_OF_COFFEE = '123456'
+ALL_CUPS_OF_COFFEE = '1234567'
 
 
 def beautify():

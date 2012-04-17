@@ -369,3 +369,14 @@ test('Remove all class of the element and child (Example #2)', function() {
     rs = rs + one + two
     equals(rs, '', 'should equal to ""');
 });
+
+module('Json tests');
+
+test('Parse text to json', function() {
+    var json_object = t.json.parse('["leo","gianlu"]');
+    equals(json_object[0], 'leo', 'should equal to "leo"');
+});
+test('Parse text to json, test two', function() {
+    var json_object = t.json.parse('{"age" : 24, "name" : "leo" }');
+    equals(json_object.age, 24, 'should equal to 24');
+});
