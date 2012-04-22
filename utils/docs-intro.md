@@ -23,8 +23,13 @@ which takes inspiration from the famous [jQuery][1] syntax:
 *  [Unit Tests][3]
 *  [Benchmarks][4]
 
+## License
+
+**BSD** (See [License][5] for details).
+
 [0]: http://www.tiramisujs.com
 [1]: http://jquery.com/
 [2]: http://www.tiramisujs.com/docs
 [3]: http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html
 [4]: http://tiramisu-proudlygeek.dotcloud.com/
+[5]: https://github.com/OwlStudios/tiramisu/blob/master/LICENSE
