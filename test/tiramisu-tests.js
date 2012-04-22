@@ -373,19 +373,19 @@ test('Remove all class of the element and child (Example #2)', function() {
 module('Json tests');
 
 test('Parse text to json', function() {
-    var json_object = t.json.parse('["leo","gianlu"]');
+    var json_object = t.json.decode('["leo","gianlu"]');
     equals(json_object[0], 'leo', 'should equal to "leo"');
 });
 test('Parse text to json, test two', function() {
-    var json_object = t.json.parse('{"age" : 24, "name" : "leo" }');
+    var json_object = t.json.decode('{"age" : 24, "name" : "leo" }');
     equals(json_object.age, 24, 'should equal to 24');
 });
 test('Parse text to json, test three', function() {
-    var json_object = t.json.parse('{"age" : 24 / / /, "name" : "leo" }');
+    var json_object = t.json.decode('{"age" : 24 / / /, "name" : "leo" }');
     equals(json_object, '', 'should equal to 24');
 });
 test('Parse text to json, test four', function() {
-     var json_object = t.json.parse('{ "age" : {"today": 24 }, "name" : "leo" }', function (key, value) {
+     var json_object = t.json.decode('{ "age" : {"today": 24 }, "name" : "leo" }', function (key, value) {
          if (value && typeof value === 'object') {
              return value;
          }

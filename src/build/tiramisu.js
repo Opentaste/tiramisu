@@ -1864,13 +1864,25 @@ tiramisu.modules.json =  {
     'ingredients': [2],
     'cups_of_coffee': 1,
      
-    parse : function(my_json_text, reviver) {
+    decode : function(my_json_text, reviver) {
         // JSON in JavaScript
         // by http://www.json.org/js.html
         try {
             return JSON.parse(my_json_text, reviver);
         } catch (e) {
             // Input is not a valid JSON, you can check it on http://jsonlint.com/
+            return '';
+        }
+        
+    },
+    
+    encode : function(json_object, replacer) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.stringify(json_object, replacer);
+        } catch (e) {
+            // Input is not a valid JSON Object, you can check it on http://jsonlint.com/
             return '';
         }
         
