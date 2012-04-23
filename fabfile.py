@@ -152,7 +152,7 @@ def all():
     beautify_modules()
     unify()
     beautify()
-    docs()
+    #docs()
     
     
 def cook_all_tiramisu():
@@ -173,7 +173,7 @@ def cook_all_tiramisu():
 def clean():
     print '\n####### Cleaning... #######'
     local('rm -f src/build/*')
-    local('rm -f docs/*')
+    #local('rm -f docs/*')
     
     
 def publish():
@@ -187,11 +187,11 @@ def publish():
     local('git push origin')
     local('git push origin --tags')
     local('git checkout master')
-    local('cd '+tiramisu_home+'')
-    clean()
-    all()
-    local('git add .')
-    local('git commit -am "Updated homepage to version %s, %s"' % (VERSION, DATE))
-    local('git push origin gh-pages')
+    #local('cd '+tiramisu_home+'')
+    #clean()
+    #all()
+    #local('git add .')
+    #local('git commit -am "Updated homepage to version %s, %s"' % (VERSION, DATE))
+    #local('git push origin gh-pages')
     print "Tiramisu's homepage has been updated to the latest version"
         

@@ -417,3 +417,7 @@ test('Parse text to json, test four', function() {
      })
      equals(json_object.name, 'leo_tiramisu', 'should equal to leo_tiramisu');
 });
+test('Encode json to text', function() {
+    var text = t.json.encode(["leo","gianlu"]);
+    equals(text, '["leo","gianlu"]', 'should equal to ["leo","gianlu"]');
+});

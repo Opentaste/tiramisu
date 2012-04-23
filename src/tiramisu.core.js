@@ -19,7 +19,7 @@
      */
     function Tiramisu() {
         
-        this.version = '0.2.1';
+        this.version = '0.2.2';
         this.d = document;
         this.modules = Tiramisu.prototype;
                 

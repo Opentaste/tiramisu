@@ -163,7 +163,7 @@ tiramisu.modules.ajax = function(setting_input) {
 
     // Each module within Tiramisu can to need inherit other modules.
     // The number of cups of coffee is identified for each module.
-    var ingredients = [2,7],
+    var ingredients = [2, 7],
         cups_of_coffee = 4;
 
     var setting_input = setting_input || {},
