@@ -19,7 +19,7 @@
      */
     function Tiramisu() {
         
-        this.version = '0.1.7-b1';
+        this.version = '0.2.1';
         this.d = document;
         this.modules = Tiramisu.prototype;
                 
@@ -1119,11 +1119,13 @@ tiramisu.modules.get = function(selector) {
         var key;
 
         for (key in methods) {
-            // returns an empty function if selector result is empty 
+            // returns an empty string inside a function if selector result is empty 
             if (len_result) {
                 results[key] = methods[key];
             } else {
-                results[key] = function() {};
+                results[key] = function() {
+                    return '';
+                };
             }
         }
 
@@ -1135,7 +1137,9 @@ tiramisu.modules.get = function(selector) {
                     if (len_result) {
                         results[method] = tiramisu.modules.get.methods[key][method];
                     } else {
-                        results[method] = function() {};
+                        results[method] = function() {
+                            return '';
+                        };
                     }
                 }
             }
@@ -1464,17 +1468,17 @@ tiramisu.modules.get.methods.event = {
                 }
             }
         }
-        // if tiramisu.get.results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
+        // if this[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;
         for (var j = evt_len; j--;) {
             var cb = callback[j];
-            for (i = tiramisu.get.results.length; i--;) {
-                add_handler(tiramisu.get.results[i], ev[j], cb);
+            for (i = this.length; i--;) {
+                add_handler(this[i], ev[j], cb);
             }
             if (typeof selector === 'string') {
                 t.local_event[selector] = {};
                 t.local_event[selector] = {
                     'cb': cb,
-                    'element': tiramisu.get.results
+                    'element': this
                 };
             }
         }

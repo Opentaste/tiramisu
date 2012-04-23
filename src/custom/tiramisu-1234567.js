@@ -19,7 +19,7 @@
      */
     function Tiramisu() {
         
-        this.version = '0.1.7-b1';
+        this.version = '0.2.1';
         this.d = document;
         this.modules = Tiramisu.prototype;
                 
@@ -160,13 +160,11 @@
  *        url : 'http://www.example.com');
  *    });
  *
- * Example #9 (Ajax set content_type, connection, data_type)
+ * Example #9 (Ajax set data_format)
  * --------------------------------------------------------------
  *
  *     tiramisu.ajax({
- *        content_type : '',
- *        connection: '',
- *        data_type: '',
+ *        data_format: 'json',
  *        successHTML: 'responseWrapper',
  *        url : 'http://www.example.com');
  *    });
@@ -214,7 +212,7 @@ tiramisu.modules.ajax = function(setting_input) {
 
     // Each module within Tiramisu can to need inherit other modules.
     // The number of cups of coffee is identified for each module.
-    var ingredients = [2],
+    var ingredients = [2,7],
         cups_of_coffee = 4;
 
     var setting_input = setting_input || {},
@@ -223,7 +221,7 @@ tiramisu.modules.ajax = function(setting_input) {
             async: true,
             content_type: '',
             connection: '',
-            data_type: '',
+            data_format: '',
             error: function(res) {
                 try {
                     console.log(res)
@@ -244,7 +242,9 @@ tiramisu.modules.ajax = function(setting_input) {
         // Is very important that parameter dafualt value is ''
         parameter_count = 0,
         url_cache = '',
-        get_params = '';
+        get_params = '',
+        state = 0,
+        response = '';
 
     if (setting.abort) {
         if (xhr && xhr.readyState != 0 && xhr.readyState != 4) {
@@ -294,30 +294,46 @@ tiramisu.modules.ajax = function(setting_input) {
     }
 
     xhr.onreadystatechange = function() {
-        var state = xhr.readyState;
-        if (state == 4 && xhr.responseText) {
+        state = xhr.readyState;
+
+        if (state == 4) {
             // success!
-            if (setting.successHTML) {
-                if (typeof(setting.successHTML) === 'string') {
-                    t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
-                } else if (typeof(setting.successHTML) === 'object') {
-                    if (typeof(setting.successHTML.html) === 'function') {
-                        setting.successHTML.html(xhr.responseText);
-                    } else {
-                        setting.successHTML.innerHTML = xhr.responseText;
+            if (xhr.responseText) {
+                // ~
+                if (setting.data_format == 'json') {
+                    response = t.json.decode(xhr.responseText);
+                } else {
+                    response = xhr.responseText;
+                }
+
+                // ~
+                if (setting.successHTML) {
+                    if (typeof(setting.successHTML) === 'string') {
+                        t.d.getElementById(setting.successHTML).innerHTML = response;
+                    } else if (typeof(setting.successHTML) === 'object') {
+                        if (typeof(setting.successHTML.html) === 'function') {
+                            setting.successHTML.html(response);
+                        } else {
+                            setting.successHTML.innerHTML = response;
+                        }
                     }
                 }
+
+                setting.end_load();
+                setting.success(response);
+
+
+            } else if (state == 4 && xhr.status == 400) {
+                // 400 Bad Request
+                setting.end_load();
+                setting.error('400 Bad Request');
+
+            } else if (state == 4 && xhr.status != 200) {
+                // fetched the wrong page or network error...
+                setting.end_load();
+                setting.error('Fetched the wrong page or network error');
             }
-            setting.end_load();
-            setting.success(xhr.responseText);
-        } else if (state == 4 && xhr.status == 400) {
-            // 400 Bad Request
-            setting.end_load();
-            setting.error('400 Bad Request');
-        } else if (state == 4 && xhr.status != 200) {
-            // fetched the wrong page or network error...
-            setting.end_load();
-            setting.error('Fetched the wrong page or network error');
+
         } else {
             if (setting.successHTML && setting.loader) {
                 if (typeof(setting.successHTML) === 'string') {
@@ -336,14 +352,21 @@ tiramisu.modules.ajax = function(setting_input) {
 
     xhr.open(setting.method, setting.url + get_params + url_cache, setting.async);
 
+
     if (setting.content_type) {
+        // The mime type of the body of the request (used with POST and PUT requests)
+        // Content-Type: application/x-www-form-urlencoded
+        // http://en.wikipedia.org/wiki/Mime_type
+        if (setting.data_format == 'json') {
+            // JavaScript Object Notation JSON; Defined in RFC 4627
+            setting.content_type = 'application/json; charset=UTF-8';
+        }
         xhr.setRequestHeader('Content-type', setting.content_type);
     }
     if (setting.connection) {
+        // What type of connection the user-agent would prefer
+        // Connection: close
         xhr.setRequestHeader('Connection', setting.connection);
-    }
-    if (setting.data_type) {
-        xhr.setRequestHeader('dataType', setting.data_type);
     }
 
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Set a request
@@ -358,6 +381,71 @@ tiramisu.modules.ajax = function(setting_input) {
 
     xhr.send(parameter);
     return this;
+};
+/** 
+ * Framework Json Module
+ * =====================
+ *
+ * This module is mainly used to
+ *
+ * Usage
+ * -----
+ *
+ *     tiramisu.json(my_json_text, reviver);
+ *
+ * .....
+ *
+ *
+ * Example #1 (...)
+ * -----------------------------
+ *
+ *     var json_object = tiramisu.json.parse(' ... ');
+ *
+ *
+ * Example #2 (...)
+ * -----------------------------
+ *
+ *     t.json.parse('{ "age" : {"today": 24 }, "name" : "leo" }', function (key, value) {
+ *         if (value && typeof value === 'object') {
+ *             return value;
+ *         }
+ *         var text = value + "_tiramisu";
+ *         return text;
+ *     })
+ *
+ *
+ * @api public
+ */
+tiramisu.modules.json = {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    'ingredients': [2],
+    'cups_of_coffee': 7,
+
+    decode: function(my_json_text, reviver) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.parse(my_json_text, reviver);
+        } catch (e) {
+            // Input is not a valid JSON, you can check it on http://jsonlint.com/
+            return '';
+        }
+
+    },
+
+    encode: function(json_object, replacer) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.stringify(json_object, replacer);
+        } catch (e) {
+            // Input is not a valid JSON Object, you can check it on http://jsonlint.com/
+            return '';
+        }
+
+    }
 };
 /**
  * Framework Selector Module
@@ -1431,11 +1519,13 @@ tiramisu.modules.get = function(selector) {
         var key;
 
         for (key in methods) {
-            // returns an empty function if selector result is empty 
+            // returns an empty string inside a function if selector result is empty 
             if (len_result) {
                 results[key] = methods[key];
             } else {
-                results[key] = function() {};
+                results[key] = function() {
+                    return '';
+                };
             }
         }
 
@@ -1447,7 +1537,9 @@ tiramisu.modules.get = function(selector) {
                     if (len_result) {
                         results[method] = tiramisu.modules.get.methods[key][method];
                     } else {
-                        results[method] = function() {};
+                        results[method] = function() {
+                            return '';
+                        };
                     }
                 }
             }
@@ -1463,6 +1555,91 @@ tiramisu.modules.get = function(selector) {
 
 // Allocate methods object
 tiramisu.modules.get.methods = tiramisu.modules.get.methods || {};
+/** 
+ * Task Engine Module
+ * ==================
+ *
+ * This module is used to perform a function at a particular amount of time
+ * or perform the same function several times in that time frame.
+ *
+ * Usage
+ * -----
+ *
+ *     tiramisu.task(delay, [interval], callback);
+ *
+ * where “interval” is an optional argument
+ *
+ *
+ * Example #1 (The callback is executed after 2000 ms)
+ * -----------------------------
+ *
+ *     tiramisu.task(2000, callback)
+ *
+ *
+ * Example #2 (The callback is executed every 100 ms in a period of 2000ms)
+ * -----------------------------------------------------
+ *
+ *     tiramisu.task(2000, 100, callback)
+ *
+ *
+ * Example #3 (The callback is executed every 500 ms in loop.)
+ * -----------------------------------------------------
+ *
+ *     tiramisu.task('loop', 500, callback)
+ *
+ *
+ * @param {integer} delay The total task delay(ms)
+ * @param {integer} [interval] The interval of the repetitions(ms)
+ * @param {Function} cb The callback function
+ */
+// *requestAnimFrame* (used for handling tasks), thx @paul_irish for this idea
+tiramisu.modules.requestAnimFrame = (function() {
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+    function(callback) {
+        window.setTimeout(callback, 1000 / 60);
+    };
+})();
+tiramisu.modules.task = function(delay, cb) {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    var ingredients = [],
+        cups_of_coffee = 6;
+
+    var interval, requestAnimFrame = t.requestAnimFrame;
+
+    if (arguments.length > 2) {
+        interval = arguments[1];
+        cb = arguments[2];
+    }
+
+    var start = +new Date(),
+        pass = interval;
+
+    function animate() {
+        var progress = +new Date() - start;
+
+        if (interval !== undefined) {
+            if (progress > pass) {
+                pass += interval;
+                cb();
+            }
+        }
+
+        // The recursion continues only in two cases:
+        // - The elapsed time is less than the total time;
+        // - The total time is infinite (so a loop) but there 
+        //   is an interval of time between repetitions of the callback.
+        if (progress < delay || (delay == 'loop' && interval !== undefined)) {
+            requestAnimFrame(animate);
+        } else {
+            if (interval === undefined) {
+                cb();
+            }
+        }
+    }
+    animate();
+};
 /**
  * DOM Selector methods
  * ====================
@@ -2089,17 +2266,17 @@ tiramisu.modules.get.methods.event = {
                 }
             }
         }
-        // if tiramisu.get.results[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;)
+        // if this[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;
         for (var j = evt_len; j--;) {
             var cb = callback[j];
-            for (i = tiramisu.get.results.length; i--;) {
-                add_handler(tiramisu.get.results[i], ev[j], cb);
+            for (i = this.length; i--;) {
+                add_handler(this[i], ev[j], cb);
             }
             if (typeof selector === 'string') {
                 t.local_event[selector] = {};
                 t.local_event[selector] = {
                     'cb': cb,
-                    'element': tiramisu.get.results
+                    'element': this
                 };
             }
         }

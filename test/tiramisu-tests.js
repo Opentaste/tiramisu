@@ -316,6 +316,29 @@ asyncTest('Calling a basic AJAX POST', function() {
     });
 });
 
+asyncTest('Calling AJAX GET with JSON data format', function() {
+    var success = function(result) {
+        ok(true);
+        ok(result, "the result is not undefined/null");
+        equal(result.test, 'All ok!' );
+        start();
+    };
+
+    var error = function(errorType, message) {
+        ok(false, "error called");
+        start();
+    }
+
+    expect(3);
+
+    tiramisu.ajax({
+        'data_format': 'json',
+        'url': 'data/async_json.json',
+        'success': success,
+        'error': error
+    });
+});
+
 module('Event tests');
 
 test('Pressing any key on the keyboard', function() {

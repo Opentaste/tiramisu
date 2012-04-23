@@ -19,7 +19,7 @@
      */
     function Tiramisu() {
         
-        this.version = '0.1.7-b1';
+        this.version = '0.2.1';
         this.d = document;
         this.modules = Tiramisu.prototype;
                 
@@ -1119,11 +1119,13 @@ tiramisu.modules.get = function(selector) {
         var key;
 
         for (key in methods) {
-            // returns an empty function if selector result is empty 
+            // returns an empty string inside a function if selector result is empty 
             if (len_result) {
                 results[key] = methods[key];
             } else {
-                results[key] = function() {};
+                results[key] = function() {
+                    return '';
+                };
             }
         }
 
@@ -1135,7 +1137,9 @@ tiramisu.modules.get = function(selector) {
                     if (len_result) {
                         results[method] = tiramisu.modules.get.methods[key][method];
                     } else {
-                        results[method] = function() {};
+                        results[method] = function() {
+                            return '';
+                        };
                     }
                 }
             }

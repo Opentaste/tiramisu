@@ -47,7 +47,407 @@
          return t.get(t.d.createElement(element));
      }
 
-})(window);/**
+})(window);/** 
+ * Framework Ajax Module
+ * =====================
+ *
+ * This module is mainly used to perform Ajax requests.
+ *
+ * Usage
+ * -----
+ *
+ *     tiramisu.ajax(SETTINGS);
+ *
+ * where the *SETTINGS* object can contain the following:
+ *
+ * - *async* (default is “true”);
+ * - *content_type* (in POST requests default is “application/x-www-form-urlencoded”);
+ * - *connection*;
+ * - *error* (a callback function);
+ * - *start_load* (a callback function);
+ * - *end_load* (a callback function);
+ * - *loader*  (a url loader image);
+ * - *method*  (default is “GET”)
+ * - *parameter*;
+ * - *success* (a callback function);
+ * - *successHTML* (a div id);
+ * - *url* (this is the only **mandatory** field);
+ *
+ * Example #1 (Ajax GET request)
+ * -----------------------------
+ *
+ *     tiramisu.ajax({
+ *         url : 'http://www.example.com'
+ *     });
+ *
+ * Example #2 (Ajax GET request with a success callback)
+ * -----------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *         url : 'http://www.example.com',
+ *         success : function(data) {
+ *             alert(data);
+ *         }
+ *     });
+ *
+ * Example #3 (Ajax GET request loaded into a div with an id)
+ * ----------------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *         url : 'http://www.example.com',
+ *         successHTML : 'responseWrapper'
+ *     });
+ *
+ * Example #4 (Ajax POST request displaying a loader html)
+ * --------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *          url: 'www.example.com',
+ *          method : 'POST',
+ *          loader : '<img src="http://www.mysite.com/url_image_loader.jpg" alt="" />',
+ *          successHTML : 'responseWrapper'
+ *     });
+ *
+ * Example #5 (Ajax GET request with parameters)
+ * ----------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *         parameter: {
+ *             param_1 : 'variable 1',
+ *             param_2 : 'variable 2'
+ *         },
+ *         successHTML : 'responseWrapper'
+ *         url : 'http://www.example.com');
+ *     });
+ *
+ * Example #6 (Ajax POST request with parameters)
+ * ----------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *         method : 'POST',
+ *         parameter: {
+ *             param_1 : 'variable 1',
+ *             param_2 : 'variable 2'
+ *         },
+ *         successHTML : 'responseWrapper'
+ *         url : 'http://www.example.com');
+ *     });
+ *
+ * Example #7 (Ajax GET request with success and error callbacks)
+ * --------------------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *         url: 'http://www.example.com',
+ *         success: function() {
+ *             console.log('Ok');
+ *         },
+ *         error: function() {
+ *             console.log('Error');
+ *         }
+ *     });
+ *
+ * Example #8 (Ajax POST request with successHTML and success callbacks)
+ * --------------------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *        method : 'POST',
+ *        parameter: {
+ *             param_1 : 'variable 1',
+ *             param_2 : 'variable 2'
+ *         },
+ *        success: function(){ ... },
+ *        successHTML: 'responseWrapper',
+ *        url : 'http://www.example.com');
+ *    });
+ *
+ * Example #9 (Ajax set data_format)
+ * --------------------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *        data_format: 'json',
+ *        successHTML: 'responseWrapper',
+ *        url : 'http://www.example.com');
+ *    });
+ *
+ * Example #10 (Ajax with start_load and end_load)
+ * --------------------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *        start_load: function() {
+ *
+ *        },
+ *        end_load: function() {
+ *
+ *        },
+ *        successHTML: 'responseWrapper',
+ *        url : 'http://www.example.com');
+ *    });
+ *
+ * Example #11 (Ajax with time stop)
+ * --------------------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *        stop : 2000,
+ *        successHTML: 'responseWrapper',
+ *        url : 'http://www.example.com');
+ *    });
+ *
+ * Example #12 (If there is new request then to abort the past requests.)
+ * --------------------------------------------------------------
+ *
+ *     tiramisu.ajax({
+ *        abort : true,
+ *        successHTML: 'responseWrapper',
+ *        url : 'http://www.example.com');
+ *    });
+ *
+ * Error
+ * -----
+ * - #1 : Object Ajax Error!;
+ *
+ * @param {Object} settings An object containing the Ajax call parameters
+ * @api public
+ */
+tiramisu.modules.ajax = function(setting_input) {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    var ingredients = [2,7],
+        cups_of_coffee = 4;
+
+    var setting_input = setting_input || {},
+        setting = {
+            abort: false,
+            async: true,
+            content_type: '',
+            connection: '',
+            data_format: '',
+            error: function(res) {
+                try {
+                    console.log(res)
+                } catch (e) {}
+            },
+            start_load: function() {},
+            end_load: function() {},
+            loader: null,
+            method: 'GET',
+            parameter: '',
+            success: function() {},
+            successHTML: '',
+            stop: '',
+            url: ''
+        },
+        xhr = null,
+        parameter = '',
+        // Is very important that parameter dafualt value is ''
+        parameter_count = 0,
+        url_cache = '',
+        get_params = '',
+        state = 0,
+        response = '';
+
+    if (setting.abort) {
+        if (xhr && xhr.readyState != 0 && xhr.readyState != 4) {
+            xhr.abort()
+        }
+    }
+
+    try {
+        xhr = new ActiveXObject("Msxml2.XMLHTTP")
+    } catch (err) {
+        try {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP")
+        } catch (error) {
+            xhr = null
+        }
+    }
+    if (!xhr && typeof XMLHttpRequest != "undefined") {
+        xhr = new XMLHttpRequest
+    }
+
+    // extend object
+    for (var prop in setting_input) {
+        setting[prop] = setting_input[prop];
+    }
+
+    // object "setting.parameter" I create a string with the parameters 
+    // to be passed in request
+    if (setting.parameter != '') {
+        for (attrname in setting.parameter) {
+            parameter += attrname + '=' + setting.parameter[attrname] + '&';
+        }
+        parameter = parameter.substring(0, parameter.length - 1);
+        if (setting.method === 'POST') {
+            if (!setting.content_type) {
+                setting.content_type = 'application/x-www-form-urlencoded';
+            }
+        } else {
+            get_params = '?' + parameter;
+        }
+    } else {
+        parameter = null;
+    }
+
+    if (t.detect('isIE') && setting.method === 'POST') {
+        // Easy Solution for Internet Explorer
+        url_cache = '?' + (('' + Math.random()).replace(/\D/g, ''));
+    }
+
+    xhr.onreadystatechange = function() {
+        state = xhr.readyState;
+
+        if (state == 4) {
+            // success!
+            if (xhr.responseText) {
+                // ~
+                if (setting.data_format == 'json') {
+                    response = t.json.decode(xhr.responseText);
+                } else {
+                    response = xhr.responseText;
+                }
+
+                // ~
+                if (setting.successHTML) {
+                    if (typeof(setting.successHTML) === 'string') {
+                        t.d.getElementById(setting.successHTML).innerHTML = response;
+                    } else if (typeof(setting.successHTML) === 'object') {
+                        if (typeof(setting.successHTML.html) === 'function') {
+                            setting.successHTML.html(response);
+                        } else {
+                            setting.successHTML.innerHTML = response;
+                        }
+                    }
+                }
+
+                setting.end_load();
+                setting.success(response);
+
+
+            } else if (state == 4 && xhr.status == 400) {
+                // 400 Bad Request
+                setting.end_load();
+                setting.error('400 Bad Request');
+
+            } else if (state == 4 && xhr.status != 200) {
+                // fetched the wrong page or network error...
+                setting.end_load();
+                setting.error('Fetched the wrong page or network error');
+            }
+
+        } else {
+            if (setting.successHTML && setting.loader) {
+                if (typeof(setting.successHTML) === 'string') {
+                    t.d.getElementById(setting.successHTML).innerHTML = setting.loader;
+                } else if (typeof(setting.successHTML) === 'object') {
+                    if (typeof(setting.successHTML.html) === 'function') {
+                        setting.successHTML.html(setting.loader);
+                    } else {
+                        setting.successHTML.innerHTML = setting.loader;
+                    }
+                }
+            }
+        }
+    };
+
+
+    xhr.open(setting.method, setting.url + get_params + url_cache, setting.async);
+
+
+    if (setting.content_type) {
+        // The mime type of the body of the request (used with POST and PUT requests)
+        // Content-Type: application/x-www-form-urlencoded
+        // http://en.wikipedia.org/wiki/Mime_type
+        if (setting.data_format == 'json') {
+            // JavaScript Object Notation JSON; Defined in RFC 4627
+            setting.content_type = 'application/json; charset=UTF-8';
+        }
+        xhr.setRequestHeader('Content-type', setting.content_type);
+    }
+    if (setting.connection) {
+        // What type of connection the user-agent would prefer
+        // Connection: close
+        xhr.setRequestHeader('Connection', setting.connection);
+    }
+
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Set a request
+    // Set start load
+    setting.start_load();
+
+    if (setting.stop) {
+        t.task(setting.stop, function() {
+            xhr.abort();
+        })
+    }
+
+    xhr.send(parameter);
+    return this;
+};
+/** 
+ * Framework Json Module
+ * =====================
+ *
+ * This module is mainly used to
+ *
+ * Usage
+ * -----
+ *
+ *     tiramisu.json(my_json_text, reviver);
+ *
+ * .....
+ *
+ *
+ * Example #1 (...)
+ * -----------------------------
+ *
+ *     var json_object = tiramisu.json.parse(' ... ');
+ *
+ *
+ * Example #2 (...)
+ * -----------------------------
+ *
+ *     t.json.parse('{ "age" : {"today": 24 }, "name" : "leo" }', function (key, value) {
+ *         if (value && typeof value === 'object') {
+ *             return value;
+ *         }
+ *         var text = value + "_tiramisu";
+ *         return text;
+ *     })
+ *
+ *
+ * @api public
+ */
+tiramisu.modules.json = {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    'ingredients': [2],
+    'cups_of_coffee': 7,
+
+    decode: function(my_json_text, reviver) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.parse(my_json_text, reviver);
+        } catch (e) {
+            // Input is not a valid JSON, you can check it on http://jsonlint.com/
+            return '';
+        }
+
+    },
+
+    encode: function(json_object, replacer) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.stringify(json_object, replacer);
+        } catch (e) {
+            // Input is not a valid JSON Object, you can check it on http://jsonlint.com/
+            return '';
+        }
+
+    }
+};
+/**
  * Framework Selector Module
  * =========================
  *
@@ -1240,404 +1640,6 @@ tiramisu.modules.task = function(delay, cb) {
     }
     animate();
 };
-/**
- * DOM Selector methods
- * ====================
- *
- * Several methods for DOM-related tasks:
- *
- * *  *Insert/Append*
- * *  *Insert Before/Prepend*
- * *  *Empty/Destroy*
- *
- */
-tiramisu.modules.get.methods.dom = {
-
-    // Each module within Tiramisu can to need inherit other modules.
-    // The number of cups of coffee is identified for each module.
-    'ingredients': [1],
-    'cups_of_coffee': 3,
-
-    /**
-     * Insert Before method
-     * --------------------
-     *
-     * Insert text or html, before each element.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).before(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector, *HTML* is
-     * the element to insert.
-     *
-     * Example #1 ()
-     * ------------------------------------------------------
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <div class="inner">mondo</div>
-     *     ...
-     *     t.get('.inner').before('<p>ciccio</p>')
-     *
-     *     produce the following result:
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <p>ciccio</p>
-     *     <div class="inner">ciao</div>
-     *     <p>ciccio</p>
-     *     <div class="inner">mondo</div>
-     *
-     *
-     * @param {html} The element to insert
-     */
-    'before': function(html) {
-        insert_content(html, true, false)
-        return this;
-    },
-    /**
-     * Insert After method
-     * -------------------
-     *
-     * Insert text or html, after each element.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).after(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * the element to insert.
-     *
-     * Example #1 (Inserting an element multiple times)
-     * ------------------------------------------------
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <div class="inner">mondo</div>
-     *     ...
-     *     t.get('.inner').after('<p>ciccio</p>')
-     *
-     *     produces the following result:
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <p>ciccio</p>
-     *     <div class="inner">mondo</div>
-     *     <p>ciccio</p>
-     *
-     *
-     * @param {html} The element to insert
-     */
-    'after': function(html) {
-        insert_content(html, false, false);
-        return this;
-    },
-    /**
-     * Append method
-     * -------------
-     *
-     * Appends a DOM element into a list of selector results.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).append(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * a string containing some HTML (such as "<p>hi</p>,
-     * <h1>headline</h1> etc.)
-     *
-     * Example #1 (Append a single element)
-     * ------------------------------------
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *     ...
-     *     t.get('ul').append('<li>Three</li>');
-     *
-     *     produces the following:
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *       <li>Three</li>
-     *     </ul>
-     *
-     * Example #2 (Append multiple elements)
-     * -------------------------------------
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *      ...
-     *      t.get('ul li').append('<p>append</p>');
-     *
-     *      produces the following:
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *          <p>append</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *          <p>append</p>
-     *        </li>
-     *      </ul>
-     *
-     * @param {html} The element to append
-     */
-    'append': function(html) {
-        insert_content(html, false, true);
-        return this;
-    },
-    /**
-     * Prepend method
-     * --------------
-     *
-     * Prepends a DOM element into a list of selector results.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).prepend(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * a string containing some HTML (such as "<p>hi</p>,
-     * <h1>headline</h1> etc.)
-     *
-     * Example #1 (Prepend a single element)
-     * ------------------------------------
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *     ...
-     *     t.get('ul').prepend('<li>Three</li>');
-     *
-     *     produces the following:
-     *
-     *     <ul>
-     *       <li>Zero</li>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *
-     * Example #2 (Prepend multiple elements)
-     * -------------------------------------
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *      ...
-     *      t.get('ul li').prepend('<p>prepend</p>');
-     *
-     *      produces the following:
-     *
-     *      <ul>
-     *        <li>
-     *          <p>prepend</p>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>prepend</p>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *
-     * @param {html} The element to prepend
-     */
-    'prepend': function(html) {
-        insert_content(html, true, true);
-        return this;
-    },
-    /**
-     * Empty extension method
-     * ----------------------
-     *
-     * Removes all the child elements of a specific node from the DOM.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).empty()
-     *
-     * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements).
-     *
-     * Example #1 (Remove all element of a list)
-     * -----------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate</span> chips!</li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').empty()* will give the following results:
-     *
-     *     <ol id="myList"></ol>
-     *
-     * Example #2 (Remove a specific element)
-     * --------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate chips!</span></li>
-     *     </ol>
-     *
-     * calling *t.get('.tasty').empty()* will give the following results:
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty"></span></li>
-     *        <li>I love <span class="tasty"></span> chips!</li>
-     *     </ol>
-     *
-     * Todo
-     * ----
-     *
-     * -    Remove events to avoid memory leaks;
-     *
-     */
-    'empty': function() {
-        for (var i = 0; i < tiramisu.get.results.length; i++) {
-            var child = tiramisu.get.results[i].childNodes[0];
-            while (child) {
-                var next = child.nextSibling;
-                tiramisu.get.results[i].removeChild(child);
-                child = next;
-            }
-        }
-    },
-    /**
-     * Destroy extension method
-     * ---------------------------------
-     *
-     * Removes element
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
-     *
-     * Example #1 (Remove all element child)
-     * -----------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate</span> chips!</li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').destroy('.tasty')* will give the following results:
-     *
-     *     <ol id="myList">
-     *         <li>This is my </li>
-     *         <li>I love  chips!</li>
-     *     </ol>
-     *
-     * Example #2 (Remove element and child)
-     * --------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate chips!</span></li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').destroy()* will give the following results:
-     *
-     *     <div id="myDestroyList">
-     *
-     *     </div>
-     *
-     *
-     */
-    'destroy': function(el) {
-        if (tiramisu.get.results[0] === undefined) {
-            return '';
-        }
-
-        if (el !== undefined && typeof el === 'string') {
-            var res = t.get(tiramisu.get.selector + ' ' + el),
-                len = res.length;
-            for (var i = len; i--;) {
-                var parent = res[i].parentNode;
-                parent.removeChild(res[i]);
-            }
-        } else {
-            for (i = tiramisu.get.results.length; i--;) {
-                var parent = tiramisu.get.results[i].parentNode;
-                parent.removeChild(tiramisu.get.results[i]);
-            }
-        }
-        return this;
-    },
-};
-
-// DOM Node insertion generic utility
-
-function insert_content(html, before, append) {
-    // Aliasing results
-    var results = tiramisu.get.results,
-        len_result = results.length;
-
-    var i, j, parent, elements = [];
-
-    var div = t.d.createElement('div');
-    // “...A better version will be to create a document fragment, update it "offline",
-    // and add it to the live DOM when it's ready. When you add a document fragment to
-    // the DOM tree, the content of the fragment gets added, not the fragment itself.
-    // And this is really convenient. So the document fragment is a good way to wrap
-    // a number of nodes even when you're not containing them in a suitable parent
-    // (for example, your paragraphs are not in a div element)”
-    // 
-    // From “JavaScript Patterns”, pages 184-185, chapter VIII
-    var frag = t.d.createDocumentFragment();
-
-    for (i = 0; i < len_result; i++) {
-
-        if (typeof html === 'string') {
-            div.innerHTML = html;
-            elements = div.children;
-
-        } else if (typeof html.css === 'function') {
-            elements.push(html[0]); // html is t.get(t.make('p'))
-        } else {
-            elements.push(html); // html is an element
-        }
-
-        parent = results[i].parentNode;
-
-        for (j = 0; j < elements.length; j++) {
-
-            if (before) {
-                frag.insertBefore(elements[j], frag.firstChild);
-            } else {
-                frag.appendChild(elements[j]);
-            }
-        }
-
-        if (before) {
-            (append) ? results[i].insertBefore(frag, results[i].firstChild) : parent.insertBefore(frag, results[i]);
-        } else {
-            (append) ? results[i].appendChild(frag) : parent.insertBefore(frag, results[i].nextSibling);
-        }
-    }
-}
 /** 
  * Framework Detection Module
  * ==========================

@@ -156,11 +156,14 @@ def all():
     
     
 def cook_all_tiramisu():
-    local('rm src/custom/* ')
+    try:
+        local('rm src/custom/* ')
+    except:
+        pass
     f = open('tiramisu.json', 'r')
     tiramisu_json = json.load(f)
     f.close()
-    for i in range(1,6):
+    for i in range(1,7):
         for cups_of_coffee in [x for x in combinations(ALL_CUPS_OF_COFFEE,i)]:
             cups_of_coffee = ''.join(cups_of_coffee)
             if cups_of_coffee != ALL_CUPS_OF_COFFEE:

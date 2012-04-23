@@ -111,13 +111,11 @@
  *        url : 'http://www.example.com');
  *    });
  *
- * Example #9 (Ajax set content_type, connection, data_type)
+ * Example #9 (Ajax set data_format)
  * --------------------------------------------------------------
  *
  *     tiramisu.ajax({
- *        content_type : '',
- *        connection: '',
- *        data_type: '',
+ *        data_format: 'json',
  *        successHTML: 'responseWrapper',
  *        url : 'http://www.example.com');
  *    });
@@ -165,7 +163,7 @@ tiramisu.modules.ajax = function(setting_input) {
 
     // Each module within Tiramisu can to need inherit other modules.
     // The number of cups of coffee is identified for each module.
-    var ingredients = [2],
+    var ingredients = [2,7],
         cups_of_coffee = 4;
 
     var setting_input = setting_input || {},
@@ -174,7 +172,7 @@ tiramisu.modules.ajax = function(setting_input) {
             async: true,
             content_type: '',
             connection: '',
-            data_type: '',
+            data_format: '',
             error: function(res) {
                 try {
                     console.log(res)
@@ -195,7 +193,9 @@ tiramisu.modules.ajax = function(setting_input) {
         // Is very important that parameter dafualt value is ''
         parameter_count = 0,
         url_cache = '',
-        get_params = '';
+        get_params = '',
+        state = 0,
+        response = '';
 
     if (setting.abort) {
         if (xhr && xhr.readyState != 0 && xhr.readyState != 4) {
@@ -245,30 +245,46 @@ tiramisu.modules.ajax = function(setting_input) {
     }
 
     xhr.onreadystatechange = function() {
-        var state = xhr.readyState;
-        if (state == 4 && xhr.responseText) {
+        state = xhr.readyState;
+
+        if (state == 4) {
             // success!
-            if (setting.successHTML) {
-                if (typeof(setting.successHTML) === 'string') {
-                    t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
-                } else if (typeof(setting.successHTML) === 'object') {
-                    if (typeof(setting.successHTML.html) === 'function') {
-                        setting.successHTML.html(xhr.responseText);
-                    } else {
-                        setting.successHTML.innerHTML = xhr.responseText;
+            if (xhr.responseText) {
+                // ~
+                if (setting.data_format == 'json') {
+                    response = t.json.decode(xhr.responseText);
+                } else {
+                    response = xhr.responseText;
+                }
+
+                // ~
+                if (setting.successHTML) {
+                    if (typeof(setting.successHTML) === 'string') {
+                        t.d.getElementById(setting.successHTML).innerHTML = response;
+                    } else if (typeof(setting.successHTML) === 'object') {
+                        if (typeof(setting.successHTML.html) === 'function') {
+                            setting.successHTML.html(response);
+                        } else {
+                            setting.successHTML.innerHTML = response;
+                        }
                     }
                 }
+
+                setting.end_load();
+                setting.success(response);
+
+
+            } else if (state == 4 && xhr.status == 400) {
+                // 400 Bad Request
+                setting.end_load();
+                setting.error('400 Bad Request');
+
+            } else if (state == 4 && xhr.status != 200) {
+                // fetched the wrong page or network error...
+                setting.end_load();
+                setting.error('Fetched the wrong page or network error');
             }
-            setting.end_load();
-            setting.success(xhr.responseText);
-        } else if (state == 4 && xhr.status == 400) {
-            // 400 Bad Request
-            setting.end_load();
-            setting.error('400 Bad Request');
-        } else if (state == 4 && xhr.status != 200) {
-            // fetched the wrong page or network error...
-            setting.end_load();
-            setting.error('Fetched the wrong page or network error');
+
         } else {
             if (setting.successHTML && setting.loader) {
                 if (typeof(setting.successHTML) === 'string') {
@@ -287,14 +303,21 @@ tiramisu.modules.ajax = function(setting_input) {
 
     xhr.open(setting.method, setting.url + get_params + url_cache, setting.async);
 
+
     if (setting.content_type) {
+        // The mime type of the body of the request (used with POST and PUT requests)
+        // Content-Type: application/x-www-form-urlencoded
+        // http://en.wikipedia.org/wiki/Mime_type
+        if (setting.data_format == 'json') {
+            // JavaScript Object Notation JSON; Defined in RFC 4627
+            setting.content_type = 'application/json; charset=UTF-8';
+        }
         xhr.setRequestHeader('Content-type', setting.content_type);
     }
     if (setting.connection) {
+        // What type of connection the user-agent would prefer
+        // Connection: close
         xhr.setRequestHeader('Connection', setting.connection);
-    }
-    if (setting.data_type) {
-        xhr.setRequestHeader('dataType', setting.data_type);
     }
 
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Set a request

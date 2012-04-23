@@ -47,7 +47,72 @@
          return t.get(t.d.createElement(element));
      }
 
-})(window);/**
+})(window);/** 
+ * Framework Json Module
+ * =====================
+ *
+ * This module is mainly used to
+ *
+ * Usage
+ * -----
+ *
+ *     tiramisu.json(my_json_text, reviver);
+ *
+ * .....
+ *
+ *
+ * Example #1 (...)
+ * -----------------------------
+ *
+ *     var json_object = tiramisu.json.parse(' ... ');
+ *
+ *
+ * Example #2 (...)
+ * -----------------------------
+ *
+ *     t.json.parse('{ "age" : {"today": 24 }, "name" : "leo" }', function (key, value) {
+ *         if (value && typeof value === 'object') {
+ *             return value;
+ *         }
+ *         var text = value + "_tiramisu";
+ *         return text;
+ *     })
+ *
+ *
+ * @api public
+ */
+tiramisu.modules.json = {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    'ingredients': [2],
+    'cups_of_coffee': 7,
+
+    decode: function(my_json_text, reviver) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.parse(my_json_text, reviver);
+        } catch (e) {
+            // Input is not a valid JSON, you can check it on http://jsonlint.com/
+            return '';
+        }
+
+    },
+
+    encode: function(json_object, replacer) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.stringify(json_object, replacer);
+        } catch (e) {
+            // Input is not a valid JSON Object, you can check it on http://jsonlint.com/
+            return '';
+        }
+
+    }
+};
+/**
  * Framework Selector Module
  * =========================
  *
@@ -1240,404 +1305,6 @@ tiramisu.modules.task = function(delay, cb) {
     }
     animate();
 };
-/**
- * DOM Selector methods
- * ====================
- *
- * Several methods for DOM-related tasks:
- *
- * *  *Insert/Append*
- * *  *Insert Before/Prepend*
- * *  *Empty/Destroy*
- *
- */
-tiramisu.modules.get.methods.dom = {
-
-    // Each module within Tiramisu can to need inherit other modules.
-    // The number of cups of coffee is identified for each module.
-    'ingredients': [1],
-    'cups_of_coffee': 3,
-
-    /**
-     * Insert Before method
-     * --------------------
-     *
-     * Insert text or html, before each element.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).before(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector, *HTML* is
-     * the element to insert.
-     *
-     * Example #1 ()
-     * ------------------------------------------------------
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <div class="inner">mondo</div>
-     *     ...
-     *     t.get('.inner').before('<p>ciccio</p>')
-     *
-     *     produce the following result:
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <p>ciccio</p>
-     *     <div class="inner">ciao</div>
-     *     <p>ciccio</p>
-     *     <div class="inner">mondo</div>
-     *
-     *
-     * @param {html} The element to insert
-     */
-    'before': function(html) {
-        insert_content(html, true, false)
-        return this;
-    },
-    /**
-     * Insert After method
-     * -------------------
-     *
-     * Insert text or html, after each element.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).after(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * the element to insert.
-     *
-     * Example #1 (Inserting an element multiple times)
-     * ------------------------------------------------
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <div class="inner">mondo</div>
-     *     ...
-     *     t.get('.inner').after('<p>ciccio</p>')
-     *
-     *     produces the following result:
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <p>ciccio</p>
-     *     <div class="inner">mondo</div>
-     *     <p>ciccio</p>
-     *
-     *
-     * @param {html} The element to insert
-     */
-    'after': function(html) {
-        insert_content(html, false, false);
-        return this;
-    },
-    /**
-     * Append method
-     * -------------
-     *
-     * Appends a DOM element into a list of selector results.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).append(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * a string containing some HTML (such as "<p>hi</p>,
-     * <h1>headline</h1> etc.)
-     *
-     * Example #1 (Append a single element)
-     * ------------------------------------
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *     ...
-     *     t.get('ul').append('<li>Three</li>');
-     *
-     *     produces the following:
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *       <li>Three</li>
-     *     </ul>
-     *
-     * Example #2 (Append multiple elements)
-     * -------------------------------------
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *      ...
-     *      t.get('ul li').append('<p>append</p>');
-     *
-     *      produces the following:
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *          <p>append</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *          <p>append</p>
-     *        </li>
-     *      </ul>
-     *
-     * @param {html} The element to append
-     */
-    'append': function(html) {
-        insert_content(html, false, true);
-        return this;
-    },
-    /**
-     * Prepend method
-     * --------------
-     *
-     * Prepends a DOM element into a list of selector results.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).prepend(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * a string containing some HTML (such as "<p>hi</p>,
-     * <h1>headline</h1> etc.)
-     *
-     * Example #1 (Prepend a single element)
-     * ------------------------------------
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *     ...
-     *     t.get('ul').prepend('<li>Three</li>');
-     *
-     *     produces the following:
-     *
-     *     <ul>
-     *       <li>Zero</li>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *
-     * Example #2 (Prepend multiple elements)
-     * -------------------------------------
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *      ...
-     *      t.get('ul li').prepend('<p>prepend</p>');
-     *
-     *      produces the following:
-     *
-     *      <ul>
-     *        <li>
-     *          <p>prepend</p>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>prepend</p>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *
-     * @param {html} The element to prepend
-     */
-    'prepend': function(html) {
-        insert_content(html, true, true);
-        return this;
-    },
-    /**
-     * Empty extension method
-     * ----------------------
-     *
-     * Removes all the child elements of a specific node from the DOM.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).empty()
-     *
-     * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements).
-     *
-     * Example #1 (Remove all element of a list)
-     * -----------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate</span> chips!</li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').empty()* will give the following results:
-     *
-     *     <ol id="myList"></ol>
-     *
-     * Example #2 (Remove a specific element)
-     * --------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate chips!</span></li>
-     *     </ol>
-     *
-     * calling *t.get('.tasty').empty()* will give the following results:
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty"></span></li>
-     *        <li>I love <span class="tasty"></span> chips!</li>
-     *     </ol>
-     *
-     * Todo
-     * ----
-     *
-     * -    Remove events to avoid memory leaks;
-     *
-     */
-    'empty': function() {
-        for (var i = 0; i < tiramisu.get.results.length; i++) {
-            var child = tiramisu.get.results[i].childNodes[0];
-            while (child) {
-                var next = child.nextSibling;
-                tiramisu.get.results[i].removeChild(child);
-                child = next;
-            }
-        }
-    },
-    /**
-     * Destroy extension method
-     * ---------------------------------
-     *
-     * Removes element
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
-     *
-     * Example #1 (Remove all element child)
-     * -----------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate</span> chips!</li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').destroy('.tasty')* will give the following results:
-     *
-     *     <ol id="myList">
-     *         <li>This is my </li>
-     *         <li>I love  chips!</li>
-     *     </ol>
-     *
-     * Example #2 (Remove element and child)
-     * --------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate chips!</span></li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').destroy()* will give the following results:
-     *
-     *     <div id="myDestroyList">
-     *
-     *     </div>
-     *
-     *
-     */
-    'destroy': function(el) {
-        if (tiramisu.get.results[0] === undefined) {
-            return '';
-        }
-
-        if (el !== undefined && typeof el === 'string') {
-            var res = t.get(tiramisu.get.selector + ' ' + el),
-                len = res.length;
-            for (var i = len; i--;) {
-                var parent = res[i].parentNode;
-                parent.removeChild(res[i]);
-            }
-        } else {
-            for (i = tiramisu.get.results.length; i--;) {
-                var parent = tiramisu.get.results[i].parentNode;
-                parent.removeChild(tiramisu.get.results[i]);
-            }
-        }
-        return this;
-    },
-};
-
-// DOM Node insertion generic utility
-
-function insert_content(html, before, append) {
-    // Aliasing results
-    var results = tiramisu.get.results,
-        len_result = results.length;
-
-    var i, j, parent, elements = [];
-
-    var div = t.d.createElement('div');
-    // “...A better version will be to create a document fragment, update it "offline",
-    // and add it to the live DOM when it's ready. When you add a document fragment to
-    // the DOM tree, the content of the fragment gets added, not the fragment itself.
-    // And this is really convenient. So the document fragment is a good way to wrap
-    // a number of nodes even when you're not containing them in a suitable parent
-    // (for example, your paragraphs are not in a div element)”
-    // 
-    // From “JavaScript Patterns”, pages 184-185, chapter VIII
-    var frag = t.d.createDocumentFragment();
-
-    for (i = 0; i < len_result; i++) {
-
-        if (typeof html === 'string') {
-            div.innerHTML = html;
-            elements = div.children;
-
-        } else if (typeof html.css === 'function') {
-            elements.push(html[0]); // html is t.get(t.make('p'))
-        } else {
-            elements.push(html); // html is an element
-        }
-
-        parent = results[i].parentNode;
-
-        for (j = 0; j < elements.length; j++) {
-
-            if (before) {
-                frag.insertBefore(elements[j], frag.firstChild);
-            } else {
-                frag.appendChild(elements[j]);
-            }
-        }
-
-        if (before) {
-            (append) ? results[i].insertBefore(frag, results[i].firstChild) : parent.insertBefore(frag, results[i]);
-        } else {
-            (append) ? results[i].appendChild(frag) : parent.insertBefore(frag, results[i].nextSibling);
-        }
-    }
-}
 /** 
  * Framework Detection Module
  * ==========================
@@ -1759,3 +1426,192 @@ tiramisu.modules.detect = function(key) {
     };
     return tests[key]();
 };
+/**
+ * Event Selector methods
+ * ======================
+ *
+ * Several methods for Events tasks:
+ *
+ * *  *On/Off*
+ *
+ */
+// Keep in memory the events created
+tiramisu.modules.local_event = {};
+tiramisu.modules.get.methods.event = {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    'ingredients': [1],
+    'cups_of_coffee': 5,
+
+    /**
+     * Event handler extension
+     * -----------------------
+     *
+     * Attach a callback function to an event.
+     *
+     * Usage
+     * -----
+     *
+     *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
+     *
+     * where *SELECTOR* is a valid CSS selector, *EVENT* is
+     * the event listener and *CALLBACK* the function to attach.
+     *
+     * Example #1 (Clicking on a p element displays “Hello!”)
+     * ------------------------------------------------------
+     *
+     *     <p> Click me! </p>
+     *     <p> Click me too! </p>
+     *     <p> And me? </p>
+     *     ...
+     *     tiramisu.get('p').on('click', function() {
+     *         alert('Hello!');
+     *     });
+     *
+     * Example #2 (Hovering on a li element displays his innerHTML)
+     * ------------------------------------------------------------
+     *
+     *      <ol>
+     *        <li> Banana </li>
+     *        <li> Apple </li>
+     *        <li> Pineapple </li>
+     *        <li> Strawberry </li>
+     *      </ol>
+     *      ...
+     *      tiramisu.get('ul li').on('mouseover', function() {
+     *          alert(this.innerHTML);
+     *      });
+     *
+     *  As in the “each” example, it is possible to use **this** to
+     *  reference the current list item.
+     *
+     * Example #3 (Defining a window.onload callback)
+     * ----------------------------------------------
+     *
+     *     tiramisu.get(window).on('load', function() {
+     *         alert('This will be executed after the DOM loading");
+     *     });
+     *
+     * Example #4 (Alert message when pressing the “m” key)
+     * ----------------------------------------------------
+     *
+     *     tiramisu.get(document).on('keydown', function(evt) {
+     *         if (evt.keyCode == 77) {
+     *             alert("M as Marvelous!");
+     *         }
+     *     });
+     *
+     * Example #5 ()
+     * ----------------------------------------------------
+     *
+     *     tiramisu.get('p').on('keydown', 'click', function(evt) {
+     *         alert('This will be executed after click or keydown on 'p' element");
+     *     });
+     *
+     * @param {event} evt An event listener
+     * @param {function} cb The callback function to attach
+     */
+    'on': function(evt, cb) {
+        if (arguments.length > 2) {
+            return '';
+        }
+        var evt_len = 1,
+            ev = [],
+            callback = [];
+        if (typeof(evt) === 'string') {
+            ev[0] = evt;
+            callback[0] = cb;
+        } else if (typeof(evt) === 'object') {
+            if (typeof(evt[0]) === 'string') {
+                ev = evt;
+                callback[0] = cb;
+            } else {
+                for (key in evt) {
+                    evt_len = ev.push(key);
+                    callback.push(evt[key]);
+                }
+            }
+        }
+        // if this[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;
+        for (var j = evt_len; j--;) {
+            var cb = callback[j];
+            for (i = this.length; i--;) {
+                add_handler(this[i], ev[j], cb);
+            }
+            if (typeof selector === 'string') {
+                t.local_event[selector] = {};
+                t.local_event[selector] = {
+                    'cb': cb,
+                    'element': this
+                };
+            }
+        }
+        return this;
+    },
+    /**
+     * Remove Event handler extension
+     * -----------------------
+     *
+     */
+    'off': function(evt) {
+        if (arguments.length > 1) {
+            return '';
+        }
+        if (typeof selector === 'string') {
+            if (t.local_event[selector] !== undefined) {
+                var cb = t.local_event[selector]['cb'],
+                    element = t.local_event[selector]['element'],
+                    len = element.length;
+                for (i = len; i--;) {
+                    remove_handler(tiramisu.get.results[i], evt, cb);
+                }
+                delete t.local_event[selector];
+            }
+        }
+
+        return this;
+    },
+}
+
+// The good way to eliminate a work repetition in functions is through lazy loading.
+// Lazy loading means that no work is done until the information is necessary.
+// Here I implement a lazy-loading pattern. The first time either method is
+// called, a check is made to determine the appropriate way to attach or detach the
+// event handler. Then the original function is overwrittern with a new function that
+// contains just the appropriate course of action.
+// By High Performance JavaScript, Nicholas C. Zakas
+var add_handler = function(target, event_type, handler) {
+
+        // overwrite te existing function
+        if (target.addEventListener) { // DOM 2 Events
+            add_handler = function(target, event_type, handler) {
+                target.addEventListener(event_type, handler, false);
+            }
+        } else { // IE
+            add_handler = function(target, event_type, handler) {
+                target.attachEvent('on' + event_type, handler);
+            }
+        }
+
+        // call the new functions
+        add_handler(target, event_type, handler);
+    }
+
+    // And brother function, remove_handler
+var remove_handler = function(target, event_type, handler) {
+
+        // overwrite te existing function
+        if (target.removeEventListener) { // DOM 2 Events
+            remove_handler = function(target, event_type, handler) {
+                target.removeEventListener(event_type, handler, false);
+            }
+        } else { // IE
+            remove_handler = function(target, event_type, handler) {
+                target.detachEvent('on' + event_type, handler);
+            }
+        }
+
+        // call the new functions
+        remove_handler(target, event_type, handler);
+    }

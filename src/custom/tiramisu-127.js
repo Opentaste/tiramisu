@@ -19,7 +19,7 @@
      */
     function Tiramisu() {
         
-        this.version = '0.1.7-b1';
+        this.version = '0.2.1';
         this.d = document;
         this.modules = Tiramisu.prototype;
                 
@@ -48,316 +48,69 @@
      }
 
 })(window);/** 
- * Framework Ajax Module
+ * Framework Json Module
  * =====================
  *
- * This module is mainly used to perform Ajax requests.
+ * This module is mainly used to
  *
  * Usage
  * -----
  *
- *     tiramisu.ajax(SETTINGS);
+ *     tiramisu.json(my_json_text, reviver);
  *
- * where the *SETTINGS* object can contain the following:
+ * .....
  *
- * - *async* (default is “true”);
- * - *content_type* (in POST requests default is “application/x-www-form-urlencoded”);
- * - *connection*;
- * - *error* (a callback function);
- * - *start_load* (a callback function);
- * - *end_load* (a callback function);
- * - *loader*  (a url loader image);
- * - *method*  (default is “GET”)
- * - *parameter*;
- * - *success* (a callback function);
- * - *successHTML* (a div id);
- * - *url* (this is the only **mandatory** field);
  *
- * Example #1 (Ajax GET request)
+ * Example #1 (...)
  * -----------------------------
  *
- *     tiramisu.ajax({
- *         url : 'http://www.example.com'
- *     });
+ *     var json_object = tiramisu.json.parse(' ... ');
  *
- * Example #2 (Ajax GET request with a success callback)
- * -----------------------------------------------------
  *
- *     tiramisu.ajax({
- *         url : 'http://www.example.com',
- *         success : function(data) {
- *             alert(data);
+ * Example #2 (...)
+ * -----------------------------
+ *
+ *     t.json.parse('{ "age" : {"today": 24 }, "name" : "leo" }', function (key, value) {
+ *         if (value && typeof value === 'object') {
+ *             return value;
  *         }
- *     });
+ *         var text = value + "_tiramisu";
+ *         return text;
+ *     })
  *
- * Example #3 (Ajax GET request loaded into a div with an id)
- * ----------------------------------------------------------
  *
- *     tiramisu.ajax({
- *         url : 'http://www.example.com',
- *         successHTML : 'responseWrapper'
- *     });
- *
- * Example #4 (Ajax POST request displaying a loader html)
- * --------------------------------------------------
- *
- *     tiramisu.ajax({
- *          url: 'www.example.com',
- *          method : 'POST',
- *          loader : '<img src="http://www.mysite.com/url_image_loader.jpg" alt="" />',
- *          successHTML : 'responseWrapper'
- *     });
- *
- * Example #5 (Ajax GET request with parameters)
- * ----------------------------------------------
- *
- *     tiramisu.ajax({
- *         parameter: {
- *             param_1 : 'variable 1',
- *             param_2 : 'variable 2'
- *         },
- *         successHTML : 'responseWrapper'
- *         url : 'http://www.example.com');
- *     });
- *
- * Example #6 (Ajax POST request with parameters)
- * ----------------------------------------------
- *
- *     tiramisu.ajax({
- *         method : 'POST',
- *         parameter: {
- *             param_1 : 'variable 1',
- *             param_2 : 'variable 2'
- *         },
- *         successHTML : 'responseWrapper'
- *         url : 'http://www.example.com');
- *     });
- *
- * Example #7 (Ajax GET request with success and error callbacks)
- * --------------------------------------------------------------
- *
- *     tiramisu.ajax({
- *         url: 'http://www.example.com',
- *         success: function() {
- *             console.log('Ok');
- *         },
- *         error: function() {
- *             console.log('Error');
- *         }
- *     });
- *
- * Example #8 (Ajax POST request with successHTML and success callbacks)
- * --------------------------------------------------------------
- *
- *     tiramisu.ajax({
- *        method : 'POST',
- *        parameter: {
- *             param_1 : 'variable 1',
- *             param_2 : 'variable 2'
- *         },
- *        success: function(){ ... },
- *        successHTML: 'responseWrapper',
- *        url : 'http://www.example.com');
- *    });
- *
- * Example #9 (Ajax set content_type, connection, data_type)
- * --------------------------------------------------------------
- *
- *     tiramisu.ajax({
- *        content_type : '',
- *        connection: '',
- *        data_type: '',
- *        successHTML: 'responseWrapper',
- *        url : 'http://www.example.com');
- *    });
- *
- * Example #10 (Ajax with start_load and end_load)
- * --------------------------------------------------------------
- *
- *     tiramisu.ajax({
- *        start_load: function() {
- *
- *        },
- *        end_load: function() {
- *
- *        },
- *        successHTML: 'responseWrapper',
- *        url : 'http://www.example.com');
- *    });
- *
- * Example #11 (Ajax with time stop)
- * --------------------------------------------------------------
- *
- *     tiramisu.ajax({
- *        stop : 2000,
- *        successHTML: 'responseWrapper',
- *        url : 'http://www.example.com');
- *    });
- *
- * Example #12 (If there is new request then to abort the past requests.)
- * --------------------------------------------------------------
- *
- *     tiramisu.ajax({
- *        abort : true,
- *        successHTML: 'responseWrapper',
- *        url : 'http://www.example.com');
- *    });
- *
- * Error
- * -----
- * - #1 : Object Ajax Error!;
- *
- * @param {Object} settings An object containing the Ajax call parameters
  * @api public
  */
-tiramisu.modules.ajax = function(setting_input) {
+tiramisu.modules.json = {
 
     // Each module within Tiramisu can to need inherit other modules.
     // The number of cups of coffee is identified for each module.
-    var ingredients = [2],
-        cups_of_coffee = 4;
+    'ingredients': [2],
+    'cups_of_coffee': 7,
 
-    var setting_input = setting_input || {},
-        setting = {
-            abort: false,
-            async: true,
-            content_type: '',
-            connection: '',
-            data_type: '',
-            error: function(res) {
-                try {
-                    console.log(res)
-                } catch (e) {}
-            },
-            start_load: function() {},
-            end_load: function() {},
-            loader: null,
-            method: 'GET',
-            parameter: '',
-            success: function() {},
-            successHTML: '',
-            stop: '',
-            url: ''
-        },
-        xhr = null,
-        parameter = '',
-        // Is very important that parameter dafualt value is ''
-        parameter_count = 0,
-        url_cache = '',
-        get_params = '';
-
-    if (setting.abort) {
-        if (xhr && xhr.readyState != 0 && xhr.readyState != 4) {
-            xhr.abort()
-        }
-    }
-
-    try {
-        xhr = new ActiveXObject("Msxml2.XMLHTTP")
-    } catch (err) {
+    decode: function(my_json_text, reviver) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
         try {
-            xhr = new ActiveXObject("Microsoft.XMLHTTP")
-        } catch (error) {
-            xhr = null
+            return JSON.parse(my_json_text, reviver);
+        } catch (e) {
+            // Input is not a valid JSON, you can check it on http://jsonlint.com/
+            return '';
         }
-    }
-    if (!xhr && typeof XMLHttpRequest != "undefined") {
-        xhr = new XMLHttpRequest
-    }
 
-    // extend object
-    for (var prop in setting_input) {
-        setting[prop] = setting_input[prop];
-    }
+    },
 
-    // object "setting.parameter" I create a string with the parameters 
-    // to be passed in request
-    if (setting.parameter != '') {
-        for (attrname in setting.parameter) {
-            parameter += attrname + '=' + setting.parameter[attrname] + '&';
+    encode: function(json_object, replacer) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.stringify(json_object, replacer);
+        } catch (e) {
+            // Input is not a valid JSON Object, you can check it on http://jsonlint.com/
+            return '';
         }
-        parameter = parameter.substring(0, parameter.length - 1);
-        if (setting.method === 'POST') {
-            if (!setting.content_type) {
-                setting.content_type = 'application/x-www-form-urlencoded';
-            }
-        } else {
-            get_params = '?' + parameter;
-        }
-    } else {
-        parameter = null;
+
     }
-
-    if (t.detect('isIE') && setting.method === 'POST') {
-        // Easy Solution for Internet Explorer
-        url_cache = '?' + (('' + Math.random()).replace(/\D/g, ''));
-    }
-
-    xhr.onreadystatechange = function() {
-        var state = xhr.readyState;
-        if (state == 4 && xhr.responseText) {
-            // success!
-            if (setting.successHTML) {
-                if (typeof(setting.successHTML) === 'string') {
-                    t.d.getElementById(setting.successHTML).innerHTML = xhr.responseText;
-                } else if (typeof(setting.successHTML) === 'object') {
-                    if (typeof(setting.successHTML.html) === 'function') {
-                        setting.successHTML.html(xhr.responseText);
-                    } else {
-                        setting.successHTML.innerHTML = xhr.responseText;
-                    }
-                }
-            }
-            setting.end_load();
-            setting.success(xhr.responseText);
-        } else if (state == 4 && xhr.status == 400) {
-            // 400 Bad Request
-            setting.end_load();
-            setting.error('400 Bad Request');
-        } else if (state == 4 && xhr.status != 200) {
-            // fetched the wrong page or network error...
-            setting.end_load();
-            setting.error('Fetched the wrong page or network error');
-        } else {
-            if (setting.successHTML && setting.loader) {
-                if (typeof(setting.successHTML) === 'string') {
-                    t.d.getElementById(setting.successHTML).innerHTML = setting.loader;
-                } else if (typeof(setting.successHTML) === 'object') {
-                    if (typeof(setting.successHTML.html) === 'function') {
-                        setting.successHTML.html(setting.loader);
-                    } else {
-                        setting.successHTML.innerHTML = setting.loader;
-                    }
-                }
-            }
-        }
-    };
-
-
-    xhr.open(setting.method, setting.url + get_params + url_cache, setting.async);
-
-    if (setting.content_type) {
-        xhr.setRequestHeader('Content-type', setting.content_type);
-    }
-    if (setting.connection) {
-        xhr.setRequestHeader('Connection', setting.connection);
-    }
-    if (setting.data_type) {
-        xhr.setRequestHeader('dataType', setting.data_type);
-    }
-
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Set a request
-    // Set start load
-    setting.start_load();
-
-    if (setting.stop) {
-        t.task(setting.stop, function() {
-            xhr.abort();
-        })
-    }
-
-    xhr.send(parameter);
-    return this;
 };
 /**
  * Framework Selector Module
@@ -1431,11 +1184,13 @@ tiramisu.modules.get = function(selector) {
         var key;
 
         for (key in methods) {
-            // returns an empty function if selector result is empty 
+            // returns an empty string inside a function if selector result is empty 
             if (len_result) {
                 results[key] = methods[key];
             } else {
-                results[key] = function() {};
+                results[key] = function() {
+                    return '';
+                };
             }
         }
 
@@ -1447,7 +1202,9 @@ tiramisu.modules.get = function(selector) {
                     if (len_result) {
                         results[method] = tiramisu.modules.get.methods[key][method];
                     } else {
-                        results[method] = function() {};
+                        results[method] = function() {
+                            return '';
+                        };
                     }
                 }
             }

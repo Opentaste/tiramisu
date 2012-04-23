@@ -47,7 +47,72 @@
          return t.get(t.d.createElement(element));
      }
 
-})(window);/**
+})(window);/** 
+ * Framework Json Module
+ * =====================
+ *
+ * This module is mainly used to
+ *
+ * Usage
+ * -----
+ *
+ *     tiramisu.json(my_json_text, reviver);
+ *
+ * .....
+ *
+ *
+ * Example #1 (...)
+ * -----------------------------
+ *
+ *     var json_object = tiramisu.json.parse(' ... ');
+ *
+ *
+ * Example #2 (...)
+ * -----------------------------
+ *
+ *     t.json.parse('{ "age" : {"today": 24 }, "name" : "leo" }', function (key, value) {
+ *         if (value && typeof value === 'object') {
+ *             return value;
+ *         }
+ *         var text = value + "_tiramisu";
+ *         return text;
+ *     })
+ *
+ *
+ * @api public
+ */
+tiramisu.modules.json = {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    'ingredients': [2],
+    'cups_of_coffee': 7,
+
+    decode: function(my_json_text, reviver) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.parse(my_json_text, reviver);
+        } catch (e) {
+            // Input is not a valid JSON, you can check it on http://jsonlint.com/
+            return '';
+        }
+
+    },
+
+    encode: function(json_object, replacer) {
+        // JSON in JavaScript
+        // by http://www.json.org/js.html
+        try {
+            return JSON.stringify(json_object, replacer);
+        } catch (e) {
+            // Input is not a valid JSON Object, you can check it on http://jsonlint.com/
+            return '';
+        }
+
+    }
+};
+/**
  * Framework Selector Module
  * =========================
  *
@@ -1155,91 +1220,6 @@ tiramisu.modules.get = function(selector) {
 
 // Allocate methods object
 tiramisu.modules.get.methods = tiramisu.modules.get.methods || {};
-/** 
- * Task Engine Module
- * ==================
- *
- * This module is used to perform a function at a particular amount of time
- * or perform the same function several times in that time frame.
- *
- * Usage
- * -----
- *
- *     tiramisu.task(delay, [interval], callback);
- *
- * where “interval” is an optional argument
- *
- *
- * Example #1 (The callback is executed after 2000 ms)
- * -----------------------------
- *
- *     tiramisu.task(2000, callback)
- *
- *
- * Example #2 (The callback is executed every 100 ms in a period of 2000ms)
- * -----------------------------------------------------
- *
- *     tiramisu.task(2000, 100, callback)
- *
- *
- * Example #3 (The callback is executed every 500 ms in loop.)
- * -----------------------------------------------------
- *
- *     tiramisu.task('loop', 500, callback)
- *
- *
- * @param {integer} delay The total task delay(ms)
- * @param {integer} [interval] The interval of the repetitions(ms)
- * @param {Function} cb The callback function
- */
-// *requestAnimFrame* (used for handling tasks), thx @paul_irish for this idea
-tiramisu.modules.requestAnimFrame = (function() {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-    function(callback) {
-        window.setTimeout(callback, 1000 / 60);
-    };
-})();
-tiramisu.modules.task = function(delay, cb) {
-
-    // Each module within Tiramisu can to need inherit other modules.
-    // The number of cups of coffee is identified for each module.
-    var ingredients = [],
-        cups_of_coffee = 6;
-
-    var interval, requestAnimFrame = t.requestAnimFrame;
-
-    if (arguments.length > 2) {
-        interval = arguments[1];
-        cb = arguments[2];
-    }
-
-    var start = +new Date(),
-        pass = interval;
-
-    function animate() {
-        var progress = +new Date() - start;
-
-        if (interval !== undefined) {
-            if (progress > pass) {
-                pass += interval;
-                cb();
-            }
-        }
-
-        // The recursion continues only in two cases:
-        // - The elapsed time is less than the total time;
-        // - The total time is infinite (so a loop) but there 
-        //   is an interval of time between repetitions of the callback.
-        if (progress < delay || (delay == 'loop' && interval !== undefined)) {
-            requestAnimFrame(animate);
-        } else {
-            if (interval === undefined) {
-                cb();
-            }
-        }
-    }
-    animate();
-};
 /**
  * DOM Selector methods
  * ====================
@@ -1759,3 +1739,192 @@ tiramisu.modules.detect = function(key) {
     };
     return tests[key]();
 };
+/**
+ * Event Selector methods
+ * ======================
+ *
+ * Several methods for Events tasks:
+ *
+ * *  *On/Off*
+ *
+ */
+// Keep in memory the events created
+tiramisu.modules.local_event = {};
+tiramisu.modules.get.methods.event = {
+
+    // Each module within Tiramisu can to need inherit other modules.
+    // The number of cups of coffee is identified for each module.
+    'ingredients': [1],
+    'cups_of_coffee': 5,
+
+    /**
+     * Event handler extension
+     * -----------------------
+     *
+     * Attach a callback function to an event.
+     *
+     * Usage
+     * -----
+     *
+     *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
+     *
+     * where *SELECTOR* is a valid CSS selector, *EVENT* is
+     * the event listener and *CALLBACK* the function to attach.
+     *
+     * Example #1 (Clicking on a p element displays “Hello!”)
+     * ------------------------------------------------------
+     *
+     *     <p> Click me! </p>
+     *     <p> Click me too! </p>
+     *     <p> And me? </p>
+     *     ...
+     *     tiramisu.get('p').on('click', function() {
+     *         alert('Hello!');
+     *     });
+     *
+     * Example #2 (Hovering on a li element displays his innerHTML)
+     * ------------------------------------------------------------
+     *
+     *      <ol>
+     *        <li> Banana </li>
+     *        <li> Apple </li>
+     *        <li> Pineapple </li>
+     *        <li> Strawberry </li>
+     *      </ol>
+     *      ...
+     *      tiramisu.get('ul li').on('mouseover', function() {
+     *          alert(this.innerHTML);
+     *      });
+     *
+     *  As in the “each” example, it is possible to use **this** to
+     *  reference the current list item.
+     *
+     * Example #3 (Defining a window.onload callback)
+     * ----------------------------------------------
+     *
+     *     tiramisu.get(window).on('load', function() {
+     *         alert('This will be executed after the DOM loading");
+     *     });
+     *
+     * Example #4 (Alert message when pressing the “m” key)
+     * ----------------------------------------------------
+     *
+     *     tiramisu.get(document).on('keydown', function(evt) {
+     *         if (evt.keyCode == 77) {
+     *             alert("M as Marvelous!");
+     *         }
+     *     });
+     *
+     * Example #5 ()
+     * ----------------------------------------------------
+     *
+     *     tiramisu.get('p').on('keydown', 'click', function(evt) {
+     *         alert('This will be executed after click or keydown on 'p' element");
+     *     });
+     *
+     * @param {event} evt An event listener
+     * @param {function} cb The callback function to attach
+     */
+    'on': function(evt, cb) {
+        if (arguments.length > 2) {
+            return '';
+        }
+        var evt_len = 1,
+            ev = [],
+            callback = [];
+        if (typeof(evt) === 'string') {
+            ev[0] = evt;
+            callback[0] = cb;
+        } else if (typeof(evt) === 'object') {
+            if (typeof(evt[0]) === 'string') {
+                ev = evt;
+                callback[0] = cb;
+            } else {
+                for (key in evt) {
+                    evt_len = ev.push(key);
+                    callback.push(evt[key]);
+                }
+            }
+        }
+        // if this[0] === undefined : *SELECTOR* is not a valid CSS selector or not exist;
+        for (var j = evt_len; j--;) {
+            var cb = callback[j];
+            for (i = this.length; i--;) {
+                add_handler(this[i], ev[j], cb);
+            }
+            if (typeof selector === 'string') {
+                t.local_event[selector] = {};
+                t.local_event[selector] = {
+                    'cb': cb,
+                    'element': this
+                };
+            }
+        }
+        return this;
+    },
+    /**
+     * Remove Event handler extension
+     * -----------------------
+     *
+     */
+    'off': function(evt) {
+        if (arguments.length > 1) {
+            return '';
+        }
+        if (typeof selector === 'string') {
+            if (t.local_event[selector] !== undefined) {
+                var cb = t.local_event[selector]['cb'],
+                    element = t.local_event[selector]['element'],
+                    len = element.length;
+                for (i = len; i--;) {
+                    remove_handler(tiramisu.get.results[i], evt, cb);
+                }
+                delete t.local_event[selector];
+            }
+        }
+
+        return this;
+    },
+}
+
+// The good way to eliminate a work repetition in functions is through lazy loading.
+// Lazy loading means that no work is done until the information is necessary.
+// Here I implement a lazy-loading pattern. The first time either method is
+// called, a check is made to determine the appropriate way to attach or detach the
+// event handler. Then the original function is overwrittern with a new function that
+// contains just the appropriate course of action.
+// By High Performance JavaScript, Nicholas C. Zakas
+var add_handler = function(target, event_type, handler) {
+
+        // overwrite te existing function
+        if (target.addEventListener) { // DOM 2 Events
+            add_handler = function(target, event_type, handler) {
+                target.addEventListener(event_type, handler, false);
+            }
+        } else { // IE
+            add_handler = function(target, event_type, handler) {
+                target.attachEvent('on' + event_type, handler);
+            }
+        }
+
+        // call the new functions
+        add_handler(target, event_type, handler);
+    }
+
+    // And brother function, remove_handler
+var remove_handler = function(target, event_type, handler) {
+
+        // overwrite te existing function
+        if (target.removeEventListener) { // DOM 2 Events
+            remove_handler = function(target, event_type, handler) {
+                target.removeEventListener(event_type, handler, false);
+            }
+        } else { // IE
+            remove_handler = function(target, event_type, handler) {
+                target.detachEvent('on' + event_type, handler);
+            }
+        }
+
+        // call the new functions
+        remove_handler(target, event_type, handler);
+    }
