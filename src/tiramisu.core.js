@@ -19,7 +19,7 @@
      */
     function Tiramisu() {
         
-        this.version = '0.2.2';
+        this.version = '0.2.2-b1';
         this.d = document;
         this.modules = Tiramisu.prototype;
                 
@@ -30,12 +30,14 @@
 
 
      // Cancels the event if it is cancelable, without stopping further propagation of the event.
-     Event.prototype.preventDefault = function() {
-        if (e.preventDefault) {
-            e.preventDefault();
-        } else { // IE
-            e.returnValue = false;
-        }
+     Event.prototype.preventDefault = function(e) {
+         if (e) {
+             if (e.preventDefault) {
+                 e.preventDefault();
+             } else { // IE
+                 e.returnValue = false;
+             }
+         }
      }
 
      /**
