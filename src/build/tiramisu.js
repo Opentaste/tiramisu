@@ -20,7 +20,7 @@
 
     function Tiramisu() {
 
-        this.version = '0.2.2-b1';
+        this.version = '0.2.2-b2';
         this.d = document;
         this.modules = Tiramisu.prototype;
 
@@ -30,15 +30,18 @@
     window.tiramisu = window.t = new Tiramisu();
 
 
-    // Cancels the event if it is cancelable, without stopping further propagation of the event.
-    Event.prototype.preventDefault = function(e) {
+    // Cancels the event if it is cancelable, 
+    // without stopping further propagation of the event.
+    tiramisu.modules.preventDefault = function(e) {
         if (e) {
-            if (e.preventDefault) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else if (e.preventDefault) {
                 e.preventDefault();
-            } else { // IE
-                e.returnValue = false;
             }
+            e.cancelBubble = true;
         }
+        return false;
     }
 
     /**
