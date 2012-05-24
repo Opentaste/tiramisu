@@ -205,7 +205,6 @@ tiramisu.modules.ajax = function(setting_input) {
             stop: '',
             url: ''
         },
-        xhr = null,
         parameter = '',
         // Is very important that parameter dafualt value is ''
         parameter_count = 0,
