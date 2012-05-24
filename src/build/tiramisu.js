@@ -20,7 +20,7 @@
 
     function Tiramisu() {
 
-        this.version = '0.2.2-b2';
+        this.version = '0.2.3';
         this.d = document;
         this.modules = Tiramisu.prototype;
 
@@ -1489,7 +1489,7 @@ var remove_handler = function(target, event_type, handler) {
          * @param {html} The element to insert
          */
         'before': function(html) {
-            insert_content(html, true, false)
+            insert_content(this, html, true, false)
             return this;
         },
         /**
@@ -1527,7 +1527,7 @@ var remove_handler = function(target, event_type, handler) {
          * @param {html} The element to insert
          */
         'after': function(html) {
-            insert_content(html, false, false);
+            insert_content(this, html, false, false);
             return this;
         },
         /**
@@ -1593,7 +1593,7 @@ var remove_handler = function(target, event_type, handler) {
          * @param {html} The element to append
          */
         'append': function(html) {
-            insert_content(html, false, true);
+            insert_content(this, html, false, true);
             return this;
         },
         /**
@@ -1659,7 +1659,7 @@ var remove_handler = function(target, event_type, handler) {
          * @param {html} The element to prepend
          */
         'prepend': function(html) {
-            insert_content(html, true, true);
+            insert_content(this, html, true, true);
             return this;
         },
         /**
@@ -1786,9 +1786,9 @@ var remove_handler = function(target, event_type, handler) {
 
 // DOM Node insertion generic utility
 
-function insert_content(html, before, append) {
+function insert_content(self, html, before, append) {
     // Aliasing results
-    var results = tiramisu.get.results,
+    var results = self,
         len_result = results.length;
 
     var i, j, parent, elements = [];

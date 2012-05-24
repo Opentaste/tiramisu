@@ -51,7 +51,7 @@ tiramisu.modules.get.methods.dom = {
      * @param {html} The element to insert
      */
     'before': function(html) {
-        insert_content(html, true, false)
+        insert_content(this, html, true, false)
         return this;
     },
     /**
@@ -89,7 +89,7 @@ tiramisu.modules.get.methods.dom = {
      * @param {html} The element to insert
      */
     'after': function(html) {
-        insert_content(html, false, false);
+        insert_content(this, html, false, false);
         return this;
     },
     /**
@@ -155,7 +155,7 @@ tiramisu.modules.get.methods.dom = {
      * @param {html} The element to append
      */
     'append': function(html) {
-        insert_content(html, false, true);
+        insert_content(this, html, false, true);
         return this;
     },
     /**
@@ -221,7 +221,7 @@ tiramisu.modules.get.methods.dom = {
      * @param {html} The element to prepend
      */
     'prepend': function(html) {
-        insert_content(html, true, true);
+        insert_content(this, html, true, true);
         return this;
     },
     /**
@@ -348,9 +348,9 @@ tiramisu.modules.get.methods.dom = {
 
 // DOM Node insertion generic utility
 
-function insert_content(html, before, append) {
+function insert_content(self, html, before, append) {
     // Aliasing results
-    var results = tiramisu.get.results,
+    var results = self,
         len_result = results.length;
 
     var i, j, parent, elements = [];
