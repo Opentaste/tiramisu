@@ -159,12 +159,29 @@
  * @param {Object} settings An object containing the Ajax call parameters
  * @api public
  */
+tiramisu.modules.xhr = function() {
+    try {
+        return new XMLHttpRequest
+    } catch (err) {
+        try {
+            return new ActiveXObject("Msxml2.XMLHTTP")
+        } catch (err) {
+            try {
+                return new ActiveXObject("Microsoft.XMLHTTP")
+            } catch (err) {
+                return null
+            }
+        }
+    }
+}
 tiramisu.modules.ajax = function(setting_input) {
 
     // Each module within Tiramisu can to need inherit other modules.
     // The number of cups of coffee is identified for each module.
     var ingredients = [2, 7],
         cups_of_coffee = 4;
+
+    var xhr = tiramisu.modules.xhr();
 
     var setting_input = setting_input || {},
         setting = {
@@ -201,19 +218,6 @@ tiramisu.modules.ajax = function(setting_input) {
         if (xhr && xhr.readyState != 0 && xhr.readyState != 4) {
             xhr.abort()
         }
-    }
-
-    try {
-        xhr = new ActiveXObject("Msxml2.XMLHTTP")
-    } catch (err) {
-        try {
-            xhr = new ActiveXObject("Microsoft.XMLHTTP")
-        } catch (error) {
-            xhr = null
-        }
-    }
-    if (!xhr && typeof XMLHttpRequest != "undefined") {
-        xhr = new XMLHttpRequest
     }
 
     // extend object
