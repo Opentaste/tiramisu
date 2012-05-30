@@ -19,25 +19,30 @@
      */
     function Tiramisu() {
         
-        this.version = '0.2.1';
+        this.version = '0.2.5';
         this.d = document;
         this.modules = Tiramisu.prototype;
                 
      }
-
+     
      // Exposing the framework
      window.tiramisu = window.t = new Tiramisu();
-
-
-     // Cancels the event if it is cancelable, without stopping further propagation of the event.
-     Event.prototype.preventDefault = function() {
-        if (e.preventDefault) {
-            e.preventDefault();
-        } else { // IE
-            e.returnValue = false;
-        }
+     
+     
+     // Cancels the event if it is cancelable, 
+     // without stopping further propagation of the event.
+     tiramisu.modules.preventDefault = function(e) {
+         if (e) {
+             if ( e.stopPropagation ) {
+                 e.stopPropagation();
+             } else if (e.preventDefault) {
+                 e.preventDefault();
+             }
+             e.cancelBubble = true;
+         }
+         return false;
      }
-
+     
      /**
       * Make Module
       * =========================
@@ -48,13 +53,9 @@
      }
 
 })(window);/**
- * Framework Selector Module
- * =========================
+ * # Framework Selector Module
  *
  * A CSS Parser for handling DOM elements.
- *
- * Usage
- * -----
  *
  *     tiramisu.get(*SELECTOR*)
  *
@@ -62,14 +63,12 @@
  *
  *     t.get(*SELECTOR*)
  *
- * where *SELECTOR* is a *valid* CSS selector or, alternatively, an object
- * (see examples below).
+ * where *SELECTOR* is a *valid* CSS selector or, alternatively, an object (see examples below).
  *
- * Tiramisu will use *querySelectorAll* if the current browser implements it;
- * if not present **Tiramisu** fallback to a custom, simple CSS selector.
+ * Tiramisu will use *querySelectorAll* if the current browser implements it; if not present **Tiramisu**
+ * fallback to a custom, simple CSS selector.
  *
- * This simple selector implementation is *cross-browser* and actually implements
- * the following CSS rules:
+ * This simple selector implementation is *cross-browser* and actually implements the following CSS rules:
  *
  * -  *id and name*;
  * -  *id*;
@@ -77,11 +76,10 @@
  * -  *name and class*;
  * -  *element*;
  *
- * Note that this implementation is not fast as *querySelectorAll* since it relies
- * on pure (*not optimized*) JavaScript.
+ * Note that this implementation is not fast as *querySelectorAll* since it relies on pure
+ * (*not optimized*) JavaScript.
  *
  * Example #1 (Select all li elements)
- * --------------------------------
  *
  *     <ul id="myList">
  *       <li> First. </li>
@@ -92,7 +90,6 @@
  *     var li = tiramisu.get('#myList li');
  *
  * Example #2 (Select all li with class “special”)
- * --------------------------------------------
  *
  *     <ul id="myList">
  *       <li> First. </li>
@@ -105,9 +102,153 @@
  *     // Better way to do it :)
  *     var li_special2 = tiramisu.get('#myList li.special');
  *
- * @param {String} selector A CSS Selector
- * @returns {Object} The node list
- * @api public
+ * param {String} selector A CSS Selector
+ * returns {Object} The node list
+ *
+ *
+ * ## Each iterator extension
+ *
+ * Applies a callback function to a list of DOM nodes.
+ *
+ *     tiramisu.get(*SELECTOR*).each(*CALLBACK*)
+ *
+ * Where *SELECTOR* is a valid CSS selector and *CALLBACK* a function object.
+ *
+ * It is common to retrieve a list of DOM nodes and then apply the *same* function to all of it's element:
+ *
+ * Example #1 (alert the innerHTML of every element in a list)
+ *
+ *     </ul>
+ *     ...
+ *     tiramisu.get('ul li').each(function() {
+ *         alert(this.innerHTML);
+ *     });
+ *
+ * As you can see, **this** is used for referencing the current iteration item.
+ *
+ * param {function} cb The callback function to apply
+ *
+ *
+ * ## CSS handler extension
+ *
+ * Alter the CSS properties of a list of DOM nodes.
+ *
+ *     tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)
+ *
+ * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES* is an object containing the CSS
+ * properties to set.
+ *
+ * Example #1 (Set all h1 tags to 34px with color red)
+ *
+ *     <h1> This is one headline. </h1>
+ *     <h1> This is another headline. </h1>
+ *     ...
+ *     tiramisu.get('h1').css({
+ *         'font-size': '12px',
+ *         'color': 'red'
+ *     });
+ *
+ * Example #2 (Get attribute out of style)
+ *
+ *     <h1 id="my_id" style="color:red"> This is one headline. </h1>
+ *     ...
+ *     tiramisu.get('#my_id').css("color")
+ *
+ * param {Object} obj An object containing CSS properties
+ *
+ *
+ * ## HTML extension method
+ *
+ * Gets or sets the HTML Markup of the first CSS selector element.
+ *
+ *     tiramisu.get(*SELECTOR*).html([*HTML*])
+ *
+ * where *SELECTOR* is a valid CSS selector and *[HTML]* is an optional value to set the
+ * element's innerHTML value.
+ *
+ * Example #1 (Getting the HTML value of a div)
+ *
+ *     <div id="header">
+ *       <p> I love pizza! </p>
+ *     </div>
+ *     ...
+ *     var pizza = tiramisu.get('#header').html()
+ *
+ * Example #2 (Setting the HTML value of a div)
+ *
+ *     <div id="header">
+ *       <p> I love pizza! </p>
+ *     </div>
+ *     ...
+ *     tiramisu.get('#header').html('<p> i hate cakes! </p>');
+ *
+ * param {String} [set] An optional string containing the HTML to replace
+ * return {[String]} An optional string containing the selector's first element HTML value
+ *
+ *
+ * ## Form field value extension method
+ *
+ * Gets or sets the value of a form field of the first CSS Selector element.
+ *
+ *     tiramisu.get(*SELECTOR*).value([*VALUE*])
+ *
+ * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an optional value to set the
+ * element's innerHTML value.
+ *
+ * Example #1 (Get the current value of a select list)
+ *
+ *     <form id="myForm" action='#' method="GET">
+ *       <select>
+ *         <option> Apple </option>
+ *         <option> Strawberry </option>
+ *         <option> Banana </option>
+ *       </select>
+ *     </form>
+ *     ...
+ *     // The default selected value is “Apple”
+ *     var current = t.get('myForm select').value();
+ *
+ * Example #2 (Set the current value of a select list)
+ *
+ *     <form id="myForm" action='#' method="GET">
+ *       <select>
+ *         <option> Apple </option>
+ *         <option> Strawberry </option>
+ *         <option> Banana </option>
+ *       </select>
+ *     </form>
+ *     ...
+ *     t.get('myForm select').value('Strawberry');
+ *
+ *     // Now the selected value is “Strawberry”
+ *     var current = t.get('myForm select').value();
+ *
+ * Example #3 (Get the current values of a series of elements)
+ *
+ *     <input type="hidden" name="name_one" value="one" class="i_am_class">
+ *     <input type="hidden" name="name_two" value="two" class="i_am_class">
+ *     <input type="hidden" name="name_three" value="three" class="i_am_class">
+ *     <input type="hidden" name="name_four" value="four" class="i_am_class">
+ *     ...
+ *     t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']
+ *
+ *
+ * param {String} [set] An optional string containing the field value to set
+ * return {[String]} An optional string containing the selector's first element field value
+ *
+ *
+ * ## Focus extension method
+ *
+ * Set focus on elements
+ *
+ *     tiramisu.get(*SELECTOR*).focus()
+ *
+ * where *SELECTOR* is a valid CSS selector
+ *
+ * Example #1 (Set focus on elements)
+ *
+ *     tiramisu.get(*SELECTOR*).focus()
+ *
  *
  */
 tiramisu.modules.list_def = [];
@@ -461,41 +602,7 @@ tiramisu.modules.get = function(selector) {
 
     // Exposing basic methods
     var methods = {
-        /**
-         * Each iterator extension
-         * -----------------------
-         *
-         * Applies a callback function to a list of DOM nodes.
-         *
-         * Usage
-         * -----
-         *
-         *     tiramisu.get(*SELECTOR*).each(*CALLBACK*)
-         *
-         * Where *SELECTOR* is a valid CSS selector and *CALLBACK* a
-         * function object.
-         *
-         * It is common to retrieve a list of DOM nodes and then apply the
-         * *same* function to all of it's element:
-         *
-         * Example #1 (alert the innerHTML of every element in a list)
-         * -----------------------------------------------------------
-         *
-         *     <ul>
-         *       <li> One. </li>
-         *       <li> Two. </li>
-         *       <li> Three. </li>
-         *     </ul>
-         *     ...
-         *     tiramisu.get('ul li').each(function() {
-         *         alert(this.innerHTML);
-         *     });
-         *
-         * As you can see, **this** is used for referencing the current
-         * iteration item.
-         *
-         * @param {function} cb The callback function to apply
-         */
+
         'each': function(cb) {
             var i;
             for (i = 0; i < results.length; i++) {
@@ -503,40 +610,7 @@ tiramisu.modules.get = function(selector) {
             }
             return this;
         },
-        /**
-         * CSS handler extension
-         * ---------------------
-         *
-         * Alter the CSS properties of a list of DOM nodes.
-         *
-         * Usage
-         * -----
-         *
-         *     tiramisu.get(*SELECTOR*).css(*CSS_PROPERTIES*)
-         *
-         * where *SELECTOR* is a valid CSS selector and *CSS_PROPERTIES*
-         * is an object containing the CSS properties to set.
-         *
-         * Example #1 (Set all h1 tags to 34px with color red)
-         * ---------------------------------------------------
-         *
-         *     <h1> This is one headline. </h1>
-         *     <h1> This is another headline. </h1>
-         *     ...
-         *     tiramisu.get('h1').css({
-         *         'font-size': '12px',
-         *         'color': 'red'
-         *     });
-         *
-         * Example #2 (Get attribute out of style)
-         * ---------------------------------------------------
-         *
-         *     <h1 id="my_id" style="color:red"> This is one headline. </h1>
-         *     ...
-         *     tiramisu.get('#my_id').css("color")
-         *
-         *  @param {Object} obj An object containing CSS properties
-         */
+
         'css': function(obj) {
             var i, key, browser = t.detect('browser'),
                 ie_older = t.detect('isIEolder'),
@@ -604,41 +678,7 @@ tiramisu.modules.get = function(selector) {
             }
             return this;
         },
-        /**
-         * HTML extension method
-         * ---------------------
-         *
-         * Gets or sets the HTML Markup of the first CSS
-         * selector element.
-         *
-         * Usage
-         * -----
-         *
-         *     tiramisu.get(*SELECTOR*).html([*HTML*])
-         *
-         * where *SELECTOR* is a valid CSS selector and *[HTML]* is an
-         * optional value to set the element's innerHTML value.
-         *
-         * Example #1 (Getting the HTML value of a div)
-         * --------------------------------------------
-         *
-         *     <div id="header">
-         *       <p> I love pizza! </p>
-         *     </div>
-         *     ...
-         *     var pizza = tiramisu.get('#header').html()
-         *
-         * Example #2 (Setting the HTML value of a div)
-         *
-         *     <div id="header">
-         *       <p> I love pizza! </p>
-         *     </div>
-         *     ...
-         *     tiramisu.get('#header').html('<p> i hate cakes! </p>');
-         *
-         * @param {String} [set] An optional string containing the HTML to replace
-         * @return {[String]} An optional string containing the selector's first element HTML value
-         */
+
         'html': function(set) {
             if (set !== undefined) {
                 results[0].innerHTML = set;
@@ -647,66 +687,7 @@ tiramisu.modules.get = function(selector) {
             }
             return this;
         },
-        /**
-         * Form field value extension method
-         * ---------------------------------
-         *
-         * Gets or sets the value of a form field of the first CSS Selector
-         * element.
-         *
-         * Usage
-         * -----
-         *
-         *     tiramisu.get(*SELECTOR*).value([*VALUE*])
-         *
-         * where *SELECTOR* is a valid CSS selector and *[VALUE]* is an
-         * optional value to set the element's innerHTML value.
-         *
-         * Example #1 (Get the current value of a select list)
-         * ---------------------------------------------------
-         *
-         *     <form id="myForm" action='#' method="GET">
-         *       <select>
-         *         <option> Apple </option>
-         *         <option> Strawberry </option>
-         *         <option> Banana </option>
-         *       </select>
-         *     </form>
-         *     ...
-         *     // The default selected value is “Apple”
-         *     var current = t.get('myForm select').value();
-         *
-         * Example #2 (Set the current value of a select list)
-         * ---------------------------------------------------
-         *
-         *     <form id="myForm" action='#' method="GET">
-         *       <select>
-         *         <option> Apple </option>
-         *         <option> Strawberry </option>
-         *         <option> Banana </option>
-         *       </select>
-         *     </form>
-         *     ...
-         *     t.get('myForm select').value('Strawberry');
-         *
-         *     // Now the selected value is “Strawberry”
-         *     var current = t.get('myForm select').value();
-         *
-         * Example #3 (Get the current values of a series of elements)
-         * ---------------------------------------------------
-         *
-         *     <input type="hidden" name="name_one" value="one" class="i_am_class">
-         *     <input type="hidden" name="name_two" value="two" class="i_am_class">
-         *     <input type="hidden" name="name_three" value="three" class="i_am_class">
-         *     <input type="hidden" name="name_four" value="four" class="i_am_class">
-         *     ...
-         *     t.get('.i_am_class').value(); // ['one', 'two', 'three', 'four']
-         *
-         *
-         * @param {String} [set] An optional string containing the field value to set
-         * @return {[String]} An optional string containing the selector's first element field value
-         *
-         */
+
         'value': function(set) {
             var value = function(i) {
                     if (t.detect('isIE') || t.detect('isIEolder')) {
@@ -746,26 +727,7 @@ tiramisu.modules.get = function(selector) {
                 return value(0);
             }
         },
-        /**
-         * Focus extension method
-         * ---------------------------------
-         *
-         * Set focus on elements
-         *
-         * Usage
-         * -----
-         *
-         *     tiramisu.get(*SELECTOR*).focus()
-         *
-         * where *SELECTOR* is a valid CSS selector
-         *
-         * Example #1 (Set focus on elements)
-         * ---------------------------------------------------
-         *
-         *     tiramisu.get(*SELECTOR*).focus()
-         *
-         *
-         */
+
         'focus': function() {
             for (var i = len_result; i--;) {
                 results[i].focus();
@@ -1159,11 +1121,8 @@ tiramisu.modules.get.methods = tiramisu.modules.get.methods || {};
  * Task Engine Module
  * ==================
  *
- * This module is used to perform a function at a particular amount of time
- * or perform the same function several times in that time frame.
- *
- * Usage
- * -----
+ * This module is used to perform a function at a particular amount of time or perform the same
+ * function several times in that time frame.
  *
  *     tiramisu.task(delay, [interval], callback);
  *
@@ -1171,26 +1130,23 @@ tiramisu.modules.get.methods = tiramisu.modules.get.methods || {};
  *
  *
  * Example #1 (The callback is executed after 2000 ms)
- * -----------------------------
  *
  *     tiramisu.task(2000, callback)
  *
  *
  * Example #2 (The callback is executed every 100 ms in a period of 2000ms)
- * -----------------------------------------------------
  *
  *     tiramisu.task(2000, 100, callback)
  *
  *
  * Example #3 (The callback is executed every 500 ms in loop.)
- * -----------------------------------------------------
  *
  *     tiramisu.task('loop', 500, callback)
  *
  *
- * @param {integer} delay The total task delay(ms)
- * @param {integer} [interval] The interval of the repetitions(ms)
- * @param {Function} cb The callback function
+ * param {integer} delay The total task delay(ms)
+ * param {integer} [interval] The interval of the repetitions(ms)
+ * param {Function} cb The callback function
  */
 // *requestAnimFrame* (used for handling tasks), thx @paul_irish for this idea
 tiramisu.modules.requestAnimFrame = (function() {
@@ -1241,14 +1197,240 @@ tiramisu.modules.task = function(delay, cb) {
     animate();
 };
 /**
- * DOM Selector methods
- * ====================
+ * # DOM Selector methods
  *
  * Several methods for DOM-related tasks:
  *
  * *  *Insert/Append*
  * *  *Insert Before/Prepend*
  * *  *Empty/Destroy*
+ *
+ *
+ * ## Insert Before method
+ *
+ * Insert text or html, before each element.
+ *
+ *     tiramisu.get(*SELECTOR*).before(*HTML*)
+ *
+ * where *SELECTOR* is a valid CSS selector, *HTML* is the element to insert.
+ *
+ * Example #1 ()
+ *
+ *     <h1>Hello Tiramisu</h1>
+ *     <div class="inner">ciao</div>
+ *     <div class="inner">mondo</div>
+ *     ...
+ *     t.get('.inner').before('<p>ciccio</p>')
+ *
+ *     produce the following result:
+ *
+ *     <h1>Hello Tiramisu</h1>
+ *     <p>ciccio</p>
+ *     <div class="inner">ciao</div>
+ *     <p>ciccio</p>
+ *     <div class="inner">mondo</div>
+ *
+ *
+ * ## Insert After method
+ *
+ * Insert text or html, after each element.
+ *
+ *     tiramisu.get(*SELECTOR*).after(*HTML*)
+ *
+ * where *SELECTOR* is a valid CSS selector and *HTML* is the element to insert.
+ *
+ * Example #1 (Inserting an element multiple times)
+ *
+ *     <h1>Hello Tiramisu</h1>
+ *     <div class="inner">ciao</div>
+ *     <div class="inner">mondo</div>
+ *     ...
+ *     t.get('.inner').after('<p>ciccio</p>')
+ *
+ *     produces the following result:
+ *
+ *     <h1>Hello Tiramisu</h1>
+ *     <div class="inner">ciao</div>
+ *     <p>ciccio</p>
+ *     <div class="inner">mondo</div>
+ *     <p>ciccio</p>
+ *
+ *
+ * ## Append method
+ *
+ * Appends a DOM element into a list of selector results.
+ *
+ *     tiramisu.get(*SELECTOR*).append(*HTML*)
+ *
+ * where *SELECTOR* is a valid CSS selector and *HTML* is a string containing some HTML
+ * (such as &lt;p>hi&lt;/p>, &lt;h1>headline&lt;/h1> etc.)
+ *
+ * Example #1 (Append a single element)
+ *
+ *     <ul>
+ *       <li>One</li>
+ *       <li>Two</li>
+ *     </ul>
+ *     ...
+ *     t.get('ul').append('<li>Three</li>');
+ *
+ *     produces the following:
+ *
+ *     <ul>
+ *       <li>One</li>
+ *       <li>Two</li>
+ *       <li>Three</li>
+ *     </ul>
+ *
+ * Example #2 (Append multiple elements)
+ *
+ *      <ul>
+ *        <li>
+ *          <p>One</p>
+ *        </li>
+ *        <li>
+ *          <p>Two</p>
+ *        </li>
+ *      </ul>
+ *      ...
+ *      t.get('ul li').append('<p>append</p>');
+ *
+ *      produces the following:
+ *
+ *      <ul>
+ *        <li>
+ *          <p>One</p>
+ *          <p>append</p>
+ *        </li>
+ *        <li>
+ *          <p>Two</p>
+ *          <p>append</p>
+ *        </li>
+ *      </ul>
+ *
+ *
+ * ## Prepend method
+ *
+ * Prepends a DOM element into a list of selector results.
+ *
+ *     tiramisu.get(*SELECTOR*).prepend(*HTML*)
+ *
+ * where *SELECTOR* is a valid CSS selector and *HTML* is a string containing some HTML
+ * (such as &lt;p>hi&lt;/p>, &lt;h1>headline&lt;/h1> etc.)
+ *
+ * Example #1 (Prepend a single element)
+ *
+ *     <ul>
+ *       <li>One</li>
+ *       <li>Two</li>
+ *     </ul>
+ *     ...
+ *     t.get('ul').prepend('<li>Three</li>');
+ *
+ *     produces the following:
+ *
+ *     <ul>
+ *       <li>Zero</li>
+ *       <li>One</li>
+ *       <li>Two</li>
+ *     </ul>
+ *
+ * Example #2 (Prepend multiple elements)
+ *
+ *      <ul>
+ *        <li>
+ *          <p>One</p>
+ *        </li>
+ *        <li>
+ *          <p>Two</p>
+ *        </li>
+ *      </ul>
+ *      ...
+ *      t.get('ul li').prepend('<p>prepend</p>');
+ *
+ *      produces the following:
+ *
+ *      <ul>
+ *        <li>
+ *          <p>prepend</p>
+ *          <p>One</p>
+ *        </li>
+ *        <li>
+ *          <p>prepend</p>
+ *          <p>Two</p>
+ *        </li>
+ *      </ul>
+ *
+ *
+ * ## Empty extension method
+ *
+ * Removes all the child elements of a specific node from the DOM.
+ *
+ *     tiramisu.get(*SELECTOR*).empty()
+ *
+ * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements).
+ *
+ * Example #1 (Remove all element of a list)
+ *
+ *     <ol id="myList">
+ *        <li>This is my <span class="tasty">icecake</span></li>
+ *        <li>I love <span class="tasty">chocolate</span> chips!</li>
+ *     </ol>
+ *
+ * calling *t.get('#myList').empty()* will give the following results:
+ *
+ *     <ol id="myList"></ol>
+ *
+ * Example #2 (Remove a specific element)
+ *
+ *     <ol id="myList">
+ *        <li>This is my <span class="tasty">icecake</span></li>
+ *        <li>I love <span class="tasty">chocolate chips!</span></li>
+ *     </ol>
+ *
+ * calling *t.get('.tasty').empty()* will give the following results:
+ *
+ *     <ol id="myList">
+ *        <li>This is my <span class="tasty"></span></li>
+ *        <li>I love <span class="tasty"></span> chips!</li>
+ *     </ol>
+ *
+ *
+ * ## Destroy extension method
+ *
+ * Removes element
+ *
+ *     tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)
+ *
+ * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
+ *
+ * Example #1 (Remove all element child)
+ *
+ *     <ol id="myList">
+ *        <li>This is my <span class="tasty">icecake</span></li>
+ *        <li>I love <span class="tasty">chocolate</span> chips!</li>
+ *     </ol>
+ *
+ * calling *t.get('#myList').destroy('.tasty')* will give the following results:
+ *
+ *     <ol id="myList">
+ *         <li>This is my </li>
+ *         <li>I love  chips!</li>
+ *     </ol>
+ *
+ * Example #2 (Remove element and child)
+ *
+ *     <ol id="myList">
+ *        <li>This is my <span class="tasty">icecake</span></li>
+ *        <li>I love <span class="tasty">chocolate chips!</span></li>
+ *     </ol>
+ *
+ * calling *t.get('#myList').destroy()* will give the following results:
+ *
+ *     <div id="myDestroyList">
+ *
+ *     </div>
+ *
  *
  */
 tiramisu.modules.get.methods.dom = {
@@ -1258,261 +1440,25 @@ tiramisu.modules.get.methods.dom = {
     'ingredients': [1],
     'cups_of_coffee': 3,
 
-    /**
-     * Insert Before method
-     * --------------------
-     *
-     * Insert text or html, before each element.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).before(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector, *HTML* is
-     * the element to insert.
-     *
-     * Example #1 ()
-     * ------------------------------------------------------
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <div class="inner">mondo</div>
-     *     ...
-     *     t.get('.inner').before('<p>ciccio</p>')
-     *
-     *     produce the following result:
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <p>ciccio</p>
-     *     <div class="inner">ciao</div>
-     *     <p>ciccio</p>
-     *     <div class="inner">mondo</div>
-     *
-     *
-     * @param {html} The element to insert
-     */
     'before': function(html) {
-        insert_content(html, true, false)
+        insert_content(this, html, true, false)
         return this;
     },
-    /**
-     * Insert After method
-     * -------------------
-     *
-     * Insert text or html, after each element.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).after(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * the element to insert.
-     *
-     * Example #1 (Inserting an element multiple times)
-     * ------------------------------------------------
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <div class="inner">mondo</div>
-     *     ...
-     *     t.get('.inner').after('<p>ciccio</p>')
-     *
-     *     produces the following result:
-     *
-     *     <h1>Hello Tiramisu</h1>
-     *     <div class="inner">ciao</div>
-     *     <p>ciccio</p>
-     *     <div class="inner">mondo</div>
-     *     <p>ciccio</p>
-     *
-     *
-     * @param {html} The element to insert
-     */
     'after': function(html) {
-        insert_content(html, false, false);
+        insert_content(this, html, false, false);
         return this;
     },
-    /**
-     * Append method
-     * -------------
-     *
-     * Appends a DOM element into a list of selector results.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).append(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * a string containing some HTML (such as "<p>hi</p>,
-     * <h1>headline</h1> etc.)
-     *
-     * Example #1 (Append a single element)
-     * ------------------------------------
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *     ...
-     *     t.get('ul').append('<li>Three</li>');
-     *
-     *     produces the following:
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *       <li>Three</li>
-     *     </ul>
-     *
-     * Example #2 (Append multiple elements)
-     * -------------------------------------
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *      ...
-     *      t.get('ul li').append('<p>append</p>');
-     *
-     *      produces the following:
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *          <p>append</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *          <p>append</p>
-     *        </li>
-     *      </ul>
-     *
-     * @param {html} The element to append
-     */
     'append': function(html) {
-        insert_content(html, false, true);
+        insert_content(this, html, false, true);
         return this;
     },
-    /**
-     * Prepend method
-     * --------------
-     *
-     * Prepends a DOM element into a list of selector results.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).prepend(*HTML*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *HTML* is
-     * a string containing some HTML (such as "<p>hi</p>,
-     * <h1>headline</h1> etc.)
-     *
-     * Example #1 (Prepend a single element)
-     * ------------------------------------
-     *
-     *     <ul>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *     ...
-     *     t.get('ul').prepend('<li>Three</li>');
-     *
-     *     produces the following:
-     *
-     *     <ul>
-     *       <li>Zero</li>
-     *       <li>One</li>
-     *       <li>Two</li>
-     *     </ul>
-     *
-     * Example #2 (Prepend multiple elements)
-     * -------------------------------------
-     *
-     *      <ul>
-     *        <li>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *      ...
-     *      t.get('ul li').prepend('<p>prepend</p>');
-     *
-     *      produces the following:
-     *
-     *      <ul>
-     *        <li>
-     *          <p>prepend</p>
-     *          <p>One</p>
-     *        </li>
-     *        <li>
-     *          <p>prepend</p>
-     *          <p>Two</p>
-     *        </li>
-     *      </ul>
-     *
-     * @param {html} The element to prepend
-     */
     'prepend': function(html) {
-        insert_content(html, true, true);
+        insert_content(this, html, true, true);
         return this;
     },
-    /**
-     * Empty extension method
-     * ----------------------
-     *
-     * Removes all the child elements of a specific node from the DOM.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).empty()
-     *
-     * where *SELECTOR* is a valid CSS selector (containing *one* or *more* elements).
-     *
-     * Example #1 (Remove all element of a list)
-     * -----------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate</span> chips!</li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').empty()* will give the following results:
-     *
-     *     <ol id="myList"></ol>
-     *
-     * Example #2 (Remove a specific element)
-     * --------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate chips!</span></li>
-     *     </ol>
-     *
-     * calling *t.get('.tasty').empty()* will give the following results:
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty"></span></li>
-     *        <li>I love <span class="tasty"></span> chips!</li>
-     *     </ol>
-     *
-     * Todo
-     * ----
-     *
-     * -    Remove events to avoid memory leaks;
-     *
-     */
     'empty': function() {
+        // Todo
+        // Remove events to avoid memory leaks;
         for (var i = 0; i < tiramisu.get.results.length; i++) {
             var child = tiramisu.get.results[i].childNodes[0];
             while (child) {
@@ -1522,50 +1468,6 @@ tiramisu.modules.get.methods.dom = {
             }
         }
     },
-    /**
-     * Destroy extension method
-     * ---------------------------------
-     *
-     * Removes element
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).destroy(*ELEMENT*)
-     *
-     * where *SELECTOR* is a valid CSS selector and *ELEMENT* is the DOM element
-     *
-     * Example #1 (Remove all element child)
-     * -----------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate</span> chips!</li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').destroy('.tasty')* will give the following results:
-     *
-     *     <ol id="myList">
-     *         <li>This is my </li>
-     *         <li>I love  chips!</li>
-     *     </ol>
-     *
-     * Example #2 (Remove element and child)
-     * --------------------------------------
-     *
-     *     <ol id="myList">
-     *        <li>This is my <span class="tasty">icecake</span></li>
-     *        <li>I love <span class="tasty">chocolate chips!</span></li>
-     *     </ol>
-     *
-     * calling *t.get('#myList').destroy()* will give the following results:
-     *
-     *     <div id="myDestroyList">
-     *
-     *     </div>
-     *
-     *
-     */
     'destroy': function(el) {
         if (tiramisu.get.results[0] === undefined) {
             return '';
@@ -1590,9 +1492,9 @@ tiramisu.modules.get.methods.dom = {
 
 // DOM Node insertion generic utility
 
-function insert_content(html, before, append) {
+function insert_content(self, html, before, append) {
     // Aliasing results
-    var results = tiramisu.get.results,
+    var results = self,
         len_result = results.length;
 
     var i, j, parent, elements = [];
@@ -1639,8 +1541,7 @@ function insert_content(html, before, append) {
     }
 }
 /** 
- * Framework Detection Module
- * ==========================
+ * # Framework Detection Module
  *
  * This module is mainly used to perform several *browser-detection tests*:
  *
@@ -1656,7 +1557,6 @@ function insert_content(html, before, append) {
  * - CSS3 Colors - I8 older using rgb rather than rgba
  *
  * Example #1 (Detect browser)
- * ------------------------
  *
  * Here's an example on how to *detect* the current browser:
  *
@@ -1670,9 +1570,8 @@ function insert_content(html, before, append) {
  *         console.log('IE');
  *     }
  *
- * The main difference between the first and the second example is that
- * *isIE* and, in general, *is(X)* methods doesn't check the browser for
- * a specific version.
+ * The main difference between the first and the second example is that *isIE* and, in general, *is(X)*
+ * methods doesn't check the browser for a specific version.
  *
  * If you need to perform a check for a specific version you'll need to rely on *detect('browser')*;
  * the possible return values are:
@@ -1760,12 +1659,74 @@ tiramisu.modules.detect = function(key) {
     return tests[key]();
 };
 /**
- * Event Selector methods
- * ======================
+ * # Event Selector methods
  *
  * Several methods for Events tasks:
  *
- * *  *On/Off*
+ * *  *On/Off
+ *
+ *
+ * ## Event handler extension
+ *
+ * Attach a callback function to an event.
+ *
+ *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
+ *
+ * where *SELECTOR* is a valid CSS selector, *EVENT* is the event listener and *CALLBACK*
+ * the function to attach.
+ *
+ * Example #1 (Clicking on a p element displays “Hello!”)
+ *
+ *     <p> Click me! </p>
+ *     <p> Click me too! </p>
+ *     <p> And me? </p>
+ *     ...
+ *     tiramisu.get('p').on('click', function() {
+ *         alert('Hello!');
+ *     });
+ *
+ * Example #2 (Hovering on a li element displays his innerHTML)
+ *
+ *      <ol>
+ *        <li> Banana </li>
+ *        <li> Apple </li>
+ *        <li> Pineapple </li>
+ *        <li> Strawberry </li>
+ *      </ol>
+ *      ...
+ *      tiramisu.get('ul li').on('mouseover', function() {
+ *          alert(this.innerHTML);
+ *      });
+ *
+ *  As in the “each” example, it is possible to use **this** to reference the current list item.
+ *
+ * Example #3 (Defining a window.onload callback)
+ *
+ *     tiramisu.get(window).on('load', function() {
+ *         alert('This will be executed after the DOM loading");
+ *     });
+ *
+ * Example #4 (Alert message when pressing the “m” key)
+ *
+ *     tiramisu.get(document).on('keydown', function(evt) {
+ *         if (evt.keyCode == 77) {
+ *             alert("M as Marvelous!");
+ *         }
+ *     });
+ *
+ * Example #5 ()
+ *
+ *     tiramisu.get('p').on('keydown', 'click', function(evt) {
+ *         alert('This will be executed after click or keydown on 'p' element");
+ *     });
+ *
+ * param {event} evt An event listener
+ * param {function} cb The callback function to attach
+ *
+ *
+ * # Remove Event handler extension
+ *
+ * need documentation
  *
  */
 // Keep in memory the events created
@@ -1777,74 +1738,6 @@ tiramisu.modules.get.methods.event = {
     'ingredients': [1],
     'cups_of_coffee': 5,
 
-    /**
-     * Event handler extension
-     * -----------------------
-     *
-     * Attach a callback function to an event.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
-     *
-     * where *SELECTOR* is a valid CSS selector, *EVENT* is
-     * the event listener and *CALLBACK* the function to attach.
-     *
-     * Example #1 (Clicking on a p element displays “Hello!”)
-     * ------------------------------------------------------
-     *
-     *     <p> Click me! </p>
-     *     <p> Click me too! </p>
-     *     <p> And me? </p>
-     *     ...
-     *     tiramisu.get('p').on('click', function() {
-     *         alert('Hello!');
-     *     });
-     *
-     * Example #2 (Hovering on a li element displays his innerHTML)
-     * ------------------------------------------------------------
-     *
-     *      <ol>
-     *        <li> Banana </li>
-     *        <li> Apple </li>
-     *        <li> Pineapple </li>
-     *        <li> Strawberry </li>
-     *      </ol>
-     *      ...
-     *      tiramisu.get('ul li').on('mouseover', function() {
-     *          alert(this.innerHTML);
-     *      });
-     *
-     *  As in the “each” example, it is possible to use **this** to
-     *  reference the current list item.
-     *
-     * Example #3 (Defining a window.onload callback)
-     * ----------------------------------------------
-     *
-     *     tiramisu.get(window).on('load', function() {
-     *         alert('This will be executed after the DOM loading");
-     *     });
-     *
-     * Example #4 (Alert message when pressing the “m” key)
-     * ----------------------------------------------------
-     *
-     *     tiramisu.get(document).on('keydown', function(evt) {
-     *         if (evt.keyCode == 77) {
-     *             alert("M as Marvelous!");
-     *         }
-     *     });
-     *
-     * Example #5 ()
-     * ----------------------------------------------------
-     *
-     *     tiramisu.get('p').on('keydown', 'click', function(evt) {
-     *         alert('This will be executed after click or keydown on 'p' element");
-     *     });
-     *
-     * @param {event} evt An event listener
-     * @param {function} cb The callback function to attach
-     */
     'on': function(evt, cb) {
         if (arguments.length > 2) {
             return '';
@@ -1882,11 +1775,7 @@ tiramisu.modules.get.methods.event = {
         }
         return this;
     },
-    /**
-     * Remove Event handler extension
-     * -----------------------
-     *
-     */
+
     'off': function(evt) {
         if (arguments.length > 1) {
             return '';

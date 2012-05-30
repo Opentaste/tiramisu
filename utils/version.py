@@ -42,13 +42,21 @@ def get_version(d=False):
         for line in f:
             version = re.search(r"this.version = '([0-9]\.[0-9](?:\.[0-9](?:-b[0-9]{1,2})?)?)';", line)
             if (version is not None):
-
+                
                 with open("VERSION", "w") as version_file:
                     version_file.write("""{version}\n{date}""".format(version=version.group(1), date=current_date))
-
+                
                 with open("utils/docs-intro.md", "w") as intro:
                     for line in markdown_intro.format(version=version.group(1)):
                         intro.write(line)
+                
+                with open("utils/readme.js", "w") as intro:
+                    intro.write("/*")
+                    for line in markdown_intro.format(version=version.group(1)).split('\n'):
+                        line = " * "+line+'\n'
+                        intro.write(line)
+                    intro.write(" */")
+                
                 if d:
                     return current_date
                 else:

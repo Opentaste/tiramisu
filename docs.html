@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    
+    <title></title>
+    <meta name="description" content="">
+    
+    <script src="src/build/tiramisu.js"></script>
+    
+    <style>
+    body {
+        background-color: #F0EEC7;
+        color: #434248;
+        font-family: "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+        font-size: 14px;
+        line-height: 21px;
+    }
+    .container {
+      width: 950px;
+      margin: 0 auto;
+      padding: 0 0 50px 50px;
+    }
+    p, li, ul {
+        margin: 4px 0;
+        width: 625px;
+    }
+    a {
+      color: #191933;
+    }
+    h1, h2, h3, h4, h5, h6, b.header {
+        font-size: 18px;
+        margin-bottom: 15px;
+        text-shadow: #fff 0 1px 1px;
+    }
+    h1 {
+      font-size: 20px;
+      margin-top: 60px;
+    }
+    h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        margin-top: 40px;
+    }
+    ul {
+        padding-left: 20px;
+    }
+    table {
+        margin: 16px 0 0 13px; padding: 0;
+        width: 625px;
+    }
+    tr, td {
+        margin: 0; padding: 0;
+    }
+    td {
+        padding: 9px 15px 9px 0;
+        vertical-align: top;
+    }
+    code, pre, tt, textarea {
+        font-family: Monaco, Consolas, "Lucida Console", monospace;
+        font-size: 12px;
+        line-height: 18px;
+        color: #155;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    pre {
+        background-color: #F8F8F8;
+        border: 1px solid #CCCCCC;
+        border-radius: 3px 3px 3px 3px;
+        font-size: 13px;
+        line-height: 19px;
+        overflow: auto;
+        padding: 6px 10px;
+        width: 625px;
+    }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        
+    </div>
+    
+    <script>
+    var list_modules = [
+        'readme',
+        'selector',
+        'browserdetect',
+        'selector.dom',
+        'selector.event',
+        'json',
+        'ajax',
+        'taskengine'
+    ]
+    for (var i = 0; i < list_modules.length; i++) {
+        t.ajax({
+            url : 'docs_json/'+list_modules[i]+'.json',
+            success : function(data) {
+                var json = t.json.decode(data);
+                console.log(json)
+                var full = t.make('div').html(json[0].description.full);
+                t.get('.container').append(full);
+            }
+        });
+    }
+    </script>
+</body>
+</html>

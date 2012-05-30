@@ -1,10 +1,72 @@
 /**
- * Event Selector methods
- * ======================
+ * # Event Selector methods
  *
  * Several methods for Events tasks:
  *
- * *  *On/Off*
+ * *  *On/Off
+ *
+ *
+ * ## Event handler extension
+ *
+ * Attach a callback function to an event.
+ *
+ *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
+ *
+ * where *SELECTOR* is a valid CSS selector, *EVENT* is the event listener and *CALLBACK*
+ * the function to attach.
+ *
+ * Example #1 (Clicking on a p element displays “Hello!”)
+ *
+ *     <p> Click me! </p>
+ *     <p> Click me too! </p>
+ *     <p> And me? </p>
+ *     ...
+ *     tiramisu.get('p').on('click', function() {
+ *         alert('Hello!');
+ *     });
+ *
+ * Example #2 (Hovering on a li element displays his innerHTML)
+ *
+ *      <ol>
+ *        <li> Banana </li>
+ *        <li> Apple </li>
+ *        <li> Pineapple </li>
+ *        <li> Strawberry </li>
+ *      </ol>
+ *      ...
+ *      tiramisu.get('ul li').on('mouseover', function() {
+ *          alert(this.innerHTML);
+ *      });
+ *
+ *  As in the “each” example, it is possible to use **this** to reference the current list item.
+ *
+ * Example #3 (Defining a window.onload callback)
+ *
+ *     tiramisu.get(window).on('load', function() {
+ *         alert('This will be executed after the DOM loading");
+ *     });
+ *
+ * Example #4 (Alert message when pressing the “m” key)
+ *
+ *     tiramisu.get(document).on('keydown', function(evt) {
+ *         if (evt.keyCode == 77) {
+ *             alert("M as Marvelous!");
+ *         }
+ *     });
+ *
+ * Example #5 ()
+ *
+ *     tiramisu.get('p').on('keydown', 'click', function(evt) {
+ *         alert('This will be executed after click or keydown on 'p' element");
+ *     });
+ *
+ * param {event} evt An event listener
+ * param {function} cb The callback function to attach
+ *
+ *
+ * # Remove Event handler extension
+ *
+ * need documentation
  *
  */
 // Keep in memory the events created
@@ -16,74 +78,6 @@ tiramisu.modules.get.methods.event = {
     'ingredients': [1],
     'cups_of_coffee': 5,
 
-    /**
-     * Event handler extension
-     * -----------------------
-     *
-     * Attach a callback function to an event.
-     *
-     * Usage
-     * -----
-     *
-     *     tiramisu.get(*SELECTOR*).on(*EVENT*, *CALLBACK*)
-     *
-     * where *SELECTOR* is a valid CSS selector, *EVENT* is
-     * the event listener and *CALLBACK* the function to attach.
-     *
-     * Example #1 (Clicking on a p element displays “Hello!”)
-     * ------------------------------------------------------
-     *
-     *     <p> Click me! </p>
-     *     <p> Click me too! </p>
-     *     <p> And me? </p>
-     *     ...
-     *     tiramisu.get('p').on('click', function() {
-     *         alert('Hello!');
-     *     });
-     *
-     * Example #2 (Hovering on a li element displays his innerHTML)
-     * ------------------------------------------------------------
-     *
-     *      <ol>
-     *        <li> Banana </li>
-     *        <li> Apple </li>
-     *        <li> Pineapple </li>
-     *        <li> Strawberry </li>
-     *      </ol>
-     *      ...
-     *      tiramisu.get('ul li').on('mouseover', function() {
-     *          alert(this.innerHTML);
-     *      });
-     *
-     *  As in the “each” example, it is possible to use **this** to
-     *  reference the current list item.
-     *
-     * Example #3 (Defining a window.onload callback)
-     * ----------------------------------------------
-     *
-     *     tiramisu.get(window).on('load', function() {
-     *         alert('This will be executed after the DOM loading");
-     *     });
-     *
-     * Example #4 (Alert message when pressing the “m” key)
-     * ----------------------------------------------------
-     *
-     *     tiramisu.get(document).on('keydown', function(evt) {
-     *         if (evt.keyCode == 77) {
-     *             alert("M as Marvelous!");
-     *         }
-     *     });
-     *
-     * Example #5 ()
-     * ----------------------------------------------------
-     *
-     *     tiramisu.get('p').on('keydown', 'click', function(evt) {
-     *         alert('This will be executed after click or keydown on 'p' element");
-     *     });
-     *
-     * @param {event} evt An event listener
-     * @param {function} cb The callback function to attach
-     */
     'on': function(evt, cb) {
         if (arguments.length > 2) {
             return '';
@@ -121,11 +115,7 @@ tiramisu.modules.get.methods.event = {
         }
         return this;
     },
-    /**
-     * Remove Event handler extension
-     * -----------------------
-     *
-     */
+
     'off': function(evt) {
         if (arguments.length > 1) {
             return '';

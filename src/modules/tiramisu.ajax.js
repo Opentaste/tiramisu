@@ -1,11 +1,7 @@
 /** 
- * Framework Ajax Module
- * =====================
+ * # Framework Ajax Module
  *
  * This module is mainly used to perform Ajax requests.
- *
- * Usage
- * -----
  *
  *     tiramisu.ajax(SETTINGS);
  *
@@ -25,14 +21,12 @@
  * - *url* (this is the only **mandatory** field);
  *
  * Example #1 (Ajax GET request)
- * -----------------------------
  *
  *     tiramisu.ajax({
  *         url : 'http://www.example.com'
  *     });
  *
  * Example #2 (Ajax GET request with a success callback)
- * -----------------------------------------------------
  *
  *     tiramisu.ajax({
  *         url : 'http://www.example.com',
@@ -42,7 +36,6 @@
  *     });
  *
  * Example #3 (Ajax GET request loaded into a div with an id)
- * ----------------------------------------------------------
  *
  *     tiramisu.ajax({
  *         url : 'http://www.example.com',
@@ -50,7 +43,6 @@
  *     });
  *
  * Example #4 (Ajax POST request displaying a loader html)
- * --------------------------------------------------
  *
  *     tiramisu.ajax({
  *          url: 'www.example.com',
@@ -60,7 +52,6 @@
  *     });
  *
  * Example #5 (Ajax GET request with parameters)
- * ----------------------------------------------
  *
  *     tiramisu.ajax({
  *         parameter: {
@@ -72,7 +63,6 @@
  *     });
  *
  * Example #6 (Ajax POST request with parameters)
- * ----------------------------------------------
  *
  *     tiramisu.ajax({
  *         method : 'POST',
@@ -85,7 +75,6 @@
  *     });
  *
  * Example #7 (Ajax GET request with success and error callbacks)
- * --------------------------------------------------------------
  *
  *     tiramisu.ajax({
  *         url: 'http://www.example.com',
@@ -98,7 +87,6 @@
  *     });
  *
  * Example #8 (Ajax POST request with successHTML and success callbacks)
- * --------------------------------------------------------------
  *
  *     tiramisu.ajax({
  *        method : 'POST',
@@ -109,19 +97,17 @@
  *        success: function(){ ... },
  *        successHTML: 'responseWrapper',
  *        url : 'http://www.example.com');
- *    });
+ *     });
  *
  * Example #9 (Ajax set data_format)
- * --------------------------------------------------------------
  *
  *     tiramisu.ajax({
  *        data_format: 'json',
  *        successHTML: 'responseWrapper',
  *        url : 'http://www.example.com');
- *    });
+ *     });
  *
  * Example #10 (Ajax with start_load and end_load)
- * --------------------------------------------------------------
  *
  *     tiramisu.ajax({
  *        start_load: function() {
@@ -132,10 +118,9 @@
  *        },
  *        successHTML: 'responseWrapper',
  *        url : 'http://www.example.com');
- *    });
+ *     });
  *
  * Example #11 (Ajax with time stop)
- * --------------------------------------------------------------
  *
  *     tiramisu.ajax({
  *        stop : 2000,
@@ -144,19 +129,17 @@
  *    });
  *
  * Example #12 (If there is new request then to abort the past requests.)
- * --------------------------------------------------------------
  *
  *     tiramisu.ajax({
  *        abort : true,
  *        successHTML: 'responseWrapper',
  *        url : 'http://www.example.com');
- *    });
+ *     });
  *
  * Error
- * -----
  * - #1 : Object Ajax Error!;
  *
- * @param {Object} settings An object containing the Ajax call parameters
+ * param {Object} settings An object containing the Ajax call parameters
  * @api public
  */
 tiramisu.modules.xhr = function() {

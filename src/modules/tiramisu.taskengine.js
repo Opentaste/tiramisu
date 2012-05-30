@@ -2,11 +2,8 @@
  * Task Engine Module
  * ==================
  *
- * This module is used to perform a function at a particular amount of time
- * or perform the same function several times in that time frame.
- *
- * Usage
- * -----
+ * This module is used to perform a function at a particular amount of time or perform the same
+ * function several times in that time frame.
  *
  *     tiramisu.task(delay, [interval], callback);
  *
@@ -14,26 +11,23 @@
  *
  *
  * Example #1 (The callback is executed after 2000 ms)
- * -----------------------------
  *
  *     tiramisu.task(2000, callback)
  *
  *
  * Example #2 (The callback is executed every 100 ms in a period of 2000ms)
- * -----------------------------------------------------
  *
  *     tiramisu.task(2000, 100, callback)
  *
  *
  * Example #3 (The callback is executed every 500 ms in loop.)
- * -----------------------------------------------------
  *
  *     tiramisu.task('loop', 500, callback)
  *
  *
- * @param {integer} delay The total task delay(ms)
- * @param {integer} [interval] The interval of the repetitions(ms)
- * @param {Function} cb The callback function
+ * param {integer} delay The total task delay(ms)
+ * param {integer} [interval] The interval of the repetitions(ms)
+ * param {Function} cb The callback function
  */
 // *requestAnimFrame* (used for handling tasks), thx @paul_irish for this idea
 tiramisu.modules.requestAnimFrame = (function() {

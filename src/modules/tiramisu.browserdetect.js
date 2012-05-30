@@ -1,6 +1,5 @@
 /** 
- * Framework Detection Module
- * ==========================
+ * # Framework Detection Module
  *
  * This module is mainly used to perform several *browser-detection tests*:
  *
@@ -16,7 +15,6 @@
  * - CSS3 Colors - I8 older using rgb rather than rgba
  *
  * Example #1 (Detect browser)
- * ------------------------
  *
  * Here's an example on how to *detect* the current browser:
  *
@@ -30,9 +28,8 @@
  *         console.log('IE');
  *     }
  *
- * The main difference between the first and the second example is that
- * *isIE* and, in general, *is(X)* methods doesn't check the browser for
- * a specific version.
+ * The main difference between the first and the second example is that *isIE* and, in general, *is(X)*
+ * methods doesn't check the browser for a specific version.
  *
  * If you need to perform a check for a specific version you'll need to rely on *detect('browser')*;
  * the possible return values are:
