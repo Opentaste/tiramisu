@@ -19,7 +19,7 @@
      */
     function Tiramisu() {
         
-        this.version = '0.2.5-b1';
+        this.version = '0.2.6';
         this.d = document;
         this.modules = Tiramisu.prototype;
                 
@@ -27,21 +27,6 @@
      
      // Exposing the framework
      window.tiramisu = window.t = new Tiramisu();
-     
-     
-     // Cancels the event if it is cancelable, 
-     // without stopping further propagation of the event.
-     tiramisu.modules.preventDefault = function(e) {
-         if (e) {
-             if ( e.stopPropagation ) {
-                 e.stopPropagation();
-             } else if (e.preventDefault) {
-                 e.preventDefault();
-             }
-             e.cancelBubble = true;
-         }
-         return false;
-     }
      
      /**
       * Make Module
