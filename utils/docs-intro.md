@@ -1,7 +1,7 @@
 
-# [Tiramisu][0]
+<img src="http://www.tiramisujs.com/static/tiramisu_logo.png"/>
 
-### version 0.2.5 ###
+### [Tiramisu][0] version 0.2.5 ###
 
 Tiramisu is a tiny, modular and fast JavaScript Library 
 which takes inspiration from the famous [jQuery][1] syntax:
@@ -17,6 +17,12 @@ which takes inspiration from the famous [jQuery][1] syntax:
 *  *Chainable* methods;
 *  Task management (a.k.a. Callbacks scheduling);
 
+## Who we are
+
+Lovers of the Javascript and the magic web!
+
+The project was created by [Leonardo Zizzamia](http://zizzamia.com/), [Gianluca Bargelli](http://proudlygeek.appspot.com/).
+
 ## Resources
 
 *  [Documentation (0.2.5)][2]
@@ -26,5 +32,9 @@ which takes inspiration from the famous [jQuery][1] syntax:
 [0]: http://www.tiramisujs.com
 [1]: http://jquery.com/
 [2]: http://www.tiramisujs.com/docs
-[3]: http://dl.dropbox.com/u/2060843/tiramisu/test/runtests.html
+[3]: http://www.tiramisujs.com/test
 [4]: http://tiramisu-proudlygeek.dotcloud.com/
+
+## License
+
+* BSD
