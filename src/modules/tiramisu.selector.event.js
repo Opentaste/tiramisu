@@ -144,36 +144,42 @@ tiramisu.modules.get.methods.event = {
 // contains just the appropriate course of action.
 // By High Performance JavaScript, Nicholas C. Zakas
 var add_handler = function(target, event_type, handler) {
-
-        // overwrite te existing function
-        if (target.addEventListener) { // DOM 2 Events
-            add_handler = function(target, event_type, handler) {
-                target.addEventListener(event_type, handler, false);
-            }
-        } else { // IE
-            add_handler = function(target, event_type, handler) {
-                target.attachEvent('on' + event_type, handler);
-            }
+    
+    // overwrite te existing function
+    if (target.addEventListener) { // DOM 2 Events
+        add_handler = function(target, event_type, handler) {
+            target.addEventListener(event_type, handler, false);
         }
-
-        // call the new functions
-        add_handler(target, event_type, handler);
+    } else { // IE
+        add_handler = function(target, event_type, handler) {
+            target.attachEvent('on' + event_type, wrap_handler(handler));
+        }
     }
+    
+    // call the new functions
+    add_handler(target, event_type, handler);
+}
 
     // And brother function, remove_handler
 var remove_handler = function(target, event_type, handler) {
-
-        // overwrite te existing function
-        if (target.removeEventListener) { // DOM 2 Events
-            remove_handler = function(target, event_type, handler) {
-                target.removeEventListener(event_type, handler, false);
-            }
-        } else { // IE
-            remove_handler = function(target, event_type, handler) {
-                target.detachEvent('on' + event_type, handler);
-            }
+    
+    // overwrite te existing function
+    if (target.removeEventListener) { // DOM 2 Events
+        remove_handler = function(target, event_type, handler) {
+            target.removeEventListener(event_type, handler, false);
         }
-
-        // call the new functions
-        remove_handler(target, event_type, handler);
+    } else { // IE
+        remove_handler = function(target, event_type, handler) {
+            target.detachEvent('on' + event_type, wrap_handler(handler));
+        }
     }
+    
+    // call the new functions
+    remove_handler(target, event_type, handler);
+}
+
+function wrap_handler(target, handler) {
+    return function (e) {
+        handler.call(target, e || window.event);
+    };
+}
