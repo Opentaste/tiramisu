@@ -20,7 +20,7 @@
 
     function Tiramisu() {
 
-        this.version = '0.2.6';
+        this.version = '0.2.7';
         this.d = document;
         this.modules = Tiramisu.prototype;
 
@@ -1329,7 +1329,6 @@ tiramisu.modules.get.methods.event = {
 // contains just the appropriate course of action.
 // By High Performance JavaScript, Nicholas C. Zakas
 var add_handler = function(target, event_type, handler) {
-
         // overwrite te existing function
         if (target.addEventListener) { // DOM 2 Events
             add_handler = function(target, event_type, handler) {
@@ -1340,14 +1339,12 @@ var add_handler = function(target, event_type, handler) {
                 target.attachEvent('on' + event_type, wrap_handler(handler));
             }
         }
-
         // call the new functions
         add_handler(target, event_type, handler);
     }
 
     // And brother function, remove_handler
 var remove_handler = function(target, event_type, handler) {
-
         // overwrite te existing function
         if (target.removeEventListener) { // DOM 2 Events
             remove_handler = function(target, event_type, handler) {
@@ -1358,7 +1355,6 @@ var remove_handler = function(target, event_type, handler) {
                 target.detachEvent('on' + event_type, wrap_handler(handler));
             }
         }
-
         // call the new functions
         remove_handler(target, event_type, handler);
     }
@@ -1381,6 +1377,11 @@ function wrap_handler(target, handler) {
                 e.stopPropagation = function() {
                     e.cancelBubble = true;
                 }
+            }
+
+            // normalization of keyCode's value
+            if (e.which) {
+                e.keyCode = e.which;
             }
         }
 

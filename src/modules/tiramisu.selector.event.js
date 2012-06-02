@@ -144,41 +144,41 @@ tiramisu.modules.get.methods.event = {
 // contains just the appropriate course of action.
 // By High Performance JavaScript, Nicholas C. Zakas
 var add_handler = function(target, event_type, handler) {
-    // overwrite te existing function
-    if (target.addEventListener) { // DOM 2 Events
-        add_handler = function(target, event_type, handler) {
-            target.addEventListener(event_type, handler, false);
+        // overwrite te existing function
+        if (target.addEventListener) { // DOM 2 Events
+            add_handler = function(target, event_type, handler) {
+                target.addEventListener(event_type, handler, false);
+            }
+        } else { // IE
+            add_handler = function(target, event_type, handler) {
+                target.attachEvent('on' + event_type, wrap_handler(handler));
+            }
         }
-    } else { // IE
-        add_handler = function(target, event_type, handler) {
-            target.attachEvent('on' + event_type, wrap_handler(handler));
-        }
+        // call the new functions
+        add_handler(target, event_type, handler);
     }
-    // call the new functions
-    add_handler(target, event_type, handler);
-}
 
-// And brother function, remove_handler
+    // And brother function, remove_handler
 var remove_handler = function(target, event_type, handler) {
-    // overwrite te existing function
-    if (target.removeEventListener) { // DOM 2 Events
-        remove_handler = function(target, event_type, handler) {
-            target.removeEventListener(event_type, handler, false);
+        // overwrite te existing function
+        if (target.removeEventListener) { // DOM 2 Events
+            remove_handler = function(target, event_type, handler) {
+                target.removeEventListener(event_type, handler, false);
+            }
+        } else { // IE
+            remove_handler = function(target, event_type, handler) {
+                target.detachEvent('on' + event_type, wrap_handler(handler));
+            }
         }
-    } else { // IE
-        remove_handler = function(target, event_type, handler) {
-            target.detachEvent('on' + event_type, wrap_handler(handler));
-        }
+        // call the new functions
+        remove_handler(target, event_type, handler);
     }
-    // call the new functions
-    remove_handler(target, event_type, handler);
-}
 
 function wrap_handler(target, handler) {
     return function(e) {
         // get event and source element
         e = e || window.event;
-        
+
         if (e) {
             // prevent default action
             if (!e.preventDefault) {
@@ -186,15 +186,20 @@ function wrap_handler(target, handler) {
                     e.returnValue = false;
                 }
             }
-            
+
             // no bubble
             if (!e.stopPropagation) {
                 e.stopPropagation = function() {
                     e.cancelBubble = true;
                 }
             }
+
+            // normalization of keyCode's value
+            if (e.which) {
+                e.keyCode = e.which;
+            }
         }
-        
+
         handler.call(target, e);
     };
 }
