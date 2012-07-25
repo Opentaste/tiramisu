@@ -20,7 +20,7 @@
 
     function Tiramisu() {
 
-        this.version = '0.2.7';
+        this.version = '0.2.8';
         this.d = document;
         this.modules = Tiramisu.prototype;
 
@@ -1689,7 +1689,8 @@ function insert_content(self, html, before, append) {
     var results = self,
         len_result = results.length;
 
-    var i, j, parent, elements = [];
+    var i, j, parent, elements = [],
+        len_elements = 0;
 
     var div = t.d.createElement('div');
     // “...A better version will be to create a document fragment, update it "offline",
@@ -1715,13 +1716,13 @@ function insert_content(self, html, before, append) {
         }
 
         parent = results[i].parentNode;
+        len_elements = elements.length;
 
-        for (j = 0; j < elements.length; j++) {
-
+        for (j = 0; j < len_elements; j++) {
             if (before) {
-                frag.insertBefore(elements[j], frag.firstChild);
+                frag.insertBefore(elements[0], frag.firstChild);
             } else {
-                frag.appendChild(elements[j]);
+                frag.appendChild(elements[0]);
             }
         }
 
@@ -2201,12 +2202,6 @@ tiramisu.modules.ajax = function(setting_input) {
 
     if (setting.content_type) {
         // The mime type of the body of the request (used with POST and PUT requests)
-        // Content-Type: application/x-www-form-urlencoded
-        // http://en.wikipedia.org/wiki/Mime_type
-        if (setting.data_format == 'json') {
-            // JavaScript Object Notation JSON; Defined in RFC 4627
-            setting.content_type = 'application/json; charset=UTF-8';
-        }
         xhr.setRequestHeader('Content-type', setting.content_type);
     }
     if (setting.connection) {

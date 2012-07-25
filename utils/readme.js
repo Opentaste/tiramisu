@@ -1,7 +1,7 @@
 /* * 
  * <img src="http://www.tiramisujs.com/static/tiramisu_logo.png"/>
  * 
- * ### [Tiramisu][0] version 0.2.7 ###
+ * ### [Tiramisu][0] version 0.2.8 ###
  * 
  * Tiramisu is a tiny, modular and fast JavaScript Library 
  * which takes inspiration from the famous [jQuery][1] syntax:
@@ -25,7 +25,7 @@
  * 
  * ## Resources
  * 
- * *  [Documentation (0.2.7)][2]
+ * *  [Documentation (0.2.8)][2]
  * *  [Unit Tests][3]
  * *  [Benchmarks][4]
  * 

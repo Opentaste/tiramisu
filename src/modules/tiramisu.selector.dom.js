@@ -299,7 +299,8 @@ function insert_content(self, html, before, append) {
     var results = self,
         len_result = results.length;
 
-    var i, j, parent, elements = [], len_elements = 0;
+    var i, j, parent, elements = [],
+        len_elements = 0;
 
     var div = t.d.createElement('div');
     // “...A better version will be to create a document fragment, update it "offline",
