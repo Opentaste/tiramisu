@@ -292,12 +292,6 @@ tiramisu.modules.ajax = function(setting_input) {
 
     if (setting.content_type) {
         // The mime type of the body of the request (used with POST and PUT requests)
-        // Content-Type: application/x-www-form-urlencoded
-        // http://en.wikipedia.org/wiki/Mime_type
-        if (setting.data_format == 'json') {
-            // JavaScript Object Notation JSON; Defined in RFC 4627
-            setting.content_type = 'application/json; charset=UTF-8';
-        }
         xhr.setRequestHeader('Content-type', setting.content_type);
     }
     if (setting.connection) {

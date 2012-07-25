@@ -299,7 +299,7 @@ function insert_content(self, html, before, append) {
     var results = self,
         len_result = results.length;
 
-    var i, j, parent, elements = [];
+    var i, j, parent, elements = [], len_elements = 0;
 
     var div = t.d.createElement('div');
     // “...A better version will be to create a document fragment, update it "offline",
@@ -325,13 +325,13 @@ function insert_content(self, html, before, append) {
         }
 
         parent = results[i].parentNode;
+        len_elements = elements.length;
 
-        for (j = 0; j < elements.length; j++) {
-
+        for (j = 0; j < len_elements; j++) {
             if (before) {
-                frag.insertBefore(elements[j], frag.firstChild);
+                frag.insertBefore(elements[0], frag.firstChild);
             } else {
-                frag.appendChild(elements[j]);
+                frag.appendChild(elements[0]);
             }
         }
 
