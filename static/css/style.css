@@ -1,0 +1,529 @@
+/* Tiramisu - A JavaScript μFramework CSS */
+
+/* Font-face section */
+@font-face {
+    font-family: 'DancingScript';
+    src: url('fonts/DancingScript-Regular-webfont.eot');
+    src: url('fonts/DancingScript-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/DancingScript-Regular-webfont.woff') format('woff'),
+         url('fonts/DancingScript-Regular-webfont.ttf') format('truetype'),
+         url('fonts/DancingScript-Regular-webfont.svg#DancingScriptOTRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'SortsMillGoudyRegular';
+    src: url('fonts/GoudyStM-webfont.eot');
+    src: url('fonts/GoudyStM-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/GoudyStM-webfont.woff') format('woff'),
+         url('fonts/GoudyStM-webfont.ttf') format('truetype'),
+         url('fonts/GoudyStM-webfont.svg#SortsMillGoudyRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'SortsMillGoudyItalic';
+    src: url('fonts/GoudyStM-Italic-webfont.eot');
+    src: url('fonts/GoudyStM-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/GoudyStM-Italic-webfont.woff') format('woff'),
+         url('fonts/GoudyStM-Italic-webfont.ttf') format('truetype'),
+         url('fonts/GoudyStM-Italic-webfont.svg#SortsMillGoudyItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+/* Body Section */
+body {
+    color: #434248;
+}
+
+/* Classes Section */
+
+div.sep_1 {
+    height: 2px;
+    background: transparent url(../img/navbar-sep1.png) repeat-x;
+}
+
+div.sep_2 {
+    height: 2px;
+    background: transparent url(../img/navbar-sep2.png) repeat-x;
+}
+
+div.sep_3 {
+    height: 9px;
+    background: transparent url(../img/deco-sep.png) repeat-x;
+}
+
+div.sep_4 {
+    height: 6px;
+    background: transparent url(../img/line-sep.png) repeat-x;
+}
+
+div.sep_5 {
+    height: 3px;
+    background: transparent url(../img/line-sep-single-up.png) repeat-x;
+}
+
+div.sep_6 {
+    height: 3px;
+    background: transparent url(../img/line-sep-single-down.png) repeat-x;
+}
+
+.black_shadow {
+    text-shadow: 0 1px 1px rgba(67, 66, 72, 0.75);
+}
+
+.white_shadow {
+    text-shadow: 0 1px 0px #d2dca5;
+}
+
+.main_shadow {
+    text-shadow: 0 1px 1px #fff;
+}
+
+.dancing { 
+    font-family: 'DancingScript', 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: 0;
+}
+
+.smg {
+    font-family: 'SortsMillGoudyRegular', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: normal;
+}
+
+.smgi {
+    font-family: 'SortsMillGoudyItalic', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: normal;
+}
+
+.logo {
+    text-align: center;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.left {
+    margin-left: 0;
+}
+
+.button.green {
+    background-color: #b6c66e;
+    border: 2px solid #5c8249;
+}
+
+.button.orange {
+    background-color: #ecc38f;
+    border: 2px solid #e5ab63;
+}
+
+.button {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    height: 124px;
+}
+
+.button.green:hover {
+    background-color: #a4b849;
+    border-color: #456137;
+}
+
+.button.orange:hover {
+    background-color: #e5ab63;
+    border-color: #de9337;
+}
+
+.button h1 {
+    font-size: 48px;
+}
+
+.button p {
+    font-size: 20px !important;
+    margin: 0 !important;
+}
+
+.button span {
+    /*display: block;*/
+    font-size: 14px !important;
+    font-weight: bold !important;
+    color: white;
+}
+
+.button h2 {
+    padding: 38px 0 !important;
+    font-size: 36px;
+    text-align: center;
+    padding-top: 100px;
+    color: white;
+}
+
+.button.disabled {
+    background-color: #c5c5c7;
+    border-color: #777;
+    cursor: default;
+}
+
+.developer {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    float: left;
+    width: 380px;
+}
+
+.developer p {
+    position: absolute;
+    margin: 0;
+    left: 100px;
+}
+
+.developer p.top {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    top: 0;
+    margin-top: 10px;
+}
+
+.developer p.bottom {
+    font-size: 14px !important;
+    bottom: 0;
+    margin-bottom: 10px;
+}
+
+.owl-logo {
+    display: inline-block;
+    width: 15px;
+    height: 19px;
+    background: transparent url(../img/owl-logo.png) no-repeat;
+}
+
+.who-logo {
+    display: inline-block;
+    text-decoration: none;
+    text-indent: -9999px;
+    margin: 0 15px;
+    opacity: 0.4;
+}
+
+.who-logo:hover {
+    opacity: 1;
+}
+
+.who-logo.ot {
+    width: 147px;
+    height: 50px;
+    background: transparent url(../img/ot-logo.png) no-repeat;
+}
+
+.who-logo.owl {
+    width: 159px;
+    height: 40px;
+    background: transparent url(../img/owlstudios-logo.png) no-repeat;
+}
+
+/* Header Section */
+#header {
+	height: 470px;
+	background-color: #b6c66e;
+	padding: 30px 0;
+}
+
+#header h1 {
+    font-size: 100px;
+    margin: 0;
+}
+
+#header h2 {
+    font-size: 24px;
+}
+
+#header img {
+    margin-bottom: 35px;
+}
+
+#header p {
+    font-size: 26px;
+    margin-top: 100px;
+}
+
+#header pre {
+    color: #fff;
+    background-color: #434248;
+    border: 2px solid #5c8249;
+    font-size: 18px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px 30px;
+}
+
+/* Sezione NavBar */
+ul#navbar {
+    background-color: #e5ab63;
+    margin: 0;
+    list-style: none;
+    padding: 12px 0;
+}
+
+ul#navbar li {
+    float: right;
+}
+
+ul#navbar a {
+    color: inherit;
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+ul#navbar a:hover {
+    border-bottom: 2px solid #434248;
+}
+
+/* Sezione Main */
+#main {
+    background-color: #f0eec7;
+    font: 20px/24px 'Helvetica Neue', Arial, sans-serif;
+    padding: 50px 0;
+}
+
+#main img {
+    display: block;
+}
+
+#main .container_12 {
+    margin-bottom: 30px;
+}
+
+#main p {
+    margin: 0;
+}
+
+#modular {
+    padding: 20px 0;
+}
+
+#small {
+    padding: 36px 0;
+}
+
+#callback-scheduling {
+    padding: 56px 0;
+}
+
+#crossbrowser {
+    padding: 11px 0;
+}
+
+/* Footer Section */
+#footer {
+    background-color: #434248;
+    color: #fff;
+    padding: 50px;
+}
+
+#footer .container_12 .clearfix {
+    position: relative;
+}
+
+#footer p, #footer h1, #footer h2 {
+    margin: 0;
+}
+
+#footer p {
+    font-size: 24px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+#footer span {
+    font-size: 30px;
+    margin-left: 5px;
+}
+
+#footer h2 {
+    font-size: 36px;
+    text-align: center;
+    padding-top: 100px;
+}
+
+#customize {
+    background-color: #f0eec7;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    -webkit-transition: all .22s ease-out;
+    -moz-transition: all .22s ease-out;
+    transition: all .22s ease-out;
+}
+
+#customize .custom_left {
+    opacity: 0;
+    -webkit-transition: all .22s ease-out;
+    -moz-transition: all .22s ease-out;
+    transition: all .22s ease-out;
+}
+
+/* Who Section */
+#who {
+  background-color: #434248;
+  color: #fff;
+  padding: 50px;
+}
+
+#who h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+/* About Section */
+
+#about {
+    background-color: #434248;
+    color: #fff;
+    padding: 50px;
+}
+
+#about h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+#about p {
+    font-size: 18px;
+}
+
+#about span {
+    font-size: 24px;
+    margin-right: 2px;
+}
+
+#about img {
+    display: block;
+    width: 80px;
+    height: 80px;
+}
+
+/* Copyright Section */
+#copyright {
+    background-color: #434248;
+    color: #fff;
+    padding: 25px;
+    font-size: 14px;
+}
+
+#copyright a {
+    text-decoration: none;
+    color: #e5ab63;
+}
+
+.custom_left {
+    float: left;
+    margin-left: 30px;
+    width: 300px;
+}
+
+#customize {
+    padding: 0;
+    position: relative;
+}
+
+#customize h1 {
+    font-size: 36px;
+}
+
+#customize .cup_container h2 {
+    font-size: 28px;
+    text-align: center;
+}
+
+#customize h3 {
+    margin-bottom: 5px;
+}
+
+#customize .button h2 {
+    padding-top: 25px !important;
+    padding-bottom: 0px !important;
+    margin-bottom: 0;
+}
+
+#customize .button span {
+    padding: 0 !important;
+}
+
+#customize .form {
+    margin-bottom: 90px;
+}
+
+#customize label {
+    background-color: #B8B79E;
+    color: #555555;
+    display: block;
+    cursor: pointer;
+    padding: 4px 8px 4px 20px;
+    margin:2px 0 4px 0;
+}
+
+#customize .cup_container {
+    overflow: hidden;
+}
+
+#customize .cup {
+    position: relative;
+    z-index: 9999;
+}
+
+#customize .coffee_level {
+    background: url(../img/coffee-level.png) transparent repeat;
+    width: 200px;
+    height: 0;
+    position: absolute;
+    left: 81px;
+    bottom: 0;
+    margin-bottom: 35px;
+    -webkit-transition: height .85s ease-in-out;
+    -moz-transition: height .85s ease-in-out;
+    transition: -webkit-transition: height .85s ease-in-out;
+}
+
+#arrow_1 {
+    visibility: hidden;
+    position: absolute;
+    width: 318px;
+    height: 0;
+    margin-left: 330px;
+    margin-top: 196px;
+    background: url(../img/arrow-1.png) transparent no-repeat;
+    z-index: 1;
+    -webkit-transition: all .22s ease-out;
+    -moz-transition: all .22s ease-out;
+    transition: all .22s ease-out;
+}
+
+#arrow_2 {
+    position: absolute;
+    width: 229px;
+    height: 0;
+    visibility: hidden;
+    margin-top: 280px;
+    margin-left: 71px;
+    background: url(../img/arrow-2.png) transparent no-repeat;
+    z-index: 1;
+    -webkit-transition: all .22s ease-out;
+    -moz-transition: all .22s ease-out;
+    transition: all .22s ease-out;
+}

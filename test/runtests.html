@@ -1,0 +1,285 @@
+<!doctype html>
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  {% block head %}
+  <title>Tiramisu | A tasty JavaScript μLibrary {% block title %} {% endblock %}</title>
+  <meta name="description" content="{% block description %} {% endblock %}">
+  {% endblock %}
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <link rel="stylesheet" href="/static/css/reset.css">
+  <link rel="stylesheet" href="/static/css/960_12_col.css">
+  <link rel="stylesheet" href="/static/css/text.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/qunit.css">
+  
+  <script src="/static/js/modernizr-1.7.min.js"></script>
+  <script src="/static/js/tiramisu.js"></script>
+  <script src="/static/js/script.js"></script>
+  <style>
+      .logo a {
+          color: #434248;
+          text-decoration:none;
+      }
+  </style>
+</head>
+<body class="white_shadow">
+    <div id="header">
+        <div class="container_12 clearfix">
+              <div class="logo grid_5 alpha">
+                  <a href="/" title="Tiramisu | A tasty JavaScript μLibrary">
+                      <h1 class="dancing">Tiramisu</h1>
+                      <img src="/static/img/logo.png" class="alpha grid_5" />
+                      <h2 class="smg">A tasty JavaScript &#181;Library</h2>
+                  </a>
+              </div>
+              <div class="prefix_1 omega grid_6">
+                  <p class="smg">
+                      Tiramisu is a <em>tiny</em>, <em>modular</em> and <em>fast</em> 
+                      JavaScript Library which takes inspiration from the famous  jQuery syntax:
+                  </p>
+                  <pre class="black_shadow">
+tiramisu.get('h1').each(function() {
+    alert(h1.html());
+});</pre>
+              </div>
+          </div><!-- .container_12 -->
+      </div><!-- #header -->
+      
+      <div class="sep_1"></div>
+      
+      <ul id="navbar">
+          <div class="container_12 clearfix">
+              <li><a href="#about">About</a></li>
+              <li><a href="https://github.com/Opentaste/tiramisu">Clone on GitHub</a></li>
+              <li><a href="/tests">Tests</a></li>
+              <li><a href="http://tiramisu-proudlygeek.dotcloud.com">Benchmarks</a></li>
+              <li><a href="/docs">Documentation</a></li>
+          </div>
+      </ul><!-- #navbar -->
+      
+      <div class="sep_2"></div>
+      
+      <div id="main" class="main_shadow">
+      <div class="container_12 clearfix">
+          
+          
+          
+          
+          
+          
+          
+          
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/qunit.js"></script>
+    <script type="text/javascript" src="/static/js/tiramisu-tests.js"></script>
+    <style>
+    .class_leo { color:red; }
+    .class_gianluca { font-size:38px; }
+    </style>
+    <h1 id="qunit-header">QUnit Test Suite</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+
+  <!-- Important don't touch the space in this div -->
+  <div id="qunit-fixture">
+    <h1 id="headline" class="class_leo">Tiramisu Tests</h1>
+    <h2> Tiramisu is <span class="red">good</span> for your <span class="underlined">health</span> </h2>
+    <ul id="selector_test">
+      <li><p class="underlined">This text is underlined</p></li>
+      <li>Another line</li>
+      <li>Oki-Doki.</li>
+    </ul>
+    <h3> I love <span class="red">tiramisu</span></h3>
+    <p id="append-here"></p>
+    <form method="GET" action="#">
+      <select>
+        <option>First.</option>
+        <option>Second.</option>
+        <option>Third.</option>
+      </select>
+      <input type="text" name="hola_name" id="hola_id" value="hola">
+    </form>
+    <div id="after_test">
+      <h1>Hello Tiramisu</h1>
+      <div class="inner">ciao</div>
+      <div class="inner">mondo</div>
+    </div>
+    <ul id="append_test">
+      <li>One</li>
+      <li>Two</li>
+    </ul>
+    <ul id="append_test2">
+      <li><p>First</p></li>
+      <li><p>First</p></li>
+    </ul>
+    <div id="myDestroyList">
+        <ol id="myList">
+            <li>This is my <span class="tasty">icecake</span></li>
+            <li>I love <span class="tasty">chocolate</span> chips!</li>
+        </ol>
+    </div>
+    <div id="remove_class">
+        <p id="tasty" class="my_class my_class_two">
+            <span id="tasty_one" class="my_class_one">Hi one</span>
+            <span id="tasty_two" class="my_class_two">Hi two</span>
+        </p>
+    </div>
+  </div>
+  <!-- End #qunit-fixture -->
+
+
+
+
+
+
+
+
+
+
+    </div>
+    </div><!-- #main -->
+  
+  
+  <div class="sep_3"></div>
+  
+  <div id="footer">
+      <div class="container_12 clearfix">
+          <div class="alpha grid_4 prefix_1 black_shadow">
+              <p class="smg"> Get a tasty slice of <span class="dancing">Tiramisu</span> </p>
+              <a href="/static/zip/tiramisu-0.2.5.zip" class="button green">
+                  <p> Current Version: </p>
+                  <h1>0.2.5</h1>
+                  <span>Released May 30, 2012</span>
+              </a>
+          </div>
+          
+          <div class="grid_2 black_shadow">
+              <h2> Or </h2> 
+          </div>
+          
+          <div class="omega grid_4 suffix_1 black_shadow">
+              <p class="smg"> Make your own <span class="dancing">Tiramisu</span> </p>
+              <div class="button green customize">
+                  <h2> Go ahead! </h2>
+              </div>
+          </div>
+          <div id="arrow_1"></div>
+      </div>
+  </div><!-- #footer -->
+  
+  <div class="sep_5"></div>
+  
+  <div id="customize">
+      <div class="container_12 clearfix">
+          <div class="grid_12 black_shadow">
+              <h1 class="dancing"> Please pick your ingredients: </h1>
+              <div class="alpha grid_4 form">
+                  <h3>CSS Selector</h3>
+                  <label>
+                      <input type="checkbox" value="1" checked> 
+                      Core
+                  </label>
+                  <label>
+                      <input type="checkbox" value="3" checked>
+                      DOM Methods
+                  </label>
+                  <label>
+                      <input type="checkbox" value="5">
+                      Event Methods
+                  </label>
+
+                  <h3>Optional Stuff</h3>
+                  <label>
+                      <input type="checkbox" value="2">
+                      Browser Detection
+                  </label>
+                  <label>
+                      <input type="checkbox" value="4">
+                      AJAX
+                  </label>
+                  <label>
+                      <input type="checkbox" value="6">
+                      Task Engine
+                  </label>
+                  <label>
+                      <input type="checkbox" value="7">
+                      JSON
+                  </label>
+              </div>
+              <div class="cup_container push_3 omega grid_5">
+                  <h2 class="dancing">Caffeine Level: <span id="percent">0</span>%</h2>
+                  <img class="cup" src="/static/img/coffee-wireframe.png" />
+                  <div class="coffee_level"></div>
+              </div>
+              <div id="arrow_2"></div>
+          </div>
+          
+          <!-- Download Button -->
+          <div class="clearfix"></div>
+          <a id="custom_download" href="" class="push_4 grid_4 button orange black_shadow">
+              <h2>Download</h2>
+              <span>File size: <span id="custom_size">14</span> Kb (Minified)</span>
+          </a>
+          
+      </div>
+  </div><!-- #customize -->
+  
+  <div class="sep_6"></div>
+  
+  <div id="who">
+      <div class="container_12 clearfix">
+          <div class="grid_12 black_shadow">
+              <h1>Who's using <span class="dancing">Tiramisu</span>?</h1>
+              <a href="http://owlstudios.eu" class="who-logo owl">Owl Studios | Innovazione e Sviluppo software</a>
+              <a href="http://opentaste.eu" class="who-logo ot">OpenTaste | Condividi le tue ricette!</a>
+          </div>
+      </div>
+  </div>
+  
+  <div class="sep_4"></div>
+  
+  <div id="about">
+      <div class="container_12 clearfix">
+          <div class="grid_12 black_shadow">
+              <h1>About</h1>
+              <p>
+                  <span class="dancing">Tiramisu</span> is an <em>open source</em>, 
+                  <em>BSD-licensed</em> project currently developed by:
+              </p>
+              <a href="http://proudlygeek.appspot.com" class="developer">
+                  <img src="/static/img/gianluca_pic.jpg" />
+                  <p class="top"> Gianluca Bargelli </p>
+                  <p class="bottom"> Freelance Web Developer </p>
+              </a>
+              <a href="http://www.zizzamia.com" class="developer">
+                  <img src="/static/img/leo_pic.jpg" />
+                  <p class="top"> Leonardo Zizzamia </p>
+                  <p class="bottom"> CEO @ Opentaste </p>
+              </a>
+          </div>
+      </div>
+  </div><!-- #about -->
+  
+  <div class="sep_4"></div>
+  
+  <div id="copyright">
+      <div class="container_12 clearfix black_shadow">
+          © 2011-2012 Gianluca Bargelli, Leonardo Zizzamia • An <a href="http://opentaste.eu">Opentaste</a> project
+      </div>
+  </div><!-- #copyright -->
+  
+  <script>
+      var d = document;
+      var _gaq=[['_setAccount','UA-5286378-4'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(d,'script'));
+  </script>
+</body>
+</html>

@@ -1,168 +1,256 @@
-<!DOCTYPE HTML>
-<html>
+<!doctype html>
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<link rel="stylesheet" type="text/css" href="css/reset.css">
-	<link rel="stylesheet" type="text/css" href="css/960_12_col.css">
-	<link rel="stylesheet" type="text/css" href="css/text.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<title>Tiramisu | A tasty JavaScript μFramework</title>
-	<script src="js/modernizr.js"></script>
+  <meta charset="utf-8">
+
+  <title>Tiramisu | A tasty JavaScript μLibrary</title>
+  <meta name="description" content="JavaScript Library which takes inspiration from the famous  jQuery syntax">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <link rel="stylesheet" href="static/css/reset.css">
+  <link rel="stylesheet" href="static/css/960_12_col.css">
+  <link rel="stylesheet" href="static/css/text.css">
+  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/qunit.css">
+
+  <script src="static/js/modernizr-1.7.min.js"></script>
+  <script src="static/js/tiramisu.js"></script>
+  <script src="static/js/script.js"></script>
+  <style>
+      .logo a {
+          color: #434248;
+          text-decoration:none;
+      }
+  </style>
 </head>
 <body class="white_shadow">
-	<!-- Inizio Header -->
-	<div id="header">
-		<div class="container_12 clearfix">
-			<div class="logo grid_5 alpha">
-				<h1 class="dancing">Tiramisu</h1>
-				<img src="img/logo.png" class="alpha grid_5" />
-				<h2 class="smg">A tasty JavaScript &#181;Framework</h2>
-			</div>
-			<div class="prefix_1 omega grid_6">
-				<p class="smg">Tiramisu is a <em>tiny</em>, <em>modular</em> and <em>fast</em> 
-					 JavaScript framework which takes 
-					 inspiration from the famous  
-					 jQuery syntax:</p>
-				<pre class="black_shadow">
+    <div id="header">
+        <div class="container_12 clearfix">
+              <div class="logo grid_5 alpha">
+                  <a href="/" title="Tiramisu | A tasty JavaScript μLibrary">
+                      <h1 class="dancing">Tiramisu</h1>
+                      <img src="static/img/logo.png" class="alpha grid_5" />
+                      <h2 class="smg">A tasty JavaScript &#181;Library</h2>
+                  </a>
+              </div>
+              <div class="prefix_1 omega grid_6">
+                  <p class="smg">
+                      Tiramisu is a <em>tiny</em>, <em>modular</em> and <em>fast</em> 
+                      JavaScript Library which takes inspiration from the famous  jQuery syntax:
+                  </p>
+                  <pre class="black_shadow">
 tiramisu.get('h1').each(function() {
     alert(h1.html());
 });</pre>
-			</div>
-		</div>
-	</div>
-	<!-- Fine Header -->
-	<div class="sep_1"></div>
-	<!-- Inizio NavBar -->
-	<ul id="navbar">
-		<div class="container_12 clearfix">
-			<li><a href="#about">About</a></li>
-      <li><a href="https://github.com/OwlStudio<>s/tiramisu">Clone on GitHub</a></li>
-      <li><a href="http://tiramisu-proudlygeek.dotcloud.com">Benchmarks</a></li>
-      <li><a href="docs">Documentation</a></li>
-		</div>
-	</ul>
-	<!-- Fine NavBar -->
-	<div class="sep_2"></div>
-	<!-- Inizio Main -->
-	<div id="main" class="main_shadow">
+              </div>
+          </div><!-- .container_12 -->
+      </div><!-- #header -->
+      
+      <div class="sep_1"></div>
+      
+      <ul id="navbar">
+          <div class="container_12 clearfix">
+              <li><a href="#about">About</a></li>
+              <li><a href="https://github.com/Opentaste/tiramisu">Clone on GitHub</a></li>
+              <!-- <li><a href="tests.html">Tests</a></li> -->
+              <li><a href="http://tiramisu-proudlygeek.dotcloud.com">Benchmarks</a></li>
+              <!-- <li><a href="docs.html">Documentation</a></li> -->
+          </div>
+      </ul><!-- #navbar -->
+      
+      <div class="sep_2"></div>
+      
+      <div id="main" class="main_shadow">
+          
+          <div class="container_12 clearfix">
+              <div id="modular" class="grid_8 alpha">
+                  <p>
+                      <strong>Modular philosophy</strong>. Sometimes you <em>simply</em> don’t need to use
+                      <em>all the features</em> of an <em>entire</em> JavaScript Library. Tiramisu lets you choose 
+                      <em>exactly what you need</em> leaving out all the unused stuff: you can decide 
+                      <em>how much coffee</em> to put into your Tiramisu!
+                  </p>
+              </div>
+              <div class="grid_4 omega">
+                  <img src="static/img/coffee-icon.png" class="center" />
+              </div>
+          </div>
+          
+          <div class="container_12 clearfix">
+              <div class="grid_4 alpha">
+                  <img src="static/img/small-icon.png" class="left"/>
+              </div>
+              <div id="small" class="grid_8 clearfix omega">
+                  <p>
+                      <strong>Small size.</strong>  Even in the age of the modern browsers, script size 
+                      <em>does</em> still matter. Tiramisu tries to keep it’s core size as <em>smallest</em> 
+                      as possible (about 8 kb for the <em>minified version</em>).
+                  </p>
+              </div>
+          </div>
+          
+          <div class="container_12 clearfix">
+              <div id="callback-scheduling" class="grid_8 alpha">
+                  <p>
+                      <strong>Callback scheduling.</strong> JavaScript’s asynchronous programming can get 
+                      <em>quite messy</em>, especially when a project grows <em>bigger</em>. Tiramisu let 
+                      you decide the <em>exact</em> schedule order of your callbacks with <em>ease</em>.
+                  </p>
+              </div>
+              <div class="grid_4 omega">
+                  <img src="static/img/clock-icon.png" class="center" />
+              </div>
+          </div>
+          
+          <div class="container_12 clearfix">
+              <div class="grid_4 alpha">
+                  <img src="static/img/crossbrowser-icon.png" class="left"/>
+              </div>
+              <div id="crossbrowser" class="grid_8 clearfix omega">
+                  <p><strong>Cross-browser.</strong>  Every JavaScript developer knows how much <em>painful</em> 
+                      is to write <em>multiple versions</em> of the same piece of code for different browsers. 
+                      Tiramisu handles <em>cross-browser</em> issues and <em>normalizes</em> your code behavior.
+                  </p>
+              </div>
+          </div>
+      </div><!-- #main -->
+      
+      
+      <div class="sep_3"></div>
+      
+      <div id="footer">
+          <div class="container_12 clearfix">
+              <div class="alpha grid_4 prefix_1 black_shadow">
+                  <p class="smg"> Get a tasty slice of <span class="dancing">Tiramisu</span> </p>
+                  <a href="static/zip/tiramisu-0.2.5.zip" class="button green">
+                      <p> Current Version: </p>
+                      <h1>0.2.5</h1>
+                      <span>Released May 30, 2012</span>
+                  </a>
+              </div>
+              
+              <div class="grid_2 black_shadow">
+                  <h2> Or </h2> 
+              </div>
+              
+              <div class="omega grid_4 suffix_1 black_shadow">
+                  <p class="smg"> Make your own <span class="dancing">Tiramisu</span> </p>
+                  <div class="button green customize">
+                      <h2> Go ahead! </h2>
+                  </div>
+              </div>
+              <div id="arrow_1"></div>
+          </div>
+      </div><!-- #footer -->
+      
+      <div class="sep_5"></div>
+      
+      <div id="customize">
+          <div class="container_12 clearfix">
+              <div class="grid_12 black_shadow">
+                  <h1 class="dancing"> Please pick your ingredients: </h1>
+                  <div class="alpha grid_4 form">
+                      <h3>CSS Selector</h3>
+                      <label>
+                          <input type="checkbox" value="1" checked> 
+                          Core
+                      </label>
+                      <label>
+                          <input type="checkbox" value="3" checked>
+                          DOM Methods
+                      </label>
+                      <label>
+                          <input type="checkbox" value="5">
+                          Event Methods
+                      </label>
 
-		<div class="container_12 clearfix">
-			<div id="modular" class="grid_8 alpha">
-				<p><strong>Modular philosophy</strong>. Sometimes you <em>simply</em> don’t need to use <em>all the features</em> of an <em>entire</em> JavaScript Framework. Tiramisu lets you choose <em>exactly what you need</em> leaving out all the unused stuff: you can decide <em>how much coffee</em> to put into your Tiramisu!</p>
-			</div>
-			<div class="grid_4 omega">
-				<img src="img/coffee-icon.png" class="center" />
-			</div>
-		</div>
-
-		<div class="container_12 clearfix">
-			<div class="grid_4 alpha">
-				<img src="img/small-icon.png" class="left"/>
-			</div>
-			<div id="small" class="grid_8 clearfix omega">
-				<p><strong>Small size.</strong>  Even in the age of the modern browsers, script size <em>does</em> still matter. Tiramisu tries to keep it’s core size as <em>smallest</em> as possible (about 8 kb for the <em>minified version</em>).</p>
-			</div>
-		</div>
-
-		<div class="container_12 clearfix">
-			<div id="callback-scheduling" class="grid_8 alpha">
-				<p><strong>Callback scheduling.</strong> JavaScript’s asynchronous programming can get <em>quite messy</em>, especially when a project grows <em>bigger</em>. Tiramisu let you decide the <em>exact</em> schedule order of your callbacks with <em>ease</em>.</p>
-			</div>
-			<div class="grid_4 omega">
-				<img src="img/clock-icon.png" class="center" />
-			</div>
-		</div>
-
-		<div class="container_12 clearfix">
-			<div class="grid_4 alpha">
-				<img src="img/crossbrowser-icon.png" class="left"/>
-			</div>
-			<div id="crossbrowser" class="grid_8 clearfix omega">
-				<p><strong>Cross-browser.</strong>  Every JavaScript developer knows how much <em>painful</em> is to write <em>multiple versions</em> of the same piece of code for different browsers. Tiramisu handles <em>cross-browser</em> issues and <em>normalizes</em> your code behavior.</p>
-			</div>
-		</div>
-
-	</div>
-	<!-- Fine Main -->
-	<div class="sep_3"></div>
-	<!-- Inizio Footer -->
-	<div id="footer">
-		<div class="container_12 clearfix">
-			<div class="alpha grid_4 prefix_1 black_shadow">
-				<p class="smg"> Get a tasty slice of <span class="dancing">Tiramisu</span> </p>
-        <a href="https://github.com/OwlStudios/tiramisu/zipball/0.1.5" class="button">
-					<p> Current Version: </p>
-          <h1>0.1.5</h1>
-          <span>Released December 17, 2011</span>
-				</a>
-		  </div>
-
-		  <div class="grid_2 black_shadow">
-		    <h2> Or </h2> 
-		  </div>
-
-		  <div class="omega grid_4 suffix_1 black_shadow">
-				<p class="smg"> Make your own <span class="dancing">Tiramisu</span> </p>
-				<a href="#" onclick="return false;" class="button disabled">
-					<h2> Coming Soon... </h2>
-				</a>
-		  </div>
-		</div>
-	</div>
-	<!-- Fine Footer -->
-	<div class="sep_4"></div>
-	<!-- Inizio Who -->
-	<div id="who">
-		<div class="container_12 clearfix">
-			<div class="grid_12 black_shadow">
-        <h1>Who's using <span class="dancing">Tiramisu</span>?</h1>
-				<a href="http://owlstudios.eu" class="who-logo owl">Owl Studios | Innovazione e Sviluppo software</a>
-				<a href="http://opentaste.eu" class="who-logo ot">OpenTaste | Condividi le tue ricette!</a>
-			</div>
-		</div>
-	</div>
-	<!-- Fine Who -->
-	<div class="sep_4"></div>
-	<!-- Inizio About -->
-	<div id="about">
-		<div class="container_12 clearfix">
-			<div class="grid_12 black_shadow">
-				<h1>About</h1>
-				<p><span class="dancing">Tiramisu</span> is an <em>open source</em>, <em>BSD-licensed</em> project currently developed by:</p>
-				<a href="http://proudlygeek.appspot.com" class="developer">
-					<img src="img/gianluca_pic.jpg" />
-					<p class="top"> Gianluca Bargelli </p>
-					<p class="bottom"> Freelance Web Developer </p>
-				</a>
-				<a href="http://owlstudios.eu" class="developer">
-					<img src="img/leo_pic.jpg" />
-					<p class="top"> Leonardo Zizzamia </p>
-					<p class="bottom"> Front End Software Engineer @ OwlStudios </p>
-				</a>
-			</div>
-		</div>
-	</div>
-	<!-- Fine About -->
-	<div class="sep_4"></div>
-	<!-- Inizio Copyright -->
-	<div id="copyright">
-		<div class="container_12 clearfix black_shadow">
-			© 2011 Gianluca Bargelli, Leonardo Zizzamia • A <a href="http://owlstudios.eu">Owl <span class="owl-logo"></span> Studios</a href=""> project
-		</div>
-	</div>
-	<!-- Fine Copyright -->
+                      <h3>Optional Stuff</h3>
+                      <label>
+                          <input type="checkbox" value="2">
+                          Browser Detection
+                      </label>
+                      <label>
+                          <input type="checkbox" value="4">
+                          AJAX
+                      </label>
+                      <label>
+                          <input type="checkbox" value="6">
+                          Task Engine
+                      </label>
+                      <label>
+                          <input type="checkbox" value="7">
+                          JSON
+                      </label>
+                  </div>
+                  <div class="cup_container push_3 omega grid_5">
+                      <h2 class="dancing">Caffeine Level: <span id="percent">0</span>%</h2>
+                      <img class="cup" src="static/img/coffee-wireframe.png" />
+                      <div class="coffee_level"></div>
+                  </div>
+                  <div id="arrow_2"></div>
+              </div>
+              
+              <!-- Download Button -->
+              <div class="clearfix"></div>
+              <a id="custom_download" href="" class="push_4 grid_4 button orange black_shadow">
+                  <h2>Download</h2>
+                  <span>File size: <span id="custom_size">14</span> Kb (Minified)</span>
+              </a>
+              
+          </div>
+      </div><!-- #customize -->
+      
+      <div class="sep_6"></div>
+      
+      <div id="who">
+          <div class="container_12 clearfix">
+              <div class="grid_12 black_shadow">
+                  <h1>Who's using <span class="dancing">Tiramisu</span>?</h1>
+                  <a href="http://owlstudios.eu" class="who-logo owl">Owl Studios | Innovazione e Sviluppo software</a>
+                  <a href="http://opentaste.eu" class="who-logo ot">OpenTaste | Share your recipes!</a>
+              </div>
+          </div>
+      </div>
+      
+      <div class="sep_4"></div>
+      
+      <div id="about">
+          <div class="container_12 clearfix">
+              <div class="grid_12 black_shadow">
+                  <h1>About</h1>
+                  <p>
+                      <span class="dancing">Tiramisu</span> is an <em>open source</em>, 
+                      <em>BSD-licensed</em> project currently developed by:
+                  </p>
+                  <a href="http://proudlygeek.appspot.com" class="developer">
+                      <img src="static/img/gianluca_pic.jpg" />
+                      <p class="top"> Gianluca Bargelli </p>
+                      <p class="bottom"> Freelance Web Developer </p>
+                  </a>
+                  <a href="http://www.zizzamia.com" class="developer">
+                      <img src="static/img/leo_pic.jpg" />
+                      <p class="top"> Leonardo Zizzamia </p>
+                      <p class="bottom"> CEO @ Opentaste </p>
+                  </a>
+              </div>
+          </div>
+      </div><!-- #about -->
+      
+      <div class="sep_4"></div>
+      
+      <div id="copyright">
+          <div class="container_12 clearfix black_shadow">
+              © 2011-2013 Gianluca Bargelli, Leonardo Zizzamia • An <a href="http://opentaste.eu">Opentaste</a> project
+          </div>
+      </div><!-- #copyright -->
+      
+      <script>
+          var d = document;
+          var _gaq=[['_setAccount','UA-5286378-4'],['_trackPageview']];
+          (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+          g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+          s.parentNode.insertBefore(g,s)}(d,'script'));
+      </script>
 </body>
-<!-- Change UA-XXXXX-X to be your site's ID -->
-  <script>
-    window._gaq = [['_setAccount','UA-5286378-4'],['_trackPageview'],['_trackPageLoadTime']];
-    Modernizr.load({
-      load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
-   });
-  </script>
-  <script src="https://raw.github.com/OwlStudios/tiramisu/stable/VERSION"></script>
-  <script>
-    document.getElementById('version').innerHTML = getVersion();
-    document.getElementById('download').href += getVersion();
-  </script>
 </html>
